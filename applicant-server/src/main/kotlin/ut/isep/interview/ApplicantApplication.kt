@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @OpenAPIDefinition
 @SpringBootApplication
-class InterviewApplication
+class ApplicantApplication
 
 fun main(args: Array<String>) {
-	runApplication<InterviewApplication>(*args)
+	runApplication<ApplicantApplication>(*args)
 }
