@@ -3,20 +3,28 @@
 ## 1.1. Requirements Overview
 All functional and non-functional requirements are listed down below
 
+### Stakeholder Analysis
+* Applicants: They potentially want to work at Info Support and make a questionnaire as prerequisite of the interview process. Since the questionnaire program is the first software they interact 
+  with. It needs to leave a good impression on the technical capabilities of Info Support, as potentially new developers want to work at a place where it gives the impression that software is up to industrial standards.
+* Recruiters: Employees which don’t need a technical background, but can manage applicants statuses and invites.
+* Interviewer: Employee with a technical background who conducts the interview after the applicant has completed the questionnaire. The interviewer uses the results of the applicant during the 
+  interview.
+* Question maintainers: Employees who maintain the questions in the repository, by updating, reviewing and deleting them. There is overlap between question maintainers and interviewers.
+* Developers: An Info Support employee with a technical background in Azure, TypeScript and/or Java
 
 ### Functional Requirements
 #### Must have
 1. Applicants must be able to make multiple choice questions.
 2. Applicants must be able to make code review questions.
 3. Applicants must be able to see diagrams (e.g. of a database schema) in a question.
-4. Applicants must be able to write an SQL question and validate the code.
+4. Applicants must be able to execute an SQL queries for SQL questions and validate the result.
 5. Applicants must have a time limit for the entire questionnaire.
 6. Applicants must be able to have access to IntelliSense capabilities when working on code questions.
 7. Applicants must be able to add additional unit tests.
 8. Applicants must be able to work in a browser based code editor.
 9. Applicants must only be able to see their questionnaire completion time after questionnaire submission.
 10. Applicants must not able to take the questionnaire again and thus not being able to use the link again.
-11. Applicant must only be able to make the questionnaire in any order. (Might be that multiple choice questions will be closed after taking them)
+11. Applicants must be able to make the questionnaire in any order with the specified order by the screener. (Might be that multiple choice questions will be closed after taking them)
 12. Applicants that are making a questionnaire must not be bothered by question maintainers making changes.
 13. Applicants must be able to add comments to lines in code review questions.
 14. Recruiters must be able to check the status of the applicant interview questionnaire.
@@ -29,7 +37,7 @@ All functional and non-functional requirements are listed down below
 20. Recruiters must be able to set an expiration date for the questionnaire.
 21. Recruiters must be able to include or exclude some questions in the selected questionnaire.
 22. Recruiters must be able to see the time per section of applicants
-23. Recruiters must be able to set the assessment deadline, with a default of days.
+23. Recruiters must be able to set the assessment deadline, with a default of 7 days.
 24. Interviewers and recruiters must be able to log in with their Info Support account.
 25. Interviewers must be able to view the submitted applicants’ questionnaire.
 26. Interviewers must be able to see the difference between the starting code and the submitted code.
@@ -50,9 +58,10 @@ All functional and non-functional requirements are listed down below
 
 #### Could have
 1. Recruiters could be able to see if applicants paste a large amount of text (recognizing cheaters).
-2. The system could have a note-taking functionality for each question. Flag it in the interface.
-3. Recruiters could be able to see a timeline of various steps of the recruitment process.
-4. Recruiters could be able to filter various candidates based on status aspects such as total, waiting for answers, evaluation, etc.
+2. Recruiters could be able to see if applicants switch to another tab (recognizing cheaters).
+3. The system could have a note-taking functionality for each question. Flag it in the interface.
+4. Recruiters could be able to see a timeline of various steps of the recruitment process.
+5. Recruiters could be able to filter various candidates based on status aspects such as total, waiting for answers, evaluation, etc.
 
 #### Won't have
 1. Question maintainers will not be able to create open questions.
@@ -66,7 +75,7 @@ All functional and non-functional requirements are listed down below
 5. The system must have links be long hashes that are not guessable (security).
 6. The system must store the state of the current questions.
 7. The system must not apply changes to open and closed questionnaires if the used questions are changed.
-8. The system must be able to respond to the validity/results of tests within +-2 seconds. So that the system should have a quick response time. (2 second could be changed to what the standard is at Info Support.
+8. The system must be able to respond to the validity/results of tests within +-2 seconds for a quick response time. (2 second could be changed to what the standard is at Info Support.
 9. The system must support Python, C#, SQL, Java, and JavaScript within the coding questions.
 10. The front-end must have a wide array of browser support (Chrome, Edge, Firefox, Opera, Safari).
 11. The system must have interfaces in English.
