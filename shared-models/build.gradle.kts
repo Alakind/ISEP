@@ -22,17 +22,12 @@ kotlin {
     jvmToolchain(21)
 }
 
-//val sourcesJar by tasks.registering(Jar::class) {
-//    from(sourceSets.main.get().allSource)
+//publishing {
+//    publications {
+//        register("mavenKotlin", MavenPublication::class) {
+//            groupId = "ut.isep.interview"
+//            artifactId = "shared-models"
+//            from(components["kotlin"])
+//        }
+//    }
 //}
-
-
-publishing {
-    publications {
-        register("mavenKotlin", MavenPublication::class) {
-            groupId = "ut.isep.interview"
-            artifactId = "shared-models"
-            from(components["kotlin"])
-        }
-    }
-}
