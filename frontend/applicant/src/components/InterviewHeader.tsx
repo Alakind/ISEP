@@ -1,4 +1,4 @@
-import { AssignmentTypes } from "../utils/constants";
+import { SectionInterface } from "../utils/types";
 
 function InterviewHeader({ section }: InterviewHeaderProps) {
   return (
@@ -9,12 +9,7 @@ function InterviewHeader({ section }: InterviewHeaderProps) {
 }
 
 interface InterviewHeaderProps {
-  section: {
-    assignments: {
-      type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-      isSolved: boolean;
-    }[];
-  };
+  section: SectionInterface;
 }
 
 export default InterviewHeader;
