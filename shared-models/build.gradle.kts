@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm") version "1.9.23"
-    `maven-publish`
 }
 
 group = "ut.isep"
@@ -12,6 +11,7 @@ repositories {
 
 dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 }
 
 
@@ -21,13 +21,3 @@ tasks.test {
 kotlin {
     jvmToolchain(21)
 }
-
-//publishing {
-//    publications {
-//        register("mavenKotlin", MavenPublication::class) {
-//            groupId = "ut.isep.interview"
-//            artifactId = "shared-models"
-//            from(components["kotlin"])
-//        }
-//    }
-//}
