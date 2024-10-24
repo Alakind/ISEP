@@ -9,4 +9,6 @@ data class AssignmentMultipleChoice(
     val text: List<String>,
     val isMultipleAnswers: Boolean,
     val options: List<String>
-) : Assignment()
+) : Assignment() {
+    val type = AssignmentType.MultipleChoice
+}

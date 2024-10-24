@@ -7,5 +7,7 @@ data class AssignmentCoding(
     val id: Int,
     val text: List<String>,
     val language: String,
-    val files: Map<String, ByteArray>
-) : Assignment()
+    val files: Map<String, ByteArray>,
+) : Assignment() {
+    val type = AssignmentType.Coding
+}

@@ -1,14 +1,19 @@
 package models
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping
 import io.swagger.v3.oas.annotations.media.Schema
 
-@JsonSubTypes(value = [
-    JsonSubTypes.Type(value = AssignmentCoding::class),
-    JsonSubTypes.Type(value = AssignmentMultipleChoice::class)
+@Schema(
+    description = "Either a coding or a multiple choice assignment",
+    oneOf = [AssignmentCoding::class, AssignmentMultipleChoice::class],
+    discriminatorProperty = "type",
+    discriminatorMapping = [
+        DiscriminatorMapping(value = "Coding", schema = AssignmentCoding::class),
+        DiscriminatorMapping(value = "MultipleChoice", schema = AssignmentMultipleChoice::class),
     ]
 )
-@Schema(
-    description = "Either a coding or a multiple choice assignment"
-)
-sealed class Assignment
+sealed class Assignment() {
+    @Schema(enumAsRef = true)
+    enum class AssignmentType { Coding, MultipleChoice }
+}
+
