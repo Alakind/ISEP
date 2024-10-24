@@ -1,7 +1,6 @@
 package ut.isep.management.controller
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -45,13 +44,6 @@ class AssignmentController {
     @ApiResponse(
         responseCode = "200",
         description = "Returns a list of all assignments",
-        content = [Content(
-            mediaType = "application/json",
-            array = ArraySchema(
-                schema = Schema(
-                    implementation = Assignment::class
-                ))
-        )]
     )
     fun getAssignments(): List<Assignment> {
        return listOf(AssignmentMultipleChoice(
@@ -68,12 +60,6 @@ class AssignmentController {
         ApiResponse(
             responseCode = "200",
             description = "Found the assignment",
-            content = [Content(
-                mediaType = "application/json",
-                schema = Schema(
-                    implementation = Assignment::class
-                ))
-            ]
         ),
         ApiResponse(
             responseCode = "404",
