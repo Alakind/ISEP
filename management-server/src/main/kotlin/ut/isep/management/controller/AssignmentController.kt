@@ -11,36 +11,15 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/assignment")
 class AssignmentController {
 
-    /**
-     * Hello.
-     * This mapping has no useful logic; it's just a documentation example.
-     *
-     */
-    @GetMapping("/hello")
-    @Operation(
-        description = "Say hello",
-        operationId = "hello",
-        tags = ["test"]
-    )
-    @ApiResponse(
-            responseCode = "200",
-            content = [Content(
-                schema = Schema(
-                    implementation = String::class
-                )
-            )]
-        )
-    fun helloKotlin(): String {
-        return "Hello from the Management Server, built on Spring Boot with Kotlin"
-    }
 
-
-    @GetMapping("assignment")
+    @GetMapping
     @ApiResponse(
         responseCode = "200",
         description = "Returns a list of all assignments",
@@ -54,7 +33,7 @@ class AssignmentController {
        ))
     }
 
-    @GetMapping("assignment/{id}")
+    @GetMapping("{id}")
     @Operation(summary = "Get assignment", description = "Returns either AssignmentMultipleChoice or AssignmentCoding, or 404 if not found")
     @ApiResponses(value = [
         ApiResponse(
