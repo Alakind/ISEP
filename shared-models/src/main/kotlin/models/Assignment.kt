@@ -13,6 +13,12 @@ import io.swagger.v3.oas.annotations.media.Schema
     ]
 )
 sealed class Assignment() {
+    @get:Schema(hidden = true)
+    abstract val id: Int
+
+    @get:Schema(hidden = true)
+    abstract val type: AssignmentType
+
     @Schema(enumAsRef = true)
     enum class AssignmentType { Coding, MultipleChoice }
 }
