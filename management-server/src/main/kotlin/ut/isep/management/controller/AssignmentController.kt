@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import models.Assignment
-import models.AssignmentMultipleChoice
+import dto.AssignmentDTO
+import dto.AssignmentMultipleChoiceDTO
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,8 +24,8 @@ class AssignmentController {
         responseCode = "200",
         description = "Returns a list of all assignments",
     )
-    fun getAssignments(): List<Assignment> {
-       return listOf(AssignmentMultipleChoice(
+    fun getAssignments(): List<AssignmentDTO> {
+       return listOf(AssignmentMultipleChoiceDTO(
            0,
            listOf("What is your name?"),
            false,
@@ -48,9 +48,9 @@ class AssignmentController {
             )]
         )
     ])
-    fun getAssignment(@PathVariable id: Int): ResponseEntity<Assignment> {
+    fun getAssignment(@PathVariable id: Int): ResponseEntity<AssignmentDTO> {
         return if (id >= 0) {
-            ResponseEntity.ok(AssignmentMultipleChoice(
+            ResponseEntity.ok(AssignmentMultipleChoiceDTO(
                 id,
                 listOf("What is your name?"),
                 false,

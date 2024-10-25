@@ -1,5 +1,5 @@
-package models
+package dto
 
-data class Status (
+data class StatusDTO (
     val status: Map<Int, Boolean> //Section ID, Completed?
 )

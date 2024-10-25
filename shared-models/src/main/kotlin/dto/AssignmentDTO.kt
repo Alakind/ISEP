@@ -1,18 +1,18 @@
-package models
+package dto
 
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(
     description = "Either a coding or a multiple choice assignment",
-    oneOf = [AssignmentCoding::class, AssignmentMultipleChoice::class],
+    oneOf = [AssignmentCodingDTO::class, AssignmentMultipleChoiceDTO::class],
     discriminatorProperty = "type",
     discriminatorMapping = [
-        DiscriminatorMapping(value = "Coding", schema = AssignmentCoding::class),
-        DiscriminatorMapping(value = "MultipleChoice", schema = AssignmentMultipleChoice::class),
+        DiscriminatorMapping(value = "Coding", schema = AssignmentCodingDTO::class),
+        DiscriminatorMapping(value = "MultipleChoice", schema = AssignmentMultipleChoiceDTO::class),
     ]
 )
-sealed class Assignment() {
+sealed class AssignmentDTO() {
     @get:Schema(hidden = true)
     abstract val id: Int
 

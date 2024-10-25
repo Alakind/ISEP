@@ -1,6 +1,6 @@
 package ut.isep.interview.api
 
-import models.Status
+import dto.StatusDTO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController
 class TestStatusController {
 
     @GetMapping("/testStatus/{applicantId}")
-    fun getTestStatus(@PathVariable applicantId: String): Status {
+    fun getTestStatus(@PathVariable applicantId: String): StatusDTO {
         //TODO implement
-        return Status(mapOf())
+        return StatusDTO(mapOf())
     }
 }
