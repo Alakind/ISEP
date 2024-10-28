@@ -1,7 +1,8 @@
 # 1. Introduction and Goals
+This document explains the design decision for the 
 
 ## 1.1. Requirements Overview
-All functional and non-functional requirements are listed down below
+All functional and non-functional requirements are listed down below:
 
 ### Stakeholder Analysis
 * Applicants: They potentially want to work at Info Support and make a questionnaire as prerequisite of the interview process. Since the questionnaire program is the first software they interact 
@@ -14,46 +15,54 @@ All functional and non-functional requirements are listed down below
 
 ### Functional Requirements
 #### Must have
+##### Priority level 1
 1. Applicants must be able to make multiple choice questions.
-2. Applicants must be able to make code review questions.
-3. Applicants must be able to see diagrams (e.g. of a database schema) in a question.
+2. Applicants must be able to work in a browser based code editor.
+3. Applicants must be able to make code review questions.
 4. Applicants must be able to execute an SQL queries for SQL questions and validate the result.
-5. Applicants must have a time limit for the entire questionnaire.
-6. Applicants must be able to have access to IntelliSense capabilities when working on code questions.
-7. Applicants must be able to add additional unit tests.
-8. Applicants must be able to work in a browser based code editor.
-9. Applicants must only be able to see their questionnaire completion time after questionnaire submission.
-10. Applicants must not able to take the questionnaire again and thus not being able to use the link again.
-11. Applicants must be able to make the questionnaire in any order with the specified order by the screener. (Might be that multiple choice questions will be closed after taking them)
-12. Applicants that are making a questionnaire must not be bothered by question maintainers making changes.
-13. Applicants must be able to add comments to lines in code review questions.
-14. Recruiters must be able to check the status of the applicant interview questionnaire.
-    * See the screenshots for extra requirements, not yet specified.
-15. Recruiters must be able to edit the status of the applicant interview questionnaire. (In case of error, applicant not being able to finish their questionnaire)
-16. Recruiters must be able to send an invitation link to applicants.
-17. Recruiters should be able to send new invite links to existing applicants.
-18. Recruiters must be able to see applicant results (is PDF in current implementation).
-19. Recruiters must be able to make a new applicant user and assign them a questionnaire with their preferred coding languages (maybe a minimum amount).
-20. Recruiters must be able to set an expiration date for the questionnaire.
-21. Recruiters must be able to include or exclude some questions in the selected questionnaire.
-22. Recruiters must be able to see the time per section of applicants
-23. Recruiters must be able to set the assessment deadline, with a default of 7 days.
-24. Interviewers and recruiters must be able to log in with their Info Support account.
-25. Interviewers must be able to view the submitted applicants’ questionnaire.
-26. Interviewers must be able to see the difference between the starting code and the submitted code.
-27. Question maintainers must be able to create new questions to a repository in Markdown.
-28. Question maintainers must be able to review questions in the repository.
-29. Question maintainers must be able to update existing questions in the repository in Markdown.
-30. Question maintainers must be able to delete questions in the repository.
-31. Question maintainers must be able to create example answers for the questions.
-32. Question maintainers must be able to compose questionnaires from the available questions.
-33. Question maintainers must be able to mark a question as an open question.
-34. The main repository must be able to send a pull request to the question repository to retrieve the new questions.
-35. The question repository should have a pipeline that checks for valid Markdown formatting.
-36. Each section must have a suggested time limit. If it is exceeded, the time is visually marked in red.
+5. Applicants that are making a questionnaire must not be bothered by question maintainers making changes.
+6. Recruiters must be able to check the status of the applicant interview questionnaire.    
+7. Recruiters must be able to send an invitation link to applicants.
+8. Recruiters must be able to see applicant results (TODO: research best option PDF or HTML, PDF in DevSkiller).
+   * Interviewers must be able to view the submitted applicants’ questionnaire results. (FIXME: same as Priority 1 point 8)
+9. Recruiters must be able to make a new applicant user and assign them a questionnaire with their preferred coding languages (???maybe a minimum amount).
+10. Interviewers and recruiters must be able to log in with their Info Support account.
+11. Interviewers must be able to see the difference between the starting code and the submitted code.
+12. Question maintainers must be able to create, review, update, and delete questions to a repository in Markdown.
+13. The main repository must be able to send a pull request to the question repository to retrieve the new questions.
+
+##### Priority level 2
+1. Applicants must be able to have access to IntelliSense capabilities when working on code questions.
+2. Applicants must be able to see diagrams (e.g. of a database schema) in a question.
+3. Applicants must not able to take the questionnaire again and thus not being able to use the link again.
+4. Applicants must be able to add comments to lines in code review questions. (FIXME: partially the same as priority 1 point 3)
+5. Recruiters must be able to edit the status of the applicant interview questionnaire. (In case of error, applicant not being able to finish their questionnaire)
+6. Recruiters should be able to send new invite links to existing applicants.
+7. Recruiters must be able to set the assessment deadline, with a default of 7 days.
+8. Question maintainers must be able to create example answers for the questions.
+9. Question maintainers must be able to compose questionnaires from the available questions.
+10. The question repository should have a pipeline that checks for valid Markdown formatting.
+
+##### Priority level 3
+1. Applicants must be able to add additional unit tests.
+2. Applicants must be able to make the questionnaire in any order with the specified order by the screener. (TODO: Might be that multiple choice questions will be closed after taking them)
+3. Recruiters must be able to set an expiration date for the questionnaire.
+
+##### Priority level 4
+1. Applicants must have a time limit for the entire questionnaire.
+2. Applicants must only be able to see their questionnaire completion time after questionnaire submission.
+3. Recruiters must be able to include or exclude some questions in the selected questionnaire.
+4. Recruiters must be able to see the time per section of applicants.
+5. Question maintainers must be able to mark a question as an open question.
+6. Each section must have a suggested time limit. If it is exceeded, the time is visually marked in red.
 
 #### Should have
-1. The recruiter should be able to filter applicants based on criteria such as educational level or coding language (must or should?)
+1. Recruiters must be able to filter the applicants on:
+    * name, email or token;
+    * invitation date;
+    * the selected interview questionnaire;
+    * tags;
+    * scores;
 2. The system should have the ability to assign different roles such as recruiter and code reviewer.
 
 #### Could have
