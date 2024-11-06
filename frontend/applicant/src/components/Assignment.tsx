@@ -9,7 +9,6 @@ import AssignmentOpen from "./AssignmentOpen";
 function Assignment({ assignment }: AssignmentProps) {
   return (
     <>
-      <div>--------------------------</div>
       <div>{assignment.text}</div>
       {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
         <AssignmentMultipleChoice
@@ -19,7 +18,6 @@ function Assignment({ assignment }: AssignmentProps) {
       {assignment.type == AssignmentTypes.OPEN && (
         <AssignmentOpen assignment={assignment} />
       )}
-      <div>--------------------------</div>
     </>
   );
 }

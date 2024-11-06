@@ -1,5 +1,9 @@
 import { AssignmentTypes } from "./constants";
 
+export interface InterviewInterface {
+  sections: SectionInterface[];
+}
+
 export interface SectionInterface {
   assignments: AssignmentInterface[];
 }
