@@ -73,7 +73,7 @@ class SectionController(val sectionService: SectionService) {
         return ResponseEntity.ok("Added an section")
     }
 
-    @GetMapping("/add")
+    @PostMapping("/dummy")
     @Operation(summary = "Adds a stub section", description = "Transient testing method")
     @ApiResponses(value = [
         ApiResponse(
@@ -82,6 +82,7 @@ class SectionController(val sectionService: SectionService) {
         )
     ])
     fun postStubSection(): ResponseEntity<String> {
+
         sectionService.addSection(
             Section(
                 title = "example section with no assignments",
