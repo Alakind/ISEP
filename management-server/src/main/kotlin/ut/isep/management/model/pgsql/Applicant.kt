@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Entity
 class Applicant(
     val status: ApplicantStatus,
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "interview_id")
     val interview: Interview? = null,
     val preferredLanguage: String? = null,

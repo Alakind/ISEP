@@ -5,7 +5,7 @@ import jakarta.persistence.*
 @Entity
 class Section(
     val title: String,
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(name = "section_assignments",
         joinColumns = [JoinColumn(name = "section_id")],
         inverseJoinColumns = [JoinColumn(name = "assignment_id")])
