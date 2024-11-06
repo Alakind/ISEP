@@ -12,15 +12,15 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/test")
-class TestController {
+@RequestMapping("/interview")
+class InterviewController {
 
-    @GetMapping("/{applicantId}/test")
-    @Operation(summary = "Get the test for the applicant", description = "Returns a list with all the sectionsID's")
+    @GetMapping("/{applicantId}")
+    @Operation(summary = "Get the interview for the applicant", description = "Returns a list with all the sectionsID's")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Found the Test",
+            description = "Found the interview",
         ),
         ApiResponse(
             responseCode = "404",
@@ -30,13 +30,13 @@ class TestController {
             )]
         )
     ])
-    fun getTest(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
+    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
         //TODO implement
         return ResponseEntity.ok(InterviewDTO(69, listOf()))
     }
 
     @PostMapping("/{applicantId}/submit")
-    @Operation(summary = "Submits the Test", description = "All cached answers will now be submitted")
+    @Operation(summary = "Submits the interview", description = "All saved answers will now be submitted")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -50,7 +50,7 @@ class TestController {
             )]
         )
     ])
-    fun postTestSubmit(@PathVariable applicantId: Int) {
+    fun postInterviewSubmit(@PathVariable applicantId: Int) {
         //TODO implement
     }
 
@@ -81,7 +81,7 @@ class TestController {
     }
 
     @GetMapping("/{applicantId}/save/{sectionId}")
-    @Operation(summary = "Get the cached section", description = "Retrieves the cached section")
+    @Operation(summary = "Get the cached section", description = "Retrieves the saved section")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -95,7 +95,7 @@ class TestController {
             )]
         )
     ])
-    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO> {
+    fun getInterviewCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO> {
         //TODO implement
         return ResponseEntity.ok(SectionDTO(0, "Example Title", listOf()))
     }

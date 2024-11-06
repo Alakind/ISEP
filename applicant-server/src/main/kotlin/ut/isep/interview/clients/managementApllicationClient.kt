@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.PostMapping
 
 @FeignClient("management-server", url = "localhost:8081")
 interface ManagementApplicationClient {
-    @GetMapping("/test/{applicantId}/test")
+    @GetMapping("/interview/{applicantId}")
     fun getTest(@PathVariable applicantId: Int?): InterviewDTO
 
-    @PostMapping("/test/{applicantId}/submit")
+    @PostMapping("/interview/{applicantId}/submit")
     fun postSubmit(@PathVariable applicantId: Int?)
 
-    @PostMapping("/test/{applicantId}/save/{sectionId}")
+    @PostMapping("/interview/{applicantId}/save/{sectionId}")
     fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int?)
 
-    @GetMapping("/test/{applicantId}/save/{sectionId}")
+    @GetMapping("/interview/{applicantId}/save/{sectionId}")
     fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int?): SectionDTO
 
     @GetMapping("/section/{sectionId}")

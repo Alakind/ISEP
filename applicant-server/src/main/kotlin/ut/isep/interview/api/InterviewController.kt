@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*
 import ut.isep.interview.clients.ManagementApplicationClient
 
 @RestController
-@RequestMapping("/test")
-class TestController {
+@RequestMapping("/interview")
+class InterviewController {
 
     @Autowired
     var client: ManagementApplicationClient? = null
@@ -44,12 +44,12 @@ class TestController {
         }
     }
 
-    @GetMapping("/{applicantId}/test")
-    @Operation(summary = "Get the test for the applicant", description = "Returns a list with all the sectionsID's")
+    @GetMapping("/{applicantId}")
+    @Operation(summary = "Get the Interview for the applicant", description = "Returns a list with all the sectionsID's")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Found the Test",
+            description = "Found the Interview",
         ),
         ApiResponse(
             responseCode = "404",
@@ -59,7 +59,7 @@ class TestController {
             )]
         )
     ])
-    fun getTest(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
+    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
         val response: InterviewDTO? = client?.getTest(applicantId)
         return if (response != null) {
             ResponseEntity.ok(response)
@@ -69,7 +69,7 @@ class TestController {
     }
 
     @PostMapping("/{applicantId}/submit")
-    @Operation(summary = "Submits the Test", description = "All cached answers will now be submitted")
+    @Operation(summary = "Submits the Interview", description = "All saved answers will now be submitted")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -83,16 +83,16 @@ class TestController {
             )]
         )
     ])
-    fun postTestSubmit(@PathVariable applicantId: Int) {
+    fun postInterviewSubmit(@PathVariable applicantId: Int) {
         client?.postSubmit(applicantId)
     }
 
     @PostMapping("/{applicantId}/save/{sectionId}")
-    @Operation(summary = "Caches the section", description = "The provided section will be cached")
+    @Operation(summary = "Caches the section", description = "The provided section will be saved")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Cached the section successfully",
+            description = "Saved the section successfully",
         ),
         ApiResponse(
             responseCode = "400",
@@ -114,7 +114,7 @@ class TestController {
     }
 
     @GetMapping("/{applicantId}/save/{sectionId}")
-    @Operation(summary = "Get the cached section", description = "Retrieves the cached section")
+    @Operation(summary = "Get the saved section", description = "Retrieves the saved section")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
