@@ -1,7 +1,7 @@
 package ut.isep.interview.api
 
 import dto.SectionDTO
-import dto.QuestionnaireDTO
+import dto.InterviewDTO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController
 class TestController {
 
     @GetMapping("/test")
-    fun getTest(): QuestionnaireDTO {
+    fun getTest(): InterviewDTO {
         //TODO implement
-        return QuestionnaireDTO(0, listOf())
+        return InterviewDTO(0, listOf())
     }
 
     @PostMapping("/test/{applicantId}/submit/{sectionId}")
