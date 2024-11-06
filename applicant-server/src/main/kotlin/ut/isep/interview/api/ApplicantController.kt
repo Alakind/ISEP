@@ -1,4 +1,4 @@
-package ut.isep.management.controller
+package ut.isep.interview.api
 
 import dto.InterviewDTO
 import dto.SectionDTO
@@ -10,17 +10,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ut.isep.interview.clients.ManagementApplicationClient
 
 @RestController
-@RequestMapping("/interview")
-class InterviewController {
+@RequestMapping("/applicant")
+class ApplicantController(val client: ManagementApplicationClient) {
 
-    @GetMapping("/{applicantId}")
-    @Operation(summary = "Get the interview for the applicant", description = "Returns a list with all the sectionsID's")
+    @GetMapping("/{applicantId}/interview")
+    @Operation(summary = "Get the Interview for the applicant", description = "Returns a list with all the sectionsID's")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Found the interview",
+            description = "Found the Interview",
         ),
         ApiResponse(
             responseCode = "404",
@@ -30,13 +31,16 @@ class InterviewController {
             )]
         )
     ])
-    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
-        //TODO implement
-        return ResponseEntity.ok(InterviewDTO(69, listOf()))
+    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
+        return try {
+            ResponseEntity.ok(client.getInterview(applicantId))
+        } catch (e: feign.FeignException) {
+            ResponseEntity.status(e.status()).build()
+        }
     }
 
     @PostMapping("/{applicantId}/submit")
-    @Operation(summary = "Submits the interview", description = "All saved answers will now be submitted")
+    @Operation(summary = "Submits the Interview", description = "All saved answers will now be submitted")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -51,15 +55,15 @@ class InterviewController {
         )
     ])
     fun postInterviewSubmit(@PathVariable applicantId: Int) {
-        //TODO implement
+        client.postSubmit(applicantId)
     }
 
-    @PostMapping("/{applicantId}/save/{sectionId}")
-    @Operation(summary = "Caches the section", description = "The provided section will be cached")
+    @PostMapping("/{applicantId}/save-section/{sectionId}")
+    @Operation(summary = "Caches the section", description = "The provided section will be saved")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Cached the section successfully",
+            description = "Saved the section successfully",
         ),
         ApiResponse(
             responseCode = "400",
@@ -77,11 +81,11 @@ class InterviewController {
         )
     ])
     fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
-        //TODO implement
+        client.postSaveSection(applicantId, sectionId)
     }
 
-    @GetMapping("/{applicantId}/save/{sectionId}")
-    @Operation(summary = "Get the cached section", description = "Retrieves the saved section")
+    @GetMapping("/{applicantId}/save-section/{sectionId}")
+    @Operation(summary = "Get the saved section", description = "Retrieves the saved section")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -95,8 +99,11 @@ class InterviewController {
             )]
         )
     ])
-    fun getInterviewCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO> {
-        //TODO implement
-        return ResponseEntity.ok(SectionDTO(0, "Example Title", listOf()))
+    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO>? {
+        return try {
+            ResponseEntity.ok(client.getSaveSection(applicantId, sectionId))
+        } catch (e: feign.FeignException) {
+            ResponseEntity.status(e.status()).build()
+        }
     }
 }
