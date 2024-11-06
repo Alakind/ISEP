@@ -27,9 +27,9 @@ sealed class AssignmentDTO {
     @get:Schema(hidden = true)
     abstract val id: Long?
 
-    @get:Schema(type = "string", allowableValues = ["Coding", "MultipleChoice"])
+    @get:Schema(type = "string", allowableValues = ["Coding", "MultipleChoice", "Open"])
     abstract val type: AssignmentType
 
     @Schema(enumAsRef = true)
-    enum class AssignmentType { Coding, MultipleChoice }
+    enum class AssignmentType { Coding, MultipleChoice, Open }
 }

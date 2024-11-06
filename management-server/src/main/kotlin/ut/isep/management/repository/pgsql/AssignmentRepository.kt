@@ -9,9 +9,9 @@ import java.util.*
 
 
 @Repository
-interface SectionRepository : JpaRepository<Section, Long> {
+interface AssignmentRepository : JpaRepository<Assignment, Long> {
 
-    fun findSectionById(id: Long): Section
+    fun findAssignmentById(id: Long): Assignment
 
-    fun findSectionByAssignments(assignments: Set<Assignment>): Optional<Section>
+    fun findAssignmentByDescription(description: List<String>): Optional<Assignment>
 }

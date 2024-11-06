@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 class Interview(
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "section_id")
     val sections: List<Section> = listOf(),
 ) {

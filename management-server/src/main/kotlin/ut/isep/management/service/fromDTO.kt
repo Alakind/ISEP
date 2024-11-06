@@ -40,6 +40,12 @@ fun AssignmentMultipleChoiceDTO.fromDTO(): AssignmentMultipleChoice {
     )
 }
 
+fun AssignmentOpenDTO.fromDTO(): AssignmentOpen {
+    return AssignmentOpen(
+        description = this.description
+    )
+}
+
 fun AssignmentCodingDTO.fromDTO(): AssignmentCoding {
     return AssignmentCoding(
         description = this.description,
