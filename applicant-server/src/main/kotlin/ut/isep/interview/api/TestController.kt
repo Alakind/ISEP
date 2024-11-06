@@ -1,7 +1,7 @@
 package ut.isep.interview.api
 
-import models.Section
-import models.Test
+import dto.SectionDTO
+import dto.InterviewDTO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController
 class TestController {
 
     @GetMapping("/test")
-    fun getTest(): Test {
+    fun getTest(): InterviewDTO {
         //TODO implement
-        return Test(0, listOf())
+        return InterviewDTO(0, listOf())
     }
 
     @PostMapping("/test/{applicantId}/submit/{sectionId}")
-    fun postTestSubmit(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: Section) {
+    fun postTestSubmit(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
         //TODO implement
     }
 
     @PostMapping("/test/{applicantId}/cash/{sectionId}")
-    fun postTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: Section) {
+    fun postTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
         //TODO implement
     }
 
     @GetMapping("/test/{applicantId}/cash/{sectionId}")
-    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): Section {
+    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO {
         //TODO implement
-        return Section("StubTitle", listOf())
+        return SectionDTO(-1, "StubTitle", listOf())
     }
 }

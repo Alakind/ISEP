@@ -5,59 +5,65 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import dto.AssignmentDTO
-import dto.AssignmentMultipleChoiceDTO
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import ut.isep.management.model.redis.State
+import ut.isep.management.service.StateService
 
 @RestController
-@RequestMapping("/assignment")
-class AssignmentController {
+@RequestMapping("/state")
+class StateController(val stateService: StateService) {
 
 
     @GetMapping
     @ApiResponse(
         responseCode = "200",
-        description = "Returns a list of all assignments",
+        description = "Returns a list of all state objects",
     )
-    fun getAssignments(): List<AssignmentDTO> {
-       return listOf(AssignmentMultipleChoiceDTO(
-           id = 1,
-           description = listOf("What is your name?"),
-           options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
-           isMultipleAnswers = false,
-       ))
+    fun getStates(): List<State> {
+       return stateService.allState
     }
 
     @GetMapping("{id}")
-    @Operation(summary = "Get assignment", description = "Returns either AssignmentMultipleChoice or AssignmentCoding, or 404 if not found")
+    @Operation(summary = "Get state", description = "Returns either ApplicantDTO or 404 if not found")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
-            description = "Found the assignment",
+            description = "Found the state",
         ),
         ApiResponse(
             responseCode = "404",
-            description = "Assignment not found",
+            description = "state not found",
             content = [Content(
                 schema = Schema(implementation = DefaultErrorAttributes::class)
             )]
         )
     ])
-    fun getAssignment(@PathVariable id: Long): ResponseEntity<AssignmentDTO> {
-        return if (id >= 0) {
-            ResponseEntity.ok(AssignmentMultipleChoiceDTO(
-                id = id,
-                description = listOf("What is your name?"),
-                options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
-                isMultipleAnswers = false,
-                ))
-        } else {
+    fun getState(@PathVariable id: Long): ResponseEntity<State> {
+        return try {
+            ResponseEntity.ok(stateService.getStateById(id))
+        } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
+    }
+
+    @GetMapping("/add")
+    @Operation(summary = "Add some state", description = "Transient testing method")
+    @ApiResponses(value = [
+        ApiResponse(
+            responseCode = "200",
+            description = "Added the state",
+        )
+    ])
+    fun postState(): ResponseEntity<String> {
+        stateService.addState(
+            State(id = 0, status = 1)
+        )
+        return ResponseEntity.ok("Added some state")
+
     }
 }
