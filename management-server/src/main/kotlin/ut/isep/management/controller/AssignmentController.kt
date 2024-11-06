@@ -26,10 +26,10 @@ class AssignmentController {
     )
     fun getAssignments(): List<AssignmentDTO> {
        return listOf(AssignmentMultipleChoiceDTO(
-           0,
-           listOf("What is your name?"),
-           false,
-           listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks")
+           id = 1,
+           description = listOf("What is your name?"),
+           options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
+           isMultipleAnswers = false,
        ))
     }
 
@@ -48,14 +48,14 @@ class AssignmentController {
             )]
         )
     ])
-    fun getAssignment(@PathVariable id: Int): ResponseEntity<AssignmentDTO> {
+    fun getAssignment(@PathVariable id: Long): ResponseEntity<AssignmentDTO> {
         return if (id >= 0) {
             ResponseEntity.ok(AssignmentMultipleChoiceDTO(
-                id,
-                listOf("What is your name?"),
-                false,
-                listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks")
-            ))
+                id = id,
+                description = listOf("What is your name?"),
+                options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
+                isMultipleAnswers = false,
+                ))
         } else {
             ResponseEntity.status(404).build()
         }
