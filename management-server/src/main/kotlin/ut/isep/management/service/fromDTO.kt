@@ -2,7 +2,6 @@ package ut.isep.management.service
 
 import dto.*
 import ut.isep.management.model.pgsql.*
-import java.net.URI
 
 fun ApplicantDTO.fromDTO(): Applicant {
     return Applicant(
@@ -28,6 +27,7 @@ fun AssignmentDTO.fromDTO(): Assignment {
     return when (this) {
         is AssignmentMultipleChoiceDTO -> this.fromDTO()
         is AssignmentCodingDTO -> this.fromDTO()
+        is AssignmentOpenDTO -> this.fromDTO()
         else -> throw NotImplementedError("Cannot (yet) convert subclass ${this::class} of ${Assignment::class} from DTO")
     }
 }
