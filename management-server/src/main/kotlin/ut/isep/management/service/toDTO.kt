@@ -29,6 +29,7 @@ fun Assignment.toDTO(): AssignmentDTO {
     return when (this) {
         is AssignmentMultipleChoice -> this.toDTO()
         is AssignmentCoding -> this.toDTO()
+        is AssignmentOpen -> this.toDTO()
         else -> throw NotImplementedError("Cannot (yet) convert subclass ${this::class} of ${Assignment::class} to DTO")
     }
 }
@@ -39,6 +40,13 @@ fun AssignmentMultipleChoice.toDTO(): AssignmentMultipleChoiceDTO {
         description = this.description,
         isMultipleAnswers = this.isMultipleAnswers,
         options = this.options
+    )
+}
+
+fun AssignmentOpen.toDTO(): AssignmentOpenDTO {
+    return AssignmentOpenDTO(
+        id = this.id,
+        description = this.description
     )
 }
 
