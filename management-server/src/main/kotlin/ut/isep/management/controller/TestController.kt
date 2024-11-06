@@ -1,4 +1,4 @@
-package ut.isep.interview.api
+package ut.isep.management.controller
 
 import dto.InterviewDTO
 import dto.SectionDTO
@@ -7,36 +7,12 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.web.bind.annotation.*
-import ut.isep.interview.clients.ManagementApplicationClient
 
 @RestController
 @RequestMapping("/test")
 class TestController {
-
-    @Autowired
-    var client: ManagementApplicationClient? = null
-
-    @GetMapping("/section/{sectionId}")
-    @Operation(summary = "Get a section", description = "Returns a section with all the assignments")
-    @ApiResponses(value = [
-        ApiResponse(
-            responseCode = "200",
-            description = "Found the section",
-        ),
-        ApiResponse(
-            responseCode = "404",
-            description = "Section not found",
-            content = [Content(
-                schema = Schema(implementation = DefaultErrorAttributes::class)
-            )]
-        )
-    ])
-    fun getSection(@PathVariable sectionId: Int): SectionDTO? {
-        return client?.getSection(sectionId)
-    }
 
     @GetMapping("/{applicantId}/test")
     @Operation(summary = "Get the test for the applicant", description = "Returns a list with all the sectionsID's")
@@ -53,8 +29,9 @@ class TestController {
             )]
         )
     ])
-    fun getTest(@PathVariable applicantId: Int): InterviewDTO? {
-        return client?.getTest(applicantId)
+    fun getTest(@PathVariable applicantId: Int): InterviewDTO {
+        //TODO implement
+        return InterviewDTO(69, listOf())
     }
 
     @PostMapping("/{applicantId}/submit")
@@ -73,7 +50,7 @@ class TestController {
         )
     ])
     fun postTestSubmit(@PathVariable applicantId: Int) {
-        client?.postSubmit(applicantId)
+        //TODO implement
     }
 
     @PostMapping("/{applicantId}/save/{sectionId}")
@@ -99,7 +76,7 @@ class TestController {
         )
     ])
     fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
-        client?.postSaveSection(applicantId, sectionId)
+        //TODO implement
     }
 
     @GetMapping("/{applicantId}/save/{sectionId}")
@@ -117,7 +94,8 @@ class TestController {
             )]
         )
     ])
-    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO? {
-        return client?.getSaveSection(applicantId, sectionId)
+    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO {
+        //TODO implement
+        return SectionDTO(0, "Example Title", listOf())
     }
 }
