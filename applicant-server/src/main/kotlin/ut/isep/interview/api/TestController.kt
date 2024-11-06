@@ -30,6 +30,6 @@ class TestController {
     @GetMapping("/test/{applicantId}/cash/{sectionId}")
     fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO {
         //TODO implement
-        return SectionDTO("StubTitle", listOf())
+        return SectionDTO(-1, "StubTitle", listOf())
     }
 }
