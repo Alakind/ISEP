@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -29,9 +30,9 @@ class TestController {
             )]
         )
     ])
-    fun getTest(@PathVariable applicantId: Int): InterviewDTO {
+    fun getTest(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
         //TODO implement
-        return InterviewDTO(69, listOf())
+        return ResponseEntity.ok(InterviewDTO(69, listOf()))
     }
 
     @PostMapping("/{applicantId}/submit")
@@ -94,8 +95,8 @@ class TestController {
             )]
         )
     ])
-    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO {
+    fun getTestCash(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO> {
         //TODO implement
-        return SectionDTO(0, "Example Title", listOf())
+        return ResponseEntity.ok(SectionDTO(0, "Example Title", listOf()))
     }
 }

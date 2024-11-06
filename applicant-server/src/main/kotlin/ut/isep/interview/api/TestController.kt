@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ut.isep.interview.clients.ManagementApplicationClient
 
@@ -34,8 +35,13 @@ class TestController {
             )]
         )
     ])
-    fun getSection(@PathVariable sectionId: Int): SectionDTO? {
-        return client?.getSection(sectionId)
+    fun getSection(@PathVariable sectionId: Int): ResponseEntity<SectionDTO>? {
+        val response: SectionDTO? = client?.getSection(sectionId)
+        return if (response != null) {
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @GetMapping("/{applicantId}/test")
@@ -53,8 +59,13 @@ class TestController {
             )]
         )
     ])
-    fun getTest(@PathVariable applicantId: Int): InterviewDTO? {
-        return client?.getTest(applicantId)
+    fun getTest(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
+        val response: InterviewDTO? = client?.getTest(applicantId)
+        return if (response != null) {
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 
     @PostMapping("/{applicantId}/submit")
@@ -117,7 +128,12 @@ class TestController {
             )]
         )
     ])
-    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): SectionDTO? {
-        return client?.getSaveSection(applicantId, sectionId)
+    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO>? {
+        val response: SectionDTO? = client?.getSaveSection(applicantId, sectionId)
+        return if (response != null) {
+            ResponseEntity.ok(response)
+        } else {
+            ResponseEntity.notFound().build()
+        }
     }
 }
