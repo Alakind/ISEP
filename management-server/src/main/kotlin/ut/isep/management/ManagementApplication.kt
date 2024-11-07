@@ -12,6 +12,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 
 @OpenAPIDefinition
 @SpringBootApplication
+
 @EnableRedisRepositories(basePackages = ["ut.isep.management.repository.redis",])
 @EnableJpaRepositories(basePackages = ["ut.isep.management.repository.pgsql",])
 class ManagementApplication {
