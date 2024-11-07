@@ -7,7 +7,7 @@ import java.net.URI
 data class AssignmentCodingDTO(
     override val id: Long?,
     override val type: AssignmentType = AssignmentType.Coding,
-    val description: List<String>,
+    override val description: String,
     val codeUri: URI,
     val language: String
 ) : AssignmentDTO()

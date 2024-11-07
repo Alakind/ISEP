@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class AssignmentMultipleChoiceDTO(
     override val id: Long?,
     override val type: AssignmentType = AssignmentType.MultipleChoice,
-    val description: List<String>,
+    override val description: String,
     val options: List<String>,
     val isMultipleAnswers: Boolean
 ) : AssignmentDTO()
