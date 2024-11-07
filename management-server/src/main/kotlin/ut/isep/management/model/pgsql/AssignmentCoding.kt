@@ -6,10 +6,8 @@ import java.net.URI
 @Entity
 @DiscriminatorValue("CODING")
 class AssignmentCoding(
-    override val description: String,
-    val codeUri: URI,
-    val language: String,
-) : Assignment(description) {
-    // No-arg constructor for JPA
-    constructor() : this("", URI(""), "")
-}
+    description: String = "",
+    id: Long = 0,
+    val codeUri: URI = URI(""),
+    val language: String = "",
+) : Assignment(id, description)

@@ -5,8 +5,6 @@ import jakarta.persistence.*
 @Entity
 @DiscriminatorValue("OPEN")
 class AssignmentOpen(
-    override val description: String,
-) : Assignment(description) {
-    // No-arg constructor for JPA
-    constructor() : this("")
-}
+    id: Long = 0,
+    description: String = "",
+) : Assignment(id, description)
