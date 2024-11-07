@@ -2,7 +2,6 @@ package ut.isep.management.service
 
 import dto.*
 import ut.isep.management.model.pgsql.*
-import java.net.URI
 
 fun ApplicantDTO.fromDTO(): Applicant {
     return Applicant(
