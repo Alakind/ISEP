@@ -22,7 +22,8 @@ function InterviewPageContainer() {
         return response.json();
       })
       .then((data) => {
-        setInterview(data);
+        setInterview({ sections: data });
+        console.log(data);
         setIsLoading(false);
       })
       .catch((error) => {

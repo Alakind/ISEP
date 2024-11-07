@@ -6,19 +6,21 @@ export interface InterviewInterface {
 
 export interface SectionInterface {
   assignments: AssignmentInterface[];
+  title: string;
+  id: string;
 }
 
 export interface AssignmentInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string[];
+  description: string;
 }
 
 export interface AssignmentMultipleChoiceInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string[];
+  description: string;
   options: string[];
 }

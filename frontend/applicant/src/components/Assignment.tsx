@@ -9,7 +9,7 @@ import AssignmentOpen from "./AssignmentOpen";
 function Assignment({ assignment }: AssignmentProps) {
   return (
     <>
-      <div>{assignment.text}</div>
+      <div>{assignment.description}</div>
       {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
         <AssignmentMultipleChoice
           assignment={assignment as AssignmentMultipleChoiceInterface}
