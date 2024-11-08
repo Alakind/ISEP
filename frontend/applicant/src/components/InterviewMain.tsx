@@ -5,13 +5,15 @@ import "../styles/dark_mode_main.css";
 function InterviewMain({ interview }: InterviewHeaderProps) {
   return (
     <main>
-      {interview.sections.map((section) =>
-        section.assignments.map((assignment) => (
-          <div className="assignment" key={assignment.id}>
-            <Assignment assignment={assignment} />
-          </div>
-        ))
-      )}
+      <div className="main-container">
+        {interview.sections.map((section) =>
+          section.assignments.map((assignment) => (
+            <div className="assignment" key={assignment.id}>
+              <Assignment assignment={assignment} />
+            </div>
+          ))
+        )}
+      </div>
     </main>
   );
 }

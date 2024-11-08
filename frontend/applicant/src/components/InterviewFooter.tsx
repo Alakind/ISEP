@@ -1,9 +1,13 @@
+import InfoSupportMailSupport from "./InfoSupportMailSupport";
 import "../styles/dark_mode_footer.css";
 
 function InterviewFooter() {
   return (
     <footer className="interview-footer">
       <span className="footer-left">
+        <InfoSupportMailSupport
+          element={<i className="bi bi-question-circle"></i>}
+        />
         <i className="bi bi-moon"></i>
       </span>
       <span className="footer-right">

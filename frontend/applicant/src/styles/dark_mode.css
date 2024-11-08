@@ -5,6 +5,38 @@ body, html {
   color: white;
   font-family: Verdana;
   text-align: left;
+  overflow: hidden;
+}
+
+/* width scrollbar */
+::-webkit-scrollbar, ::-webkit-scrollbar:horizontal {
+  width: 15px;
+  height: 5px;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  width: 10px;
+  margin-block: 20px;
+}
+/* Handle scrollbar */
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 10px;
+}
+/* Handle scrollbar on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  border-radius: 10px;
+}
+
+/* Reset scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: thin;  /* IE and Edge */
+  scrollbar-width: thin;  /* Firefox */
+}
+::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+    -webkit-border-radius: 8px;
 }
 
 .page {

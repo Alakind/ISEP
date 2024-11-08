@@ -1,0 +1,26 @@
+.question-header {
+    border-bottom: #008bbd solid 2px;
+    color: #FAF9F6;
+    margin-bottom: 15px;
+}
+
+.question-block {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 15px 10px 15px;
+    background-color: #faf9f62d;
+    border-radius: 5px;
+    margin: 0px 15px;
+}
+
+.question-radio {
+    margin: 0px 15px 10px 5px;
+}
+
+.question-textarea {
+    background-color: #faf9f62d;
+    color: #FAF9F6;
+    padding: 5px;
+    min-height: 120px;
+    margin-bottom: 5px;
+}

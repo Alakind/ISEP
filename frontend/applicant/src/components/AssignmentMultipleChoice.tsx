@@ -6,10 +6,17 @@ function AssignmentMultipleChoice({
   return (
     <>
       {assignment.options.map((option, i) => (
-        <label key={i}>
-          <input type="radio" value={option} name={assignment.id} />
-          {option}
-        </label>
+        <span>
+          <input
+            className="question-radio"
+            type="radio"
+            value={option}
+            name={assignment.id}
+          />
+          <label key={i} htmlFor={assignment.id}>
+            {option}
+          </label>
+        </span>
       ))}
     </>
   );

@@ -18,9 +18,10 @@
   height: 5px;
 }
 
-.bi-clock, .bi-list, .bi-play-circle, .bi-moon {
+.bi-clock, .bi-list, .bi-play-circle, .bi-moon, .bi-question-circle {
   font-size: 35px;
   color: white;
+  margin: 0px 10px;
 }
 span:has(.bi-clock) {
   height: 100%;

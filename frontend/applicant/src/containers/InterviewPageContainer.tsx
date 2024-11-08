@@ -13,8 +13,13 @@ function InterviewPageContainer() {
             id: "randomid12345678",
             type: AssignmentTypes.MULTIPLE_CHOICE,
             isSolved: false,
-            text: ["What will I get if I will sum 2 and 2?"],
-            options: ["42", "Isaac Newton", "Madagaskar"],
+            text: ["What is the best scouting association?"],
+            options: [
+              "Scouting St. Jozef Hooglanderveen | Vathorst",
+              "Radix",
+              "Scouting Nederland",
+              "Studentenscouting U.F.O.-Stam!",
+            ],
           },
           {
             id: "randomid4398630",

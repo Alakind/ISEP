@@ -5,6 +5,15 @@ main {
     align-items: right;
     padding: 25px;
     flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.main-container {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    height: 70vh; /* TODO find the proper height */
 }
 
 .assignment {

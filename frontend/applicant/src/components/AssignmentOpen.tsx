@@ -3,8 +3,8 @@ import { AssignmentInterface } from "../utils/types";
 function AssignmentOpen({ assignment }: AssignmentOpenChoiceProps) {
   return (
     <>
-      <textarea />
-      <button type="button">Submit</button>
+      <textarea className="question-textarea" placeholder="Type here ..." />
+      {/* <button type="button">Submit</button> */}
     </>
   );
 }
