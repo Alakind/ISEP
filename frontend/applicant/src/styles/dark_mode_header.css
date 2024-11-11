@@ -1,40 +1,41 @@
-.interview-header, .interview-footer {
-    background-color: #11243e;
+.header, .footer {
+    background-color: var(--secondary-color);
     padding: 30px;
     display: flex;
     justify-content: space-between;
-    color: #B2B9C2;
+    color: var(--text-secondary);
     align-items: center;
   }
 
-.progress-bar {
+.header__progress {
+    margin-top: 10px;
+    margin-left: 5px;
+    height: 5px;
+}
+
+.header__progress-bar {
     width: 50%;
+    background-color: var(--tertiary-color);
     /* TODO filled code currently */
 }
 
-.progress {
-  margin-top: 10px;
-  margin-left: 5px;
-  height: 5px;
-}
-
 .bi-clock, .bi-list, .bi-play-circle, .bi-moon, .bi-question-circle {
-  font-size: 35px;
-  color: white;
-  margin: 0px 10px;
+    font-size: 35px;
+    color: var(--icons);
+    margin: 0 10px;
 }
 span:has(.bi-clock) {
-  height: 100%;
-  margin-top: -2px;
+    height: 100%;
+    margin-top: -2px;
 }
 
-.time-left {
-  color: white;
-  padding-right: 10px;
+.header__time-text {
+    color: var(--icons);
+    padding-right: 10px;
 }
 
-.header-right, .footer-right>span {
-  display: flex;
-  align-items: center;
+.header__right, .footer__right>span {
+    display: flex;
+    align-items: center;
 }
   

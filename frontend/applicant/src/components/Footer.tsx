@@ -1,16 +1,16 @@
 import InfoSupportMailSupport from "./InfoSupportMailSupport";
 import "../styles/dark_mode_footer.css";
 
-function InterviewFooter() {
+function Footer() {
   return (
-    <footer className="interview-footer">
-      <span className="footer-left">
+    <footer className="footer">
+      <span className="footer__left">
         <InfoSupportMailSupport
           element={<i className="bi bi-question-circle"></i>}
         />
         <i className="bi bi-moon"></i>
       </span>
-      <span className="footer-right">
+      <span className="footer__right">
         <span className="question-menu">
           <span>Question Menu</span>
           <i className="bi bi-list"></i>
@@ -24,4 +24,4 @@ function InterviewFooter() {
   );
 }
 
-export default InterviewFooter;
+export default Footer;

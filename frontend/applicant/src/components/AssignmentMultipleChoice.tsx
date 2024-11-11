@@ -1,19 +1,17 @@
 import { AssignmentMultipleChoiceInterface } from "../utils/types";
 
-function AssignmentMultipleChoice({
-  assignment,
-}: AssignmentMultipleChoiceProps) {
+function AssignmentMultipleChoice({ assignment }: Props) {
   return (
     <>
       {assignment.options.map((option, i) => (
-        <span>
+        <span key={i}>
           <input
-            className="question-radio"
-            type="radio"
+            className="assignment__input"
+            type={assignment.isMultipleAnswers?"checkbox":"radio"}
             value={option}
             name={assignment.id}
           />
-          <label key={i} htmlFor={assignment.id}>
+          <label className="assignment__label" htmlFor={assignment.id}>
             {option}
           </label>
         </span>
@@ -22,7 +20,7 @@ function AssignmentMultipleChoice({
   );
 }
 
-interface AssignmentMultipleChoiceProps {
+interface Props {
   assignment: AssignmentMultipleChoiceInterface;
 }
 

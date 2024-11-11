@@ -1,12 +1,12 @@
 import Assignment from "../components/Assignment";
-import { InterviewInterface } from "../utils/types";
+import { AssessmentInterface } from "../utils/types";
 import "../styles/dark_mode_main.css";
 
-function InterviewMain({ interview }: InterviewHeaderProps) {
+function Main({ assessment }: Props) {
   return (
     <main>
       <div className="main-container">
-        {interview.sections.map((section) =>
+        {assessment.sections.map((section) =>
           section.assignments.map((assignment) => (
             <div className="assignment" key={assignment.id}>
               <Assignment assignment={assignment} />
@@ -18,8 +18,8 @@ function InterviewMain({ interview }: InterviewHeaderProps) {
   );
 }
 
-interface InterviewHeaderProps {
-  interview: InterviewInterface;
+interface Props {
+  assessment: AssessmentInterface;
 }
 
-export default InterviewMain;
+export default Main;

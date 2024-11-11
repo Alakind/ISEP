@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
 import WelcomePageContainer from "./containers/WelcomePageContainer.tsx";
-import InterviewPageContainer from "./containers/InterviewPageContainer.tsx";
+import AssessmentPageContainer from "./containers/AssessmentPageContainer.tsx";
 
 const router = createBrowserRouter([
   {
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
     element: <WelcomePageContainer />,
   },
   {
-    path: "interview",
-    element: <InterviewPageContainer />,
+    path: "assessment",
+    element: <AssessmentPageContainer />,
   },
 ]);
 

@@ -3,7 +3,7 @@ import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
 import "../styles/dark_mode.css";
 import "../styles/dark_mode_welcome.css";
 
-function WelcomePage({ handleStart }: WelcomePageProps) {
+function WelcomePage({ handleStart }: Props) {
   return (
     <div className="welcomePage">
       {/* TODO put name of user here. */}
@@ -13,8 +13,8 @@ function WelcomePage({ handleStart }: WelcomePageProps) {
       <h2>Welcome, Claire!</h2>
       <div className="infoTextContainer">
         <p>
-          to InfoSupport<sup>&reg;</sup> screening questionnaire. In this
-          questionnaire you will answer multiple-choice and coding questions.
+          to InfoSupport<sup>&reg;</sup> assessment. In this
+          assessment you will answer multiple-choice and coding questions.
           You will have a maximum time of 02:00:00 to complete these. Once you
           are ready to begin, press the 'Start' button.
         </p>
@@ -25,14 +25,14 @@ function WelcomePage({ handleStart }: WelcomePageProps) {
         </p>
       </div>
 
-      <button className="btn btn-primary btn-lg btnStart" onClick={handleStart}>
+      <button className="btn btn-primary btn-lg btn--mod" onClick={handleStart}>
         Start
       </button>
     </div>
   );
 }
 
-interface WelcomePageProps {
+interface Props {
   handleStart: () => void;
 }
 

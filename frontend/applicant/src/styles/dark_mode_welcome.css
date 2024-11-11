@@ -8,19 +8,8 @@
     text-align: center;
 }
 
-.btnStart {
-    margin: 40px 0px;
-    background-color: #008bbd;
-    border-color: #ffffff00;
-    color: #FAF9F6;
-}
-
-.btnStart:hover {
-    border-color: #ffffff00;
-}
-
 .logoContainer {
-    margin: 30px 0px;
+    margin: 30px 0;
 }
 
 .infoTextContainer {

@@ -1,16 +1,32 @@
+/* Standard colors */
+:root {
+  --primary-color: #0a182d; /* background page */
+  --secondary-color: #11243e; /* header, footer */
+  --tertiary-color: #008bbd; /* buttons, borders*/
+  --highlight: #17489b; /* hover buttons */
+  --question-block: #faf9f62d;
+  --text-primary: #faf9f6;
+  --text-secondary: #b2b9c2;
+  --icons: white;
+  --white-background-transparent: #ffffffd9;
+  --transparent: #ffffff00;
+  --scrollbar-thumb: grey;
+  --scrollbar-thumb-hover: #555;
+}
+
 body, html {
   margin: 0;
   padding: 0;
-  background-color: #0A182D;
-  color: white;
-  font-family: Verdana;
+  background-color: var(--primary-color);
+  color: var(--text-primary);
+  font-family: Verdana, sans-serif;
   text-align: left;
   overflow: hidden;
 }
 
 /* width scrollbar */
 ::-webkit-scrollbar, ::-webkit-scrollbar:horizontal {
-  width: 15px;
+  width: 10px;
   height: 5px;
   border-radius: 10px;
 }
@@ -20,18 +36,18 @@ body, html {
 }
 /* Handle scrollbar */
 ::-webkit-scrollbar-thumb {
-  background: grey; 
+  background: var(--scrollbar-thumb);
   border-radius: 10px;
 }
 /* Handle scrollbar on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--scrollbar-thumb-hover);
   border-radius: 10px;
 }
 
 /* Reset scrollbar for IE, Edge and Firefox */
 html {
-  -ms-overflow-style: thin;  /* IE and Edge */
+  -ms-overflow-style: scrollbar;  /* IE and Edge */
   scrollbar-width: thin;  /* Firefox */
 }
 ::-webkit-scrollbar-track-piece {
@@ -42,6 +58,19 @@ html {
 .page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;  
+  height: 100vh;
+  width: 100vw;
+  margin-right: 15px;
 }
-  
+
+.btn--mod {
+  margin: 40px 0;
+  background-color: var(--tertiary-color);
+  border-color: var(--transparent);
+  color: var(--text-primary);
+}
+
+.btn--mod:hover {
+  border-color: var(--transparent);
+  background-color: var(--highlight);
+}

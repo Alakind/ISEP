@@ -1,11 +1,11 @@
-import InterviewHeader from "../components/InterviewHeader";
-import InterviewMain from "../components/InterviewMain";
-import InterviewFooter from "../components/InterviewFooter";
+import Header from "../components/Header.tsx";
+import Main from "../components/Main.tsx";
+import Footer from "../components/Footer.tsx";
 import { AssignmentTypes } from "../utils/constants";
 import "../styles/dark_mode.css";
 
-function InterviewPageContainer() {
-  const interview = {
+function AssessmentPageContainer() {
+  const assessment = {
     sections: [
       {
         assignments: [
@@ -20,6 +20,7 @@ function InterviewPageContainer() {
               "Scouting Nederland",
               "Studentenscouting U.F.O.-Stam!",
             ],
+            isMultipleAnswers : true,
           },
           {
             id: "randomid4398630",
@@ -39,6 +40,7 @@ function InterviewPageContainer() {
             isSolved: false,
             text: ["What is the square root of -1?"],
             options: ["1", "0", "imagine it would have a number"],
+            isMultipleAnswers: false,
           },
           {
             id: "randomid42069",
@@ -52,13 +54,13 @@ function InterviewPageContainer() {
   };
   return (
     <div className="page">
-      <InterviewHeader interview={interview} />
+      <Header assessment={assessment} />
 
-      <InterviewMain interview={interview} />
+      <Main assessment={assessment} />
 
-      <InterviewFooter />
+      <Footer />
     </div>
   );
 }
 
-export default InterviewPageContainer;
+export default AssessmentPageContainer;

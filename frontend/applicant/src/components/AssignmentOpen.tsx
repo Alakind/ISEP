@@ -1,16 +1,11 @@
 import { AssignmentInterface } from "../utils/types";
 
-function AssignmentOpen({ assignment }: AssignmentOpenChoiceProps) {
+function AssignmentOpen() {
   return (
     <>
-      <textarea className="question-textarea" placeholder="Type here ..." />
-      {/* <button type="button">Submit</button> */}
+      <textarea className="assignment__textarea" placeholder="Type here ..." />
     </>
   );
-}
-
-interface AssignmentOpenChoiceProps {
-  assignment: AssignmentInterface;
 }
 
 export default AssignmentOpen;

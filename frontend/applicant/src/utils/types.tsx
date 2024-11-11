@@ -1,6 +1,6 @@
 import { AssignmentTypes } from "./constants";
 
-export interface InterviewInterface {
+export interface AssessmentInterface {
   sections: SectionInterface[];
 }
 
@@ -12,7 +12,7 @@ export interface AssignmentInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string[];
+  text: string;
 }
 
 export interface AssignmentMultipleChoiceInterface {
@@ -21,4 +21,5 @@ export interface AssignmentMultipleChoiceInterface {
   isSolved: boolean;
   text: string[];
   options: string[];
+  isMultipleAnswers: boolean;
 }
