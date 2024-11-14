@@ -19,7 +19,7 @@ fun InterviewDTO.fromDTO(): Interview {
 fun SectionDTO.fromDTO(): Section {
     return Section(
         title = this.title,
-        assignments = this.assignments.map { it.fromDTO() }.toSet()
+        assignments = this.assignments.map { it.fromDTO() }
     )
 }
 

@@ -7,5 +7,5 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class AssignmentOpenDTO(
     override val id: Long?,
     override val type: AssignmentType = AssignmentType.Open,
-    val description: List<String>
+    override val description: String
 ) : AssignmentDTO()

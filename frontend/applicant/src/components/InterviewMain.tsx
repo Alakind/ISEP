@@ -2,15 +2,19 @@ import Assignment from "../components/Assignment";
 import { InterviewInterface } from "../utils/types";
 import "../styles/dark_mode_main.css";
 
-function InterviewMain({ interview }: InterviewHeaderProps) {
+function InterviewMain({ interview, isLoading }: InterviewHeaderProps) {
   return (
     <main>
-      {interview.sections.map((section) =>
-        section.assignments.map((assignment) => (
-          <div className="assignment" key={assignment.id}>
-            <Assignment assignment={assignment} />
-          </div>
-        ))
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        interview.sections.map((section) =>
+          section.assignments.map((assignment) => (
+            <div className="assignment" key={assignment.id}>
+              <Assignment assignment={assignment} />
+            </div>
+          ))
+        )
       )}
     </main>
   );
@@ -18,6 +22,7 @@ function InterviewMain({ interview }: InterviewHeaderProps) {
 
 interface InterviewHeaderProps {
   interview: InterviewInterface;
+  isLoading: boolean;
 }
 
 export default InterviewMain;

@@ -86,7 +86,7 @@ class SectionController(val sectionService: SectionService) {
         sectionService.addSection(
             Section(
                 title = "example section with no assignments",
-                assignments = emptySet())
+                assignments = emptyList())
         )
         return ResponseEntity.ok("Added a stub section")
     }

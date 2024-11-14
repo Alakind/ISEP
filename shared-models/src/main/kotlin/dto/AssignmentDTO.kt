@@ -32,4 +32,6 @@ sealed class AssignmentDTO {
 
     @Schema(enumAsRef = true)
     enum class AssignmentType { Coding, MultipleChoice, Open }
+
+    abstract val description: String
 }

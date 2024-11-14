@@ -27,7 +27,7 @@ class AssignmentController {
     fun getAssignments(): List<AssignmentDTO> {
        return listOf(AssignmentMultipleChoiceDTO(
            id = 1,
-           description = listOf("What is your name?"),
+           description = "What is your name?",
            options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
            isMultipleAnswers = false,
        ))
@@ -52,7 +52,7 @@ class AssignmentController {
         return if (id >= 0) {
             ResponseEntity.ok(AssignmentMultipleChoiceDTO(
                 id = id,
-                description = listOf("What is your name?"),
+                description = "What is your name?",
                 options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
                 isMultipleAnswers = false,
                 ))

@@ -5,12 +5,9 @@ import jakarta.persistence.*
 @Entity
 @DiscriminatorValue("MULTIPLE_CHOICE")
 class AssignmentMultipleChoice(
+    id: Long = 0,
+    description: String = "",
     @ElementCollection
-    override val description: List<String>,
-    @ElementCollection
-    val options: List<String>,
-    val isMultipleAnswers: Boolean,
-) : Assignment(description) {
-    // No-arg constructor for JPA
-    constructor() : this(emptyList(), emptyList(), false)
-}
+    val options: List<String> = listOf(),
+    val isMultipleAnswers: Boolean = false,
+) : Assignment(id, description)
