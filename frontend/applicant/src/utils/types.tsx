@@ -5,6 +5,7 @@ export interface AssessmentInterface {
 }
 
 export interface SectionInterface {
+  name: string;
   assignments: AssignmentInterface[];
 }
 
@@ -19,7 +20,7 @@ export interface AssignmentMultipleChoiceInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string[];
+  text: string;
   options: string[];
   isMultipleAnswers: boolean;
 }

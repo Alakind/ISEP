@@ -7,10 +7,10 @@ import AssignmentMultipleChoice from "./AssignmentMultipleChoice";
 import AssignmentOpen from "./AssignmentOpen";
 import "../styles/dark_mode_question.css";
 
-function Assignment({ assignment }: Props) {
+function Assignment({ index, assignment }: Props) {
   return (
     <>
-      <div className="assignment__header">{assignment.text}</div>
+      <div className="assignment__header">{index + 1}. {assignment.text}</div>
       <div className="assignment__block">
         {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
           <AssignmentMultipleChoice
@@ -26,6 +26,7 @@ function Assignment({ assignment }: Props) {
 }
 
 interface Props {
+    index: number;
   assignment: AssignmentInterface;
 }
 

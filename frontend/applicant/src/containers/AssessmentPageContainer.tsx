@@ -3,11 +3,13 @@ import Main from "../components/Main.tsx";
 import Footer from "../components/Footer.tsx";
 import { AssignmentTypes } from "../utils/constants";
 import "../styles/dark_mode.css";
+import {useState} from "react";
 
 function AssessmentPageContainer() {
   const assessment = {
     sections: [
       {
+        name: "Multiple-Choice 1",
         assignments: [
           {
             id: "randomid12345678",
@@ -30,9 +32,42 @@ function AssessmentPageContainer() {
               "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
             ],
           },
+          {
+            id: "randomid43982345674534630",
+            type: AssignmentTypes.OPEN,
+            isSolved: false,
+            text: [
+              "Make a story about teletubbie of 5000 words.",
+            ],
+          },
+          {
+            id: "randomid439234234674534630",
+            type: AssignmentTypes.OPEN,
+            isSolved: false,
+            text: [
+              "Make a story about time of 5000 words.",
+            ],
+          },
+          {
+            id: "randomid43982345234234630",
+            type: AssignmentTypes.OPEN,
+            isSolved: false,
+            text: [
+              "Make a story about bricks of 5000 words.",
+            ],
+          },
+          {
+            id: "randomid43982343242345674534630",
+            type: AssignmentTypes.OPEN,
+            isSolved: false,
+            text: [
+              "Make a story about quantum mechanics of 5000 words.",
+            ],
+          },
         ],
       },
       {
+        name: "Multiple-Choice 2",
         assignments: [
           {
             id: "randomid12345",
@@ -52,13 +87,21 @@ function AssessmentPageContainer() {
       },
     ],
   };
+  let initialAssignments: number[] = []
+  for (let i = 0; i < assessment.sections.length; i++) {
+    initialAssignments.push(0);
+  }
+
+  const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
+  const [currentAssignmentIndex, setCurrentAssignmentIndex] = useState<number[]>(initialAssignments);
+
   return (
     <div className="page">
-      <Header assessment={assessment} />
+      <Header assessment={assessment} currentSectionIndex={currentSectionIndex} />
 
-      <Main assessment={assessment} />
+      <Main assessment={assessment} currentSectionIndex={currentSectionIndex} currentAssignmentIndex={currentAssignmentIndex} />
 
-      <Footer />
+      <Footer assessment={assessment} currentSectionIndex={currentSectionIndex} setCurrentSectionIndex={setCurrentSectionIndex} currentAssignmentIndex={currentAssignmentIndex} setCurrentAssignmentIndex={setCurrentAssignmentIndex}/>
     </div>
   );
 }

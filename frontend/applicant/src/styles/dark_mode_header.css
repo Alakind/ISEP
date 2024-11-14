@@ -19,7 +19,7 @@
     /* TODO filled code currently */
 }
 
-.bi-clock, .bi-list, .bi-play-circle, .bi-moon, .bi-question-circle {
+.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle {
     font-size: 35px;
     color: var(--icons);
     margin: 0 10px;
