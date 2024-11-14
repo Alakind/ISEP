@@ -51,13 +51,13 @@ class DummyDataLoader(
 
         val section1 = Section(
             title = "Demo Section 1",
-            assignments = setOf(assignment1, assignment2, openAssignment1)
+            assignments = listOf(assignment1, assignment2, openAssignment1)
         )
 
         // Create a Section with these assignments
         val section2 = Section(
             title = "Demo Section 2",
-            assignments = setOf(assignment3, assignment4, openAssignment2)
+            assignments = listOf(assignment3, assignment4, openAssignment2)
         )
 
         sectionRepository.save(section1)
