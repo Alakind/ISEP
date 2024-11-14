@@ -7,26 +7,14 @@
     align-items: center;
   }
 
-.header__progress {
-    margin-top: 10px;
-    margin-left: 5px;
-    height: 5px;
-}
-
-.header__progress-bar {
-    width: 50%;
-    background-color: var(--tertiary-color);
-    /* TODO filled code currently */
-}
-
 .bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle {
     font-size: 35px;
     color: var(--icons);
     margin: 0 10px;
 }
-span:has(.bi-clock) {
-    height: 100%;
-    margin-top: -2px;
+
+.bi-arrow-right-circle, .bi-moon, .bi-question-circle {
+    cursor: pointer;
 }
 
 .header__time-text {
