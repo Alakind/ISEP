@@ -1,17 +1,25 @@
 import InfoSupportMailSupport from "./InfoSupportMailSupport";
 import "../styles/dark_mode_footer.css";
 import {AssessmentInterface} from "../utils/types.tsx";
-import DismissibleMessageBlock from "./DismissibleMessageBlock.tsx"
 import SectionMenu from "./SectionMenu.tsx";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {toast} from "react-toastify";
 
-function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex }: Props) {
-    const [endOfAssessment, setEndOfAssessment] = useState(false);
-    const handleNextAssignment = (assessment) : void  => {
+function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex, endOfAssessment, setEndOfAssessment}: Props) {
+
+    useEffect(() => {
+        if (endOfAssessment) {
+            toast("You reached the end of the assessment, but there are still questions open to be filled in: ...");
+            setEndOfAssessment(false);
+        }
+    }, [endOfAssessment]);
+
+    const handleNextAssignment = () : void  => {
         setCurrentAssignmentIndex((prevIndexes: number[]) : number[] => {
             const currentAssignment: number = prevIndexes[currentSectionIndex];
             const currentSection = assessment.sections[currentSectionIndex];
 
+            //TODO save the state of the question(s)
             if (currentAssignment < currentSection.assignments.length - 1) {
                 // Move to the next assignment within the current section
                 return prevIndexes.map((index: number, mapIndex: number) : number =>
@@ -23,13 +31,18 @@ function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, curre
                 return prevIndexes.map((index: number, mapIndex: number) : number =>
                     mapIndex === currentSectionIndex + 1 ? 0 : index
                 );
-            } else {
+            } else if (currentSectionIndex + 1 >= assessment.sections.length - 1) {
                 // Loop back to the first section and assignment
                 setEndOfAssessment(true);
                 setCurrentSectionIndex(0);
                 return prevIndexes.map((_: number, mapIndex: number) : number => (mapIndex === 0 ? 0 : prevIndexes[mapIndex]));
             }
         });
+    };
+
+    const handleFinishAssessment = () => {
+        //TODO check all states in the backend
+        //TODO popup a message with missing assignment submissions
     };
 
     return (
@@ -48,18 +61,17 @@ function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, curre
       <span className="footer__right">
         <span className="footer__right__next-question">
             <span>Next Question</span>
-            <a onClick={() => handleNextAssignment(assessment)}>
+            <a onClick={() => handleNextAssignment()}>
                 <i className="bi bi-arrow-right-circle"></i>
             </a>
         </span>
+        <span className="footer__right__finish-assessment">
+          <span>Finish</span>
+            <a onClick={() => handleFinishAssessment()}>
+                <i className="bi bi-flag"></i>
+            </a>
+        </span>
       </span>
-
-        {/*{endOfAssessment && (*/}
-        {/*    <DismissibleMessageBlock*/}
-        {/*        title={"End of assessment"}*/}
-        {/*        message={"TODO: You reached the end of the assessment, but there are still questions open to be filled in"}*/}
-        {/*    />*/}
-        {/*)}*/}
     </footer>
   );
 }
@@ -70,6 +82,8 @@ interface Props {
     setCurrentSectionIndex: React.Dispatch<React.SetStateAction<number>>;
     currentAssignmentIndex: number[];
     setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
+    endOfAssessment: boolean;
+    setEndOfAssessment: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default Footer;

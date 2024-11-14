@@ -1,5 +1,7 @@
 import { AssessmentInterface } from "../utils/types";
 import "../styles/dark_mode_header.css";
+import React from "react";
+import {ToastContainer} from "react-toastify";
 
 function Header({ assessment, currentSectionIndex }: Props) {
   return (
@@ -12,6 +14,21 @@ function Header({ assessment, currentSectionIndex }: Props) {
           {/* TODO make section types a variable */}
           {assessment.sections[currentSectionIndex].name} Questions
         </div>
+      </span>
+      <span className="header__center">
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            transition: Bounce
+          />
       </span>
       <span className="header__right">
         <span>

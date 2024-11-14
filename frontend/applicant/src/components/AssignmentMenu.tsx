@@ -4,6 +4,8 @@ import React from "react";
 
 function AssignmentMenu({ section,  assignmentSectionIndex, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex, onMouseEnter, onMouseLeave }: Props) {
     const handleAssignmentClick = (assignment: AssignmentInterface, assignmentIndex: number) : void => {
+        //TODO save the state of the question(s)
+
         if (currentSectionIndex !== assignmentSectionIndex) {
             setCurrentSectionIndex(assignmentSectionIndex);
         }

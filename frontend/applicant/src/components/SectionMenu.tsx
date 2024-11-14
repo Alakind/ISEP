@@ -6,13 +6,19 @@ import AssignmentMenu from "./AssignmentMenu.tsx";
 function SectionMenu({ assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex }: Props) {
     const [hoveredSection, setHoveredSection] = useState<number | null>(null);
 
+    const handleNextSection = (mapIndex) => {
+        //TODO save the state of the question(s)
+
+        setCurrentSectionIndex(mapIndex);
+    };
+
     return (
       <div className="section-menu">
         {assessment.sections.map((section, mapIndex) =>
             <span key={section.name} className="section-menu__wrapper"
                   onMouseLeave={() => setHoveredSection(null)}
             >
-                <a onClick={() => setCurrentSectionIndex(mapIndex)}>
+                <a onClick={() => handleNextSection(mapIndex)}>
                     <div
                         className={`section-menu__tile ${currentSectionIndex === mapIndex ? 'section-menu__tile--selected' : ''}`}
                         onMouseEnter={() => setHoveredSection(mapIndex)}

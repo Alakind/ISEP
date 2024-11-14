@@ -7,13 +7,13 @@
     align-items: center;
   }
 
-.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle {
+.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
     font-size: 35px;
     color: var(--icons);
     margin: 0 10px;
 }
 
-.bi-arrow-right-circle, .bi-moon, .bi-question-circle {
+.bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
     cursor: pointer;
 }
 
@@ -26,4 +26,7 @@
     display: flex;
     align-items: center;
 }
-  
+
+.Toastify__progress-bar-theme--dark, .Toastify__progress-bar-theme--light {
+    background: var(--tertiary-color);
+}

@@ -94,14 +94,30 @@ function AssessmentPageContainer() {
 
   const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
   const [currentAssignmentIndex, setCurrentAssignmentIndex] = useState<number[]>(initialAssignments);
+  const [endOfAssessment, setEndOfAssessment] = useState<boolean>(false);
 
   return (
     <div className="page">
-      <Header assessment={assessment} currentSectionIndex={currentSectionIndex} />
+      <Header
+          assessment={assessment}
+          currentSectionIndex={currentSectionIndex}
+      />
 
-      <Main assessment={assessment} currentSectionIndex={currentSectionIndex} currentAssignmentIndex={currentAssignmentIndex} />
+      <Main
+          assessment={assessment}
+          currentSectionIndex={currentSectionIndex}
+          currentAssignmentIndex={currentAssignmentIndex}
+      />
 
-      <Footer assessment={assessment} currentSectionIndex={currentSectionIndex} setCurrentSectionIndex={setCurrentSectionIndex} currentAssignmentIndex={currentAssignmentIndex} setCurrentAssignmentIndex={setCurrentAssignmentIndex}/>
+      <Footer
+          assessment={assessment}
+          currentSectionIndex={currentSectionIndex}
+          setCurrentSectionIndex={setCurrentSectionIndex}
+          currentAssignmentIndex={currentAssignmentIndex}
+          setCurrentAssignmentIndex={setCurrentAssignmentIndex}
+          endOfAssessment={endOfAssessment}
+          setEndOfAssessment={setEndOfAssessment}
+      />
     </div>
   );
 }
