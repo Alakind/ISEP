@@ -1,7 +1,7 @@
 package ut.isep.management.service
 
 import dto.*
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 
 fun Applicant.toDTO(): ApplicantDTO {
     return ApplicantDTO(

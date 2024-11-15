@@ -3,7 +3,7 @@ package ut.isep.management.service
 import dto.*
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.pgsql.SectionRepository
 import java.util.*
 

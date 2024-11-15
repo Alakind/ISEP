@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ut.isep.management.model.pgsql.Section
+import ut.isep.management.model.entity.Section
 import ut.isep.management.service.SectionService
 import java.util.NoSuchElementException
 

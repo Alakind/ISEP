@@ -2,7 +2,7 @@ package ut.isep.management
 
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.pgsql.AssignmentRepository
 import ut.isep.management.repository.pgsql.SectionRepository
 

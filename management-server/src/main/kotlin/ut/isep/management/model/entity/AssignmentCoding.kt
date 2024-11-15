@@ -1,4 +1,4 @@
-package ut.isep.management.model.pgsql
+package ut.isep.management.model.entity
 
 import jakarta.persistence.*
 import java.net.URI
