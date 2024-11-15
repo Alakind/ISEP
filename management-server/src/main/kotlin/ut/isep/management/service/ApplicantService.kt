@@ -3,7 +3,7 @@ package ut.isep.management.service
 import dto.*
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.pgsql.ApplicantRepository
 import java.util.*
 
@@ -30,7 +30,7 @@ class ApplicantService(
         }
     }
 
-    fun getApplicantById(id: Long): ApplicantDTO {
+    fun getApplicantById(id: UUID): ApplicantDTO {
         val applicant: Optional<Applicant> = applicantRepository.findById(id)
         return applicant.orElseThrow {
             NoSuchElementException("Applicant not found with id $id")

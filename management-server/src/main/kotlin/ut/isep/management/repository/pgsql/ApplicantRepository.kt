@@ -2,11 +2,12 @@ package ut.isep.management.repository.pgsql
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import ut.isep.management.model.pgsql.Applicant
+import ut.isep.management.model.entity.Applicant
+import java.util.*
 
 
 @Repository
-interface ApplicantRepository : JpaRepository<Applicant, Long> {
+interface ApplicantRepository : JpaRepository<Applicant, UUID> {
 
-    fun findApplicantById(id: Long): Applicant
+    fun findApplicantById(id: UUID): Applicant
 }

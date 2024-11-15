@@ -2,7 +2,6 @@ package ut.isep.management.controller
 
 import dto.ApplicantDTO
 import dto.InterviewDTO
-import dto.SectionDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -12,8 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ut.isep.management.model.pgsql.Applicant
+import ut.isep.management.model.entity.Applicant
 import ut.isep.management.service.ApplicantService
+import java.util.*
+import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/applicant")
@@ -46,7 +47,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantDTO> {
+    fun getApplicant(@PathVariable id: UUID): ResponseEntity<ApplicantDTO> {
         return try {
             ResponseEntity.ok(applicantService.getApplicantById(id))
         } catch (e: NoSuchElementException) {
