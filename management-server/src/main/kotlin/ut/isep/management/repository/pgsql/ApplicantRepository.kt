@@ -8,6 +8,4 @@ import java.util.*
 
 @Repository
 interface ApplicantRepository : JpaRepository<Applicant, UUID> {
-
-    fun findApplicantById(id: UUID): Applicant
 }
