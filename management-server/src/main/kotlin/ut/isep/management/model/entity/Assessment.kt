@@ -3,13 +3,12 @@ package ut.isep.management.model.entity
 import jakarta.persistence.*
 
 @Entity
-class Assessment(
+open class Assessment(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "section_id")
-    val sections: List<Section> = listOf(),
+    open val id: Long = 0,
+    @OneToMany(mappedBy = "assessment", cascade = [CascadeType.ALL])
+    open val sections: List<Section> = listOf(),
 
     @OneToMany(mappedBy = "assessment", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val invites: List<Invite> = mutableListOf()
+    open val invites: List<Invite> = listOf()
 )
