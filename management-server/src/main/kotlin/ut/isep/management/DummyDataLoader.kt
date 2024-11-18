@@ -1,24 +1,31 @@
 package ut.isep.management
 
+import enumerable.ApplicantStatus
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
-import ut.isep.management.repository.AssignmentRepository
-import ut.isep.management.repository.SectionRepository
+import ut.isep.management.repository.*
 
 @Component
 class DummyDataLoader(
+    private val applicantRepository: ApplicantRepository,
+    private val assessmentRepository: AssessmentRepository,
+    private val inviteRepository: InviteRepository,
     private val sectionRepository: SectionRepository,
     private val assignmentRepository: AssignmentRepository
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
-        // clear database
-        sectionRepository.deleteAll()
-        assignmentRepository.deleteAll()
+        // clear database in the correct order to avoid foreign key constraint violations
+        inviteRepository.deleteAll()        // Delete child entities first
+        applicantRepository.deleteAll()     // Delete applicants if necessary
+        assessmentRepository.deleteAll()    // Then delete parent entities
+        sectionRepository.deleteAll()       // Finally delete the sections
+        assignmentRepository.deleteAll()    // And any other related entities
+
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
-            description = "What will I get if I will sum 2\n and 2?",
+            description = "What will I get if I will sum 2 and 2?",
             options = listOf("42", "Isaac Newton", "Madagascar"),
             isMultipleAnswers = false,
         )
@@ -54,14 +61,22 @@ class DummyDataLoader(
             assignments = listOf(assignment1, assignment2, openAssignment1)
         )
 
-        // Create a Section with these assignments
         val section2 = Section(
             title = "Demo Section 2",
             assignments = listOf(assignment3, assignment4, openAssignment2)
         )
 
-        sectionRepository.save(section1)
-        sectionRepository.save(section2)
+        val assessment1 = Assessment(sections = mutableListOf(section1, section2))
+
+
+        assessmentRepository.save(assessment1)
+
+        val applicant1 = Applicant(status = ApplicantStatus.app_invited_start, preferredLanguage = "Kotlin")
+        applicantRepository.save(applicant1)
+
+        val inviteApplicant1Assessment1 = Invite(applicant = applicant1, assessment = assessment1)
+        inviteRepository.save(inviteApplicant1Assessment1)
+
         println("Dummy data loaded!")
     }
 }
