@@ -13,7 +13,7 @@ fun Applicant.toDTO(): ApplicantCreateReadDTO {
 fun Assessment.toDTO(): InterviewDTO {
     return InterviewDTO(
         id = this.id,
-        sections = this.sections.map {it.toDTO() }
+        sections = this.sections.map {it.id}
     )
 }
 
@@ -56,5 +56,11 @@ fun AssignmentCoding.toDTO(): AssignmentCodingDTO {
         description = this.description,
         language = this.language,
         codeUri = this.codeUri // Replace with actual fetching of the files
+    )
+}
+
+fun Invite.toDTO(): ApplicantInviteDTO {
+    return ApplicantInviteDTO(
+        assessmentId = this.assessment.id
     )
 }
