@@ -5,22 +5,23 @@ export interface AssessmentInterface {
 }
 
 export interface SectionInterface {
-  name: string;
+  id: string;
   assignments: AssignmentInterface[];
+  title: string;
 }
 
 export interface AssignmentInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string;
+  description: string;
 }
 
 export interface AssignmentMultipleChoiceInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
-  text: string;
+  description: string;
   options: string[];
   isMultipleAnswers: boolean;
 }

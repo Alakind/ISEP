@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: 'postgresql-dev'
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+  redis:
+    image: redis:latest
+    container_name: 'redis-dev'
+    restart: always
+    ports:
+      - "6379:6379"
+#    # volumes:
+#       - ./postgres-data:/var/lib/postgresql/data
+

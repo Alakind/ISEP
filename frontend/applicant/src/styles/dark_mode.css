@@ -75,3 +75,14 @@ html {
   border-color: var(--transparent);
   background-color: var(--highlight);
 }
+
+.page--center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+a {
+  color: var(--tertiary-color)
+}

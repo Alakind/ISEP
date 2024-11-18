@@ -1,12 +1,11 @@
 import React from 'react'
 import "../styles/dark_mode.css";
-import "../styles/dark_mode-page_not_found.css"
 import {Link} from "react-router-dom";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport.tsx";
 
 function PageNotFoundContainer() {
     return (
-        <div className="page page-not-found">
+        <div className="page page--center">
             <h1>404</h1>
             <h2>Page Not Found</h2>
             <p>

@@ -15,7 +15,7 @@ function SectionMenu({ assessment, currentSectionIndex, setCurrentSectionIndex, 
     return (
       <div className="section-menu">
         {assessment.sections.map((section, mapIndex) =>
-            <span key={section.name} className="section-menu__wrapper"
+            <span key={section.id} className="section-menu__wrapper"
                   onMouseLeave={() => setHoveredSection(null)}
             >
                 <a onClick={() => handleNextSection(mapIndex)}>
@@ -23,7 +23,7 @@ function SectionMenu({ assessment, currentSectionIndex, setCurrentSectionIndex, 
                         className={`section-menu__tile ${currentSectionIndex === mapIndex ? 'section-menu__tile--selected' : ''}`}
                         onMouseEnter={() => setHoveredSection(mapIndex)}
                     >
-                        {section.name}
+                        {section.title}
                     </div>
                 </a>
 

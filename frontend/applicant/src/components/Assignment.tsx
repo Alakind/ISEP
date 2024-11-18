@@ -12,7 +12,7 @@ import "../styles/dark_mode-question.css";
 function Assignment({ index, assignment }: Props) {
   return (
     <>
-      <div className="assignment__header">{index + 1}. {assignment.text}</div>
+      <div className="assignment__header">{index + 1}. {assignment.description}</div>
       <div className="assignment__block">
         {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
           <AssignmentMultipleChoice

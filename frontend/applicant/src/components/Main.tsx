@@ -1,10 +1,9 @@
 import Assignment from "../components/Assignment";
-import {AssessmentInterface, AssignmentCodingInterface, AssignmentInterface} from "../utils/types";
+import {AssessmentInterface, AssignmentInterface} from "../utils/types";
 import "../styles/dark_mode-main.css";
 import scrollToAssignment from "../utils/operations.tsx";
 import {useEffect} from "react";
 import {AssignmentTypes} from "../utils/constants.tsx";
-import AssignmentCoding from "./AssignmentCoding.tsx";
 
 function Main({ assessment, currentSectionIndex, currentAssignmentIndex }: Props) {
     useEffect(() => {

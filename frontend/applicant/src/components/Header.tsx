@@ -12,7 +12,7 @@ function Header({ assessment, currentSectionIndex }: Props) {
         </div>
         <div>
           {/* TODO make section types a variable */}
-          {assessment.sections[currentSectionIndex].name} Questions
+          {assessment.sections[currentSectionIndex].title} Questions
         </div>
       </span>
       <span className="header__center">
