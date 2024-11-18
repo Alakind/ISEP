@@ -13,7 +13,6 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import ut.isep.management.model.entity.Applicant
 import ut.isep.management.service.ApplicantService
 import java.net.URI
 import java.util.*
