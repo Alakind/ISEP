@@ -1,6 +1,7 @@
 package ut.isep.management.controller
 
 import dto.ApplicantCreateReadDTO
+import dto.ApplicantInviteDTO
 import dto.ApplicantUpdateDTO
 import dto.InterviewDTO
 import enumerable.ApplicantStatus
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -23,6 +25,7 @@ class ApplicantController(val applicantService: ApplicantService) {
 
 
     @GetMapping
+    @Operation(summary = "Get all applicants", description = "Returns a list of all applicants")
     @ApiResponse(
         responseCode = "200",
         description = "Returns a list of all applicants",
@@ -33,7 +36,7 @@ class ApplicantController(val applicantService: ApplicantService) {
 
     
     @GetMapping("{id}")
-    @Operation(summary = "Get applicant", description = "Returns either ApplicantDTO or 404 if not found")
+    @Operation(summary = "Get applicant", description = "Returns an applicant or 404 if not found")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -58,7 +61,9 @@ class ApplicantController(val applicantService: ApplicantService) {
     }
 
     @PostMapping
-    @Operation(summary = "Adds an applicant", description = "Add an applicant to the PostGreSQL Management database")
+    @Operation(
+        summary = "Add an applicant",
+        description = "Add an applicant to the PostGreSQL Management database")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -80,7 +85,9 @@ class ApplicantController(val applicantService: ApplicantService) {
 
 
     @PutMapping
-    @Operation(summary = "Updates an applicant", description = "Update an applicant in the PostGreSQL Management database")
+    @Operation(
+        summary = "Update an applicant",
+        description = "Update an applicant in the PostGreSQL Management database")
     @ApiResponses(
         value = [
             ApiResponse(
@@ -103,12 +110,14 @@ class ApplicantController(val applicantService: ApplicantService) {
     }
 
     @DeleteMapping("{id}")
-    @Operation(summary = "Updates an applicant", description = "Update an applicant in the PostGreSQL Management database")
+    @Operation(
+        summary = "Delete an applicant",
+        description = "Delete an applicant from the PostGreSQL Management database")
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
-                description = "Updated the applicant",
+                responseCode = "204",
+                description = "Deleted the applicant",
             ),
             ApiResponse(
                 responseCode = "404",
@@ -119,36 +128,73 @@ class ApplicantController(val applicantService: ApplicantService) {
     fun deleteApplicant(@PathVariable id: Long): ResponseEntity<String> {
         return try {
             applicantService.deleteApplicant(id)
-            ResponseEntity.ok("Deleted an applicant")
+            ResponseEntity.noContent().build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
     }
 
-    @GetMapping("/add")
-    @Operation(summary = "Adds a stub applicant", description = "Transient testing method")
+
+    @PostMapping("/{id}/invite")
+    @Tag(name = "Invite")
+    @Operation(
+        summary = "Invite an applicant",
+        description = "Link applicant to an assessment, and generate an invite URL")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "Invited the Applicant, return URL",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Applicant or assessment not found",
+            )
+        ]
+    )
+    fun inviteApplicantToAssessment(
+            @PathVariable id: Long,
+            @RequestBody inviteRequest: ApplicantInviteDTO
+        ): ResponseEntity<URI> {
+            return try {
+                val inviteUrl = applicantService.inviteApplicantToAssessment(id, inviteRequest.assessmentId)
+                ResponseEntity.created(inviteUrl).build()
+            } catch (e: NoSuchElementException) {
+                ResponseEntity.status(404).build()
+            }
+    }
+
+    @GetMapping("/{id}/invite")
+    @Tag(name = "Invite")
+    @Operation(
+        summary = "Get the invite of an applicant",
+        description = "Return the assessment ID if applicant has been invited")
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Added the applicant",
+                description = "Returns assessment ID if applicant has been invited",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Applicant not found",
             )
         ]
     )
-    fun postStubApplicant(): ResponseEntity<String> {
-        applicantService.createApplicant(
-            ApplicantCreateReadDTO(
-                status = ApplicantStatus.app_finished,
-                preferredLanguage = "",
-            )
-        )
-        return ResponseEntity.ok("Added an applicant")
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<ApplicantInviteDTO> {
+        return try {
+            val invite: ApplicantInviteDTO? = applicantService.getInviteByApplicantId(id)
+            ResponseEntity.ok(invite)
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
     }
 
-    @GetMapping("/{applicantId}/interview")
+    @GetMapping("/{applicantId}/assessment")
+    @Tag(name = "Assessment")
     @Operation(
         summary = "Get the interview for the applicant",
-        description = "Returns a list with all the sectionsID's"
+        description = "Return a list of section IDs"
     )
     @ApiResponses(
         value = [
@@ -165,9 +211,13 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
-        //TODO implement
-        return ResponseEntity.ok(InterviewDTO(69, listOf()))
+    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<InterviewDTO?> {
+        return try {
+            val interview: InterviewDTO? = applicantService.getInterviewByApplicantId(applicantId)
+            ResponseEntity.ok(interview)
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
     }
 
     @PostMapping("/{applicantId}/submit")
