@@ -8,9 +8,4 @@ import java.util.*
 
 
 @Repository
-interface SectionRepository : JpaRepository<Section, Long> {
-
-    fun findSectionById(id: Long): Section
-
-    fun findSectionByAssignments(assignments: Set<Assignment>): Optional<Section>
-}
+interface SectionRepository : JpaRepository<Section, Long>
