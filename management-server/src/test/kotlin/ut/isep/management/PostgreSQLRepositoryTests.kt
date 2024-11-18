@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import ut.isep.management.model.entity.Applicant
-import ut.isep.management.repository.pgsql.ApplicantRepository
+import ut.isep.management.repository.ApplicantRepository
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(SpringExtension::class)
@@ -20,7 +20,7 @@ class PostgreSQLRepositoryTests @Autowired constructor(
     @Test
     fun `test repository connection to PostgreSQL`() {
         val entity = applicantRepository.save(
-            Applicant(status = ApplicantStatus.app_finished, interview = null, preferredLanguage = null)
+            Applicant(status = ApplicantStatus.app_finished, assessment = null, preferredLanguage = null)
         )
         assert(true)
     }
