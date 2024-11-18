@@ -3,14 +3,14 @@ package ut.isep.management.service
 import dto.*
 import ut.isep.management.model.entity.*
 
-fun Applicant.toDTO(): ApplicantDTO {
-    return ApplicantDTO(
+fun Applicant.toDTO(): ApplicantCreateReadDTO {
+    return ApplicantCreateReadDTO(
         id = this.id,
         status = this.status,
         preferredLanguage = this.preferredLanguage)
 }
 
-fun Interview.toDTO(): InterviewDTO {
+fun Assessment.toDTO(): InterviewDTO {
     return InterviewDTO(
         id = this.id,
         sections = this.sections.map {it.toDTO() }

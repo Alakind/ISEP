@@ -1,6 +1,7 @@
 package ut.isep.management.controller
 
-import dto.ApplicantDTO
+import dto.ApplicantCreateReadDTO
+import dto.ApplicantUpdateDTO
 import dto.InterviewDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.Operation
@@ -11,8 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ut.isep.management.model.entity.Applicant
 import ut.isep.management.service.ApplicantService
+import java.net.URI
 import java.util.*
 import kotlin.NoSuchElementException
 
@@ -26,10 +29,11 @@ class ApplicantController(val applicantService: ApplicantService) {
         responseCode = "200",
         description = "Returns a list of all applicants",
     )
-    fun getApplicants(): List<ApplicantDTO> {
+    fun getApplicants(): List<ApplicantCreateReadDTO> {
         return applicantService.allApplicants
     }
 
+    
     @GetMapping("{id}")
     @Operation(summary = "Get applicant", description = "Returns either ApplicantDTO or 404 if not found")
     @ApiResponses(
@@ -47,7 +51,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicant(@PathVariable id: UUID): ResponseEntity<ApplicantDTO> {
+    fun getApplicant(@PathVariable id: UUID): ResponseEntity<ApplicantCreateReadDTO> {
         return try {
             ResponseEntity.ok(applicantService.getApplicantById(id))
         } catch (e: NoSuchElementException) {
@@ -65,9 +69,62 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun postApplicant(@RequestBody applicant: ApplicantDTO): ResponseEntity<String> {
-        applicantService.addApplicant(applicant)
-        return ResponseEntity.ok("Added an applicant")
+    fun postApplicant(@RequestBody applicant: ApplicantCreateReadDTO): ResponseEntity<String> {
+        val createdApplicant = applicantService.createApplicant(applicant)
+        val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(createdApplicant.id)
+            .toUri()
+
+        return ResponseEntity.created(location).body("Added an applicant")
+//        return ResponseEntity.ok("Added an applicant")
+    }
+
+
+    @PutMapping
+    @Operation(summary = "Updates an applicant", description = "Update an applicant in the PostGreSQL Management database")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated the applicant",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Applicant not found",
+            )
+        ]
+    )
+    fun putApplicant(@RequestBody applicantDTO: ApplicantUpdateDTO): ResponseEntity<String> {
+        return try {
+            applicantService.updateApplicant(applicantDTO)
+            ResponseEntity.ok("Updated an applicant")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Updates an applicant", description = "Update an applicant in the PostGreSQL Management database")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated the applicant",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Applicant not found",
+            )
+        ]
+    )
+    fun deleteApplicant(@PathVariable id: UUID): ResponseEntity<String> {
+        return try {
+            applicantService.deleteApplicant(id)
+            ResponseEntity.ok("Deleted an applicant")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
     }
 
     @GetMapping("/add")
@@ -81,10 +138,9 @@ class ApplicantController(val applicantService: ApplicantService) {
         ]
     )
     fun postStubApplicant(): ResponseEntity<String> {
-        applicantService.addApplicant(
-            Applicant(
+        applicantService.createApplicant(
+            ApplicantCreateReadDTO(
                 status = ApplicantStatus.app_finished,
-                interview = null,
                 preferredLanguage = null
             )
         )

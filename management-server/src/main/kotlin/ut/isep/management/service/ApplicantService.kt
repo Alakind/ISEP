@@ -4,8 +4,9 @@ import dto.*
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
-import ut.isep.management.repository.pgsql.ApplicantRepository
+import ut.isep.management.repository.ApplicantRepository
 import java.util.*
+import kotlin.NoSuchElementException
 
 
 @Service
@@ -14,29 +15,40 @@ class ApplicantService(
     private val applicantRepository: ApplicantRepository
 ) {
 
-    fun addApplicant(applicantDTO: ApplicantDTO) {
-        addApplicant(applicantDTO.fromDTO())
-    }
-
-    fun addApplicant(applicant: Applicant) {
-        checkApplicantInDB(applicant)
-        applicantRepository.save(applicant)
+    fun createApplicant(applicantDTO: ApplicantCreateReadDTO): Applicant {
+        val applicantEntity = applicantDTO.fromDTO()
+        checkApplicantInDB(applicantEntity)
+        return applicantRepository.save(applicantEntity)
     }
 
     private fun checkApplicantInDB(a: Applicant) {
-        val applicant: Optional<Applicant> = applicantRepository.findById(a.id)
-        if (applicant.isPresent) {
-            throw Exception("Applicant Already exists")
+        applicantRepository.findById(a.id).ifPresent {
+            throw Exception("Applicant already exists")
         }
     }
 
-    fun getApplicantById(id: UUID): ApplicantDTO {
-        val applicant: Optional<Applicant> = applicantRepository.findById(id)
-        return applicant.orElseThrow {
-            NoSuchElementException("Applicant not found with id $id")
-        }.toDTO()
+    fun updateApplicant(updateDTO: ApplicantUpdateDTO) {
+        val applicant: Applicant = applicantRepository.findById(updateDTO.id).orElseThrow{
+            NoSuchElementException("Applicant not found with id $updateDTO.id")
+        }
+        applicant.apply {
+            updateDTO.status?.let { this.status = it }
+            updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
+        }
+        applicantRepository.save(applicant)
     }
 
-    val allApplicants: List<ApplicantDTO>
+    fun deleteApplicant(id: UUID) {
+        applicantRepository.deleteById(id)
+    }
+
+    fun getApplicantById(id: UUID): ApplicantCreateReadDTO {
+        val applicant: Applicant = applicantRepository.findById(id).orElseThrow{
+            NoSuchElementException("Applicant not found with id $id")
+        }
+        return applicant.toDTO()
+    }
+
+    val allApplicants: List<ApplicantCreateReadDTO>
         get() = applicantRepository.findAll().map {it.toDTO()}
 }
