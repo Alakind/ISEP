@@ -7,10 +7,10 @@ import jakarta.persistence.*
 open class Applicant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
-    var status: ApplicantStatus = ApplicantStatus.not_started,
-    var preferredLanguage: String? = null,
+    open var id: Long = 0,
+    open var status: ApplicantStatus = ApplicantStatus.not_started,
+    open var preferredLanguage: String? = null,
 
     @ManyToOne(cascade = [CascadeType.ALL])
-    var invite: Invite? = null
+    open var invite: Invite? = null
 )
