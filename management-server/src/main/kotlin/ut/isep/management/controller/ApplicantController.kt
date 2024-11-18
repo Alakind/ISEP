@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ut.isep.management.service.ApplicantService
 import java.net.URI
-import java.util.*
 import kotlin.NoSuchElementException
 
 @RestController
@@ -50,7 +49,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicant(@PathVariable id: UUID): ResponseEntity<ApplicantCreateReadDTO> {
+    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantCreateReadDTO> {
         return try {
             ResponseEntity.ok(applicantService.getApplicantById(id))
         } catch (e: NoSuchElementException) {
@@ -103,7 +102,7 @@ class ApplicantController(val applicantService: ApplicantService) {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @Operation(summary = "Updates an applicant", description = "Update an applicant in the PostGreSQL Management database")
     @ApiResponses(
         value = [
@@ -117,7 +116,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun deleteApplicant(@PathVariable id: UUID): ResponseEntity<String> {
+    fun deleteApplicant(@PathVariable id: Long): ResponseEntity<String> {
         return try {
             applicantService.deleteApplicant(id)
             ResponseEntity.ok("Deleted an applicant")
@@ -140,7 +139,7 @@ class ApplicantController(val applicantService: ApplicantService) {
         applicantService.createApplicant(
             ApplicantCreateReadDTO(
                 status = ApplicantStatus.app_finished,
-                preferredLanguage = null
+                preferredLanguage = "",
             )
         )
         return ResponseEntity.ok("Added an applicant")

@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.ApplicantRepository
-import java.util.*
 import kotlin.NoSuchElementException
 
 
@@ -38,11 +37,11 @@ class ApplicantService(
         applicantRepository.save(applicant)
     }
 
-    fun deleteApplicant(id: UUID) {
+    fun deleteApplicant(id: Long) {
         applicantRepository.deleteById(id)
     }
 
-    fun getApplicantById(id: UUID): ApplicantCreateReadDTO {
+    fun getApplicantById(id: Long): ApplicantCreateReadDTO {
         val applicant: Applicant = applicantRepository.findById(id).orElseThrow{
             NoSuchElementException("Applicant not found with id $id")
         }
