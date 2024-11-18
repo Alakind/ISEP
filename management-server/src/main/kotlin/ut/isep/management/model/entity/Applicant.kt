@@ -11,6 +11,6 @@ open class Applicant(
     open var status: ApplicantStatus = ApplicantStatus.not_started,
     open var preferredLanguage: String? = null,
 
-    @ManyToOne(cascade = [CascadeType.ALL])
+    @OneToOne(mappedBy = "applicant", cascade = [CascadeType.ALL], orphanRemoval = true)
     open var invite: Invite? = null
 )
