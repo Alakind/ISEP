@@ -20,7 +20,7 @@ class PostgreSQLRepositoryTests @Autowired constructor(
     @Test
     fun `test repository connection to PostgreSQL`() {
         val entity = applicantRepository.save(
-            Applicant(status = ApplicantStatus.app_finished, assessment = null, preferredLanguage = null)
+            Applicant(status = ApplicantStatus.app_finished, preferredLanguage = null)
         )
         assert(true)
     }
