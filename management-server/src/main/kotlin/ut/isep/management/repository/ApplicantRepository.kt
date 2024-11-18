@@ -6,5 +6,4 @@ import ut.isep.management.model.entity.Applicant
 
 
 @Repository
-interface ApplicantRepository : JpaRepository<Applicant, Long> {
-}
+interface ApplicantRepository : JpaRepository<Applicant, Long>
