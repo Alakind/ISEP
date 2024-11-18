@@ -5,7 +5,7 @@ import {
 } from "../utils/types";
 import AssignmentMultipleChoice from "./AssignmentMultipleChoice";
 import AssignmentOpen from "./AssignmentOpen";
-import "../styles/dark_mode_question.css";
+import "../styles/dark_mode-question.css";
 
 function Assignment({ index, assignment }: Props) {
   return (

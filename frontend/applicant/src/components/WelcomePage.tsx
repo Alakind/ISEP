@@ -1,7 +1,7 @@
 import InfoSupportLogo from "../components/infoSupportLogo";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
 import "../styles/dark_mode.css";
-import "../styles/dark_mode_welcome.css";
+import "../styles/dark_mode-welcome.css";
 
 function WelcomePage({ handleStart }: Props) {
   return (

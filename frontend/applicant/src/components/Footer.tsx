@@ -1,5 +1,5 @@
 import InfoSupportMailSupport from "./InfoSupportMailSupport";
-import "../styles/dark_mode_footer.css";
+import "../styles/dark_mode-footer.css";
 import {AssessmentInterface} from "../utils/types.tsx";
 import SectionMenu from "./SectionMenu.tsx";
 import React, {useEffect, useState} from "react";

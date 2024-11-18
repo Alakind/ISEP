@@ -1,6 +1,6 @@
 import Assignment from "../components/Assignment";
 import { AssessmentInterface } from "../utils/types";
-import "../styles/dark_mode_main.css";
+import "../styles/dark_mode-main.css";
 import scrollToAssignment from "../utils/operations.tsx";
 import {useEffect} from "react";
 
