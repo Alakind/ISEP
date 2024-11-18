@@ -10,11 +10,6 @@ fun ApplicantCreateReadDTO.fromDTO(): Applicant {
     )
 }
 
-fun InterviewDTO.fromDTO(): Assessment {
-    return Assessment(
-        sections = this.sections.map {it.fromDTO() }
-    )
-}
 
 fun SectionDTO.fromDTO(): Section {
     return Section(
