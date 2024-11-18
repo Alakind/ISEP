@@ -1,9 +1,11 @@
 import { AssignmentTypes } from "../utils/constants";
 import {
-  AssignmentInterface,
-  AssignmentMultipleChoiceInterface,
+    AssignmentCodingInterface,
+    AssignmentInterface,
+    AssignmentMultipleChoiceInterface,
 } from "../utils/types";
 import AssignmentMultipleChoice from "./AssignmentMultipleChoice";
+import AssignmentCoding from "./AssignmentCoding.tsx";
 import AssignmentOpen from "./AssignmentOpen";
 import "../styles/dark_mode-question.css";
 
@@ -19,6 +21,9 @@ function Assignment({ index, assignment }: Props) {
         )}
         {assignment.type == AssignmentTypes.OPEN && (
           <AssignmentOpen assignment={assignment} />
+        )}
+        {assignment.type == AssignmentTypes.CODING && (
+          <AssignmentCoding assignment={assignment as AssignmentCodingInterface} />
         )}
       </div>
     </>

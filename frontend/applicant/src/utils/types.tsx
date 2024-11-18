@@ -24,3 +24,12 @@ export interface AssignmentMultipleChoiceInterface {
   options: string[];
   isMultipleAnswers: boolean;
 }
+
+export interface AssignmentCodingInterface {
+  id: string;
+  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+  isSolved: boolean;
+  text: string;
+  image: string;
+  files: File[];
+}
