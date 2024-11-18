@@ -24,6 +24,7 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis:3.3.5")
 	implementation(project(":shared-models"))
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

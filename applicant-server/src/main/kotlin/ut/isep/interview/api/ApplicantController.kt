@@ -1,6 +1,7 @@
 package ut.isep.interview.api
 
-import dto.InterviewDTO
+import dto.AnswerDTO
+import dto.InterviewSmallDTO
 import dto.SectionDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -11,10 +12,11 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ut.isep.interview.clients.ManagementApplicationClient
+import ut.isep.interview.service.AnswerService
 
 @RestController
 @RequestMapping("/applicant")
-class ApplicantController(val client: ManagementApplicationClient) {
+class ApplicantController(val client: ManagementApplicationClient, val redis: AnswerService) {
 
     @GetMapping("/{applicantId}/interview")
     @Operation(summary = "Get the Interview for the applicant", description = "Returns a list with all the sectionsID's")
@@ -31,12 +33,10 @@ class ApplicantController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
-        return try {
-            ResponseEntity.ok(client.getInterview(applicantId))
-        } catch (e: feign.FeignException) {
-            ResponseEntity.status(e.status()).build()
-        }
+    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<InterviewSmallDTO>? {
+        //todo
+        redis.initializeApplicant(applicantId)
+        return null
     }
 
     @PostMapping("/{applicantId}/submit")
@@ -54,8 +54,9 @@ class ApplicantController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun postInterviewSubmit(@PathVariable applicantId: Int) {
-        client.postSubmit(applicantId)
+    fun postInterviewSubmit(@PathVariable applicantId: Long) {
+//        client.postSubmit(applicantId, redis.getInterviewById(applicantId))
+        redis.deleteApplicant(applicantId)
     }
 
     @PostMapping("/{applicantId}/save-section/{sectionId}")
@@ -81,7 +82,7 @@ class ApplicantController(val client: ManagementApplicationClient) {
         )
     ])
     fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
-        client.postSaveSection(applicantId, sectionId)
+        //TODO
     }
 
     @GetMapping("/{applicantId}/save-section/{sectionId}")
@@ -105,5 +106,50 @@ class ApplicantController(val client: ManagementApplicationClient) {
         } catch (e: feign.FeignException) {
             ResponseEntity.status(e.status()).build()
         }
+    }
+
+    @PostMapping("/{applicantId}/save-answer/{questionId}")
+    @Operation(summary = "Caches the section", description = "The provided answer will be saved")
+    @ApiResponses(value = [
+        ApiResponse(
+            responseCode = "200",
+            description = "Saved the section successfully",
+        ),
+        ApiResponse(
+            responseCode = "400",
+            description = "The provided section does not belong to the section id",
+            content = [Content(
+                schema = Schema(implementation = DefaultErrorAttributes::class)
+            )]
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "Applicant or Section not found",
+            content = [Content(
+                schema = Schema(implementation = DefaultErrorAttributes::class)
+            )]
+        )
+    ])
+    fun postSaveAnswer(@PathVariable applicantId: Long, @PathVariable questionId: Int, @RequestBody answer: AnswerDTO) {
+        redis.addAnswer(applicantId, answer)
+    }
+
+    @GetMapping("/{applicantId}/save-answer/{questionId}")
+    @Operation(summary = "Get the saved section", description = "Retrieves the saved section")
+    @ApiResponses(value = [
+        ApiResponse(
+            responseCode = "200",
+            description = "Retrieved the section successfully",
+        ),
+        ApiResponse(
+            responseCode = "404",
+            description = "Applicant or Section not found",
+            content = [Content(
+                schema = Schema(implementation = DefaultErrorAttributes::class)
+            )]
+        )
+    ])
+    fun getSaveAnswer(@PathVariable applicantId: Long, @PathVariable questionId: Long): ResponseEntity<AnswerDTO>? {
+        return ResponseEntity.ok(redis.getAnswer(applicantId, questionId))
     }
 }

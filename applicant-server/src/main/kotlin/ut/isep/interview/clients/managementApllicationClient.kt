@@ -2,19 +2,24 @@ package ut.isep.interview.clients
 
 import dto.InterviewDTO
 import dto.SectionDTO
+import feign.Body
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseBody
+import ut.isep.interview.model.Answer
+import ut.isep.interview.model.AnswerInterview
 
 @FeignClient("management-server", url = "localhost:8081")
 interface ManagementApplicationClient {
     @GetMapping("/applicant/{applicantId}/interview")
-    fun getInterview(@PathVariable applicantId: Int?): InterviewDTO
+    fun getInterview(@PathVariable applicantId: Int): InterviewDTO
 
     @PostMapping("/applicant/{applicantId}/submit")
-    fun postSubmit(@PathVariable applicantId: Int?)
+    fun postSubmit(@PathVariable applicantId: Long, @RequestBody interview: AnswerInterview)
 
     @PostMapping("/applicant/{applicantId}/save-section/{sectionId}")
     fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int?)
