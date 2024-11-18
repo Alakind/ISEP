@@ -6,6 +6,7 @@ import "./index.css";
 import 'react-toastify/dist/ReactToastify.css';
 import WelcomePageContainer from "./containers/WelcomePageContainer.tsx";
 import AssessmentPageContainer from "./containers/AssessmentPageContainer.tsx";
+import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "assessment",
     element: <AssessmentPageContainer />,
+  },
+  {
+    path: "*",
+    element: <PageNotFoundContainer />,
   },
 ]);
 
