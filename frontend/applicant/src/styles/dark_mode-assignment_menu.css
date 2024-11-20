@@ -1,0 +1,31 @@
+.assignment-menu {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    max-width: 180px;
+    gap: 5px;
+    padding: 5px;
+    margin-bottom: 13px;
+    background-color: var(--assigntment-menu);
+    border-radius: 10px;
+    flex-wrap: wrap;
+    width: max-content;
+}
+
+.assignment-menu__tile {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.assignment-menu__tile--selected {
+    border: white solid 2px;
+    box-shadow: 0 0 3px 1px white;
+    cursor: default;
+}

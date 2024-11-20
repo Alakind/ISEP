@@ -1,0 +1,14 @@
+.footer {
+    background-color: var(--secondary-color);
+    padding: 10px;
+    height: 4rem;
+}
+
+.footer__right {
+    display: flex;
+    flex-direction: row;
+}
+
+.footer__right>span {
+    margin: 0 10px;
+}

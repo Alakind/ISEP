@@ -2,8 +2,16 @@ main {
     height: 100%;
     flex: 1;
     display: flex;
-    align-items: right;
     padding: 25px;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    margin-right: 5px;
+}
+
+.main__container {
+    width: 70%;
+    display: flex;
     flex-direction: column;
 }
 

@@ -6,7 +6,7 @@ function WelcomePageContainer() {
   const navigate = useNavigate();
 
   const handleStart = () => {
-    navigate("/interview");
+    navigate("/assessment");
   };
 
   return <WelcomePage handleStart={handleStart} />;
