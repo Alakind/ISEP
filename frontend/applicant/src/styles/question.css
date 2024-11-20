@@ -60,7 +60,7 @@
 .assignment__input--checked::before {
     content: "\2714";
     font-size: 0.8em;
-    color: #fff;
+    color: var(--icons);
     position: absolute;
     right: 0;
     top: -3px;

@@ -1,7 +1,7 @@
 import Header from "../components/Header.tsx";
 import Main from "../components/Main.tsx";
 import Footer from "../components/Footer.tsx";
-import "../styles/dark_mode.css";
+import "../styles/general.css";
 import React, {useEffect, useState} from "react";
 import ReactLoading from 'react-loading';
 

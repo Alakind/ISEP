@@ -1,5 +1,5 @@
 import React from 'react'
-import "../styles/dark_mode.css";
+import "../styles/general.css";
 import {Link} from "react-router-dom";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport.tsx";
 

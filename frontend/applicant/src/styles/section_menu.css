@@ -23,7 +23,7 @@
 }
 
 .section-menu__tile--selected {
-    border: white solid 2px;
-    box-shadow: 0 0 3px 1px white;
+    border: var(--icons) solid 2px;
+    box-shadow: 0 0 3px 1px var(--icons);
     cursor: default;
 }

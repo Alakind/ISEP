@@ -1,5 +1,5 @@
 import { AssessmentInterface } from "../utils/types";
-import "../styles/dark_mode-header.css";
+import "../styles/header.css";
 import React from "react";
 import {ToastContainer} from "react-toastify";
 

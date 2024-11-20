@@ -1,5 +1,5 @@
 import {AssessmentInterface} from "../utils/types";
-import "../styles/dark_mode-section_menu.css"
+import "../styles/section_menu.css"
 import React, {useState} from "react";
 import AssignmentMenu from "./AssignmentMenu.tsx";
 
