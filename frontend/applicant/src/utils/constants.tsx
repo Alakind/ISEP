@@ -3,3 +3,8 @@ export const AssignmentTypes = {
   MULTIPLE_CHOICE: "MultipleChoice",
   OPEN: "Open",
 };
+
+export const Themes = {
+  DARK: "dark",
+  LIGHT: "light"
+}

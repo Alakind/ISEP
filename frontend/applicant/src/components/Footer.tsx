@@ -1,9 +1,10 @@
 import InfoSupportMailSupport from "./InfoSupportMailSupport";
-import "../styles/dark_mode-footer.css";
+import "../styles/footer.css";
 import {AssessmentInterface} from "../utils/types.tsx";
 import SectionMenu from "./SectionMenu.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {toast} from "react-toastify";
+import ThemeSwitch from "./ThemeSwitch.tsx";
 
 function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex, endOfAssessment, setEndOfAssessment}: Props) {
 
@@ -40,7 +41,8 @@ function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, curre
         });
     };
 
-    const handleFinishAssessment = () => {
+    const handleFinishAssessment = () : void => {
+        setEndOfAssessment(true);
         //TODO check all states in the backend
         //TODO popup a message with missing assignment submissions
     };
@@ -51,7 +53,7 @@ function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, curre
         <InfoSupportMailSupport
           element={<i className="bi bi-question-circle"></i>}
         />
-        <i className="bi bi-moon"></i>
+        <ThemeSwitch />
       </span>
       <span className="footer__center">
         <span className="footer__center__question-menu">
@@ -60,14 +62,14 @@ function Footer({ assessment, currentSectionIndex, setCurrentSectionIndex, curre
       </span>
       <span className="footer__right">
         <span className="footer__right__next-question">
-            <span>Next Question</span>
             <a onClick={() => handleNextAssignment()}>
+                <span>Next Question</span>
                 <i className="bi bi-arrow-right-circle"></i>
             </a>
         </span>
         <span className="footer__right__finish-assessment">
-          <span>Finish</span>
             <a onClick={() => handleFinishAssessment()}>
+                <span>Finish</span>
                 <i className="bi bi-flag"></i>
             </a>
         </span>

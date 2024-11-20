@@ -1,5 +1,5 @@
 import {AssignmentInterface, SectionInterface} from "../utils/types";
-import "../styles/dark_mode-assignment_menu.css"
+import "../styles/assignment_menu.css"
 import React from "react";
 
 function AssignmentMenu({ section,  assignmentSectionIndex, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex, onMouseEnter, onMouseLeave }: Props) {
