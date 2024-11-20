@@ -20,7 +20,6 @@
     margin: 0 10px;
     background-color: var(--question-block);
     border-radius: 25px;
-    cursor: pointer;
 }
 
 .section-menu__tile--selected {

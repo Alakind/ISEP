@@ -22,9 +22,13 @@
     padding-right: 10px;
 }
 
-.header__right, .footer__right>span {
+.header__right, .footer__right>span>a {
     display: flex;
     align-items: center;
+}
+
+a {
+    cursor: pointer;
 }
 
 .Toastify__progress-bar-theme--dark, .Toastify__progress-bar-theme--light {
