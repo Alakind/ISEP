@@ -1,5 +1,5 @@
 /* Standard colors */
-:root {
+:root, [data-theme="dark"] {
   --primary-color: #0a182d; /* background page */
   --secondary-color: #11243e; /* header, footer */
   --tertiary-color: #008bbd; /* buttons, borders*/
@@ -13,22 +13,7 @@
   --transparent: #ffffff00;
   --scrollbar-thumb: grey;
   --scrollbar-thumb-hover: #555;
-}
-
-[data-theme="dark"] {
-  --primary-color: #0a182d; /* background page */
-  --secondary-color: #11243e; /* header, footer */
-  --tertiary-color: #008bbd; /* buttons, borders*/
-  --highlight: #17489b; /* hover buttons */
-  --question-block: #faf9f62d;
-  --assigntment-menu: #344050bf;
-  --text-primary: #faf9f6;
-  --text-secondary: #b2b9c2;
-  --icons: white;
-  --white-background-transparent: #ffffffd9;
-  --transparent: #ffffff00;
-  --scrollbar-thumb: grey;
-  --scrollbar-thumb-hover: #555;
+  --assigntment-menu-text: black;
 }
 
 [data-theme="light"] {
@@ -37,7 +22,7 @@
   --tertiary-color: #008bbd; /* buttons, borders*/
   --highlight: #17489b; /* hover buttons */
   --question-block: rgba(52, 51, 51, 0.18);
-  --assigntment-menu: #344050bf;
+  --assigntment-menu: rgba(20, 61, 108, 0.75);
   --text-primary: black;
   --text-secondary: white;
   --icons: white;
@@ -45,6 +30,7 @@
   --transparent: #ffffff00;
   --scrollbar-thumb: grey;
   --scrollbar-thumb-hover: #555;
+  --assigntment-menu-text: black;
 }
 
 body, html {

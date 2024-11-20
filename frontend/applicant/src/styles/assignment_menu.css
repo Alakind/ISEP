@@ -14,6 +14,7 @@
 }
 
 .assignment-menu__tile {
+    color: var(--assigntment-menu-text);
     border-radius: 50%;
     width: 30px;
     height: 30px;
