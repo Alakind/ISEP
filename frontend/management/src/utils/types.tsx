@@ -3,3 +3,9 @@ export interface ApplicantInterface {
   surname: string;
   id: string;
 }
+
+export interface UserInterface {
+  name: string;
+  email: string;
+  id: string;
+}
