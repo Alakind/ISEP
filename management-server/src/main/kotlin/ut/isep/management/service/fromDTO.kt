@@ -1,20 +1,15 @@
 package ut.isep.management.service
 
 import dto.*
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 
-fun ApplicantDTO.fromDTO(): Applicant {
+fun ApplicantCreateReadDTO.fromDTO(): Applicant {
     return Applicant(
         status = this.status,
         preferredLanguage = this.preferredLanguage
     )
 }
 
-fun InterviewDTO.fromDTO(): Interview {
-    return Interview(
-        sections = this.sections.map {it.fromDTO() }
-    )
-}
 
 fun SectionDTO.fromDTO(): Section {
     return Section(

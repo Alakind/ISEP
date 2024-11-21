@@ -1,19 +1,19 @@
 package ut.isep.management.service
 
 import dto.*
-import ut.isep.management.model.pgsql.*
+import ut.isep.management.model.entity.*
 
-fun Applicant.toDTO(): ApplicantDTO {
-    return ApplicantDTO(
+fun Applicant.toDTO(): ApplicantCreateReadDTO {
+    return ApplicantCreateReadDTO(
         id = this.id,
         status = this.status,
         preferredLanguage = this.preferredLanguage)
 }
 
-fun Interview.toDTO(): InterviewDTO {
+fun Assessment.toDTO(): InterviewDTO {
     return InterviewDTO(
         id = this.id,
-        sections = this.sections.map {it.toDTO() }
+        sections = this.sections.map {it.id}
     )
 }
 
@@ -56,5 +56,11 @@ fun AssignmentCoding.toDTO(): AssignmentCodingDTO {
         description = this.description,
         language = this.language,
         codeUri = this.codeUri // Replace with actual fetching of the files
+    )
+}
+
+fun Invite.toDTO(): ApplicantInviteDTO {
+    return ApplicantInviteDTO(
+        assessmentId = this.assessment.id
     )
 }
