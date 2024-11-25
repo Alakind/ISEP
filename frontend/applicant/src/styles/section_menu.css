@@ -1,0 +1,29 @@
+.section-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.section-menu__wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 26px 0 0 0;
+    transform: translateY(-13px);
+}
+
+.section-menu__tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 20px;
+    margin: 0 10px;
+    background-color: var(--question-block);
+    border-radius: 25px;
+}
+
+.section-menu__tile--selected {
+    border: var(--icons) solid 2px;
+    box-shadow: 0 0 3px 1px var(--icons);
+    cursor: default;
+}

@@ -1,0 +1,36 @@
+.header, .footer {
+    background-color: var(--secondary-color);
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    align-items: center;
+  }
+
+.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
+    font-size: 35px;
+    color: var(--icons);
+    margin: 0 10px;
+}
+
+.bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
+    cursor: pointer;
+}
+
+.header__time-text {
+    color: var(--icons);
+    padding-right: 10px;
+}
+
+.header__right, .footer__right>span>a {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    cursor: pointer;
+}
+
+.Toastify__progress-bar-theme--dark, .Toastify__progress-bar-theme--light {
+    background: var(--tertiary-color);
+}
