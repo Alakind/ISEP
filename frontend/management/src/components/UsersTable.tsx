@@ -11,17 +11,17 @@ function UsersTable({ users }: UsersTableProps) {
             <th scope="col">Role</th>
           </tr>
         </thead>
-        {users.map((user) => {
-          return (
-            <tbody>
-              <tr>
+        <tbody>
+          {users.map((user) => {
+            return (
+              <tr key={user.id}>
                 <th scope="row">{user.name}</th>
                 <td>{user.email}</td>
                 <td>{user.role}</td>
               </tr>
-            </tbody>
-          );
-        })}
+            );
+          })}
+        </tbody>
       </table>
     </>
   );

@@ -1,6 +1,6 @@
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,21 +9,8 @@ import ApplicantPageContainer from "./containers/ApplicantPageContainer";
 import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 import LoadingPage from "./components/LoadingPage.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
-import HeaderContainer from "./containers/HeaderContainer.tsx";
 import UsersListContainer from "./containers/UsersListPageContainer.tsx";
-
-function App() {
-  return (
-    <div>
-      <header>
-        <HeaderContainer />
-      </header>
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
-}
+import App from "./App.tsx";
 
 const router = createBrowserRouter(
   [

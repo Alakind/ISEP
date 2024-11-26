@@ -15,10 +15,10 @@ function ApplicantsTable({
             <th scope="col">Score</th>
           </tr>
         </thead>
-        {applicants.map((applicant) => {
-          return (
-            <tbody>
-              <tr>
+        <tbody>
+          {applicants.map((applicant) => {
+            return (
+              <tr key={applicant.id}>
                 <th scope="row" onClick={() => goToApplicantPage(applicant.id)}>
                   {applicant.name + " " + applicant.surname}
                 </th>
@@ -26,9 +26,9 @@ function ApplicantsTable({
                 <td>{applicant.status}</td>
                 <td>{applicant.score}/100</td>
               </tr>
-            </tbody>
-          );
-        })}
+            );
+          })}
+        </tbody>
       </table>
     </>
   );
