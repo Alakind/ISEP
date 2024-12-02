@@ -9,3 +9,4 @@ rootProject.name = "ISEP"
 include("applicant-server")
 include("management-server")
 include("shared-models")
+include("shared-entities")
