@@ -23,7 +23,7 @@ function ThemeSwitch() {
     }
     return (
         <span onClick={() => switchTheme()}>
-            <i className="bi bi-moon"></i>
+            <i className={`bi bi-${theme == Themes.DARK ? "sun" : "moon"}`}></i>
         </span>
     )
 }

@@ -1,0 +1,63 @@
+.header {
+    background-color: var(--secondary-color);
+    padding: 0 20px;
+    color: var(--text-secondary);
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+}
+
+.header__nav {
+    justify-content: flex-start;
+}
+
+.bi-moon, .bi-sun {
+    font-size: 35px;
+    color: var(--icons);
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.nav-link, .navbar-brand {
+    color: var(--text-header)
+}
+
+.navbar-brand {
+    padding-right: 20px;
+}
+
+.navbar-toggler {
+    border-color: white;
+}
+
+.bi-list, .bi-people-fill, .bi-clipboard, .bi-person-rolodex {
+    font-size: 30px;
+    color: var(--icons);
+    cursor: pointer;
+}
+
+.bi-people-fill, .bi-clipboard, .bi-person-rolodex {
+    margin-right: 10px;
+    margin-left: 30px;
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    color: var(--text-header);
+    text-decoration: underline;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-text--mod {
+    display: flex;
+    align-items: center;
+}
+
+.nav-link--mod:hover {
+    color: var(--text-header-hover);
+}

@@ -8,6 +8,8 @@
     --assigntment-menu: #344050bf;
     --text-primary: #faf9f6;
     --text-secondary: #b2b9c2;
+    --text-header: #faf9f6;
+    --text-header-hover: grey;
     --icons: white;
     --white-background-transparent: #ffffffd9;
     --transparent: #ffffff00;
@@ -25,6 +27,8 @@
     --assigntment-menu: rgba(20, 61, 108, 0.75);
     --text-primary: black;
     --text-secondary: white;
+    --text-header: #faf9f6;
+    --text-header-hover: black;
     --icons: white;
     --white-background-transparent: #ffffffd9;
     --transparent: #ffffff00;
@@ -102,5 +106,16 @@ html {
 }
 
 a {
-    color: var(--tertiary-color)
+    color: var(--tertiary-color);
+    cursor: pointer;
+ }
+
+main {
+    height: 100vh;
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+    align-items: stretch;
+    overflow-y: auto;
+    margin-right: 5px;
 }
