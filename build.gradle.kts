@@ -8,13 +8,10 @@
 
 
 plugins {
-    kotlin("jvm") version "1.9.25" apply false
-    kotlin("plugin.spring") version "1.9.25" apply false
+    kotlin("jvm") version "2.1.0" apply false
+    kotlin("plugin.spring") version "2.1.0" apply false
     id("org.springframework.boot") version "3.3.3" apply false
     id("io.spring.dependency-management") version "1.1.6" apply false
-    // This is only included globally to avoid NoSuchMethodError caused by Jackson dependency clashes:
-    // https://github.com/OpenAPITools/openapi-generator/issues/18753
-    //    id("org.openapi.generator") version "7.9.0" apply false
 }
 
 repositories {
