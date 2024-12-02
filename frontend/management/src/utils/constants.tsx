@@ -18,7 +18,7 @@ export const ApplicantStatuses = {
   APP_FINISHED: "ApplicantFinished",
   INTERVIEW_INVITED: "InterviewInvited",
   INTERVIEW_FINISHED: "InterviewFinished",
-  CANCELEED: "Cancelled",
+  CANCELLED: "Cancelled",
 };
 
 export const Roles = {
