@@ -1,3 +1,5 @@
+import {Column} from "./types.tsx";
+
 export const AssignmentTypes = {
   CODING: "Coding",
   MULTIPLE_CHOICE: "MultipleChoice",
@@ -25,5 +27,18 @@ export const Roles = {
   RECRUITER: "Recruiter",
   INTERVIEWER: "Interviewer",
   ADMIN: "Admin",
-  NO_ACCESS: "-"
+  NO_ACCESS: "-",
 };
+
+export const userColumns: Column[] = [
+  {label: "Name", accessor: "name", sortable: true},
+  {label: "Email", accessor: "email", sortable: true},
+  {label: "Role", accessor: "role", sortable: true},
+]
+
+export const applicantColumns: Column[] = [
+  {label: "Name", accessor: "name", sortable: true},
+  {label: "Email", accessor: "email", sortable: true},
+  {label: "Status", accessor: "status", sortable: true},
+  {label: "Score", accessor: "score", sortable: true},
+]

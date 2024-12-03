@@ -14,7 +14,7 @@ export interface UserInterface {
   email: string;
   id: string;
   role: (typeof Roles)[keyof typeof Roles] | null;
-  access?: boolean;
+  access?: boolean; //FIXME remove this one
 }
 
 export interface Column {

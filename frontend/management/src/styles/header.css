@@ -61,3 +61,7 @@
 .nav-link--mod:hover {
     color: var(--text-header-hover);
 }
+
+.header__left__nav {
+    justify-content: space-between;
+}

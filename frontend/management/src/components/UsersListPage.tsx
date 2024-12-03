@@ -2,10 +2,10 @@ import { UserInterface } from "../utils/types";
 import UsersTable from "./UsersTable";
 import SearchContainer from "../containers/SearchContainer.tsx";
 import React, {useEffect, useState} from "react";
-import Pagination from "./Pagination.tsx";
+import PaginationContainer from "../containers/PaginationContainer.tsx";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
-import ItemPerPageSelect from "./ItemsPerPageSelect.tsx";
+import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
 
 
@@ -60,7 +60,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               access: true,
             },
           ],
-          totalItems: 5
+          totalItems: 90
         }
         setData(res.data);
         setTotalItems(res.totalItems);
@@ -82,8 +82,8 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
           <>
             <UsersTable users={data} />
             <div className="user-list-page">
-              <ItemPerPageSelect itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
-              <Pagination itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>
           </>
       }
