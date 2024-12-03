@@ -39,8 +39,12 @@ export async function getSearch(currentPage: number, itemsPerPage: number, subUr
   return {data: data, totalItems: totalItems};
 }
 
-export async function getUsers(currentPage: number, itemsPerPage: number): Promise<{data: UserInterface[], totalItems: number}> {
-  const response: Response = await fetch(`${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}`, {
+export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string): Promise<{data: UserInterface[], totalItems: number}> {
+  let API_URL = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&orderBy="+ orderBy : ""}`;
+  if (itemsPerPage == -1) {
+    API_URL = `${baseUrl}/user${orderBy != "" ? "?orderBy="+ orderBy : ""}`;
+  }
+  const response: Response = await fetch(API_URL, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

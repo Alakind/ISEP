@@ -19,7 +19,7 @@ function TableBody({ columns, tableData } : Props) {
                   disabled = true
                 }
 
-                const subUrl =  "/users/" + data.id;
+                const subUrl =  "/user/" + data.id;
                 return (
                   <td key={accessor}>
                     <span className="table__body__access">
@@ -28,7 +28,8 @@ function TableBody({ columns, tableData } : Props) {
                   </td>
                 );
               } else {
-                const value = accessor in data && accessor != "access" ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+                let value = accessor in data && accessor != "access" ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+                if (accessor == "role" ) {}
                 return <td key={accessor}>{value}</td>;
               }
             })}

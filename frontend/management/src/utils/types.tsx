@@ -13,7 +13,7 @@ export interface UserInterface {
   name: string;
   email: string;
   id: string;
-  role: (typeof Roles)[keyof typeof Roles];
+  role: (typeof Roles)[keyof typeof Roles] | null;
   access?: boolean;
 }
 

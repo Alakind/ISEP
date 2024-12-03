@@ -4,14 +4,17 @@ import "../styles/pagination.css"
 function Pagination({ itemsPerPage, totalItems, setCurrentPage, currentPage } : Props) {
   const pageNumbers: number[] = [];
 
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
+  if (itemsPerPage != -1) {
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+  } else {
+    pageNumbers.push(1);
   }
   const lastPage = pageNumbers[pageNumbers.length-1];
 
   const handleClick = (e, number): void => {
     e.preventDefault();
-    console.log(number);
     setCurrentPage(number);
   }
 
@@ -120,11 +123,11 @@ function Pagination({ itemsPerPage, totalItems, setCurrentPage, currentPage } : 
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination justify-content-end">
-        <li key={0} className={`page-item ${currentPage=== 1 ? "disabled" : ""}`}>
+        <li className={`page-item ${currentPage=== 1 ? "disabled" : ""}`}>
           <a onClick={(e) => handleClick(e, currentPage-1)} className="page-link" href="#"> <i className="bi bi-caret-left"></i></a>
         </li>
         {
-          lastPage <= 7 ?
+          lastPage <= 7 || itemsPerPage == -1 ?
           allPages() :
             (currentPage <= 4 ?
               pagesLeft() :
@@ -134,7 +137,7 @@ function Pagination({ itemsPerPage, totalItems, setCurrentPage, currentPage } : 
               )
             )
         }
-        <li key={lastPage+1} className={`page-item ${currentPage=== lastPage ? "disabled" : ""}`}>
+        <li className={`page-item ${currentPage=== lastPage ? "disabled" : ""}`}>
           <a onClick={(e) => handleClick(e, currentPage+1)} className="page-link" href="#"><i className="bi bi-caret-right"></i></a>
         </li>
       </ul>

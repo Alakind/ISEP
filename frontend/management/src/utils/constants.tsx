@@ -25,4 +25,5 @@ export const Roles = {
   RECRUITER: "Recruiter",
   INTERVIEWER: "Interviewer",
   ADMIN: "Admin",
+  NO_ACCESS: "-"
 };

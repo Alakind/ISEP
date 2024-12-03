@@ -18,7 +18,7 @@ function UsersTable({ users }: Props) {
     <>
       <table className="table table-striped">
         <TableHead columns={columns} handleSorting={handleSorting} />
-        <TableBody columns={columns} tableData={tableData} />
+        <TableBody columns={columns} tableData={users} />
       </table>
     </>
   );
