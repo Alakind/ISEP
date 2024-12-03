@@ -14,4 +14,11 @@ export interface UserInterface {
   email: string;
   id: string;
   role: (typeof Roles)[keyof typeof Roles];
+  access?: boolean;
+}
+
+export interface Column {
+  label: string;
+  accessor: string;
+  sortable: boolean;
 }

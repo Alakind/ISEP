@@ -1,0 +1,15 @@
+.form-select {
+    width: 80px;
+    height: inherit;
+}
+
+.items-per-page-select {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    margin-right: 50px;
+}
+
+.items-per-page-select>label {
+    margin-right: 10px;
+}
