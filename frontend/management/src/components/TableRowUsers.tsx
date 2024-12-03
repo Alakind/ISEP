@@ -1,12 +1,28 @@
 import {Column, UserInterface} from "../utils/types.tsx";
+import RoleSelectContainer from "../containers/RoleSelectContainer.tsx";
 
 function TableRowUsers({data, columns} : Props) {
   return (
     <tr>
       {columns.map(({ accessor }) => {
-        let value = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+        if (accessor == "role") {
+          let disabled = false;
+          if (data.id == "12345678901" /* FIXME to this currentUser.id*/) {
+            disabled = true
+          }
 
-        return <td key={accessor}>{value}</td>; //FIXME make the select disabled if current user
+          const subUrl =  "/user/" + data.id;
+          return (
+            <td key={accessor}>
+              <span className="">
+                <RoleSelectContainer subUrl={subUrl} disabled={disabled} initialRole={data.role}/>
+              </span>
+            </td>
+          );
+        } else {
+          let value = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+          return <td key={accessor}>{value}</td>;
+        }
       })}
     </tr>
   )

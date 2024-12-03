@@ -1,6 +1,7 @@
 //https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
 
 import {ApplicantInterface, UserInterface} from "./types.tsx";
+import {Roles} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 export async function updateAccess(subUrl: string, access: boolean): Promise<UserInterface> {
@@ -16,6 +17,24 @@ export async function updateAccess(subUrl: string, access: boolean): Promise<Use
 
   if (!response.ok) {
     throw new Error(`Failed to update access: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+export async function updateRole(subUrl: string, role: Roles): Promise<UserInterface> {
+  const response: Response = await fetch(`${baseUrl}${subUrl}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      role: role.toString()
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update role: ${response.statusText}`);
   }
 
   return await response.json();

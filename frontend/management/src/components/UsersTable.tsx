@@ -1,4 +1,4 @@
-import {Column, UserInterface} from "../utils/types";
+import {UserInterface} from "../utils/types";
 import { useSortableTable } from "../utils/useSortableTable.tsx";
 import TableBodyContainer from "../containers/TableBodyContainer.tsx";
 import TableHeadContainer from "../containers/TableHeadContainer.tsx";
@@ -12,7 +12,7 @@ function UsersTable({ users }: Props) {
     <>
       <table className="table table-striped">
         <TableHeadContainer columns={userColumns} handleSorting={handleSorting} />
-        <TableBodyContainer columns={userColumns} tableData={users} />
+        <TableBodyContainer columns={userColumns} tableData={tableData} />
       </table>
     </>
   );

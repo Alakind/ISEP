@@ -24,7 +24,8 @@ function Header({currentPage, urlPrefix} : Props) {
                   <a className={`nav-link nav-link--mod ${currentPage == "assessments" ? "active" : ""}`} href={`${urlPrefix}/assessments`}><i className="bi bi-clipboard"></i>Assessments</a>
                 </li>
                 <li className="nav-item">
-                  <a className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} href={`${urlPrefix}/users`}><i className="bi bi-person-rolodex"></i>Roles</a>
+                  {/*TODO hide this tab if the logged person doesn't have access (isn't an admin)*/}
+                  <a className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} href={`${urlPrefix}/users`}><i className="bi bi-person-rolodex"></i>Users</a>
                 </li>
               </ul>
               <span className="navbar-text navbar-text--mod">
