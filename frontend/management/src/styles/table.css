@@ -39,11 +39,6 @@
     color: #43434499;
 }
 
-.table__body__access {
-    display: flex;
-    align-items: center;
-}
-
 .table-striped>tbody>tr:last-child>td {
     border-style: none;
 }

@@ -2,23 +2,17 @@ import {Column, UserInterface} from "../utils/types";
 import { useSortableTable } from "../utils/useSortableTable.tsx";
 import TableBodyContainer from "../containers/TableBodyContainer.tsx";
 import TableHeadContainer from "../containers/TableHeadContainer.tsx";
+import {userColumns} from "../utils/constants.tsx";
 
 function UsersTable({ users }: Props) {
-
-  const columns: Column[] = [
-    {label: "Name", accessor: "name", sortable: true},
-    {label: "Email", accessor: "email", sortable: true},
-    {label: "Role", accessor: "role", sortable: true},
-    {label: "Access", accessor: "access", sortable: false}
-  ]
 
   const [tableData, handleSorting] = useSortableTable(users);
 
   return (
     <>
       <table className="table table-striped">
-        <TableHeadContainer columns={columns} handleSorting={handleSorting} />
-        <TableBodyContainer columns={columns} tableData={users} />
+        <TableHeadContainer columns={userColumns} handleSorting={handleSorting} />
+        <TableBodyContainer columns={userColumns} tableData={users} />
       </table>
     </>
   );
