@@ -7,7 +7,7 @@ function TableBody({ columns, tableData } : Props) {
   return (
     <tbody className="table__body">
     {tableData.map((data : UserInterface | ApplicantInterface)  => {
-      if ("role" in data) { // Users
+      if ("role" in data) { // Users //TODO find another way of checking for a certain interface with checking all accessors
         return (
           <TableRowUsers key={data.id} data={data} columns={columns}/>
         );

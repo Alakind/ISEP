@@ -23,7 +23,7 @@ function Pagination({ pageNumbers, itemsPerPage, lastPage, currentPage, handleCl
                 )
             )
         }
-        <li className={`page-item ${currentPage=== lastPage ? "disabled" : ""}`}>
+        <li className={`page-item ${currentPage === lastPage ? "disabled" : ""}`}>
           <a onClick={(e) => handleClick(e, currentPage+1)} className="page-link" href="#"><i className="bi bi-caret-right"></i></a>
         </li>
       </ul>

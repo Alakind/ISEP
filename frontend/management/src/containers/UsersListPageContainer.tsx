@@ -12,7 +12,7 @@ function UsersListContainer() {
 
   const fetchData = async() => {
     try {
-      //FIXME uncomment this when there is a working api
+      //TODO uncomment this when there is a working api
       // const res = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy);
 
       const res = {

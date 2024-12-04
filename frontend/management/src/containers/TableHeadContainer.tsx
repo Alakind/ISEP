@@ -7,6 +7,7 @@ function TableHeadContainer({ columns, setOrderBy } : Props) {
   const [order, setOrder] = useState("asc");
   const handleSorting = (accessor) => {
     const sortOrder = accessor === sortField && order === "asc" ? "desc" : "asc";
+    console.log(sortOrder, accessor, sortField);
     setSortField(accessor);
     setOrder(sortOrder);
     setOrderBy(`${accessor}:${sortOrder}`)

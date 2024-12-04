@@ -7,7 +7,7 @@ function TableRowUsers({data, columns} : Props) {
       {columns.map(({ accessor }) => {
         if (accessor == "role") {
           let disabled = false;
-          if (data.id == "12345678901" /* FIXME to this currentUser.id*/) {
+          if (data.id == "12345678901" /* TODO to this currentUser.id*/) {
             disabled = true
           }
 
