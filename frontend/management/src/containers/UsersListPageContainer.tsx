@@ -1,29 +1,68 @@
 import UsersListPage from "../components/UsersListPage";
 import { UserInterface } from "../utils/types";
+import {getUsers} from "../utils/apiFunctions.tsx";
+import {toast} from "react-toastify";
 
 function UsersListContainer() {
-  const users: UserInterface[] = [
-    {
-      name: "Jurre",
-      id: "1234567890",
-      email: "Jurre@email.com",
-      role: "admin",
-    },
-    {
-      name: "Chana",
-      id: "1234567890",
-      email: "Chana@email.com",
-      role: "Interviewer",
-    },
-    {
-      name: "Nico",
-      id: "1234567890",
-      email: "Nico@email.com",
-      role: "Recruiter",
-    },
-  ];
+  let initialData: UserInterface[] = [];
+  const initialCurrentPage = 1;
+  const initialItemsPerPage = 10;
+  let initialTotalItems = 0;
+  const initialOrderBy = "-name"
 
-  return <UsersListPage users={users} />;
+  const fetchData = async() => {
+    try {
+      //TODO uncomment this when there is a working api
+      // const res = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy);
+
+      const res = {
+        data: [
+          {
+            name: "Fenna",
+            id: "12345678909",
+            email: "Fenna@email.com",
+            role: null,
+            access: false,
+          },
+          {
+            name: "Jurre",
+            id: "12345678901",
+            email: "Jurre@email.com",
+            role: "Admin",
+            access: false,
+          },
+          {
+            name: "Channa",
+            id: "12345678902",
+            email: "Channa@email.com",
+            role: "Recruiter",
+            access: true,
+          },
+          {
+            name: "Nico",
+            id: "12345678903",
+            email: "Nico@email.com",
+            role: "Interviewer",
+          },
+          {
+            name: "FallbackAdmin",
+            id: "523",
+            email: "fallbackAdmin@infosupport.nl",
+            role: "Admin",
+            access: true,
+          },
+        ],
+        totalItems: 5
+      }
+      initialData = res.data;
+      initialTotalItems =res.totalItems;
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+  fetchData();
+
+  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems} initialOrderBy={initialOrderBy}/>;
 }
 
 export default UsersListContainer;

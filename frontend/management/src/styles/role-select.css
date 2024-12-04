@@ -1,0 +1,19 @@
+.role-select__select {
+    background-color: var(--transparent);
+    border-color: var(--transparent);
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.role-select__select>option {
+    color: var(--text-black);
+}
+
+.role-select__select--disabled {
+    opacity: 0.5;
+    margin-left: 5px;
+}
+
+.role-select__select:focus-visible {
+    outline: -webkit-focus-ring-color auto 0;
+}

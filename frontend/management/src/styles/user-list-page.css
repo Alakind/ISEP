@@ -1,0 +1,9 @@
+.user-list-page__inner {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-list-page {
+    width: 60%;
+    min-width: 700px;
+}

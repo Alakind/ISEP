@@ -7,13 +7,13 @@
     align-items: center;
   }
 
-.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
+.bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-sun, .bi-question-circle, .bi-flag {
     font-size: 35px;
     color: var(--icons);
     margin: 0 10px;
 }
 
-.bi-arrow-right-circle, .bi-moon, .bi-question-circle, .bi-flag {
+.bi-arrow-right-circle, .bi-moon, .bi-sun, .bi-question-circle, .bi-flag {
     cursor: pointer;
 }
 

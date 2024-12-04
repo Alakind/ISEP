@@ -1,34 +1,23 @@
-import { UserInterface } from "../utils/types";
+import {UserInterface} from "../utils/types";
+import TableBodyContainer from "../containers/TableBodyContainer.tsx";
+import TableHeadContainer from "../containers/TableHeadContainer.tsx";
+import {userColumns} from "../utils/constants.tsx";
+import React from "react";
 
-function UsersTable({ users }: UsersTableProps) {
+function UsersTable({ data, setOrderBy }: Props) {
   return (
     <>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Role</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => {
-            return (
-              <tr key={user.id}>
-                <th scope="row">{user.name}</th>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-              </tr>
-            );
-          })}
-        </tbody>
+      <table className="table table-striped">
+        <TableHeadContainer columns={userColumns} setOrderBy={setOrderBy} />
+        <TableBodyContainer columns={userColumns} tableData={data} />
       </table>
     </>
   );
 }
 
-interface UsersTableProps {
-  users: UserInterface[];
+interface Props {
+  data: UserInterface[];
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default UsersTable;

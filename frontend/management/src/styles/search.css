@@ -1,0 +1,21 @@
+.user-list__div {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.user-list__form {
+    width: 300px;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.btn--search {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.input--mod {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
