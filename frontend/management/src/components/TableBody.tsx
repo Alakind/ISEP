@@ -3,7 +3,7 @@ import "../styles/table.css"
 import TableRowUsers from "./TableRowUsers.tsx";
 import TableRowApplicants from "./TableRowApplicants.tsx";
 
-function TableBody({ columns, tableData } : Props) {
+function TableBody({ columns, tableData, goToApplicantPage } : Props) {
   return (
     <tbody className="table__body">
     {tableData.map((data : UserInterface | ApplicantInterface)  => {
@@ -13,7 +13,7 @@ function TableBody({ columns, tableData } : Props) {
         );
       } else if ("status" in data) { //Applicants
         return (
-          <TableRowApplicants key={data.id} data={data} columns={columns}/>
+          <TableRowApplicants key={data.id} data={data} columns={columns} goToApplicantPage={goToApplicantPage}/>
         );
       } else {
         return null;
@@ -25,7 +25,8 @@ function TableBody({ columns, tableData } : Props) {
 
 interface Props {
   columns: Column[];
-  tableData: UserInterface[] | ApplicantInterface[];
+  tableData: UserInterface[] | ApplicantInterface[]
+  goToApplicantPage: (arg0: string) => void;
 }
 
 export default TableBody

@@ -1,7 +1,7 @@
 //https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
 
 import {ApplicantInterface, UserInterface} from "./types.tsx";
-import {Roles} from "./constants.tsx"
+import {Roles, ApplicantStatuses} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 export async function updateAccess(subUrl: string, access: boolean): Promise<UserInterface> {
@@ -80,7 +80,7 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
   return {data: data, totalItems: totalItems} ;
 }
 
-export async function getApplicants(currentPage: number, itemsPerPage: number): Promise<ApplicantInterface[]> {
+export async function getApplicants(currentPage: number, itemsPerPage: number): Promise<{data: ApplicantInterface[], totalItems: number}> {
   const response: Response = await fetch(`${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}`, {
     method: "GET",
     headers: {
@@ -90,6 +90,35 @@ export async function getApplicants(currentPage: number, itemsPerPage: number): 
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve applicants`);
+  }
+
+  const totalItems: number = parseInt(response.headers.get("X-Total-Count"));
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve users`);
+  }
+
+  return {data: data, totalItems: totalItems} ;
+}
+
+export async function addApplicant(applicant: ApplicantInterface) : Promise<{data: ApplicantInterface}> {
+  const response: Response = await fetch(`${baseUrl}/applicant`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: applicant.name,
+      email: applicant.email,
+      status: applicant.status.toString(),
+      preferredLanguage: applicant.preferredLanguage,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add applicant: ${response.statusText}`);
   }
 
   return await response.json();

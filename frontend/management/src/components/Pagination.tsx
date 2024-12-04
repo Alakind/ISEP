@@ -9,6 +9,8 @@ function Pagination({ pageNumbers, itemsPerPage, lastPage, currentPage, handleCl
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination justify-content-end">
+        {/*TODO add 10 previous and 10 next*/}
+        {/*TODO Add go to specific page box*/}
         <li className={`page-item ${currentPage=== 1 ? "disabled" : ""}`}>
           <a onClick={(e) => handleClick(e, currentPage-1)} className="page-link" href="#"> <i className="bi bi-caret-left"></i></a>
         </li>

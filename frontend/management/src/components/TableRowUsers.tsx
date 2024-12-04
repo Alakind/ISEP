@@ -20,7 +20,7 @@ function TableRowUsers({data, columns} : Props) {
             </td>
           );
         } else {
-          let value = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+          const value = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
           return <td key={accessor}>{value}</td>;
         }
       })}

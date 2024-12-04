@@ -8,7 +8,7 @@ function UsersListContainer() {
   const initialCurrentPage = 1;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
-  const initialOrderBy = "-name"
+  const initialOrderBy = "name:desc"
 
   const fetchData = async() => {
     try {
@@ -22,21 +22,18 @@ function UsersListContainer() {
             id: "12345678909",
             email: "Fenna@email.com",
             role: null,
-            access: false,
           },
           {
             name: "Jurre",
             id: "12345678901",
             email: "Jurre@email.com",
             role: "Admin",
-            access: false,
           },
           {
             name: "Channa",
             id: "12345678902",
             email: "Channa@email.com",
             role: "Recruiter",
-            access: true,
           },
           {
             name: "Nico",
@@ -49,7 +46,6 @@ function UsersListContainer() {
             id: "523",
             email: "fallbackAdmin@infosupport.nl",
             role: "Admin",
-            access: true,
           },
         ],
         totalItems: 5

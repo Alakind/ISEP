@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { ApplicantInterface } from "../utils/types";
 import ApplicantPage from "../components/ApplicantPage";
+import {PreferredLanguages} from "../utils/constants.tsx";
 
 function ApplicantPageContainer() {
   const { id } = useParams();
@@ -17,6 +18,10 @@ function ApplicantPageContainer() {
     name: "Sasha",
     surname: "Surname",
     id: "1234567890",
+    email: "Sasha@email.com",
+    score: 100,
+    status: "AppInvitedStart",
+    preferredLanguage: PreferredLanguages.JAVA
   };
 
   return (

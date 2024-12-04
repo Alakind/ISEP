@@ -30,21 +30,18 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               id: "12345678909",
               email: "Fenna@email.com",
               role: null,
-              access: false,
             },
             {
               name: "Jurre",
               id: "12345678901",
               email: "Jurre@email.com",
               role: "Admin",
-              access: false,
             },
             {
               name: "Channa",
               id: "12345678902",
               email: "Channa@email.com",
               role: "Recruiter",
-              access: true,
             },
             {
               name: "Nico",
@@ -57,7 +54,6 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               id: "523",
               email: "fallbackAdmin@infosupport.nl",
               role: "Admin",
-              access: true,
             },
           ],
           totalItems: 90

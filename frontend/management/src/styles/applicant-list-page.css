@@ -1,0 +1,9 @@
+.applicant-list-page__inner {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.applicant-list-page {
+    width: 60%;
+    min-width: 900px;
+}
