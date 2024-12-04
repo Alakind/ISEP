@@ -1,14 +1,10 @@
 import {UserInterface} from "../utils/types";
-import { useSortableTable } from "../utils/useSortableTable.tsx";
 import TableBodyContainer from "../containers/TableBodyContainer.tsx";
 import TableHeadContainer from "../containers/TableHeadContainer.tsx";
 import {userColumns} from "../utils/constants.tsx";
 import React from "react";
 
 function UsersTable({ data, setOrderBy }: Props) {
-
-  const [tableData, handleSorting] = useSortableTable(data);
-
   return (
     <>
       <table className="table table-striped">

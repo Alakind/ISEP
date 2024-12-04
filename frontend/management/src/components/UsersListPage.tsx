@@ -1,5 +1,4 @@
 import { UserInterface } from "../utils/types";
-import UsersTable from "./UsersTable";
 import SearchContainer from "../containers/SearchContainer.tsx";
 import React, {useEffect, useState} from "react";
 import PaginationContainer from "../containers/PaginationContainer.tsx";
@@ -7,6 +6,7 @@ import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
+import UsersTableContainer from "../containers/UsersTableContainer.tsx";
 
 
 function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
@@ -80,7 +80,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
         loading ?
           <p>Loading...</p> : //TODO implement temp table
           <>
-            <UsersTable data={data} setOrderBy={setOrderBy} />
+            <UsersTableContainer data={data} setOrderBy={setOrderBy} />
             <div className="user-list-page">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
