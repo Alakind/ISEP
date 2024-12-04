@@ -74,14 +74,14 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
   }, [currentPage, itemsPerPage, orderBy]);
 
   return (
-    <div>
+    <div className="user-list-page">
       <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} />
       {
         loading ?
           <p>Loading...</p> : //TODO implement temp table
           <>
             <UsersTableContainer data={data} setOrderBy={setOrderBy} />
-            <div className="user-list-page">
+            <div className="user-list-page__inner">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>

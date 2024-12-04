@@ -119,7 +119,7 @@ main {
     display: flex;
     padding: 25px;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     overflow-y: auto;
     margin-right: 5px;
 }
