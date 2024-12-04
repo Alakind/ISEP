@@ -1,6 +1,6 @@
 import {Column} from "../utils/types.tsx";
 
-function TableHead({ columns, sortField, order, handleSortingChange } : Props) {
+function TableHead({ columns, sortField, order, handleSorting } : Props) {
   return (
     <thead className="table__head">
       <tr>
@@ -12,7 +12,7 @@ function TableHead({ columns, sortField, order, handleSortingChange } : Props) {
                   ? "down"
                   : "default"
               : "";
-            return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSortingChange(accessor) : null}>{label}</th>
+            return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSorting(accessor) : null}>{label}</th>
           }
         )}
       </tr>
@@ -24,6 +24,6 @@ interface Props {
   columns: Column[];
   sortField: string;
   order: string;
-  handleSortingChange: (accessor: string) => void;
+  handleSorting: (accessor: string) => void;
 }
 export default TableHead

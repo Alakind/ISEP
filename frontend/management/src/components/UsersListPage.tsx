@@ -21,7 +21,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getUsers(currentPage, itemsPerPage);
+        // const res = await getUsers(currentPage, itemsPerPage, orderBy);
 
         const res = {
           data: [
@@ -71,7 +71,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
       }
     }
     fetchData();
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, orderBy]);
 
   return (
     <div>
@@ -80,7 +80,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
         loading ?
           <p>Loading...</p> : //TODO implement temp table
           <>
-            <UsersTable users={data} />
+            <UsersTable data={data} setOrderBy={setOrderBy} />
             <div className="user-list-page">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>

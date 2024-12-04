@@ -1,24 +1,24 @@
 import {Column} from "../utils/types.tsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import TableHead from "../components/TableHead.tsx";
 
-function TableHeadContainer({ columns, handleSorting } : Props) {
+function TableHeadContainer({ columns, setOrderBy } : Props) {
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
-  const handleSortingChange = (accessor) => {
+  const handleSorting = (accessor) => {
     const sortOrder = accessor === sortField && order === "asc" ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
-    handleSorting(accessor, sortOrder);
+    setOrderBy(`${accessor}:${sortOrder}`)
   };
 
   return (
-   <TableHead columns={columns} sortField={sortField} order={order} handleSortingChange={handleSortingChange}/>
+   <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting}/>
   )
 }
 
 interface Props {
   columns: Column[];
-  handleSorting: (accessor: string, sortOrder: string) => void;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 export default TableHeadContainer

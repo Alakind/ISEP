@@ -1,6 +1,5 @@
 import UsersListPage from "../components/UsersListPage";
 import { UserInterface } from "../utils/types";
-import {useEffect, useState} from "react";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
