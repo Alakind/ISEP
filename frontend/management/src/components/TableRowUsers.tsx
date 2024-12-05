@@ -14,9 +14,7 @@ function TableRowUsers({data, columns} : Props) {
           const subUrl =  "/user/" + data.id;
           return (
             <td key={accessor}>
-              <span className="">
                 <RoleSelectContainer subUrl={subUrl} disabled={disabled} initialRole={data.role}/>
-              </span>
             </td>
           );
         } else {
