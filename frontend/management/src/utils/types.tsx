@@ -5,7 +5,7 @@ export interface ApplicantInterface {
   name: string;
   email: string;
   status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
-  score: number;
+  score: number | null | undefined;
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages]
 }
 

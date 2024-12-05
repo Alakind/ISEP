@@ -1,18 +1,18 @@
 import "../styles/search.css"
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {ApplicantInterface, UserInterface} from "../utils/types.tsx";
 import {toast} from "react-toastify";
 import {getSearch} from "../utils/apiFunctions.tsx";
 import Search from "../components/Search.tsx";
 
-function SearchContainer({ setData, setTotalItems, setLoading, currentPage, itemsPerPage } : Props ) {
+function SearchContainer({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl } : Props ) {
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getSearch(currentPage, itemsPerPage, "/user", query);
+        // const res = await getSearch(currentPage, itemsPerPage, subUrl, query);
         const res = {
           data: [
             {
@@ -20,14 +20,12 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
               id: "12345678901",
               email: "Jurre@email.com",
               role: "Admin",
-              access: false,
             },
             {
               name: "Channa",
               id: "12345678902",
               email: "Channa@email.com",
               role: "Recruiter",
-              access: true,
             },
             {
               name: "Nico",
@@ -40,21 +38,18 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
               id: "523",
               email: "fallbackAdmin@infosupport.nl",
               role: "Admin",
-              access: true,
             },
             {
               name: "Jurre2",
               id: "123456789012",
               email: "Jurre@email.com",
               role: "Admin",
-              access: false,
             },
             {
               name: "Channa2",
               id: "123456789022",
               email: "Channa@email.com",
               role: "Recruiter",
-              access: true,
             },
             {
               name: "Nico2",
@@ -67,10 +62,9 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
               id: "5232",
               email: "fallbackAdmin@infosupport.nl",
               role: "Admin",
-              access: true,
             },
           ],
-          totalItems: 50}
+          totalItems: 8}
 
         setData(res.data);
         setTotalItems(res.totalItems);
@@ -95,7 +89,7 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
   // }, [filteredData]);
 
   const clearSearch = () => {
-    setQuery("")
+    setQuery("");
   }
 
   return (
@@ -109,6 +103,7 @@ interface Props {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   currentPage: number;
   itemsPerPage: number;
+  subUrl: string;
 }
 
 export default SearchContainer

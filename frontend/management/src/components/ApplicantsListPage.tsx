@@ -80,7 +80,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
 
   return (
     <div className="applicant-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} />
+      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} />
       {
         loading ?
           <p>Loading...</p> : //TODO implement temp table
