@@ -69,7 +69,9 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
 
         setData(res.data);
         setTotalItems(res.totalItems);
-        handleIsSelectedChange(res.data);
+        if (handleIsSelectedChange != undefined) {
+          handleIsSelectedChange(res.data);
+        }
       } catch (error) {
         toast.error(error.message)
       } finally {
@@ -106,7 +108,7 @@ interface Props {
   currentPage: number;
   itemsPerPage: number;
   subUrl: string;
-  handleIsSelectedChange: (data: UserInterface[]) => void;
+  handleIsSelectedChange?: (data: UserInterface[]) => void;
 }
 
 export default SearchContainer
