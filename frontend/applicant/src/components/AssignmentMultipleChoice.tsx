@@ -2,7 +2,7 @@ import { AssignmentMultipleChoiceInterface } from "../utils/types";
 import {useState} from "react";
 
 function AssignmentMultipleChoice({ assignment }: Props) {
-  const [isChecked, setIsChecked] = useState(
+  const [isChecked, setIsChecked] = useState<boolean[]>(
       Array(assignment.options.length).fill(false)
   );
 

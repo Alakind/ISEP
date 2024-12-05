@@ -5,14 +5,14 @@ import {toast} from "react-toastify";
 import {Roles} from "../utils/constants.tsx"
 
 
-function RoleSelectContainer({ subUrl, disabled, initialRole} : Props) {
-  const [selectedOption, setSelectedOption] = useState<Roles>(initialRole);
+function RoleSelectContainer({ id, subUrl, disabled, initialRole} : Props) {
+  const [selectedOption, setSelectedOption] = useState<Roles|undefined>(initialRole);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function changeState(e) {
     setLoading(true);
     try {
-      await updateRole(subUrl, e.target.value);
+      await updateRole(id, subUrl, e.target.value);
       setSelectedOption(e.target.value);
     } catch (error: any) {
       toast.error(error.message);
@@ -30,7 +30,10 @@ function RoleSelectContainer({ subUrl, disabled, initialRole} : Props) {
 }
 
 interface Props {
-  
+  id: string;
+  subUrl: string;
+  disabled: boolean;
+  initialRole: Roles | undefined;
 }
 
 export default RoleSelectContainer

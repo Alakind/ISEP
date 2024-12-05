@@ -1,44 +1,11 @@
 //https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
 
 import {ApplicantInterface, UserInterface} from "./types.tsx";
-import {Roles, ApplicantStatuses} from "./constants.tsx"
+import {Roles} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
-export async function updateAccess(subUrl: string, access: boolean): Promise<UserInterface> {
-  const response: Response = await fetch(`${baseUrl}${subUrl}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      access: access
-    }),
-  });
 
-  if (!response.ok) {
-    throw new Error(`Failed to update access: ${response.statusText}`);
-  }
-
-  return await response.json();
-}
-
-export async function updateRole(subUrl: string, role: Roles): Promise<UserInterface> {
-  const response: Response = await fetch(`${baseUrl}${subUrl}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      role: role.toString()
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to update role: ${response.statusText}`);
-  }
-
-  return await response.json();
-}
+// ------------------------------- GENERAL ----------------------------------//
 
 export async function getSearch(currentPage: number, itemsPerPage: number, subUrl: string, keyword: string): Promise<{data: ApplicantInterface[] | UserInterface[], totalItems: number}> {
   const response: Response = await fetch(`${baseUrl}${subUrl}?page=${currentPage}&limit=${itemsPerPage}&search=${keyword}`, {
@@ -58,27 +25,7 @@ export async function getSearch(currentPage: number, itemsPerPage: number, subUr
   return {data: data, totalItems: totalItems};
 }
 
-export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string): Promise<{data: UserInterface[], totalItems: number}> {
-  let API_URL = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&orderBy="+ orderBy : ""}`;
-  if (itemsPerPage == -1) {
-    API_URL = `${baseUrl}/user${orderBy != "" ? "?orderBy="+ orderBy : ""}`;
-  }
-  const response: Response = await fetch(API_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const totalItems: number = parseInt(response.headers.get("X-Total-Count"));
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve users`);
-  }
-
-  return {data: data, totalItems: totalItems} ;
-}
+// ------------------------------ APPLICANT ---------------------------------//
 
 export async function getApplicants(currentPage: number, itemsPerPage: number): Promise<{data: ApplicantInterface[], totalItems: number}> {
   const response: Response = await fetch(`${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}`, {
@@ -123,3 +70,69 @@ export async function addApplicant(applicant: ApplicantInterface) : Promise<{dat
 
   return await response.json();
 }
+
+// --------------------------------- USER -----------------------------------//
+
+export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string): Promise<{data: UserInterface[], totalItems: number}> {
+  let API_URL = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&orderBy="+ orderBy : ""}`;
+  if (itemsPerPage == -1) {
+    API_URL = `${baseUrl}/user${orderBy != "" ? "?orderBy="+ orderBy : ""}`;
+  }
+  const response: Response = await fetch(API_URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const totalItems: number = parseInt(response.headers.get("X-Total-Count"));
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve users`);
+  }
+
+  return {data: data, totalItems: totalItems} ;
+}
+
+export async function updateRole(id: string, subUrl: string, role: Roles): Promise<UserInterface> {
+  if (id == 523) {
+    throw new Error("The standard admin can't be deleted");
+  }
+  const response: Response = await fetch(`${baseUrl}${subUrl}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      role: role.toString()
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update role: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+export async function deleteUser(id: string): Promise<string> {
+  //TODO check if it isn't the fallback admin
+  if (id == 523) {
+    throw new Error("The standard admin can't be deleted");
+  }
+  const response: Response = await fetch(`${baseUrl}/user/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete user: ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+

@@ -1,8 +1,8 @@
-import {Column} from "../utils/types.tsx";
+import {Selection, Column} from "../utils/types.tsx";
 import React, {useState} from "react";
 import TableHead from "../components/TableHead.tsx";
 
-function TableHeadContainer({ columns, setOrderBy } : Props) {
+function TableHeadContainer({ columns, setOrderBy, setIsSelected } : Props) {
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
   const handleSorting = (accessor) => {
@@ -12,13 +12,25 @@ function TableHeadContainer({ columns, setOrderBy } : Props) {
     setOrderBy(`${accessor}:${sortOrder}`)
   };
 
+  const handleSelectAll = (value: boolean) => {
+    setIsSelected((prevState: Selection[]) => {
+      console.log(prevState)
+      return prevState.map(item => ({
+
+        ...item,
+        checked: value,
+      }));
+    });
+  };
+
   return (
-   <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting}/>
+   <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting} handleSelectAll={handleSelectAll}/>
   )
 }
 
 interface Props {
   columns: Column[];
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  setIsSelected: React.Dispatch<React.SetStateAction<Selection[]>>;
 }
 export default TableHeadContainer

@@ -14,13 +14,12 @@ function RoleSelect({selectedOption, handleSelect, disabled} : Props) {
             <option value={Roles.INTERVIEWER.toString()}>{Roles.INTERVIEWER.toString()}</option>
           </select>
       }
-
     </span>
   )
 }
 
 interface Props {
-  selectedOption: Roles;
+  selectedOption: Roles|undefined;
   handleSelect: (e) => void;
   disabled: boolean;
 }

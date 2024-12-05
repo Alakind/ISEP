@@ -1,7 +1,8 @@
 import UsersListPage from "../components/UsersListPage";
-import { UserInterface } from "../utils/types";
+import {Selection, UserInterface} from "../utils/types";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
+import {Roles} from "../utils/constants.tsx";
 
 function UsersListContainer() {
   let initialData: UserInterface[] = [];
@@ -9,6 +10,13 @@ function UsersListContainer() {
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
   const initialOrderBy = "name:desc"
+  let initialSelection: Selection[] = [];
+
+  function handleIsSelectedChange(data: UserInterface[]) {
+    for (let i = 0; i < data.length; i++) {
+      initialSelection.push({id: data[i].id, checked: false});
+    }
+  }
 
   const fetchData = async() => {
     try {
@@ -21,44 +29,45 @@ function UsersListContainer() {
             name: "Fenna",
             id: "12345678909",
             email: "Fenna@email.com",
-            role: null,
+            role: undefined,
           },
           {
             name: "Jurre",
             id: "12345678901",
             email: "Jurre@email.com",
-            role: "Admin",
+            role: Roles.ADMIN,
           },
           {
             name: "Channa",
             id: "12345678902",
             email: "Channa@email.com",
-            role: "Recruiter",
+            role: Roles.RECRUITER,
           },
           {
             name: "Nico",
             id: "12345678903",
             email: "Nico@email.com",
-            role: "Interviewer",
+            role: Roles.INTERVIEWER,
           },
           {
             name: "FallbackAdmin",
             id: "523",
             email: "fallbackAdmin@infosupport.nl",
-            role: "Admin",
+            role: Roles.ADMIN,
           },
         ],
         totalItems: 5
       }
       initialData = res.data;
       initialTotalItems =res.totalItems;
+      handleIsSelectedChange(initialData);
     } catch (error) {
       toast.error(error.message)
     }
   }
   fetchData();
 
-  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems} initialOrderBy={initialOrderBy}/>;
+  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems} initialOrderBy={initialOrderBy} initialSelection={initialSelection}/>;
 }
 
 export default UsersListContainer;

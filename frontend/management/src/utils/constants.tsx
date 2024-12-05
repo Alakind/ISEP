@@ -41,6 +41,7 @@ export const Roles = {
 };
 
 export const userColumns: Column[] = [
+  {label: "Select", accessor: "select", sortable: false},
   {label: "Name", accessor: "name", sortable: true},
   {label: "Email", accessor: "email", sortable: true},
   {label: "Role", accessor: "role", sortable: true},

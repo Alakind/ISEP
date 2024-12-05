@@ -13,11 +13,16 @@ export interface UserInterface {
   id: string;
   name: string;
   email: string;
-  role: (typeof Roles)[keyof typeof Roles] | null;
+  role: (typeof Roles)[keyof typeof Roles] | undefined;
 }
 
 export interface Column {
   label: string;
   accessor: string;
   sortable: boolean;
+}
+
+export interface Selection {
+  id: string;
+  checked: boolean;
 }
