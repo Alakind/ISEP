@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/items-per-page.css"
 
 function ItemPerPageSelect({itemsPerPage, handleSelect} : Props) {

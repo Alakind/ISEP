@@ -14,7 +14,6 @@ function TableHeadContainer({ columns, setOrderBy, setIsSelected } : Props) {
 
   const handleSelectAll = (value: boolean) => {
     setIsSelected((prevState: Selection[]) => {
-      console.log(prevState)
       return prevState.map(item => ({
 
         ...item,

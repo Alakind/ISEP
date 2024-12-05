@@ -8,6 +8,7 @@ import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContaine
 import "../styles/user-list-page.css"
 import UsersTableContainer from "../containers/UsersTableContainer.tsx";
 import {Roles} from "../utils/constants.tsx";
+import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
 
 
 function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {
@@ -66,7 +67,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               role: Roles.ADMIN,
             },
           ],
-          totalItems: 5
+          totalItems: 90
         }
         handleIsSelectedChange(res.data);
         setData(res.data);
@@ -80,14 +81,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     fetchData();
   }, [currentPage, itemsPerPage, orderBy]);
 
-  /*setLoading(true);
-  try {
-    await deleteUser(id);
-  } catch (error: any) {
-    toast.error(error.message);
-  } finally {
-    setLoading(false);
-  }*/
+
 
   return (
     <div className="user-list-page">
@@ -98,6 +92,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
           <>
             <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected}  isSelected={isSelected}/>
             <div className="user-list-page__inner">
+              <BulkActionSelectContainer isSelected={isSelected}/>
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>

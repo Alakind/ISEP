@@ -117,7 +117,6 @@ export async function updateRole(id: string, subUrl: string, role: Roles): Promi
 }
 
 export async function deleteUser(id: string): Promise<string> {
-  //TODO check if it isn't the fallback admin
   if (id == 523) {
     throw new Error("The standard admin can't be deleted");
   }

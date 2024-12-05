@@ -23,8 +23,8 @@ function RoleSelectContainer({ id, subUrl, disabled, initialRole} : Props) {
 
   return (
     loading
-      ? <RoleSelect selectedOption={selectedOption} disabled={true} handleSelect={changeState}/>
-      : <RoleSelect selectedOption={selectedOption} disabled={disabled} handleSelect={changeState}/>
+      ? <RoleSelect id={id} selectedOption={selectedOption} disabled={true} handleSelect={changeState}/>
+      : <RoleSelect id={id} selectedOption={selectedOption} disabled={disabled} handleSelect={changeState}/>
 
   )
 }
