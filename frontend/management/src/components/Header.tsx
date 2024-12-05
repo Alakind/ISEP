@@ -9,7 +9,7 @@ function Header({currentPage, urlPrefix} : Props) {
       <span className="header__left">
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            <a className="navbar-brand" href={`${urlPrefix}/`}><img  src="../../public/favicon-180x180.png" width={30} alt="InfoSupport logo"/> Asserberus</a>
+            <a className="navbar-brand" href={`${urlPrefix}/`}><img  src={`${import.meta.env.VITE_DOMAIN}/favicon-180x180.png`} width={30} alt="InfoSupport logo"/> Asserberus</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
               <span>
                 <i className="bi bi-list"></i>
