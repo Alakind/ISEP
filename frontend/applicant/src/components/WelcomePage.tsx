@@ -1,11 +1,13 @@
-import InfoSupportLogo from "../components/infoSupportLogo";
+import InfoSupportLogo from "../components/InfoSupportLogo";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
+import CodeEditorContainer from "../containers/CodeEditorContainer";
 import "../styles/general.css";
 import "../styles/welcome.css";
 
 function WelcomePage({ handleStart }: Props) {
   return (
     <div className="welcomePage">
+      <CodeEditorContainer />
       {/* TODO put name of user here. */}
       <div className="logoContainer">
         <InfoSupportLogo />
@@ -13,10 +15,10 @@ function WelcomePage({ handleStart }: Props) {
       <h2>Welcome, Claire!</h2>
       <div className="infoTextContainer">
         <p>
-          to InfoSupport<sup>&reg;</sup> assessment. In this
-          assessment you will answer multiple-choice and coding questions.
-          You will have a maximum time of 02:00:00 to complete these. Once you
-          are ready to begin, press the 'Start' button.
+          to InfoSupport<sup>&reg;</sup> assessment. In this assessment you will
+          answer multiple-choice and coding questions. You will have a maximum
+          time of 02:00:00 to complete these. Once you are ready to begin, press
+          the 'Start' button.
         </p>
         <p>
           In case of any problems, please contact{" "}
