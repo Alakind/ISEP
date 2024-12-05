@@ -4,9 +4,7 @@ import HeaderContainer from "./containers/HeaderContainer";
 function App() {
   return (
     <div>
-      <header>
-        <HeaderContainer />
-      </header>
+      <HeaderContainer />
       <main>
         <Outlet />
       </main>

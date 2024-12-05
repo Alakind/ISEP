@@ -8,12 +8,16 @@
     --assigntment-menu: #344050bf;
     --text-primary: #faf9f6;
     --text-secondary: #b2b9c2;
+    --text-header: #faf9f6;
+    --text-header-hover: grey;
     --icons: white;
     --white-background-transparent: #ffffffd9;
     --transparent: #ffffff00;
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
-    --assigntment-menu-text: black;
+    --text-black: black;
+    --background-table-odd: #414040;
+    --background-table-even: #2f2e2e;
 }
 
 [data-theme="light"] {
@@ -25,12 +29,16 @@
     --assigntment-menu: rgba(20, 61, 108, 0.75);
     --text-primary: black;
     --text-secondary: white;
+    --text-header: #faf9f6;
+    --text-header-hover: black;
     --icons: white;
     --white-background-transparent: #ffffffd9;
     --transparent: #ffffff00;
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
-    --assigntment-menu-text: black;
+    --text-black: black;
+    --background-table-odd: #F2F2F2;
+    --background-table-even: white;
 }
 
 body, html {
@@ -102,5 +110,16 @@ html {
 }
 
 a {
-    color: var(--tertiary-color)
+    color: var(--tertiary-color);
+    cursor: pointer;
+ }
+
+main {
+    height: 100vh;
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    margin-right: 5px;
 }

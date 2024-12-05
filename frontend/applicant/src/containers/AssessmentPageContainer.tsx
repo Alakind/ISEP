@@ -12,11 +12,10 @@ function AssessmentPageContainer() {
   const [endOfAssessment, setEndOfAssessment] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  let initialAssignments: number[] = []
   const [currentAssignmentIndex, setCurrentAssignmentIndex] = useState<number[]>([0]);
 
   useEffect(() => {
-      const API_URL =  "https://localhost:8081/section"; //import.meta.env.VITE_API_APPLICANT_URL +
+      const API_URL =  import.meta.env.VITE_API_APPLICANT_URL + "/section";
 
       const fetchData = async () => {
           try {

@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { Themes } from "../utils/constants.tsx";
+import ThemeSwitch from "../components/ThemeSwitch.tsx";
 
-function ThemeSwitch() {
+function ThemeSwitchContainer() {
 
     const [theme, setTheme] = useState<Themes>(Themes.DARK);
 
@@ -12,7 +13,6 @@ function ThemeSwitch() {
         }
     }, []);
 
-
     useEffect(() => {
         localStorage.setItem("Theme", theme === Themes.DARK ? "DARK" : "LIGHT");
         document.querySelector("body").setAttribute("data-theme", theme.toString())
@@ -21,10 +21,9 @@ function ThemeSwitch() {
     const switchTheme = () => {
         setTheme((theme) => (theme === Themes.DARK ? Themes.LIGHT : Themes.DARK));
     }
+
     return (
-        <span onClick={() => switchTheme()}>
-            <i className={`bi bi-${theme == Themes.DARK ? "sun" : "moon"}`}></i>
-        </span>
+       <ThemeSwitch switchTheme={switchTheme} theme={theme}/>
     )
 }
-export default ThemeSwitch;
+export default ThemeSwitchContainer;
