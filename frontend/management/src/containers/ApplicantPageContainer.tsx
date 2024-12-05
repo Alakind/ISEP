@@ -15,8 +15,7 @@ function ApplicantPageContainer() {
   };
 
   const applicant: ApplicantInterface = {
-    name: "Sasha",
-    surname: "Surname",
+    name: "Sasha Surname",
     id: "1234567890",
     email: "Sasha@email.com",
     score: 100,

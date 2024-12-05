@@ -1,0 +1,24 @@
+progress[value] {
+    /* Reset the default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+
+    height: 10px;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: var(--tertiary-color);
+    border-radius: 4px;
+}
+
+.table-row__score {
+    width: 80px;
+    display: inline-block;
+}
