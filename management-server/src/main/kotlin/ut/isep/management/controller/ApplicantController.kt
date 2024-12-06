@@ -17,6 +17,7 @@ import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/applicant")
+@Tag(name = "Applicant")
 class ApplicantController(val applicantService: ApplicantService) {
 
 

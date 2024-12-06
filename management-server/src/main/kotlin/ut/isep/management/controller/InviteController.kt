@@ -16,6 +16,7 @@ import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/invite")
+@Tag(name = "Invite")
 class InviteController(val inviteService: InviteService) {
 
 
@@ -55,7 +56,6 @@ class InviteController(val inviteService: InviteService) {
     }
 
     @PostMapping
-    @Tag(name = "Invite")
     @Operation(
         summary = "Invite an applicant",
         description = "Link applicant to an assessment, and generate an invite URL")
