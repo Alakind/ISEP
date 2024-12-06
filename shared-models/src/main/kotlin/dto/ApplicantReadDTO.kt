@@ -8,6 +8,7 @@ import java.util.*
 data class ApplicantReadDTO(
     val id: Long = 0,
     val name: String = "",
+    val email: String = "",
     val status: ApplicantStatus = ApplicantStatus.not_started,
     val preferredLanguage: String? = null,
     val score: Int? = 0,

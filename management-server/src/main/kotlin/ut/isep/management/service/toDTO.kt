@@ -7,6 +7,7 @@ fun Applicant.toDTO(): ApplicantReadDTO {
     return ApplicantReadDTO(
         id = this.id,
         name = this.name,
+        email = this.email,
         status = this.status,
         preferredLanguage = this.preferredLanguage,
         score = this.score,
