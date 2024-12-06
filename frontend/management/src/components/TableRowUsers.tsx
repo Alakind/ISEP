@@ -10,7 +10,7 @@ function TableRowUsers({data, columns, handleSelect, isSelected} : Props) {
       {columns.map(({ accessor }) => {
         if (accessor == "role") {
           let disabled = false;
-          if (data.id == "12345678901" /* TODO to this currentUser.id*/ || data.id == "523" /*Standard admin*/) {
+          if (data.id == "12345678901" /* TODO to this currentUser.id*/ || data.id == import.meta.env.VITE_DEFAULT_ADMIN_ID /*Standard admin*/) {
             disabled = true
           }
 
