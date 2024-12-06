@@ -119,7 +119,7 @@ a {
  }
 
 main {
-    height: 100vh;
+    height: 90vh;
     display: flex;
     padding: 25px;
     flex-direction: column;

@@ -24,7 +24,7 @@ function TableRowUsers({data, columns, handleSelect, isSelected} : Props) {
           return <th key={accessor} ><CheckboxContainer id={data.id} additionalAction={handleSelect} isSelected={isSelected}/></th>
         } else {
           const value = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
-          return <td key={accessor}>{value}</td>;
+          return <td key={accessor}>{typeof value === "string" ? value : "——"}</td>;
         }
       })}
     </tr>

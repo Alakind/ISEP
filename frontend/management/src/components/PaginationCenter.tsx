@@ -1,4 +1,3 @@
-import React from 'react'
 import "../styles/pagination.css"
 
 // In case if the current page is higher than 4 or lower than last page - 4
@@ -41,7 +40,7 @@ interface Props {
   pageNumbers: number[];
   lastPage: number;
   currentPage: number;
-  handleClick: (e, number: number) => void;
+  handleClick: (e: any, number: number) => void;
 }
 
 export default PaginationCenter

@@ -21,7 +21,7 @@ function UsersListContainer() {
   const fetchData = async() => {
     try {
       //TODO uncomment this when there is a working api
-      // const res = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy);
+      // const res = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
       const res = {
         data: [
@@ -61,7 +61,7 @@ function UsersListContainer() {
       initialData = res.data;
       initialTotalItems =res.totalItems;
       handleIsSelectedChange(initialData);
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message)
     }
   }

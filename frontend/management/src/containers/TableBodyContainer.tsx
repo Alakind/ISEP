@@ -11,11 +11,13 @@ function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : 
   };
 
   const handleSelect = (id: string) => {
-    setIsSelected((prevState: Selection[]) => {
-      return prevState.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      );
-    });
+    if (setIsSelected) {
+      setIsSelected((prevState: Selection[]) => {
+        return prevState.map((item) =>
+          item.id === id ? {...item, checked: !item.checked} : item
+        );
+      });
+    }
   }
 
   return (
@@ -26,7 +28,7 @@ function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : 
 interface Props {
   columns: Column[];
   tableData: UserInterface[] | ApplicantInterface[];
-  setIsSelected: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setIsSelected?: React.Dispatch<React.SetStateAction<Selection[]>>;
   isSelected?: Selection[];
 }
 

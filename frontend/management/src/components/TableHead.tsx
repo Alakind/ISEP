@@ -16,7 +16,7 @@ function TableHead({ columns, sortField, order, handleSorting, handleSelectAll }
                     ? "down"
                     : "default"
                 : "";
-              return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSorting(accessor) : null}>{label}</th>
+              return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSorting(accessor) : () => null}>{label}</th>
             }
           }
         )}

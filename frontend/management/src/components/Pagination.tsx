@@ -1,4 +1,3 @@
-import React from 'react'
 import "../styles/pagination.css"
 import PaginationAll from "./PaginationAll.tsx";
 import PaginationLeft from "./PaginationLeft.tsx";
@@ -38,7 +37,7 @@ interface Props {
   itemsPerPage: number;
   lastPage: number;
   currentPage: number;
-  handleClick: (e, number: number) => void;
+  handleClick: (e: any, number: number) => void;
 }
 
 export default Pagination

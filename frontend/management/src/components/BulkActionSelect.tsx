@@ -7,7 +7,7 @@ function BulkActionSelect({ loading, options, handleSelect, selectedOption, setS
       <label htmlFor="bulkActionSelect">Actions:</label>
       <select disabled={loading} onChange={(e) => handleSelect(e)} className="form-select" id="bulkActionSelect" defaultValue={selectedOption}>
         {options.map((option,index) => (
-          <option key={index} value={option} onClick={(e) => setSelectedOption(option)}>{option}</option>
+          <option key={index} value={option} onClick={() => setSelectedOption(option)}>{option}</option>
         ))}
       </select>
     </span>
@@ -17,7 +17,7 @@ function BulkActionSelect({ loading, options, handleSelect, selectedOption, setS
 interface Props {
   loading: boolean;
   options: string[];
-  handleSelect: (e) => void;
+  handleSelect: (e: any) => void;
   selectedOption: string;
   setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
 }

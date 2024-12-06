@@ -5,7 +5,7 @@ import TableHead from "../components/TableHead.tsx";
 function TableHeadContainer({ columns, setOrderBy, setIsSelected } : Props) {
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
-  const handleSorting = (accessor) => {
+  const handleSorting = (accessor: string) => {
     const sortOrder = accessor === sortField && order === "asc" ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
@@ -13,13 +13,15 @@ function TableHeadContainer({ columns, setOrderBy, setIsSelected } : Props) {
   };
 
   const handleSelectAll = (value: boolean) => {
-    setIsSelected((prevState: Selection[]) => {
-      return prevState.map(item => ({
+    if (setIsSelected) {
+      setIsSelected((prevState: Selection[]) => {
+        return prevState.map(item => ({
 
-        ...item,
-        checked: value,
-      }));
-    });
+          ...item,
+          checked: value,
+        }));
+      });
+    }
   };
 
   return (
@@ -30,6 +32,6 @@ function TableHeadContainer({ columns, setOrderBy, setIsSelected } : Props) {
 interface Props {
   columns: Column[];
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
-  setIsSelected: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setIsSelected?: React.Dispatch<React.SetStateAction<Selection[]>>;
 }
 export default TableHeadContainer

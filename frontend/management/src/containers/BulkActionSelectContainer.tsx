@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import BulkActionSelect from "../components/BulkActionSelect.tsx";
 import {deleteUser} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
@@ -9,7 +9,15 @@ function BulkActionSelectContainer({isSelected} : Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("-")
   const options: string[] = ["-","Delete selected"];
-  
+
+  function proceedAction() {
+    deleteUsers();
+  }
+
+  function cancelAction() {
+    setLoading(false);
+  }
+
   async function deleteUsers() {
     try {
       for (let i = 0; i < isSelected.length; i++) {
@@ -23,14 +31,14 @@ function BulkActionSelectContainer({isSelected} : Props) {
       setLoading(false);
     }
   }
-  async function handleSelect(e) {
+  async function handleSelect(e: { preventDefault: () => void; target: { value: string; }; }) {
     e.preventDefault();
 
     if (e.target.value == "Delete selected") {
       setLoading(true);
       
       if (isSelected.some((selection) => selection.checked)) {
-        toast.warn(<CustomWarnToast proceedActionAdditional={deleteUsers} cancelActionAdditional={() => setLoading(false)} message={"Are you sure you want to delete these users? State can't be" +
+        toast.warn(<CustomWarnToast proceedAction={proceedAction} cancelAction={cancelAction} message={"Are you sure you want to delete these users? State can't be" +
           " restored!"}/>, {hideProgressBar: true, autoClose: false,});
       } else {
         toast.info("You need to select some users for this action!");

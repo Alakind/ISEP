@@ -10,6 +10,6 @@ function ThemeSwitchContainer({switchTheme, theme} : Props) {
 
 interface Props {
   switchTheme: () => void;
-  theme: Themes;
+  theme: (typeof Themes)[keyof typeof Themes];
 }
 export default ThemeSwitchContainer;

@@ -4,6 +4,7 @@ import TableRowUsers from "./TableRowUsers.tsx";
 import TableRowApplicants from "./TableRowApplicants.tsx";
 
 function TableBody({ columns, tableData, goToApplicantPage, handleSelect, isSelected } : Props) {
+
   return (
     <tbody className="table__body">
     {tableData.map((data : UserInterface | ApplicantInterface)  => {

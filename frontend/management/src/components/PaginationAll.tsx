@@ -1,4 +1,3 @@
-import React from 'react'
 import "../styles/pagination.css"
 
 // In case the total pages amount are 7 or less.
@@ -19,7 +18,7 @@ function PaginationAll({ pageNumbers, currentPage, handleClick } : Props) {
 interface Props {
   pageNumbers: number[];
   currentPage: number;
-  handleClick: (e, number: number) => void;
+  handleClick: (e: any, number: number) => void;
 }
 
 export default PaginationAll

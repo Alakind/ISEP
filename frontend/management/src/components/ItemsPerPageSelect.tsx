@@ -16,6 +16,6 @@ function ItemPerPageSelect({itemsPerPage, handleSelect} : Props) {
 
 interface Props {
   itemsPerPage: number;
-  handleSelect: (e) => void;
+  handleSelect: (e: any) => void;
 }
 export default ItemPerPageSelect;

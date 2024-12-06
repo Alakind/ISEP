@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
-
 import ApplicantsListPage from "../components/ApplicantsListPage";
-import {ApplicantInterface, UserInterface} from "../utils/types";
+import {ApplicantInterface} from "../utils/types";
 import {toast} from "react-toastify";
-import {ApplicantStatuses, PreferredLanguages} from "../utils/constants.tsx";
+import {getApplicants} from "../utils/apiFunctions.tsx";
 
 function ApplicantsListContainer() {
   let initialData: ApplicantInterface[] = [];
@@ -15,9 +13,9 @@ function ApplicantsListContainer() {
   const fetchData = async() => {
     try {
       //TODO uncomment this when there is a working api
-      // const res = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy);
+      const res = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
-      const res = {
+      /*const res = {
         data: [
           {
             name: "Sasha Surname",
@@ -61,10 +59,10 @@ function ApplicantsListContainer() {
           },
         ],
         totalItems: 5
-      }
+      }*/
       initialData = res.data;
       initialTotalItems =res.totalItems;
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message)
     }
   }

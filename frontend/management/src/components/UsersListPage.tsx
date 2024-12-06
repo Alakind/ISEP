@@ -1,8 +1,8 @@
 import {Selection, UserInterface} from "../utils/types";
 import SearchContainer from "../containers/SearchContainer.tsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import PaginationContainer from "../containers/PaginationContainer.tsx";
-import {deleteUser, getUsers} from "../utils/apiFunctions.tsx";
+import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
@@ -32,7 +32,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getUsers(currentPage, itemsPerPage, orderBy);
+        // const res = await getUsers(currentPage, itemsPerPage, orderBy, "");
 
         const res = {
           data: [
@@ -40,7 +40,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               name: "Fenna",
               id: "12345678909",
               email: "Fenna@email.com",
-              role: undefined,
+              role: "",
             },
             {
               name: "Jurre",
@@ -72,7 +72,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
         handleIsSelectedChange(res.data);
         setData(res.data);
         setTotalItems(res.totalItems);
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.message)
       } finally {
         setLoading(false);
@@ -85,7 +85,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
 
   return (
     <div className="user-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"} handleIsSelectedChange={handleIsSelectedChange} />
+      <SearchContainer<UserInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"} handleIsSelectedChange={handleIsSelectedChange} />
       {
         loading ?
           <p>Loading...</p> : //TODO implement temp table

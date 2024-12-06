@@ -3,7 +3,7 @@ import "../styles/items-per-page.css"
 import ItemPerPageSelect from "../components/ItemsPerPageSelect.tsx";
 
 function ItemPerPageSelectContainer({itemsPerPage, setItemsPerPage} : Props) {
-  const handleSelect = (e): void => {
+  const handleSelect = (e: { preventDefault: () => void; target: { value: React.SetStateAction<number>; }; }): void => {
     e.preventDefault();
     setItemsPerPage(e.target.value);
   }

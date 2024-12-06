@@ -4,7 +4,7 @@ function ApplicantCard({ applicant, goToApplicantPage }: ApplicantCardProps) {
   return (
     <div>
       <div onClick={() => goToApplicantPage(applicant.id)}>
-        {applicant.name} {applicant.surname}
+        {applicant.name}
       </div>
     </div>
   );

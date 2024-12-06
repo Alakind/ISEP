@@ -3,7 +3,7 @@ import "../styles/progressbar.css";
 
 function Progressbar({ applicant } : Props) {
   return (
-    <progress id={`progressbar${applicant.id}`} max="100" value={applicant.score}>({applicant.score}%)</progress>
+    <progress id={`progressbar${applicant.id}`} max="100" value={applicant.score?.toString()}>({applicant.score}%)</progress>
   )
 }
 

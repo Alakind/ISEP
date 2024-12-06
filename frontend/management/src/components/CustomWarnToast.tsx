@@ -1,16 +1,6 @@
 import "../styles/custom-toast.css";
 
-function CustomWarnToast({closeToast, proceedActionAdditional, cancelActionAdditional, message} : Props ) {
-  function proceedAction() {
-    proceedActionAdditional();
-    closeToast();
-  }
-
-  function cancelAction() {
-    cancelActionAdditional();
-    closeToast();
-  }
-
+function CustomWarnToast({proceedAction, cancelAction, message} : Props ) {
   return (<div className="custom-warn-toast__container">
     {message}
     <br/>
@@ -22,9 +12,8 @@ function CustomWarnToast({closeToast, proceedActionAdditional, cancelActionAddit
 }
 
 interface Props {
-  // closeToast:
-  proceedActionAdditional: () => void;
-  cancelActionAdditional: () => void;
+  proceedAction: () => void;
+  cancelAction: () => void;
   message: string;
 }
 

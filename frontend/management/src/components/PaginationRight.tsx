@@ -1,4 +1,3 @@
-import React from 'react'
 import "../styles/pagination.css"
 
 // In case if the current page is either the last pages or 4 indexes less the last 5 pages are shown.
@@ -31,7 +30,7 @@ interface Props {
   pageNumbers: number[];
   lastPage: number;
   currentPage: number;
-  handleClick: (e, number: number) => void;
+  handleClick: (e: any, number: number) => void;
 }
 
 export default PaginationRight

@@ -20,8 +20,8 @@ function RoleSelect({ id, selectedOption, handleSelect, disabled} : Props) {
 
 interface Props {
   id: string;
-  selectedOption: Roles|undefined;
-  handleSelect: (e) => void;
+  selectedOption: typeof Roles|undefined;
+  handleSelect: (e: any) => void;
   disabled: boolean;
 }
 export default RoleSelect

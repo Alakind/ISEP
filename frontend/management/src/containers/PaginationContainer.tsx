@@ -13,7 +13,7 @@ function PaginationContainer({ itemsPerPage, totalItems, setCurrentPage, current
   }
   const lastPage = pageNumbers[pageNumbers.length-1];
 
-  const handleClick = (e, number): void => {
+  const handleClick = (e: { preventDefault: () => void; }, number: React.SetStateAction<number>): void => {
     e.preventDefault();
     setCurrentPage(number);
   }

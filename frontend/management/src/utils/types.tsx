@@ -4,16 +4,16 @@ export interface ApplicantInterface {
   id: string;
   name: string;
   email: string;
-  status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
-  score: number | null | undefined;
-  preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages]
+  status: typeof ApplicantStatuses;
+  score?: number;
+  preferredLanguage: typeof PreferredLanguages;
 }
 
 export interface UserInterface {
   id: string;
   name: string;
   email: string;
-  role: (typeof Roles)[keyof typeof Roles] | undefined;
+  role: keyof typeof Roles;
 }
 
 export interface Column {

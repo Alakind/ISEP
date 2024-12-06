@@ -1,5 +1,5 @@
 import ThemeSwitchContainer from "../containers/ThemeSwitchContainer.tsx";
-import {ToastContainer} from "react-toastify";
+import {Bounce, ToastContainer} from "react-toastify";
 import ProfileButtonContainer from "../containers/ProfileButtonContainer.tsx";
 import "../styles/header.css"
 
@@ -48,7 +48,7 @@ function Header({currentPage, urlPrefix} : Props) {
           draggable
           pauseOnHover
           theme="dark"
-          transition: Bounce
+          transition={Bounce}
         />
       </span>
     </header>

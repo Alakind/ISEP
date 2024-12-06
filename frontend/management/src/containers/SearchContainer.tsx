@@ -2,19 +2,25 @@ import "../styles/search.css"
 import React, {useEffect, useState} from "react";
 import {ApplicantInterface, UserInterface} from "../utils/types.tsx";
 import {toast} from "react-toastify";
-import {getSearch} from "../utils/apiFunctions.tsx";
+import {getApplicants, getUsers} from "../utils/apiFunctions.tsx";
 import Search from "../components/Search.tsx";
-import {Roles} from "../utils/constants.tsx";
 
-function SearchContainer({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange } : Props ) {
+function SearchContainer<T extends UserInterface | ApplicantInterface>({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange } : Props<T> ) {
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getSearch(currentPage, itemsPerPage, subUrl, query);
-        const res = {
+        let res;
+        if (subUrl == "/user") {
+          res = await getUsers(currentPage, itemsPerPage, subUrl, query);
+        } else {
+          res = await getApplicants(currentPage, itemsPerPage, subUrl, query);
+        }
+
+
+        /*const res = {
           data: [
             {
               name: "Jurre",
@@ -65,14 +71,14 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
               role: Roles.ADMIN,
             },
           ],
-          totalItems: 8}
+          totalItems: 8}*/
 
         setData(res.data);
         setTotalItems(res.totalItems);
-        if (handleIsSelectedChange != undefined) {
-          handleIsSelectedChange(res.data);
+        if (handleIsSelectedChange && subUrl === "/user") {
+          handleIsSelectedChange(res.data as UserInterface[]);
         }
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.message)
       } finally {
         setLoading(false);
@@ -80,17 +86,6 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
     }
     fetchData();
   }, [query]);
-
-  // filteredData = useMemo(() => {
-  //   return data.filter((item) => {
-  //     const searchField = typeof item === "string" ? item : item.name || "";
-  //     return searchField.toLowerCase().includes(query.toLowerCase())
-  //   })
-  // }, [data, query]);
-
-  // useEffect(() => {
-  //   onFilterUpdate(filteredData);
-  // }, [filteredData]);
 
   const clearSearch = () => {
     setQuery("");
@@ -101,8 +96,8 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
   )
 }
 
-interface Props {
-  setData: React.Dispatch<React.SetStateAction<UserInterface[] | ApplicantInterface[]>>;
+interface Props<T> {
+  setData: React.Dispatch<React.SetStateAction<T[]>>;
   setTotalItems: React.Dispatch<React.SetStateAction<number>>;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   currentPage: number;

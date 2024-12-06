@@ -1,12 +1,12 @@
 import {ApplicantInterface} from "../utils/types";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import SearchContainer from "../containers/SearchContainer.tsx";
 import ApplicantsTableContainer from "../containers/ApplicantsTableContainer.tsx";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import PaginationContainer from "../containers/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
-import {ApplicantStatuses, PreferredLanguages} from "../utils/constants.tsx";
+import {getApplicants} from "../utils/apiFunctions.tsx";
 
 function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
   const [data, setData] = useState<ApplicantInterface[]>(initialData);
@@ -20,9 +20,9 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getApplicants(currentPage, itemsPerPage, orderBy);
+        const res = await getApplicants(currentPage, itemsPerPage, orderBy, "");
 
-        const res = {
+        /*const res = {
           data: [
             {
               name: "Sasha Surname",
@@ -66,10 +66,10 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
             },
           ],
           totalItems: 90
-        }
+        }*/
         setData(res.data);
         setTotalItems(res.totalItems);
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.message)
       } finally {
         setLoading(false);
@@ -80,7 +80,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
 
   return (
     <div className="applicant-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} />
+      <SearchContainer<ApplicantInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} />
       {
         loading ?
           <p>Loading...</p> : //TODO implement temp table

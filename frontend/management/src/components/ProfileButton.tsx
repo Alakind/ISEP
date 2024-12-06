@@ -1,6 +1,4 @@
 import "../styles/profile-button.css";
-import React from "react";
-
 
 function ProfileButton({urlPrefix, currentUser} : Props) {
   return (
