@@ -4,8 +4,8 @@ import "../styles/pagination.css"
 function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : Props) {
   return (
     <>
-      <li className={`page-item page-item--mod ${currentPage === 1 ? "active" : ""}`}>
-        <a onClick={(e) => handleClick(e, 1)} href="#" className="page-link">
+      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
+        <a onClick={(e) => handleClick(e, 0)} href="#" className="page-link">
           1
         </a>
       </li>
@@ -15,10 +15,10 @@ function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : 
         </a>
       </li>
       {pageNumbers.map((number, index) => (
-        index + 1 >= currentPage - 1 && index + 1 <= currentPage + 1 && (
+        index >= currentPage - 1 && index <= currentPage + 1 && (
           <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
-              {number}
+              {number+1}
             </a>
           </li>)
       ))}
@@ -29,7 +29,7 @@ function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : 
       </li>
       <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
         <a onClick={(e) => handleClick(e, lastPage)} href="#" className="page-link">
-          {lastPage}
+          {lastPage+1}
         </a>
       </li>
     </>

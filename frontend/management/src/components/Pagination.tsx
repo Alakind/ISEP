@@ -14,9 +14,9 @@ function Pagination({ pageNumbers, itemsPerPage, lastPage, currentPage, handleCl
           <a onClick={(e) => handleClick(e, currentPage-1)} className="page-link" href="#"> <i className="bi bi-caret-left"></i></a>
         </li>
         {
-          lastPage <= 7 || itemsPerPage == -1 ?
+          lastPage <= 6 || itemsPerPage == -1 ?
             <PaginationAll  currentPage={currentPage} handleClick={handleClick} pageNumbers={pageNumbers}/> :
-            (currentPage <= 4 ?
+            (currentPage <= 3 ?
                 <PaginationLeft  currentPage={currentPage} handleClick={handleClick} pageNumbers={pageNumbers} lastPage={lastPage}/> :
                 (currentPage >= lastPage - 3 ?
                     <PaginationRight  currentPage={currentPage} handleClick={handleClick} pageNumbers={pageNumbers} lastPage={lastPage}/> :

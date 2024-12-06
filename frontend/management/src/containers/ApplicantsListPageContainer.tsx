@@ -5,7 +5,7 @@ import {getApplicants} from "../utils/apiFunctions.tsx";
 
 function ApplicantsListContainer() {
   let initialData: ApplicantInterface[] = [];
-  const initialCurrentPage = 1;
+  const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
   const initialOrderBy = "name:desc"

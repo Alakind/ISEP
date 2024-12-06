@@ -8,7 +8,7 @@ function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Pr
         index + 1 <= 5 && (
           <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
-              {number}
+              {number+1}
             </a>
           </li>)
       ))}
@@ -19,7 +19,7 @@ function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Pr
       </li>
       <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
         <a onClick={(e) => handleClick(e, lastPage)} href="#" className="page-link">
-          {lastPage}
+          {lastPage+1}
         </a>
       </li>
     </>

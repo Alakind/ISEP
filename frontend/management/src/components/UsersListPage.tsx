@@ -85,7 +85,8 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
 
   return (
     <div className="user-list-page">
-      <SearchContainer<UserInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"} handleIsSelectedChange={handleIsSelectedChange} />
+      <SearchContainer<UserInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
+                                      handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
       {
         loading ?
           <p>Loading...</p> : //TODO implement temp table

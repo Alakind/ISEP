@@ -4,8 +4,8 @@ import "../styles/pagination.css"
 function PaginationRight({ pageNumbers, lastPage, currentPage, handleClick } : Props) {
   return (
     <>
-      <li className={`page-item page-item--mod ${currentPage === 1 ? "active" : ""}`}>
-        <a onClick={(e) => handleClick(e, 1)} href="#" className="page-link">
+      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
+        <a onClick={(e) => handleClick(e, 0)} href="#" className="page-link">
           1
         </a>
       </li>
@@ -15,10 +15,10 @@ function PaginationRight({ pageNumbers, lastPage, currentPage, handleClick } : P
         </a>
       </li>
       {pageNumbers.map((number, index) => (
-        index + 1 >= lastPage - 4 && (
+        index >= lastPage - 4 && (
           <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
-              {number}
+              {number+1}
             </a>
           </li>)
       ))}

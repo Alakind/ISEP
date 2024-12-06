@@ -7,7 +7,7 @@ function PaginationAll({ pageNumbers, currentPage, handleClick } : Props) {
       {pageNumbers.map((number) => (
         <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
           <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
-            {number}
+            {number+1}
           </a>
         </li>
       ))}

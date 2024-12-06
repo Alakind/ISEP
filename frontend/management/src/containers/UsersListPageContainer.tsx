@@ -6,7 +6,7 @@ import {Roles} from "../utils/constants.tsx";
 
 function UsersListContainer() {
   let initialData: UserInterface[] = [];
-  const initialCurrentPage = 1;
+  const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
   const initialOrderBy = "name:desc"
