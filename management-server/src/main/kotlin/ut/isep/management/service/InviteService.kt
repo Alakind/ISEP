@@ -55,7 +55,7 @@ class InviteService(
         return getInviteById(id).toReadDTO()
     }
 
-    fun getAssessmentByInviteId(id: Long): InterviewDTO {
+    fun getAssessmentByInviteId(id: Long): AssessmentReadDTO {
         return getInviteById(id).assessment.toDTO()
     }
 

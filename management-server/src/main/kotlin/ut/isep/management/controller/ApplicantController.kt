@@ -177,9 +177,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<InterviewDTO?> {
+    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val interview: InterviewDTO? = applicantService.getInterviewByApplicantId(applicantId)
+            val interview: AssessmentReadDTO? = applicantService.getInterviewByApplicantId(applicantId)
             ResponseEntity.ok(interview)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -203,7 +203,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: InterviewDTO) {
+    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: AssessmentReadDTO) {
         //TODO implement
     }
 }

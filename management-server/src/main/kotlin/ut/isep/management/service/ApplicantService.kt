@@ -59,7 +59,7 @@ class ApplicantService(
         return applicant.invite?.toDTO()
     }
 
-    fun getInterviewByApplicantId(applicantId: Long): InterviewDTO? {
+    fun getInterviewByApplicantId(applicantId: Long): AssessmentReadDTO? {
         val applicant = applicantRepository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
         return applicant.invite?.assessment?.toDTO()

@@ -130,9 +130,9 @@ class InviteController(val inviteService: InviteService) {
             )
         ]
     )
-    fun getAssessment(@PathVariable id: Long): ResponseEntity<InterviewDTO?> {
+    fun getAssessment(@PathVariable id: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val interview: InterviewDTO = inviteService.getAssessmentByInviteId(id)
+            val interview: AssessmentReadDTO = inviteService.getAssessmentByInviteId(id)
             ResponseEntity.ok(interview)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

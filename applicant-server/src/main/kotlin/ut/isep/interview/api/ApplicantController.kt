@@ -1,6 +1,6 @@
 package ut.isep.interview.api
 
-import dto.InterviewDTO
+import dto.AssessmentReadDTO
 import dto.SectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -31,7 +31,7 @@ class ApplicantController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO>? {
+    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<AssessmentReadDTO>? {
         return try {
             ResponseEntity.ok(client.getInterview(applicantId))
         } catch (e: feign.FeignException) {

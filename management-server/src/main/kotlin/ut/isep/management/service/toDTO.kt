@@ -10,8 +10,8 @@ fun Applicant.toDTO(): ApplicantReadDTO {
         preferredLanguage = this.preferredLanguage)
 }
 
-fun Assessment.toDTO(): InterviewDTO {
-    return InterviewDTO(
+fun Assessment.toDTO(): AssessmentReadDTO {
+    return AssessmentReadDTO(
         id = this.id,
         sections = this.sections.map {it.id}
     )
