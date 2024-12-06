@@ -14,7 +14,7 @@ function TableRowApplicants({data, columns, goToApplicantPage} : Props ) {
             </th>
           );
         } else if (accessor == "score") {
-          return <td key={accessor}><span className="table-row__score">{data.score}/100</span><Progressbar  applicant={data}/></td>
+          return <td key={accessor}><span className="table-row__score">{data.score ? data.score : 0}/100</span><Progressbar  applicant={data}/></td>
         } else if (accessor == typeof ApplicantStatuses) {
           return <td key={accessor}><StatusItem status={data.status}/></td>
         }  else {
