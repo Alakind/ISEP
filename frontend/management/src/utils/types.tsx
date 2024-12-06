@@ -4,7 +4,7 @@ export interface ApplicantInterface {
   id: string;
   name: string;
   email: string;
-  status: typeof ApplicantStatuses;
+  status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
   score?: number;
   preferredLanguage: typeof PreferredLanguages;
 }
