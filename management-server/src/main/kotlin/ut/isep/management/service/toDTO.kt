@@ -1,6 +1,7 @@
 package ut.isep.management.service
 
 import dto.*
+import entity.User
 import ut.isep.management.model.entity.*
 
 fun Applicant.toDTO(): ApplicantReadDTO {
@@ -77,5 +78,14 @@ fun Invite.toReadDTO(): InviteReadDTO {
         applicantId = this.applicant.id,
         assessmentId = this.assessment.id,
         invitedAt = this.invitedAt
+    )
+}
+
+fun User.toDTO(): UserCreateReadDTO {
+    return UserCreateReadDTO(
+        id = this.id,
+        name = this.name,
+        email = this.email,
+        role = this.role
     )
 }
