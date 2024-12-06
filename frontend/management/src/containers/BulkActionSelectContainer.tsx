@@ -3,17 +3,17 @@ import BulkActionSelect from "../components/BulkActionSelect.tsx";
 import {deleteUser} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Selection} from "../utils/types.tsx";
+import CustomWarnToast from "../components/CustomWarnToast.tsx";
 
 function BulkActionSelectContainer({isSelected} : Props) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState<string>("-")
   const options: string[] = ["-","Delete selected"];
-
+  
   async function deleteUsers() {
-
     try {
       for (let i = 0; i < isSelected.length; i++) {
         if (isSelected[i].checked) {
-          console.log("blub")
           await deleteUser(isSelected[i].id);
         }
       }
@@ -25,38 +25,25 @@ function BulkActionSelectContainer({isSelected} : Props) {
   }
   async function handleSelect(e) {
     e.preventDefault();
+
     if (e.target.value == "Delete selected") {
       setLoading(true);
-      const Data = ({closeToast}) => {
-        function proceedAction() {
-          deleteUsers()
-          closeToast;
-        }
-
-        function cancelAction() {
-          closeToast;
-          setLoading(false);
-        }
-
-        return (<div>
-          Are you sure you want to delete these users? State can't be restored!
-          <br/>
-          <button onClick={proceedAction}>Yes</button>
-          <button onClick={cancelAction}>No</button>
-        </div>)
-      }
-
+      
       if (isSelected.some((selection) => selection.checked)) {
-        toast.warn(<Data/>, {hideProgressBar: true, autoClose: false,});
+        toast.warn(<CustomWarnToast proceedActionAdditional={deleteUsers} cancelActionAdditional={() => setLoading(false)} message={"Are you sure you want to delete these users? State can't be" +
+          " restored!"}/>, {hideProgressBar: true, autoClose: false,});
       } else {
         toast.info("You need to select some users for this action!");
         setLoading(false);
       }
+
+      e.target.value = "-";
+      setSelectedOption("-");
     }
   }
 
   return (
-    <BulkActionSelect loading={loading} options={options} handleSelect={handleSelect}/>
+    <BulkActionSelect loading={loading} options={options} handleSelect={handleSelect} selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
   )
 }
 
