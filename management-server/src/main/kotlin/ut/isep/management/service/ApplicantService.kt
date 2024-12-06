@@ -5,9 +5,6 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.ApplicantRepository
-import ut.isep.management.repository.AssessmentRepository
-import ut.isep.management.repository.InviteRepository
-import java.net.URI
 import kotlin.NoSuchElementException
 
 
@@ -15,8 +12,6 @@ import kotlin.NoSuchElementException
 @Transactional
 class ApplicantService(
     private val applicantRepository: ApplicantRepository,
-    private val assessmentRepository: AssessmentRepository,
-    private val inviteRepository: InviteRepository
 ) {
 
     fun createApplicant(applicantDTO: ApplicantCreateReadDTO): Applicant {
@@ -53,20 +48,9 @@ class ApplicantService(
         return applicant.toDTO()
     }
 
-    fun inviteApplicantToAssessment(applicantId: Long, assessmentId: Long): URI {
-        val applicant = applicantRepository.findById(applicantId)
-            .orElseThrow { NoSuchElementException("Applicant not found") }
-        val assessment = assessmentRepository.findById(assessmentId)
-            .orElseThrow { NoSuchElementException("Assessment not found") }
 
-        val invite = Invite(applicant = applicant, assessment = assessment)
-        val inviteId = inviteRepository.save(invite).id
 
-        val inviteUrl = URI("https://localhost:8080/assessments/$inviteId")
-        return inviteUrl
-    }
-
-    fun getInviteByApplicantId(applicantId: Long): ApplicantInviteDTO? {
+    fun getInviteByApplicantId(applicantId: Long): InviteCreateDTO? {
         val applicant = applicantRepository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
 
