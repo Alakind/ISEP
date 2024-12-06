@@ -8,7 +8,7 @@ function ApplicantsListContainer() {
   const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
-  const initialOrderBy = "name:desc"
+  const initialOrderBy = "name:asc"
 
   const fetchData = async() => {
     try {

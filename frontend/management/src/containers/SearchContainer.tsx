@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import {getApplicants, getUsers} from "../utils/apiFunctions.tsx";
 import Search from "../components/Search.tsx";
 
-function SearchContainer<T extends UserInterface | ApplicantInterface>({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange } : Props<T> ) {
+function SearchContainer<T extends UserInterface | ApplicantInterface>({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange, orderBy } : Props<T> ) {
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
@@ -14,9 +14,9 @@ function SearchContainer<T extends UserInterface | ApplicantInterface>({ setData
       try {
         let res;
         if (subUrl == "/user") {
-          res = await getUsers(currentPage, itemsPerPage, subUrl, query);
+          res = await getUsers(currentPage, itemsPerPage, "name:desc" /*TODO fix that it becomes the current order  */, query);
         } else {
-          res = await getApplicants(currentPage, itemsPerPage, subUrl, query);
+          res = await getApplicants(currentPage, itemsPerPage, "name:desc" /*TODO fix that it becomes the current order  */, query);
         }
 
 
@@ -104,6 +104,7 @@ interface Props<T> {
   itemsPerPage: number;
   subUrl: string;
   handleIsSelectedChange?: (data: UserInterface[]) => void;
+  orderBy: string;
 }
 
 export default SearchContainer

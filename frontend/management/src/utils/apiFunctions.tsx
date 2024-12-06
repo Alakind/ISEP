@@ -33,7 +33,7 @@ export async function getSearch(currentPage: number, itemsPerPage: number, subUr
 
 export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: ApplicantInterface[], totalItems: number}> {
   let url;
-  if (itemsPerPage == -1) {
+  if (itemsPerPage != -1) {
     url = `${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
   } else if (orderBy != "") {
     url = `${baseUrl}/applicant${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
@@ -109,7 +109,7 @@ export async function addApplicant(applicant: ApplicantInterface) : Promise<{dat
 
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: UserInterface[], totalItems: number}> {
   let url;
-  if (itemsPerPage == -1) {
+  if (itemsPerPage != -1) {
     url = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
   } else if (orderBy != "") {
     url = `${baseUrl}/user${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`

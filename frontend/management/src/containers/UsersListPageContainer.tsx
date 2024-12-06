@@ -9,7 +9,7 @@ function UsersListContainer() {
   const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
-  const initialOrderBy = "name:desc"
+  const initialOrderBy = "name:asc"
   let initialSelection: Selection[] = [];
 
   function handleIsSelectedChange(data: UserInterface[]) {
