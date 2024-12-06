@@ -162,14 +162,14 @@ class ApplicantController(val applicantService: ApplicantService) {
     @GetMapping("/{applicantId}/assessment")
     @Tag(name = "Assessment")
     @Operation(
-        summary = "Get the interview for the applicant",
+        summary = "Get the assessment for the applicant",
         description = "Return a list of section IDs"
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Found the interview",
+                description = "Found the assessment",
             ),
             ApiResponse(
                 responseCode = "404",
@@ -180,33 +180,13 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
+    fun getAssessment(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val interview: AssessmentReadDTO? = applicantService.getInterviewByApplicantId(applicantId)
-            ResponseEntity.ok(interview)
+            val assessment: AssessmentReadDTO? = applicantService.getAssessmentByApplicantId(applicantId)
+            ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
     }
 
-    @PostMapping("/{applicantId}/submit")
-    @Operation(summary = "Submits the interview", description = "All saved answers will now be submitted")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Submitted successfully",
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Applicant not found",
-                content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
-                )]
-            )
-        ]
-    )
-    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: AssessmentReadDTO) {
-        //TODO implement
-    }
 }
