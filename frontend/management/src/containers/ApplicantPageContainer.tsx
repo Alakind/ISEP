@@ -1,23 +1,22 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ApplicantInterface } from "../utils/types";
 import ApplicantPage from "../components/ApplicantPage";
-import {PreferredLanguages} from "../utils/constants.tsx";
 import {useEffect, useState} from "react";
 import {getApplicant} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import LoadingPage from "../components/LoadingPage.tsx";
 
-function ApplicantPageContainer({applicant} : Props) {
-  const [applicantData, setApplicantData] = useState<ApplicantInterface | null>(applicant || null);
-  const [loading, setLoading] = useState<boolean>(!applicant);
+function ApplicantPageContainer() {
+  const [applicantData, setApplicantData] = useState<ApplicantInterface>();
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
-    if (!applicant && id) {
+    if (id) {
       getData();
     }
-  }, [applicant, id]);
+  }, [id]);
 
   async function getData() {
     setLoading(true);
@@ -48,10 +47,6 @@ function ApplicantPageContainer({applicant} : Props) {
       />
     );
   }
-}
-
-interface Props {
-  applicant?: ApplicantInterface;
 }
 
 export default ApplicantPageContainer;
