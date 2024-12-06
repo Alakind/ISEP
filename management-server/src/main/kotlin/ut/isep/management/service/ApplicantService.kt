@@ -14,7 +14,7 @@ class ApplicantService(
     private val applicantRepository: ApplicantRepository,
 ) {
 
-    fun createApplicant(applicantDTO: ApplicantCreateReadDTO): Applicant {
+    fun createApplicant(applicantDTO: ApplicantCreateDTO): Applicant {
         val applicantEntity = applicantDTO.fromDTO()
         checkApplicantInDB(applicantEntity)
         return applicantRepository.save(applicantEntity)
@@ -33,6 +33,8 @@ class ApplicantService(
         applicant.apply {
             updateDTO.status?.let { this.status = it }
             updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
+            updateDTO.name?.let { this.name = it}
+            updateDTO.score?.let {this.score = it}
         }
         applicantRepository.save(applicant)
     }
@@ -41,7 +43,7 @@ class ApplicantService(
         applicantRepository.deleteById(id)
     }
 
-    fun getApplicantById(id: Long): ApplicantCreateReadDTO {
+    fun getApplicantById(id: Long): ApplicantReadDTO {
         val applicant: Applicant = applicantRepository.findById(id).orElseThrow{
             NoSuchElementException("Applicant not found with id $id")
         }
@@ -50,7 +52,7 @@ class ApplicantService(
 
 
 
-    fun getInviteByApplicantId(applicantId: Long): InviteCreateDTO? {
+    fun getInviteByApplicantId(applicantId: Long): InviteCreateReadDTO? {
         val applicant = applicantRepository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
 
@@ -63,6 +65,6 @@ class ApplicantService(
         return applicant.invite?.assessment?.toDTO()
     }
 
-    val allApplicants: List<ApplicantCreateReadDTO>
+    val allApplicants: List<ApplicantReadDTO>
         get() = applicantRepository.findAll().map {it.toDTO()}
 }

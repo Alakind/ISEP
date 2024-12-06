@@ -1,7 +1,7 @@
 package ut.isep.interview.api
 
 import dto.InterviewDTO
-import dto.SectionDTO
+import dto.SectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -80,7 +80,7 @@ class ApplicantController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionDTO) {
+    fun postSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int, @RequestBody section: SectionReadDTO) {
         client.postSaveSection(applicantId, sectionId)
     }
 
@@ -99,7 +99,7 @@ class ApplicantController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionDTO>? {
+    fun getSaveSection(@PathVariable applicantId: Int, @PathVariable sectionId: Int): ResponseEntity<SectionReadDTO>? {
         return try {
             ResponseEntity.ok(client.getSaveSection(applicantId, sectionId))
         } catch (e: feign.FeignException) {

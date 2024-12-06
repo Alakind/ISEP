@@ -1,9 +1,6 @@
 package ut.isep.management.controller
 
-import dto.ApplicantCreateReadDTO
-import dto.InviteCreateDTO
-import dto.ApplicantUpdateDTO
-import dto.InterviewDTO
+import dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -29,7 +26,7 @@ class ApplicantController(val applicantService: ApplicantService) {
         responseCode = "200",
         description = "Returns a list of all applicants",
     )
-    fun getApplicants(): List<ApplicantCreateReadDTO> {
+    fun getApplicants(): List<ApplicantReadDTO> {
         return applicantService.allApplicants
     }
 
@@ -51,7 +48,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantCreateReadDTO> {
+    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantReadDTO> {
         return try {
             ResponseEntity.ok(applicantService.getApplicantById(id))
         } catch (e: NoSuchElementException) {
@@ -71,7 +68,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun postApplicant(@RequestBody applicant: ApplicantCreateReadDTO): ResponseEntity<String> {
+    fun postApplicant(@RequestBody applicant: ApplicantCreateDTO): ResponseEntity<String> {
         val createdApplicant = applicantService.createApplicant(applicant)
         val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
@@ -150,9 +147,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateDTO> {
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateReadDTO> {
         return try {
-            val invite: InviteCreateDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteCreateReadDTO? = applicantService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

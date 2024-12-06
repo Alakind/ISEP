@@ -14,30 +14,14 @@ class SectionService(
     private val sectionRepository: SectionRepository
 ) {
 
-    fun addSection(sectionDTO: SectionDTO) {
-        addSection(sectionDTO.fromDTO())
-    }
-
-    fun addSection(section: Section) {
-        checkSectionInDB(section)
-        sectionRepository.save(section)
-    }
-
-    private fun checkSectionInDB(a: Section) {
-        val section: Optional<Section> = sectionRepository.findById(a.id)
-        if (section.isPresent) {
-            throw Exception("Section Already exists")
-        }
-    }
-
-    fun getSectionById(id: Long): SectionDTO {
+    fun getSectionById(id: Long): SectionReadDTO {
         val section: Optional<Section> = sectionRepository.findById(id)
         return section.orElseThrow {
             NoSuchElementException("Section not found with id $id")
         }.toDTO()
     }
 
-    val allSections: List<SectionDTO>
+    val allSections: List<SectionReadDTO>
         get() = sectionRepository.findAll().map {it.toDTO()}
 
     val allSectionIDs: List<Long>
