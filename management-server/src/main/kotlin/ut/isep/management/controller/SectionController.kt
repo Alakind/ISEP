@@ -1,20 +1,21 @@
 package ut.isep.management.controller
 
-import dto.SectionDTO
+import dto.SectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ut.isep.management.model.entity.Section
 import ut.isep.management.service.SectionService
 import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("/section")
+@Tag(name = "Section")
 class SectionController(val sectionService: SectionService) {
 
 
@@ -27,12 +28,12 @@ class SectionController(val sectionService: SectionService) {
        return ResponseEntity.ok(sectionService.allSectionIDs)
     }
 
-    @GetMapping()
+    @GetMapping
     @ApiResponse(
         responseCode = "200",
         description = "Returns a list of all (full) sections",
     )
-    fun getSections(): ResponseEntity<List<SectionDTO>> {
+    fun getSections(): ResponseEntity<List<SectionReadDTO>> {
         return ResponseEntity.ok(sectionService.allSections)
     }
 
@@ -52,7 +53,7 @@ class SectionController(val sectionService: SectionService) {
             )]
         )
     ])
-    fun getSection(@PathVariable id: Long): ResponseEntity<SectionDTO> {
+    fun getSection(@PathVariable id: Long): ResponseEntity<SectionReadDTO> {
         return try {
             return ResponseEntity.ok(sectionService.getSectionById(id))
         } catch (e: NoSuchElementException) {
@@ -60,35 +61,4 @@ class SectionController(val sectionService: SectionService) {
         }
     }
 
-    @PostMapping
-    @Operation(summary = "Adds an section", description = "Add an section to the PostGreSQL Management database")
-    @ApiResponses(value = [
-        ApiResponse(
-            responseCode = "200",
-            description = "Added the section",
-        )
-    ])
-    fun postSection(@RequestBody section: SectionDTO): ResponseEntity<String> {
-        sectionService.addSection(section)
-        return ResponseEntity.ok("Added an section")
-    }
-
-    @PostMapping("/dummy")
-    @Operation(summary = "Adds a stub section", description = "Transient testing method")
-    @ApiResponses(value = [
-        ApiResponse(
-            responseCode = "200",
-            description = "Added the section",
-        )
-    ])
-    fun postStubSection(): ResponseEntity<String> {
-
-        sectionService.addSection(
-            Section(
-                title = "example section with no assignments",
-                assignments = emptyList())
-        )
-        return ResponseEntity.ok("Added a stub section")
-    }
-    
 }

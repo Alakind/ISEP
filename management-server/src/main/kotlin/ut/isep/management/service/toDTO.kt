@@ -3,22 +3,26 @@ package ut.isep.management.service
 import dto.*
 import ut.isep.management.model.entity.*
 
-fun Applicant.toDTO(): ApplicantCreateReadDTO {
-    return ApplicantCreateReadDTO(
+fun Applicant.toDTO(): ApplicantReadDTO {
+    return ApplicantReadDTO(
         id = this.id,
+        name = this.name,
         status = this.status,
-        preferredLanguage = this.preferredLanguage)
+        preferredLanguage = this.preferredLanguage,
+        score = this.score,
+        invite = this.invite?.id
+    )
 }
 
-fun Assessment.toDTO(): InterviewDTO {
-    return InterviewDTO(
+fun Assessment.toDTO(): AssessmentReadDTO {
+    return AssessmentReadDTO(
         id = this.id,
         sections = this.sections.map {it.id}
     )
 }
 
-fun Section.toDTO(): SectionDTO {
-    return SectionDTO(
+fun Section.toDTO(): SectionReadDTO {
+    return SectionReadDTO(
         id = this.id,
         title = this.title,
         assignments = this.assignments.map { it.toDTO() }
@@ -59,8 +63,8 @@ fun AssignmentCoding.toDTO(): AssignmentCodingDTO {
     )
 }
 
-fun Invite.toDTO(): InviteCreateDTO {
-    return InviteCreateDTO(
+fun Invite.toDTO(): InviteCreateReadDTO {
+    return InviteCreateReadDTO(
         applicantId = this.applicant.id,
         assessmentId = this.assessment.id
     )

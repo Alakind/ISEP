@@ -1,9 +1,6 @@
 package ut.isep.management.controller
 
-import dto.ApplicantCreateReadDTO
-import dto.InviteCreateDTO
-import dto.ApplicantUpdateDTO
-import dto.InterviewDTO
+import dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -20,6 +17,7 @@ import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/applicant")
+@Tag(name = "Applicant")
 class ApplicantController(val applicantService: ApplicantService) {
 
 
@@ -29,11 +27,14 @@ class ApplicantController(val applicantService: ApplicantService) {
         responseCode = "200",
         description = "Returns a list of all applicants",
     )
-    fun getApplicants(): List<ApplicantCreateReadDTO> {
-        return applicantService.allApplicants
+    fun getApplicants( @RequestParam(required = false) limit: Int?,
+                       @RequestParam(required = false) page: Int?,
+                       @RequestParam(required = false,) sort: String?
+    ): ApplicantsPaginatedDTO {
+        return applicantService.getAllApplicants(limit, page, sort)
     }
 
-    
+
     @GetMapping("{id}")
     @Operation(summary = "Get applicant", description = "Returns an applicant or 404 if not found")
     @ApiResponses(
@@ -51,7 +52,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantCreateReadDTO> {
+    fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantReadDTO> {
         return try {
             ResponseEntity.ok(applicantService.getApplicantById(id))
         } catch (e: NoSuchElementException) {
@@ -71,7 +72,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun postApplicant(@RequestBody applicant: ApplicantCreateReadDTO): ResponseEntity<String> {
+    fun postApplicant(@RequestBody applicant: ApplicantCreateDTO): ResponseEntity<String> {
         val createdApplicant = applicantService.createApplicant(applicant)
         val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
@@ -150,9 +151,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateDTO> {
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateReadDTO> {
         return try {
-            val invite: InviteCreateDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteCreateReadDTO? = applicantService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -162,14 +163,14 @@ class ApplicantController(val applicantService: ApplicantService) {
     @GetMapping("/{applicantId}/assessment")
     @Tag(name = "Assessment")
     @Operation(
-        summary = "Get the interview for the applicant",
+        summary = "Get the assessment for the applicant",
         description = "Return a list of section IDs"
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Found the interview",
+                description = "Found the assessment",
             ),
             ApiResponse(
                 responseCode = "404",
@@ -180,33 +181,13 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getInterview(@PathVariable applicantId: Long): ResponseEntity<InterviewDTO?> {
+    fun getAssessment(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val interview: InterviewDTO? = applicantService.getInterviewByApplicantId(applicantId)
-            ResponseEntity.ok(interview)
+            val assessment: AssessmentReadDTO? = applicantService.getAssessmentByApplicantId(applicantId)
+            ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
     }
 
-    @PostMapping("/{applicantId}/submit")
-    @Operation(summary = "Submits the interview", description = "All saved answers will now be submitted")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Submitted successfully",
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Applicant not found",
-                content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
-                )]
-            )
-        ]
-    )
-    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: InterviewDTO) {
-        //TODO implement
-    }
 }

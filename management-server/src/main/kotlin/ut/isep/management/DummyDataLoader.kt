@@ -71,8 +71,23 @@ class DummyDataLoader(
 
         assessmentRepository.save(assessment1)
 
-        val applicant1 = Applicant(status = ApplicantStatus.app_invited_start, preferredLanguage = "Kotlin")
-        applicantRepository.save(applicant1)
+        val applicant1 = Applicant(name = "Aaron", status = ApplicantStatus.app_invited_start, preferredLanguage = "Kotlin")
+        val applicant2 = Applicant(name = "Zebediah", status = ApplicantStatus.not_started, preferredLanguage = "F")
+        val applicant3 = Applicant(name = "Zebediah", status = ApplicantStatus.app_finished, preferredLanguage = "C")
+        val applicant4 = Applicant(name = "Henk", status = ApplicantStatus.app_reminded, preferredLanguage = "Rust")
+        val applicant5 = Applicant(name = "Gerrit", status = ApplicantStatus.not_started, preferredLanguage = "JavaScript")
+        val applicant6 = Applicant(name = "Simon", status = ApplicantStatus.test_expired, preferredLanguage = "Haskell")
+        val applicant7 = Applicant(name = "Andre", status = ApplicantStatus.cancelled, preferredLanguage = "Java")
+
+        applicantRepository.apply {
+            save(applicant1)
+            save(applicant2)
+            save(applicant3)
+            save(applicant4)
+            save(applicant5)
+            save(applicant6)
+            save(applicant7)
+        }
 
         val inviteApplicant1Assessment1 = Invite(applicant = applicant1, assessment = assessment1)
         inviteRepository.save(inviteApplicant1Assessment1)

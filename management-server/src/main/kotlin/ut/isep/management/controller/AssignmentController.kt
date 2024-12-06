@@ -6,35 +6,23 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import dto.AssignmentDTO
-import dto.AssignmentMultipleChoiceDTO
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import ut.isep.management.service.AssignmentService
+import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("/assignment")
-class AssignmentController {
-
-
-    @GetMapping
-    @ApiResponse(
-        responseCode = "200",
-        description = "Returns a list of all assignments",
-    )
-    fun getAssignments(): List<AssignmentDTO> {
-       return listOf(AssignmentMultipleChoiceDTO(
-           id = 1,
-           description = "What is your name?",
-           options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
-           isMultipleAnswers = false,
-       ))
-    }
+@Tag(name = "Assignment")
+class AssignmentController(val assignmentService: AssignmentService) {
 
     @GetMapping("{id}")
-    @Operation(summary = "Get assignment", description = "Returns either AssignmentMultipleChoice or AssignmentCoding, or 404 if not found")
+    @Operation(summary = "Get assignment", description = "Returns either AssignmentMultipleChoice, AssignmentOpen, AssignmentCoding, or 404 if not found")
     @ApiResponses(value = [
         ApiResponse(
             responseCode = "200",
@@ -48,15 +36,10 @@ class AssignmentController {
             )]
         )
     ])
-    fun getAssignment(@PathVariable id: Long): ResponseEntity<AssignmentDTO> {
-        return if (id >= 0) {
-            ResponseEntity.ok(AssignmentMultipleChoiceDTO(
-                id = id,
-                description = "What is your name?",
-                options = listOf("Everard", "Jesse", "Ruben", "Jarno", "Aleks"),
-                isMultipleAnswers = false,
-                ))
-        } else {
+    fun getAssignmentById(@PathVariable id: Long): ResponseEntity<AssignmentDTO> {
+        return try {
+            return ResponseEntity.ok(assignmentService.getAssignmentById(id))
+        } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
     }

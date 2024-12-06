@@ -16,6 +16,7 @@ import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/invite")
+@Tag(name = "Invite")
 class InviteController(val inviteService: InviteService) {
 
 
@@ -54,8 +55,7 @@ class InviteController(val inviteService: InviteService) {
         }
     }
 
-    @PostMapping("/{id}/invite")
-    @Tag(name = "Invite")
+    @PostMapping
     @Operation(
         summary = "Invite an applicant",
         description = "Link applicant to an assessment, and generate an invite URL")
@@ -72,7 +72,7 @@ class InviteController(val inviteService: InviteService) {
         ]
     )
     fun createInvite(
-        @RequestBody inviteRequest: InviteCreateDTO
+        @RequestBody inviteRequest: InviteCreateReadDTO
     ): ResponseEntity<URI> {
         return try {
             val inviteUrl = inviteService.createInvite(inviteRequest)
@@ -119,21 +119,21 @@ class InviteController(val inviteService: InviteService) {
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Found the interview",
+                description = "Found the assessment",
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Applicant not found",
+                description = "Assessment not found",
                 content = [Content(
                     schema = Schema(implementation = DefaultErrorAttributes::class)
                 )]
             )
         ]
     )
-    fun getAssessment(@PathVariable id: Long): ResponseEntity<InterviewDTO?> {
+    fun getAssessment(@PathVariable id: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val interview: InterviewDTO = inviteService.getAssessmentByInviteId(id)
-            ResponseEntity.ok(interview)
+            val assessment: AssessmentReadDTO = inviteService.getAssessmentByInviteId(id)
+            ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
