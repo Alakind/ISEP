@@ -6,8 +6,12 @@ import ut.isep.management.model.entity.*
 fun Applicant.toDTO(): ApplicantReadDTO {
     return ApplicantReadDTO(
         id = this.id,
+        name = this.name,
         status = this.status,
-        preferredLanguage = this.preferredLanguage)
+        preferredLanguage = this.preferredLanguage,
+        score = this.score,
+        invite = this.invite?.toDTO()
+    )
 }
 
 fun Assessment.toDTO(): AssessmentReadDTO {
