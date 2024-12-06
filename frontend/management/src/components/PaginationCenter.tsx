@@ -16,7 +16,7 @@ function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : 
       </li>
       {pageNumbers.map((number, index) => (
         index >= currentPage - 1 && index <= currentPage + 1 && (
-          <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"center_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
               {number+1}
             </a>

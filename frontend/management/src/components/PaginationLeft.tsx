@@ -6,7 +6,7 @@ function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Pr
     <>
       {pageNumbers.map((number, index) => (
         index + 1 <= 5 && (
-          <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
               {number+1}
             </a>

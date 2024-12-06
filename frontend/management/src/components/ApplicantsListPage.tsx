@@ -22,51 +22,6 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
       try {
         const res = await getApplicants(currentPage, itemsPerPage, orderBy, "");
 
-        /*const res = {
-          data: [
-            {
-              name: "Sasha Surname",
-              id: "1234567890",
-              email: "Sasha@email.com",
-              score: 100,
-              status: ApplicantStatuses.APP_ASSESSMENT_IN_PROGRESS,
-              preferredLanguage: PreferredLanguages.SQL,
-            },
-            {
-              name: "Everard Surname",
-              id: "234567890",
-              email: "Everard@email.com",
-              score: 90,
-              status: ApplicantStatuses.APP_FINISHED,
-              preferredLanguage: PreferredLanguages.SQL,
-            },
-            {
-              name: "Jesse Surname",
-              id: "34567890",
-              email: "Jesse@email.com",
-              score: 80,
-              status: ApplicantStatuses.APP_INVITED_ASSESSMENT,
-              preferredLanguage: PreferredLanguages.SQL,
-            },
-            {
-              name: "Ruben Surname",
-              id: "4567890",
-              email: "Ruben@email.com",
-              score: 70,
-              status: ApplicantStatuses.ASSESSMENT_EXPIRED,
-              preferredLanguage: PreferredLanguages.SQL,
-            },
-            {
-              name: "Jarno Surname",
-              id: "567890",
-              email: "Jarno@email.com",
-              score: 60,
-              status: ApplicantStatuses.CANCELLED,
-              preferredLanguage: PreferredLanguages.SQL,
-            },
-          ],
-          totalItems: 90
-        }*/
         setData(res.data);
         setTotalItems(res.totalItems);
       } catch (error: any) {
@@ -82,7 +37,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
     <div className="applicant-list-page">
       <SearchContainer<ApplicantInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
       {
-        loading ?
+        (totalItems == 0 || loading) ?
           <p>Loading...</p> : //TODO implement temp table
           <>
             <ApplicantsTableContainer data={data} setOrderBy={setOrderBy}/>

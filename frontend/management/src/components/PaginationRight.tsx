@@ -16,7 +16,7 @@ function PaginationRight({ pageNumbers, lastPage, currentPage, handleClick } : P
       </li>
       {pageNumbers.map((number, index) => (
         index >= lastPage - 4 && (
-          <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"right_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
               {number+1}
             </a>
