@@ -26,11 +26,14 @@ class ApplicantController(val applicantService: ApplicantService) {
         responseCode = "200",
         description = "Returns a list of all applicants",
     )
-    fun getApplicants(): List<ApplicantReadDTO> {
-        return applicantService.allApplicants
+    fun getApplicants( @RequestParam(required = false) limit: Int?,
+                       @RequestParam(required = false) page: Int?,
+                       @RequestParam(required = false,) sort: String?
+    ): List<ApplicantReadDTO> {
+        return applicantService.getAllApplicants(limit, page, sort)
     }
 
-    
+
     @GetMapping("{id}")
     @Operation(summary = "Get applicant", description = "Returns an applicant or 404 if not found")
     @ApiResponses(

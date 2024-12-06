@@ -2,6 +2,9 @@ package ut.isep.management.service
 
 import dto.*
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.ApplicantRepository
@@ -65,6 +68,29 @@ class ApplicantService(
         return applicant.invite?.assessment?.toDTO()
     }
 
-    val allApplicants: List<ApplicantReadDTO>
-        get() = applicantRepository.findAll().map {it.toDTO()}
+
+    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): List<ApplicantReadDTO> {
+        val sortCriteria = parseSort(sort)
+        val pageable: Pageable = if (limit != null) {
+            PageRequest.of(page ?: 0, limit, sortCriteria)
+        } else {
+            Pageable.unpaged(sortCriteria)
+        }
+        return applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
+    }
+
+    private fun parseSort(sort: String?): Sort {
+        if (sort.isNullOrEmpty()) {
+            return Sort.unsorted()
+        }
+        val orders = sort.split(",").map { field ->
+            val entry = field.split(":")
+            val attribute = entry[0]
+            val direction = if (entry.size == 2) { Sort.Direction.fromString(entry[1]) } else {
+                Sort.Direction.ASC
+            }
+            Sort.Order(direction, attribute)
+        }
+        return Sort.by(orders).also {println(it)}
+    }
 }
