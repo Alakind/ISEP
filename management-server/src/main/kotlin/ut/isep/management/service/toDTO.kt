@@ -10,7 +10,7 @@ fun Applicant.toDTO(): ApplicantReadDTO {
         status = this.status,
         preferredLanguage = this.preferredLanguage,
         score = this.score,
-        invite = this.invite?.toDTO()
+        invite = this.invite?.id
     )
 }
 
