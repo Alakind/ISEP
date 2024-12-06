@@ -1,7 +1,7 @@
 //https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
 
 import {ApplicantInterface, UserInterface} from "./types.tsx";
-import {Roles} from "./constants.tsx"
+import {ApplicantStatuses, PreferredLanguages, Roles} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -27,8 +27,8 @@ export async function getSearch(currentPage: number, itemsPerPage: number, subUr
 
 // ------------------------------ APPLICANT ---------------------------------//
 
-export async function getApplicants(currentPage: number, itemsPerPage: number): Promise<{data: ApplicantInterface[], totalItems: number}> {
-  const response: Response = await fetch(`${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}`, {
+export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string): Promise<{data: ApplicantInterface[], totalItems: number}> {
+  const response: Response = await fetch(`${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&order="+ orderBy : ""}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -42,12 +42,34 @@ export async function getApplicants(currentPage: number, itemsPerPage: number): 
   const totalItems: number = parseInt(response.headers.get("X-Total-Count"));
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve users`);
-  }
-
   return {data: data, totalItems: totalItems} ;
 }
+
+export async function getApplicant(id: string): Promise<ApplicantInterface> {
+  const response: Response = await fetch(`${baseUrl}/applicant/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  //TODO uncomment and delete the other return with data when this api works
+  /*if (!response.ok) {
+    throw new Error(`Failed to retrieve applicant with id: ${id}`);
+  }
+
+  return await response.json();*/
+  const data = {
+    name: "Sasha Surname",
+    id: "1234567890",
+    email: "Sasha@email.com",
+    score: 100,
+    status: ApplicantStatuses.APP_ASSESSMENT_IN_PROGRESS,
+    preferredLanguage: PreferredLanguages.SQL,
+  }
+  return data
+}
+
 
 export async function addApplicant(applicant: ApplicantInterface) : Promise<{data: ApplicantInterface}> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
@@ -74,7 +96,7 @@ export async function addApplicant(applicant: ApplicantInterface) : Promise<{dat
 // --------------------------------- USER -----------------------------------//
 
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string): Promise<{data: UserInterface[], totalItems: number}> {
-  let API_URL = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&orderBy="+ orderBy : ""}`;
+  let API_URL = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&order="+ orderBy : ""}`;
   if (itemsPerPage == -1) {
     API_URL = `${baseUrl}/user${orderBy != "" ? "?orderBy="+ orderBy : ""}`;
   }

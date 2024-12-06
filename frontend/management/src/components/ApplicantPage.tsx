@@ -1,15 +1,15 @@
 import { ApplicantInterface } from "../utils/types";
 
-function ApplicantPage({ applicant, goToApplicantsPage }: ApplicantPageProps) {
+function ApplicantPage({ applicant, goToApplicantsPage }: Props) {
   return (
     <div>
       <button onClick={goToApplicantsPage}>Back to all applicants</button>
-      This is personal page of {applicant.name} {applicant.surname}
+      This is personal page of {applicant.name}
     </div>
   );
 }
 
-interface ApplicantPageProps {
+interface Props {
   applicant: ApplicantInterface;
   goToApplicantsPage: () => void;
 }
