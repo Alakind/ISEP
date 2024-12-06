@@ -59,8 +59,18 @@ fun AssignmentCoding.toDTO(): AssignmentCodingDTO {
     )
 }
 
-fun Invite.toDTO(): ApplicantInviteDTO {
-    return ApplicantInviteDTO(
+fun Invite.toDTO(): InviteCreateDTO {
+    return InviteCreateDTO(
+        applicantId = this.applicant.id,
         assessmentId = this.assessment.id
+    )
+}
+
+fun Invite.toReadDTO(): InviteReadDTO {
+    return InviteReadDTO(
+        id = this.id,
+        applicantId = this.applicant.id,
+        assessmentId = this.assessment.id,
+        invitedAt = this.invitedAt
     )
 }
