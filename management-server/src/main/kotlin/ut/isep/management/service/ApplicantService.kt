@@ -91,6 +91,6 @@ class ApplicantService(
             }
             Sort.Order(direction, attribute)
         }
-        return Sort.by(orders).also {println(it)}
+        return Sort.by(orders)
     }
 }
