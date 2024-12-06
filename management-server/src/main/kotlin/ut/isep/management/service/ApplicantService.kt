@@ -35,9 +35,10 @@ class ApplicantService(
         }
         applicant.apply {
             updateDTO.status?.let { this.status = it }
+            updateDTO.email?.let { this.email = it }
             updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
-            updateDTO.name?.let { this.name = it}
-            updateDTO.score?.let {this.score = it}
+            updateDTO.name?.let { this.name = it }
+            updateDTO.score?.let { this.score = it }
         }
         applicantRepository.save(applicant)
     }
@@ -69,14 +70,16 @@ class ApplicantService(
     }
 
 
-    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): List<ApplicantReadDTO> {
+    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): ApplicantsPaginatedDTO {
         val sortCriteria = parseSort(sort)
         val pageable: Pageable = if (limit != null) {
             PageRequest.of(page ?: 0, limit, sortCriteria)
         } else {
             Pageable.unpaged(sortCriteria)
         }
-        return applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
+        val amount = applicantRepository.count()
+        val applicants = applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
+        return ApplicantsPaginatedDTO(amount, applicants)
     }
 
     private fun parseSort(sort: String?): Sort {
