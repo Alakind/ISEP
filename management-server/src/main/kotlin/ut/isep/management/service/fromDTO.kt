@@ -5,7 +5,9 @@ import ut.isep.management.model.entity.*
 
 fun ApplicantCreateReadDTO.fromDTO(): Applicant {
     return Applicant(
+        name = this.name,
         status = this.status,
+        score = this.score,
         preferredLanguage = this.preferredLanguage
     )
 }

@@ -1,25 +1,27 @@
 package ut.isep.management.controller
 
+import dto.SolutionUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
-class HelloController {
+@RequestMapping("/solution")
+class SolutionController {
 
     /**
      * Hello.
      * This mapping has no useful logic; it's just a documentation example.
      *
      */
-    @GetMapping("/hello")
+    @PutMapping("/{uuid}")
     @Operation(
-        description = "Say hello",
-        operationId = "hello",
-        tags = ["test"]
+        description = "Test method for putting solutions",
+        operationId = "solution",
+        tags = ["solution"]
     )
     @ApiResponse(
         responseCode = "200",
@@ -29,7 +31,7 @@ class HelloController {
             )
         )]
     )
-    fun helloKotlin(): String {
-        return "Hello from the Management Server, built on Spring Boot with Kotlin"
+    fun doNothingWithSolution(@PathVariable uuid: UUID, @RequestBody solutionUpdateDTO: SolutionUpdateDTO): String {
+        return "Solution Update DTO parsed with success"
     }
 }

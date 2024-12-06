@@ -1,10 +1,9 @@
 package ut.isep.management.controller
 
 import dto.ApplicantCreateReadDTO
-import dto.ApplicantInviteDTO
+import dto.InviteCreateDTO
 import dto.ApplicantUpdateDTO
 import dto.InterviewDTO
-import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -80,7 +79,6 @@ class ApplicantController(val applicantService: ApplicantService) {
             .toUri()
 
         return ResponseEntity.created(location).body("Added an applicant")
-//        return ResponseEntity.ok("Added an applicant")
     }
 
 
@@ -135,35 +133,6 @@ class ApplicantController(val applicantService: ApplicantService) {
     }
 
 
-    @PostMapping("/{id}/invite")
-    @Tag(name = "Invite")
-    @Operation(
-        summary = "Invite an applicant",
-        description = "Link applicant to an assessment, and generate an invite URL")
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "201",
-                description = "Invited the Applicant, return URL",
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Applicant or assessment not found",
-            )
-        ]
-    )
-    fun inviteApplicantToAssessment(
-            @PathVariable id: Long,
-            @RequestBody inviteRequest: ApplicantInviteDTO
-        ): ResponseEntity<URI> {
-            return try {
-                val inviteUrl = applicantService.inviteApplicantToAssessment(id, inviteRequest.assessmentId)
-                ResponseEntity.created(inviteUrl).build()
-            } catch (e: NoSuchElementException) {
-                ResponseEntity.status(404).build()
-            }
-    }
-
     @GetMapping("/{id}/invite")
     @Tag(name = "Invite")
     @Operation(
@@ -181,9 +150,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<ApplicantInviteDTO> {
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateDTO> {
         return try {
-            val invite: ApplicantInviteDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteCreateDTO? = applicantService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
