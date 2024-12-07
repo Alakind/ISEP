@@ -15,24 +15,34 @@ class InviteCreateService(
     private val assessmentRepository: AssessmentRepository
 ) {
 
+    @Transactional
     fun create(createDto: InviteCreateDTO): Invite {
         val applicant = applicantRepository.findById(createDto.applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
         val assessment = assessmentRepository.findById(createDto.assessmentId)
             .orElseThrow { NoSuchElementException("Assessment not found") }
 
-        val invite = Invite(applicant = applicant, assessment = assessment)
-        val inviteId = repository.save(invite).id
+        // Check if there is already an invite for this applicant
+        applicant.invite?.let {
+            throw IllegalStateException("Invite already exists for this applicant")
+        }
 
+        // Create the Invite
+        val invite = Invite(applicant = applicant, assessment = assessment)
+        val savedInvite = repository.save(invite)
+
+        // Update the applicant with the new invite
         applicant.apply {
-            this.invite = invite
+            this.invite = savedInvite
             applicantRepository.save(this)
         }
+
+        // Update the assessment with the new invite
         assessment.apply {
-            this.invites.add(invite)
+            this.invites.add(savedInvite)
             assessmentRepository.save(this)
         }
 
-        return invite
+        return savedInvite
     }
 }
