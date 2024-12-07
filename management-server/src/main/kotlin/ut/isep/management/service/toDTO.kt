@@ -1,6 +1,14 @@
 package ut.isep.management.service
 
-import dto.*
+import dto.applicant.ApplicantReadDTO
+import dto.assessment.AssessmentReadDTO
+import dto.assignment.AssignmentCodingDTO
+import dto.assignment.AssignmentDTO
+import dto.assignment.AssignmentMultipleChoiceDTO
+import dto.assignment.AssignmentOpenDTO
+import dto.invite.InviteReadDTO
+import dto.section.SectionReadDTO
+import dto.user.UserReadDTO
 import ut.isep.management.model.entity.*
 
 fun Applicant.toDTO(): ApplicantReadDTO {
@@ -64,18 +72,20 @@ fun AssignmentCoding.toDTO(): AssignmentCodingDTO {
     )
 }
 
-fun Invite.toDTO(): InviteCreateReadDTO {
-    return InviteCreateReadDTO(
-        applicantId = this.applicant.id,
-        assessmentId = this.assessment.id
-    )
-}
-
-fun Invite.toReadDTO(): InviteReadDTO {
+fun Invite.toDTO(): InviteReadDTO {
     return InviteReadDTO(
         id = this.id,
         applicantId = this.applicant.id,
         assessmentId = this.assessment.id,
         invitedAt = this.invitedAt
+    )
+}
+
+fun User.toDTO(): UserReadDTO {
+    return UserReadDTO(
+        id = this.id,
+        name = this.name,
+        email = this.email,
+        role = this.role
     )
 }

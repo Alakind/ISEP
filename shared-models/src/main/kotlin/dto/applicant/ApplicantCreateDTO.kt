@@ -1,5 +1,6 @@
-package dto
+package dto.applicant
 
+import dto.CreateDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -10,4 +11,4 @@ data class ApplicantCreateDTO(
     val email: String = "",
     val status: ApplicantStatus = ApplicantStatus.not_started,
     val preferredLanguage: String = "",
-)
+) : CreateDTO

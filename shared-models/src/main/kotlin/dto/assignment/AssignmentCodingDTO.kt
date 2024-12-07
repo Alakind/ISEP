@@ -1,4 +1,4 @@
-package dto
+package dto.assignment
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URI

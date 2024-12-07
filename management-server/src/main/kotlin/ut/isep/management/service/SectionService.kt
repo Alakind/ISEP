@@ -1,6 +1,6 @@
 package ut.isep.management.service
 
-import dto.*
+import dto.section.SectionReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*

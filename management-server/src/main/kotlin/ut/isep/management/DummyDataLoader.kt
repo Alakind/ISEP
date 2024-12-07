@@ -12,7 +12,8 @@ class DummyDataLoader(
     private val assessmentRepository: AssessmentRepository,
     private val inviteRepository: InviteRepository,
     private val sectionRepository: SectionRepository,
-    private val assignmentRepository: AssignmentRepository
+    private val assignmentRepository: AssignmentRepository,
+    private val userRepository: UserRepository
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
@@ -22,7 +23,7 @@ class DummyDataLoader(
         assessmentRepository.deleteAll()    // Then delete parent entities
         sectionRepository.deleteAll()       // Finally delete the sections
         assignmentRepository.deleteAll()    // And any other related entities
-
+        userRepository.deleteAll()
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
@@ -71,23 +72,20 @@ class DummyDataLoader(
 
         assessmentRepository.save(assessment1)
 
-//        val applicant1 = Applicant(name = "Aaron", status = ApplicantStatus.app_invited_start, preferredLanguage = "Kotlin")
-//        val applicant2 = Applicant(name = "Zebediah", status = ApplicantStatus.not_started, preferredLanguage = "F")
-//        val applicant3 = Applicant(name = "Zebediah", status = ApplicantStatus.app_finished, preferredLanguage = "C")
-//        val applicant4 = Applicant(name = "Henk", status = ApplicantStatus.app_reminded, preferredLanguage = "Rust")
-//        val applicant5 = Applicant(name = "Gerrit", status = ApplicantStatus.not_started, preferredLanguage = "JavaScript")
-//        val applicant6 = Applicant(name = "Simon", status = ApplicantStatus.test_expired, preferredLanguage = "Haskell")
-//        val applicant7 = Applicant(name = "Andre", status = ApplicantStatus.cancelled, preferredLanguage = "Java")
-//
-//        applicantRepository.apply {
-//            save(applicant1)
-//            save(applicant2)
-//            save(applicant3)
-//            save(applicant4)
-//            save(applicant5)
-//            save(applicant6)
-//            save(applicant7)
-//        }
+        val user1 = User(name = "Abba", email = "abba@gmail.com", role = UserRole.Recruiter)
+        val user2 = User(name = "Abbc", email = "abbc@gmail.com")
+        val user3 = User(name = "SuperUser", email = "su@sudo.com", role = UserRole.Admin)
+        val user4 = User(name = "Inge Interviewer", email = "inge@infosupport.nl", role = UserRole.Interviewer)
+        val user5 = User(name = "Zacharias", email = "z@hotmail.com", role = UserRole.Admin)
+
+        userRepository.apply {
+            save(user1)
+            save(user2)
+            save(user3)
+            save(user4)
+            save(user5)
+        }
+
 
         val applicants = listOf(
             Applicant(name = "Aaron", status = ApplicantStatus.app_invited_start, preferredLanguage = "Kotlin", email = "aaron@example.com"),
@@ -185,6 +183,7 @@ class DummyDataLoader(
         applicants.forEach { applicantRepository.save(it) }
 
         val inviteApplicant1Assessment1 = Invite(applicant = applicants[0], assessment = assessment1)
+
         inviteRepository.save(inviteApplicant1Assessment1)
 
         println("Dummy data loaded!")

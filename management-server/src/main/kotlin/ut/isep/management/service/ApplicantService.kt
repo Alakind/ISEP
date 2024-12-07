@@ -1,6 +1,11 @@
 package ut.isep.management.service
 
 import dto.*
+import dto.applicant.ApplicantCreateDTO
+import dto.applicant.ApplicantReadDTO
+import dto.applicant.ApplicantUpdateDTO
+import dto.assessment.AssessmentReadDTO
+import dto.invite.InviteReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -55,7 +60,7 @@ class ApplicantService(
 
 
 
-    fun getInviteByApplicantId(applicantId: Long): InviteCreateReadDTO? {
+    fun getInviteByApplicantId(applicantId: Long): InviteReadDTO? {
         val applicant = applicantRepository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
 
@@ -69,7 +74,7 @@ class ApplicantService(
     }
 
 
-    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): ApplicantsPaginatedDTO {
+    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): PaginatedDTO<ApplicantReadDTO> {
         val sortCriteria = parseSort(sort)
         val applicants = if (limit != null) {
             val pageable = PageRequest.of(page ?: 0, limit, sortCriteria)
@@ -78,7 +83,7 @@ class ApplicantService(
             applicantRepository.findAll(sortCriteria).map(Applicant::toDTO)
         }
         val amount = applicantRepository.count()
-        return ApplicantsPaginatedDTO(amount, applicants)
+        return PaginatedDTO(amount, applicants)
     }
 
     private fun parseSort(sort: String?): Sort {
