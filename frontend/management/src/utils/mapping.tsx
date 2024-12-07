@@ -1,4 +1,4 @@
-import {ApplicantStatuses} from "./constants.tsx";
+import {ApplicantStatuses, Roles} from "./constants.tsx";
 
 export function mapStatus(status: string): string {
   switch (status) {
@@ -24,5 +24,20 @@ export function mapStatus(status: string): string {
       return ApplicantStatuses.NOT_STARTED
     default:
       return "Unknown"
+  }
+}
+
+export function mapRole(role: string): string {
+  switch (role) {
+    case "admin":
+      return Roles.ADMIN
+    case "interviewer":
+      return Roles.INTERVIEWER
+    case "recruiter":
+      return Roles.RECRUITER
+    case undefined:
+      return Roles.NO_ACCESS
+    default:
+      return Roles.NO_ACCESS
   }
 }

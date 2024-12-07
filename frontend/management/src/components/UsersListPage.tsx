@@ -7,7 +7,7 @@ import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
 import UsersTableContainer from "../containers/UsersTableContainer.tsx";
-import {applicantColumns, Roles, userColumns} from "../utils/constants.tsx";
+import {Roles, userColumns} from "../utils/constants.tsx";
 import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
 import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
 

@@ -1,7 +1,7 @@
 //https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
 
 import {ApplicantInterface, UserInterface} from "./types.tsx";
-import {ApplicantStatuses, PreferredLanguages, Roles} from "./constants.tsx"
+import {Roles} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -57,8 +57,7 @@ export async function getApplicants(currentPage: number, itemsPerPage: number, o
 }
 
 export async function getApplicant(id: string): Promise<ApplicantInterface> {
-  //TODO uncomment and delete the other return with data when this api works
-  /*const response: Response = await fetch(`${baseUrl}/applicant/${id}`, {
+  const response: Response = await fetch(`${baseUrl}/applicant/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -70,16 +69,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
     throw new Error(`Failed to retrieve applicant with id: ${id}`);
   }
 
-  return await response.json();*/
-  const data = {
-    name: "Sasha Surname",
-    id: "1234567890",
-    email: "Sasha@email.com",
-    score: 100,
-    status: ApplicantStatuses.APP_ASSESSMENT_IN_PROGRESS,
-    preferredLanguage: PreferredLanguages.SQL,
-  }
-  return data
+  return await response.json();
 }
 
 

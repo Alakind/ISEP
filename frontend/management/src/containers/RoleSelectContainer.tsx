@@ -6,14 +6,15 @@ import {Roles} from "../utils/constants.tsx"
 
 
 function RoleSelectContainer({id, subUrl, disabled, initialRole}: Props) {
-  const [selectedOption, setSelectedOption] = useState<typeof Roles | undefined>(initialRole);
+  const [selectedOption, setSelectedOption] = useState<(typeof Roles)[keyof typeof Roles]>(initialRole);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function changeState(e: { target: { value: any; }; }) {
     setLoading(true);
     try {
-      await updateRole(id, subUrl, e.target.value);
-      setSelectedOption(e.target.value);
+      const res = await updateRole(id, subUrl, e.target.value);
+      e.target.value = res.role.toString();
+      setSelectedOption(res.role.toString());
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -33,7 +34,7 @@ interface Props {
   id: string;
   subUrl: string;
   disabled: boolean;
-  initialRole: typeof Roles | undefined;
+  initialRole: (typeof Roles)[keyof typeof Roles];
 }
 
 export default RoleSelectContainer
