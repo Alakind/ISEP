@@ -11,12 +11,12 @@ function TableHead({ columns, sortField, order, handleSorting, handleSelectAll }
             } else {
               const cl = sortable
                 ? sortField === accessor && order === "asc"
-                  ? "up"
+                  ? "down"
                   : sortField === accessor && order === "desc"
-                    ? "down"
+                    ? "up"
                     : "default"
                 : "";
-              return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSorting(accessor) : () => null}>{label}</th>
+              return <th className={"sort " + cl} scope="col" key={accessor} onClick={() => handleSorting(accessor)}>{label}</th>
             }
           }
         )}

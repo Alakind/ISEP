@@ -4,11 +4,11 @@ import TableHeadContainer from "../containers/TableHeadContainer.tsx";
 import TableBodyContainer from "../containers/TableBodyContainer.tsx";
 import React from "react";
 
-function ApplicantsTable({ data, setOrderBy }: Props) {
+function ApplicantsTable({ data, orderBy, setOrderBy }: Props) {
   return (
     <>
       <table className="table table-striped">
-        <TableHeadContainer columns={applicantColumns} setOrderBy={setOrderBy} />
+        <TableHeadContainer columns={applicantColumns} orderBy={orderBy} setOrderBy={setOrderBy} />
         <TableBodyContainer columns={applicantColumns} tableData={data} />
       </table>
     </>
@@ -17,6 +17,7 @@ function ApplicantsTable({ data, setOrderBy }: Props) {
 
 interface Props {
   data: ApplicantInterface[];
+  orderBy: string;
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 

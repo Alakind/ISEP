@@ -35,12 +35,12 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
 
   return (
     <div className="applicant-list-page">
-      <SearchContainer<ApplicantInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
       {
         (totalItems == 0 || loading) ?
           <p>Loading...</p> : //TODO implement temp table
           <>
-            <ApplicantsTableContainer data={data} setOrderBy={setOrderBy}/>
+            <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
             <div className="user-list-page__inner">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>

@@ -2,14 +2,15 @@ import {ApplicantInterface} from "../utils/types.tsx";
 import React from "react";
 import ApplicantsTable from "../components/ApplicantsTable.tsx";
 
-function ApplicantsTableContainer({ data, setOrderBy }: Props) {
+function ApplicantsTableContainer({ data, orderBy, setOrderBy }: Props) {
   return (
-    <ApplicantsTable data={data} setOrderBy={setOrderBy} />
+    <ApplicantsTable data={data} setOrderBy={setOrderBy} orderBy={orderBy} />
   )
 }
 
 interface Props {
   data: ApplicantInterface[];
+  orderBy: string;
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 

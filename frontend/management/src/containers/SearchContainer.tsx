@@ -17,7 +17,8 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
           res = await getUsers(currentPage, itemsPerPage, orderBy /*TODO fix that it becomes the current order  */, query);
           setData((res.data));
         } else {
-          res = await getApplicants(currentPage, itemsPerPage, "name:desc" /*TODO fix that it becomes the current order  */, query);
+          res = await getApplicants(currentPage, itemsPerPage, orderBy /*TODO fix that it becomes the current order  */, query);
+          setData(res.data);
         }
 
         setTotalItems(res.totalItems);
