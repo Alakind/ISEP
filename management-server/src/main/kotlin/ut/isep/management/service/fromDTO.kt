@@ -12,7 +12,7 @@ fun ApplicantCreateDTO.fromDTO(): Applicant {
     )
 }
 
-fun UserCreateReadDTO.fromDTO(): User {
+fun UserCreateDTO.fromDTO(): User {
     return User(
         name = this.name,
         email = this.email,

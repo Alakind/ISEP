@@ -13,4 +13,4 @@ data class ApplicantReadDTO(
     val preferredLanguage: String? = null,
     val score: Int? = 0,
     val invite: UUID? = null
-)
+) : ReadDTO

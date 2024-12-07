@@ -10,4 +10,4 @@ data class InviteReadDTO(
     val applicantId: Long,
     val assessmentId: Long,
     val invitedAt: ZonedDateTime
-)
+) : ReadDTO

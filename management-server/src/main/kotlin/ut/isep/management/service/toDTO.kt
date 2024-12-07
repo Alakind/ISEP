@@ -73,8 +73,8 @@ fun Invite.toDTO(): InviteReadDTO {
     )
 }
 
-fun User.toDTO(): UserCreateReadDTO {
-    return UserCreateReadDTO(
+fun User.toDTO(): UserReadDTO {
+    return UserReadDTO(
         id = this.id,
         name = this.name,
         email = this.email,

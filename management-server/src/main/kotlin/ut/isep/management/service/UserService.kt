@@ -1,6 +1,7 @@
 package ut.isep.management.service
 
-import dto.UserCreateReadDTO
+import dto.UserCreateDTO
+import dto.UserReadDTO
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.User
 import ut.isep.management.repository.UserRepository

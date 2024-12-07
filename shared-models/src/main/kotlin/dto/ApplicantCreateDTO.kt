@@ -10,4 +10,4 @@ data class ApplicantCreateDTO(
     val email: String = "",
     val status: ApplicantStatus = ApplicantStatus.not_started,
     val preferredLanguage: String = "",
-)
+) : CreateDTO
