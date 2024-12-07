@@ -22,7 +22,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.4.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
     implementation(project(":shared-models"))
     implementation(project(":shared-entities"))
