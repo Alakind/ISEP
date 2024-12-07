@@ -1,13 +1,14 @@
 package ut.isep.management.service.invite
 
 import dto.invite.InviteCreateDTO
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.repository.ApplicantRepository
 import ut.isep.management.repository.AssessmentRepository
 import ut.isep.management.repository.InviteRepository
 
-@Component
+@Service
 class InviteCreateService(
     private val repository: InviteRepository,
     private val applicantRepository: ApplicantRepository,

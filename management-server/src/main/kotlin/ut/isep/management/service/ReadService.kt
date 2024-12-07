@@ -3,31 +3,32 @@ package ut.isep.management.service
 import dto.PaginatedDTO
 import dto.ReadDTO
 import entity.BaseEntity
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.repository.JpaRepository
 import ut.isep.management.service.converter.ReadConverter
 
-
+@Transactional
 abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     protected val repository: JpaRepository<E, ID>,
     protected val converter: ReadConverter<E, R>
 ) {
-
-    fun getById(id: ID): R {
+    // functions are marked as open otherwise @Transactional cannot override them to create proxies, apparently
+    open fun getById(id: ID): R {
         val entity = repository.findById(id).orElseThrow { NoSuchElementException("Entity not found") }
         return converter.toDTO(entity)
     }
 
-    fun delete(id: ID) {
+    open fun delete(id: ID) {
         repository.deleteById(id)
     }
 
-    fun getAll(): List<R> {
+    open fun getAll(): List<R> {
         return repository.findAll().map {converter.toDTO(it)}
     }
 
-    fun getPaginated(limit: Int?, page: Int?, sort: String?): PaginatedDTO<R> {
+    open fun getPaginated(limit: Int?, page: Int?, sort: String?): PaginatedDTO<R> {
         val sortCriteria = parseSort(sort)
         val entities = if (limit != null) {
             val pageable = PageRequest.of(page ?: 0, limit, sortCriteria)

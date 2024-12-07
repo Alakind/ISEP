@@ -12,7 +12,7 @@ import ut.isep.management.service.converter.invite.InviteReadConverter
 import java.util.UUID
 import kotlin.NoSuchElementException
 
-
+@Transactional
 @Service
 class InviteReadService(
     repository: InviteRepository,
