@@ -1,4 +1,4 @@
-package dto
+package dto.applicant
 
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.media.Schema

@@ -1,7 +1,7 @@
 package ut.isep.interview.api
 
-import dto.AssessmentReadDTO
-import dto.SectionReadDTO
+import dto.assessment.AssessmentReadDTO
+import dto.section.SectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema

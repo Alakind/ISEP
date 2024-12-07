@@ -1,6 +1,7 @@
 package ut.isep.management.service
 
-import dto.*
+import dto.applicant.ApplicantCreateDTO
+import dto.user.UserCreateDTO
 import ut.isep.management.model.entity.*
 
 fun ApplicantCreateDTO.fromDTO(): Applicant {

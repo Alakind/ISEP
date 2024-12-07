@@ -1,5 +1,6 @@
-package dto
+package dto.invite
 
+import dto.ReadDTO
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.ZonedDateTime
 import java.util.*

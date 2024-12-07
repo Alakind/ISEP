@@ -1,6 +1,9 @@
 package ut.isep.management.service
 
 import dto.*
+import dto.user.UserCreateDTO
+import dto.user.UserReadDTO
+import dto.user.UserUpdateDTO
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service

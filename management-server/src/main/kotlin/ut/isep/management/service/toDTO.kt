@@ -1,6 +1,14 @@
 package ut.isep.management.service
 
-import dto.*
+import dto.applicant.ApplicantReadDTO
+import dto.assessment.AssessmentReadDTO
+import dto.assignment.AssignmentCodingDTO
+import dto.assignment.AssignmentDTO
+import dto.assignment.AssignmentMultipleChoiceDTO
+import dto.assignment.AssignmentOpenDTO
+import dto.invite.InviteReadDTO
+import dto.section.SectionReadDTO
+import dto.user.UserReadDTO
 import ut.isep.management.model.entity.*
 
 fun Applicant.toDTO(): ApplicantReadDTO {

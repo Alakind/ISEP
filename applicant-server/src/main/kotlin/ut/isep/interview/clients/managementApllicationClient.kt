@@ -1,7 +1,7 @@
 package ut.isep.interview.clients
 
-import dto.AssessmentReadDTO
-import dto.SectionReadDTO
+import dto.assessment.AssessmentReadDTO
+import dto.section.SectionReadDTO
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

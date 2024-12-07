@@ -1,5 +1,6 @@
-package dto
+package dto.applicant
 
+import dto.ReadDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*

@@ -1,6 +1,11 @@
 package ut.isep.management.service
 
 import dto.*
+import dto.applicant.ApplicantCreateDTO
+import dto.applicant.ApplicantReadDTO
+import dto.applicant.ApplicantUpdateDTO
+import dto.assessment.AssessmentReadDTO
+import dto.invite.InviteReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

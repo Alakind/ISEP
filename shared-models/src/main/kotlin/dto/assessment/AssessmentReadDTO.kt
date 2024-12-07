@@ -1,5 +1,6 @@
-package dto
+package dto.assessment
 
+import dto.ReadDTO
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "A test, consisting of multiple Sections")

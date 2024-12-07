@@ -1,6 +1,9 @@
 package ut.isep.management.controller
 
 import dto.*
+import dto.user.UserCreateDTO
+import dto.user.UserReadDTO
+import dto.user.UserUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema

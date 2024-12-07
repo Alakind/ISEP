@@ -1,6 +1,8 @@
 package ut.isep.management.controller
 
-import dto.*
+import dto.assessment.AssessmentReadDTO
+import dto.invite.InviteCreateDTO
+import dto.invite.InviteReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema

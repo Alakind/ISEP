@@ -1,4 +1,4 @@
-package dto
+package dto.user
 
 import enumerable.UserRole
 import io.swagger.v3.oas.annotations.media.Schema

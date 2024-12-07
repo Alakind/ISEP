@@ -1,6 +1,6 @@
 package ut.isep.interview.api
 
-import dto.InterviewStatusDTO
+import dto.assessment.InterviewStatusDTO
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
