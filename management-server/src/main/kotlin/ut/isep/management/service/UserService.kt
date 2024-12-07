@@ -1,8 +1,10 @@
 package ut.isep.management.service
 
-import dto.UserCreateDTO
-import dto.UserReadDTO
+import dto.*
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ut.isep.management.model.entity.User
 import ut.isep.management.repository.UserRepository
 import kotlin.NoSuchElementException
@@ -14,7 +16,7 @@ class UserService(
     private val usersRepository: UserRepository,
 ) {
 
-    fun createUser(userDTO: UserCreateReadDTO): User {
+    fun createUser(userDTO: UserCreateDTO): User {
         val userEntity = userDTO.fromDTO()
         checkUserInDB(userEntity)
         return usersRepository.save(userEntity)
@@ -42,23 +44,23 @@ class UserService(
         usersRepository.deleteById(id)
     }
 
-    fun getUserById(id: Long): UserCreateReadDTO {
+    fun getUserById(id: Long): UserReadDTO {
         val user: User = usersRepository.findById(id).orElseThrow{
             NoSuchElementException("User not found with id $id")
         }
         return user.toDTO()
     }
 
-    fun getAllUsers(limit: Int?, page: Int?, sort: String?): UsersPaginatedDTO {
+    fun getAllUsers(limit: Int?, page: Int?, sort: String?): PaginatedDTO<UserReadDTO> {
         val sortCriteria = parseSort(sort)
-        val pageable: Pageable = if (limit != null) {
-            PageRequest.of(page ?: 0, limit, sortCriteria)
+        val users = if (limit != null) {
+            val pageable = PageRequest.of(page ?: 0, limit, sortCriteria)
+            usersRepository.findAll(pageable).content.map(User::toDTO)
         } else {
-            Pageable.unpaged(sortCriteria)
+            usersRepository.findAll(sortCriteria).map(User::toDTO)
         }
         val amount = usersRepository.count()
-        val users = usersRepository.findAll(pageable).content.map(User::toDTO)
-        return UsersPaginatedDTO(amount, users)
+        return PaginatedDTO(amount, users)
     }
 
     private fun parseSort(sort: String?): Sort {
