@@ -56,7 +56,7 @@ class ApplicantService(
 
 
 
-    fun getInviteByApplicantId(applicantId: Long): InviteCreateReadDTO? {
+    fun getInviteByApplicantId(applicantId: Long): InviteReadDTO? {
         val applicant = applicantRepository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
 

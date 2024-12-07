@@ -151,9 +151,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateReadDTO> {
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteReadDTO> {
         return try {
-            val invite: InviteCreateReadDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteReadDTO? = applicantService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

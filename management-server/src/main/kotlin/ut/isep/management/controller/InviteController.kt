@@ -72,7 +72,7 @@ class InviteController(val inviteService: InviteService) {
         ]
     )
     fun createInvite(
-        @RequestBody inviteRequest: InviteCreateReadDTO
+        @RequestBody inviteRequest: InviteCreateDTO
     ): ResponseEntity<URI> {
         return try {
             val inviteUrl = inviteService.createInvite(inviteRequest)

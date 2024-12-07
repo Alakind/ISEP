@@ -29,7 +29,7 @@ class InviteService(
         }
     }
 
-    fun createInvite(inviteDto: InviteCreateReadDTO): URI {
+    fun createInvite(inviteDto: InviteCreateDTO): URI {
         val applicant = applicantRepository.findById(inviteDto.applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
         val assessment = assessmentRepository.findById(inviteDto.assessmentId)
@@ -52,7 +52,7 @@ class InviteService(
     }
 
     fun getInviteReadDtoById(id: Long): InviteReadDTO {
-        return getInviteById(id).toReadDTO()
+        return getInviteById(id).toDTO()
     }
 
     fun getAssessmentByInviteId(id: Long): AssessmentReadDTO {
@@ -60,5 +60,5 @@ class InviteService(
     }
 
     val allInvites: List<InviteReadDTO>
-        get() = inviteRepository.findAll().map {it.toReadDTO()}
+        get() = inviteRepository.findAll().map {it.toDTO()}
 }
