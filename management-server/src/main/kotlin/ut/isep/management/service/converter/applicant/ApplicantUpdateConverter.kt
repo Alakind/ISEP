@@ -10,6 +10,7 @@ class ApplicantUpdateConverter : UpdateConverter<Applicant, ApplicantUpdateDTO> 
     override fun updateEntity(entity: Applicant, updateDTO: ApplicantUpdateDTO): Applicant {
         return entity.apply {
             updateDTO.name?.let { this.name = it }
+            updateDTO.email?.let { this.email = it }
             updateDTO.status?.let { this.status = it }
             updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
             updateDTO.score?.let { this.score = it }
