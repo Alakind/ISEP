@@ -7,8 +7,9 @@ import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
 import UsersTableContainer from "../containers/UsersTableContainer.tsx";
-import {Roles} from "../utils/constants.tsx";
+import {applicantColumns, Roles, userColumns} from "../utils/constants.tsx";
 import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
+import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
 
 
 function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {
@@ -89,9 +90,9 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
                                       handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
       {
         loading ?
-          <p>Loading...</p> : //TODO implement temp table
+          <TableLoadingContainer columns={userColumns} itemsPerPage={itemsPerPage}/> :
           <>
-            <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected}  isSelected={isSelected}/>
+            <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>
             <div className="user-list-page__inner">
               <BulkActionSelectContainer isSelected={isSelected}/>
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />

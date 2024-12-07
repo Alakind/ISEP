@@ -1,5 +1,4 @@
 import {ApplicantInterface, Column, Selection, UserInterface} from "../utils/types.tsx";
-import "../styles/table.css"
 import TableRowUsers from "./TableRowUsers.tsx";
 import TableRowApplicants from "./TableRowApplicants.tsx";
 

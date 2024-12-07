@@ -7,6 +7,8 @@ import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContaine
 import PaginationContainer from "../containers/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
 import {getApplicants} from "../utils/apiFunctions.tsx";
+import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
+import {applicantColumns} from "../utils/constants.tsx";
 
 function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
   const [data, setData] = useState<ApplicantInterface[]>(initialData);
@@ -38,7 +40,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
       <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
       {
         (totalItems == 0 || loading) ?
-          <p>Loading...</p> : //TODO implement temp table
+          <TableLoadingContainer columns={applicantColumns} itemsPerPage={itemsPerPage}/> :
           <>
             <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
             <div className="user-list-page__inner">

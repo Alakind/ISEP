@@ -11,6 +11,11 @@
     margin: 4px 0 -3px 4px;
 }
 
+.checkbox__input--loading {
+    border: 0.15em solid grey;
+    cursor: default;
+}
+
 .checkbox__input[type="checkbox"] {
     border-radius: 0.15em;
 }

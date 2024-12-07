@@ -3,6 +3,7 @@ import {applicantColumns} from "../utils/constants.tsx";
 import TableHeadContainer from "../containers/TableHeadContainer.tsx";
 import TableBodyContainer from "../containers/TableBodyContainer.tsx";
 import React from "react";
+import "../styles/table.css";
 
 function ApplicantsTable({ data, orderBy, setOrderBy }: Props) {
   return (
