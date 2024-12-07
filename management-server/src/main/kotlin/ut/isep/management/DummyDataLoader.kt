@@ -1,6 +1,7 @@
 package ut.isep.management
 
 import enumerable.ApplicantStatus
+import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
@@ -12,7 +13,8 @@ class DummyDataLoader(
     private val assessmentRepository: AssessmentRepository,
     private val inviteRepository: InviteRepository,
     private val sectionRepository: SectionRepository,
-    private val assignmentRepository: AssignmentRepository
+    private val assignmentRepository: AssignmentRepository,
+    private val userRepository: UserRepository
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
@@ -22,7 +24,7 @@ class DummyDataLoader(
         assessmentRepository.deleteAll()    // Then delete parent entities
         sectionRepository.deleteAll()       // Finally delete the sections
         assignmentRepository.deleteAll()    // And any other related entities
-
+        userRepository.deleteAll()
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
@@ -89,6 +91,19 @@ class DummyDataLoader(
             save(applicant7)
         }
 
+        val user1 = User(name = "Abba", email = "abba@gmail.com", role = UserRole.Recruiter)
+        val user2 = User(name = "Abbc", email = "abbc@gmail.com")
+        val user3 = User(name = "SuperUser", email = "su@sudo.com", role = UserRole.Admin)
+        val user4 = User(name = "Inge Interviewer", email = "inge@infosupport.nl", role = UserRole.Interviewer)
+        val user5 = User(name = "Zacharias", email = "z@hotmail.com", role = UserRole.Admin)
+
+        userRepository.apply {
+            save(user1)
+            save(user2)
+            save(user3)
+            save(user4)
+            save(user5)
+        }
         val inviteApplicant1Assessment1 = Invite(applicant = applicant1, assessment = assessment1)
         inviteRepository.save(inviteApplicant1Assessment1)
 
