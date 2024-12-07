@@ -1,23 +1,64 @@
-import { ApplicantInterface } from "../utils/types";
-import ApplicantsTable from "./ApplicantsTable";
+import {ApplicantInterface} from "../utils/types";
+import {useEffect, useState} from "react";
+import {toast} from "react-toastify";
+import SearchContainer from "../containers/SearchContainer.tsx";
+import ApplicantsTableContainer from "../containers/ApplicantsTableContainer.tsx";
+import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
+import PaginationContainer from "../containers/PaginationContainer.tsx";
+import "../styles/applicant-list-page.css"
+import {getApplicants} from "../utils/apiFunctions.tsx";
+import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
+import {applicantColumns} from "../utils/constants.tsx";
 
-function ApplicantsListPage({
-  applicants,
-  goToApplicantPage,
-}: ApplicantsListProps) {
+function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
+  const [data, setData] = useState<ApplicantInterface[]>(initialData);
+  const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
+  const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
+
+  useEffect(() => {
+    const fetchData = async() => {
+      setLoading(true);
+      try {
+        const res = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+
+        setData(res.data);
+        setTotalItems(res.totalItems);
+      } catch (error: any) {
+        toast.error(error.message)
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [currentPage, itemsPerPage, orderBy]);
+
   return (
-    <div>
-      <ApplicantsTable
-        applicants={applicants}
-        goToApplicantPage={goToApplicantPage}
-      />
+    <div className="applicant-list-page">
+      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+      {
+        (totalItems == 0 || loading) ?
+          <TableLoadingContainer columns={applicantColumns} itemsPerPage={itemsPerPage}/> :
+          <>
+            <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
+            <div className="user-list-page__inner">
+              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+            </div>
+          </>
+      }
     </div>
   );
 }
 
-interface ApplicantsListProps {
-  applicants: ApplicantInterface[];
-  goToApplicantPage: (arg0: string) => void;
+interface Props {
+  initialData: ApplicantInterface[];
+  initialCurrentPage: number;
+  initialItemsPerPage: number;
+  initialTotalItems: number;
+  initialOrderBy: string;
 }
 
 export default ApplicantsListPage;

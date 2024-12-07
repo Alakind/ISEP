@@ -1,42 +1,25 @@
 import { ApplicantInterface } from "../utils/types";
+import {applicantColumns} from "../utils/constants.tsx";
+import TableHeadContainer from "../containers/TableHeadContainer.tsx";
+import TableBodyContainer from "../containers/TableBodyContainer.tsx";
+import React from "react";
+import "../styles/table.css";
 
-function ApplicantsTable({
-  applicants,
-  goToApplicantPage,
-}: ApplicantsTableProps) {
+function ApplicantsTable({ data, orderBy, setOrderBy }: Props) {
   return (
     <>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Status</th>
-            <th scope="col">Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {applicants.map((applicant) => {
-            return (
-              <tr key={applicant.id}>
-                <th scope="row" onClick={() => goToApplicantPage(applicant.id)}>
-                  {applicant.name + " " + applicant.surname}
-                </th>
-                <td>{applicant.email}</td>
-                <td>{applicant.status}</td>
-                <td>{applicant.score}/100</td>
-              </tr>
-            );
-          })}
-        </tbody>
+      <table className="table table-striped">
+        <TableHeadContainer columns={applicantColumns} orderBy={orderBy} setOrderBy={setOrderBy} />
+        <TableBodyContainer columns={applicantColumns} tableData={data} />
       </table>
     </>
   );
 }
 
-interface ApplicantsTableProps {
-  applicants: ApplicantInterface[];
-  goToApplicantPage: (arg0: string) => void;
+interface Props {
+  data: ApplicantInterface[];
+  orderBy: string;
+  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default ApplicantsTable;

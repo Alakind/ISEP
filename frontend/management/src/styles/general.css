@@ -18,6 +18,9 @@
     --text-black: black;
     --background-table-odd: #414040;
     --background-table-even: #2f2e2e;
+    --status-item--error: #ef5353;
+    --status-item: #466589;
+    --loading-cell: grey;
 }
 
 [data-theme="light"] {
@@ -39,6 +42,9 @@
     --text-black: black;
     --background-table-odd: #F2F2F2;
     --background-table-even: white;
+    --status-item--error: #ef5353;
+    --status-item: #466589;
+    --loading-cell: lightgrey;
 }
 
 body, html {
@@ -115,7 +121,7 @@ a {
  }
 
 main {
-    height: 100vh;
+    height: 90vh;
     display: flex;
     padding: 25px;
     flex-direction: column;

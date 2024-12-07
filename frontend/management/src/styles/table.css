@@ -31,7 +31,7 @@
     content: url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIPnI+py+0/hJzz0IruwjsVADs=);
 }
 
-.down, .up, .default {
+.down, .up, .default, .table-row__link {
     cursor:pointer;
 }
 
@@ -39,11 +39,11 @@
     color: #43434499;
 }
 
-.table-striped>tbody>tr:last-child>td {
+.table-striped>tbody>tr:last-child>td, .table-striped>tbody>tr:last-child>th  {
     border-style: none;
 }
 
-.table-striped>tbody>tr:last-child>td:first-child {
+.table-striped>tbody>tr:last-child>td:first-child, .table-striped>tbody>tr:last-child>th:first-child {
     border-bottom-left-radius: 5px;
 }
 

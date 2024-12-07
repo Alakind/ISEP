@@ -1,7 +1,6 @@
 import "../styles/toggle.css";
 import {useState} from "react";
 import {toast} from "react-toastify";
-import { updateAccess } from "../utils/apiFunctions.tsx";
 import Toggle from "../components/Toggle.tsx";
 
 function ToggleContainer({ checked, subUrl, disabled } : Props) {
@@ -11,7 +10,7 @@ function ToggleContainer({ checked, subUrl, disabled } : Props) {
   async function changeState() {
     setLoading(true);
     try {
-      await updateAccess(subUrl, !toggleValue);
+      // await updateAccess(subUrl, !toggleValue); //TODO remove container and component is not used anymore
       setToggleValue(!toggleValue);
     } catch (error: any) {
       toast.error(error.message);

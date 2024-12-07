@@ -12,16 +12,26 @@ export const Themes = {
 };
 
 export const ApplicantStatuses = {
-  APP_INVITED_START: "AppInvitedStart",
-  APP_INVITED_ASSESSMENT: "AppInvitedAssessment",
-  APP_REMINDED: "AppReminded",
-  APP_ASSESSMENT_IN_PROGRESS: "AppAssessmentInProgress",
-  ASSESSMENT_EXPIRED: "AssessmentExpired",
-  APP_FINISHED: "ApplicantFinished",
-  INTERVIEW_INVITED: "InterviewInvited",
-  INTERVIEW_FINISHED: "InterviewFinished",
+  APP_INVITED_START: "Applicant Invited (Phase 1)",
+  APP_INVITED_ASSESSMENT: "Applicant Invited (Phase 2)",
+  APP_REMINDED: "Applicant Reminded",
+  ASSESSMENT_EXPIRED: "Assessment Expired",
+  NOT_STARTED: "Assessment Not Started",
+  APP_ASSESSMENT_IN_PROGRESS: "Assessment In Progress",
+  APP_FINISHED: "Applicant Finished",
+  INTERVIEW_INVITED: "Interview Invited",
+  INTERVIEW_FINISHED: "Interview Finished",
   CANCELLED: "Cancelled",
+
 };
+
+export const PreferredLanguages = {
+  JAVA: "Java",
+  C_SHARP: "C#",
+  SQL: "SQL",
+  PYTHON: "Python"
+}
+
 
 export const Roles = {
   RECRUITER: "Recruiter",
@@ -31,6 +41,7 @@ export const Roles = {
 };
 
 export const userColumns: Column[] = [
+  {label: "Select", accessor: "select", sortable: false},
   {label: "Name", accessor: "name", sortable: true},
   {label: "Email", accessor: "email", sortable: true},
   {label: "Role", accessor: "role", sortable: true},

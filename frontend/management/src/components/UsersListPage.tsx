@@ -1,27 +1,39 @@
-import { UserInterface } from "../utils/types";
+import {Selection, UserInterface} from "../utils/types";
 import SearchContainer from "../containers/SearchContainer.tsx";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import PaginationContainer from "../containers/PaginationContainer.tsx";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
 import UsersTableContainer from "../containers/UsersTableContainer.tsx";
+import {Roles, userColumns} from "../utils/constants.tsx";
+import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
+import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
 
 
-function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
+function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {
   const [data, setData] = useState<UserInterface[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
   const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
   const [loading, setLoading] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
+  const [isSelected, setIsSelected] = useState<Selection[]>(initialSelection);
+
+  function handleIsSelectedChange(data: UserInterface[]) {
+    let changedState: Selection[] = [];
+    for (let i = 0; i < data.length; i++) {
+      changedState.push({id: data[i].id, checked: false});
+    }
+    setIsSelected(changedState);
+  }
 
   useEffect(() => {
     const fetchData = async() => {
       setLoading(true);
       try {
-        // const res = await getUsers(currentPage, itemsPerPage, orderBy);
+        // const res = await getUsers(currentPage, itemsPerPage, orderBy, "");
 
         const res = {
           data: [
@@ -29,42 +41,39 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
               name: "Fenna",
               id: "12345678909",
               email: "Fenna@email.com",
-              role: null,
-              access: false,
+              role: "",
             },
             {
               name: "Jurre",
               id: "12345678901",
               email: "Jurre@email.com",
-              role: "Admin",
-              access: false,
+              role: Roles.ADMIN,
             },
             {
               name: "Channa",
               id: "12345678902",
               email: "Channa@email.com",
-              role: "Recruiter",
-              access: true,
+              role: Roles.RECRUITER,
             },
             {
               name: "Nico",
               id: "12345678903",
               email: "Nico@email.com",
-              role: "Interviewer",
+              role: Roles.INTERVIEWER,
             },
             {
               name: "FallbackAdmin",
               id: "523",
               email: "fallbackAdmin@infosupport.nl",
-              role: "Admin",
-              access: true,
+              role: Roles.ADMIN,
             },
           ],
           totalItems: 90
         }
-        setData(res.data);
+        handleIsSelectedChange(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
+        setData(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
         setTotalItems(res.totalItems);
-      } catch (error) {
+      } catch (error: any) {
         toast.error(error.message)
       } finally {
         setLoading(false);
@@ -73,15 +82,19 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     fetchData();
   }, [currentPage, itemsPerPage, orderBy]);
 
+
+
   return (
     <div className="user-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} />
+      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
+                                      handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
       {
         loading ?
-          <p>Loading...</p> : //TODO implement temp table
+          <TableLoadingContainer columns={userColumns} itemsPerPage={itemsPerPage}/> :
           <>
-            <UsersTableContainer data={data} setOrderBy={setOrderBy} />
+            <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>
             <div className="user-list-page__inner">
+              <BulkActionSelectContainer isSelected={isSelected}/>
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>
@@ -97,6 +110,7 @@ interface Props {
   initialItemsPerPage: number;
   initialTotalItems: number;
   initialOrderBy: string;
+  initialSelection: Selection[];
 }
 
 export default UsersListPage;

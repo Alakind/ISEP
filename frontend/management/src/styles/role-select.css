@@ -1,12 +1,14 @@
 .role-select__select {
     background-color: var(--transparent);
-    border-color: var(--transparent);
+    border: none;
     color: var(--text-primary);
     width: 100%;
 }
 
 .role-select__select>option {
     color: var(--text-black);
+    background: var(--white-background-transparent);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
 .role-select__select--disabled {
@@ -14,6 +16,7 @@
     margin-left: 5px;
 }
 
-.role-select__select:focus-visible {
-    outline: -webkit-focus-ring-color auto 0;
+.role-select__select:focus-visible, .role-select__select:hover {
+    outline: var(--transparent) none 0;
 }
+

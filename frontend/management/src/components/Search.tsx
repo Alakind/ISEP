@@ -6,7 +6,7 @@ function Search({ query, setQuery, clearSearch } : Props ) {
     <div className="user-list__div">
       <form className="form-inline user-list__form">
         <input id="search" value={query} onChange={(e) => setQuery(e.target.value)} className="form-control mr-sm-2 input--mod" type="text" placeholder="Search..." aria-label="Search" />
-        <a onClick={() => clearSearch} className="btn btn-primary my-2 my-sm-0 btn--mod btn--search" role="button"><i className="bi bi-x-lg"></i></a>
+        <a onClick={clearSearch} className="btn btn-primary my-2 my-sm-0 btn--mod btn--search" role="button"><i className="bi bi-x-lg"></i></a>
       </form>
     </div>
   )

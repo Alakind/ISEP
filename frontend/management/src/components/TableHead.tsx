@@ -1,18 +1,23 @@
 import {Column} from "../utils/types.tsx";
+import CheckboxContainer from "../containers/CheckboxContainer.tsx";
 
-function TableHead({ columns, sortField, order, handleSorting } : Props) {
+function TableHead({ columns, sortField, order, handleSorting, handleSelectAll } : Props) {
   return (
     <thead className="table__head">
       <tr>
         {columns.map(({ label, accessor, sortable } : Column) => {
-            const cl = sortable
-              ? sortField === accessor && order === "asc"
-                ? "up"
-                : sortField === accessor && order === "desc"
+            if (accessor == "select") {
+              return <th className="sort" scope="col" key={accessor} ><CheckboxContainer id={"checkbox-all"} additionalAction={handleSelectAll}/></th>
+            } else {
+              const cl = sortable
+                ? sortField === accessor && order === "asc"
                   ? "down"
-                  : "default"
-              : "";
-            return <th className={"sort " + cl} scope="col" key={accessor} onClick={sortable ? () => handleSorting(accessor) : null}>{label}</th>
+                  : sortField === accessor && order === "desc"
+                    ? "up"
+                    : "default"
+                : "";
+              return <th className={"sort " + cl} scope="col" key={accessor} onClick={() => handleSorting(accessor)}>{label}</th>
+            }
           }
         )}
       </tr>
@@ -25,5 +30,6 @@ interface Props {
   sortField: string;
   order: string;
   handleSorting: (accessor: string) => void;
+  handleSelectAll: (value: boolean) => void;
 }
 export default TableHead
