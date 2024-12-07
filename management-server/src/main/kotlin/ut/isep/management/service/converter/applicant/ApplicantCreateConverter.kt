@@ -11,6 +11,7 @@ class ApplicantCreateConverter : CreateConverter<Applicant, ApplicantCreateDTO> 
     override fun fromDTO(createDTO: ApplicantCreateDTO): Applicant {
         return Applicant(
             id = 0, // Or some default
+            email = createDTO.email,
             name = createDTO.name,
             status = createDTO.status,
             preferredLanguage = createDTO.preferredLanguage,
