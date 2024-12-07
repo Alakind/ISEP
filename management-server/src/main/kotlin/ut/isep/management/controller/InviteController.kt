@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import java.net.URI
@@ -80,7 +81,11 @@ class InviteController(val inviteReadService: InviteReadService, val inviteCreat
     ): ResponseEntity<URI> {
         return try {
             val createdInvite = inviteCreateService.create(inviteRequest)
-            val inviteUrl = URI("https://localhost:8081/invite/${createdInvite.id}")
+            val inviteUrl = ServletUriComponentsBuilder
+                .fromCurrentRequestUri() // Use the current request's URI
+                .replacePath("/invite/${createdInvite.id}") // Replace the path with the desired path
+                .build()
+                .toUri()
             ResponseEntity.created(inviteUrl).build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
