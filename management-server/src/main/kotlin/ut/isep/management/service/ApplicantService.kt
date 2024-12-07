@@ -3,7 +3,6 @@ package ut.isep.management.service
 import dto.*
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
@@ -72,13 +71,13 @@ class ApplicantService(
 
     fun getAllApplicants(limit: Int?, page: Int?, sort: String?): ApplicantsPaginatedDTO {
         val sortCriteria = parseSort(sort)
-        val pageable: Pageable = if (limit != null) {
-            PageRequest.of(page ?: 0, limit, sortCriteria)
+        val applicants = if (limit != null) {
+            val pageable = PageRequest.of(page ?: 0, limit, sortCriteria)
+            applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
         } else {
-            Pageable.unpaged(sortCriteria)
+            applicantRepository.findAll(sortCriteria).map(Applicant::toDTO)
         }
         val amount = applicantRepository.count()
-        val applicants = applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
         return ApplicantsPaginatedDTO(amount, applicants)
     }
 
