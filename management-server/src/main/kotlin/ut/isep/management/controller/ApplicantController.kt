@@ -30,7 +30,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     fun getApplicants( @RequestParam(required = false) limit: Int?,
                        @RequestParam(required = false) page: Int?,
                        @RequestParam(required = false,) sort: String?
-    ): ApplicantsPaginatedDTO {
+    ): PaginatedDTO<ApplicantReadDTO> {
         return applicantService.getAllApplicants(limit, page, sort)
     }
 

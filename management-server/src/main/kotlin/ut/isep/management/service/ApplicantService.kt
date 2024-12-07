@@ -70,7 +70,7 @@ class ApplicantService(
     }
 
 
-    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): ApplicantsPaginatedDTO {
+    fun getAllApplicants(limit: Int?, page: Int?, sort: String?): PaginatedDTO<ApplicantReadDTO> {
         val sortCriteria = parseSort(sort)
         val pageable: Pageable = if (limit != null) {
             PageRequest.of(page ?: 0, limit, sortCriteria)
@@ -79,7 +79,7 @@ class ApplicantService(
         }
         val amount = applicantRepository.count()
         val applicants = applicantRepository.findAll(pageable).content.map(Applicant::toDTO)
-        return ApplicantsPaginatedDTO(amount, applicants)
+        return PaginatedDTO(amount, applicants)
     }
 
     private fun parseSort(sort: String?): Sort {
