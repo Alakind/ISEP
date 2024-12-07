@@ -12,6 +12,7 @@ class ApplicantReadConverter : ReadConverter<Applicant, ApplicantReadDTO> {
         return ApplicantReadDTO(
             id = entity.id,
             name = entity.name,
+            email = entity.email,
             status = entity.status,
             preferredLanguage = entity.preferredLanguage,
             score = entity.score,
