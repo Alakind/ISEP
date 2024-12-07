@@ -58,7 +58,7 @@ function UsersListContainer() {
         ],
         totalItems: 5
       }
-      initialData = res.data;
+      initialData = res.data; //TODO WILL BE FIXED WITH API IMPLEMENTATION
       initialTotalItems =res.totalItems;
       handleIsSelectedChange(initialData);
     } catch (error: any) {

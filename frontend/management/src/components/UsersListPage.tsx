@@ -69,8 +69,8 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
           ],
           totalItems: 90
         }
-        handleIsSelectedChange(res.data);
-        setData(res.data);
+        handleIsSelectedChange(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
+        setData(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
         setTotalItems(res.totalItems);
       } catch (error: any) {
         toast.error(error.message)
@@ -85,7 +85,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
 
   return (
     <div className="user-list-page">
-      <SearchContainer<UserInterface> setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
+      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
                                       handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
       {
         loading ?
