@@ -1,6 +1,11 @@
 package ut.isep.management.controller
 
 import dto.*
+import dto.applicant.ApplicantCreateDTO
+import dto.applicant.ApplicantReadDTO
+import dto.applicant.ApplicantUpdateDTO
+import dto.assessment.AssessmentReadDTO
+import dto.invite.InviteReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -30,7 +35,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     fun getApplicants( @RequestParam(required = false) limit: Int?,
                        @RequestParam(required = false) page: Int?,
                        @RequestParam(required = false,) sort: String?
-    ): ApplicantsPaginatedDTO {
+    ): PaginatedDTO<ApplicantReadDTO> {
         return applicantService.getAllApplicants(limit, page, sort)
     }
 
@@ -151,9 +156,9 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteCreateReadDTO> {
+    fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteReadDTO> {
         return try {
-            val invite: InviteCreateReadDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteReadDTO? = applicantService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

@@ -1,5 +1,6 @@
-package dto
+package dto.applicant
 
+import dto.ReadDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
@@ -13,4 +14,4 @@ data class ApplicantReadDTO(
     val preferredLanguage: String? = null,
     val score: Int? = 0,
     val invite: UUID? = null
-)
+) : ReadDTO

@@ -1,9 +1,10 @@
-package dto
+package dto.invite
 
+import dto.CreateDTO
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "An invite to an applicant")
-data class InviteCreateReadDTO(
+data class InviteCreateDTO(
     val applicantId: Long,
     val assessmentId: Long
-)
+) : CreateDTO

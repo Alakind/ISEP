@@ -1,6 +1,8 @@
 package ut.isep.management.controller
 
-import dto.*
+import dto.assessment.AssessmentReadDTO
+import dto.invite.InviteCreateDTO
+import dto.invite.InviteReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -72,7 +74,7 @@ class InviteController(val inviteService: InviteService) {
         ]
     )
     fun createInvite(
-        @RequestBody inviteRequest: InviteCreateReadDTO
+        @RequestBody inviteRequest: InviteCreateDTO
     ): ResponseEntity<URI> {
         return try {
             val inviteUrl = inviteService.createInvite(inviteRequest)
