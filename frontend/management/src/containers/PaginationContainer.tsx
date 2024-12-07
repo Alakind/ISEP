@@ -5,15 +5,15 @@ function PaginationContainer({ itemsPerPage, totalItems, setCurrentPage, current
   const pageNumbers: number[] = [];
 
   if (itemsPerPage != -1) {
-    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    for (let i = 0; i < Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
   } else {
-    pageNumbers.push(1);
+    pageNumbers.push(0);
   }
   const lastPage = pageNumbers[pageNumbers.length-1];
 
-  const handleClick = (e, number): void => {
+  const handleClick = (e: { preventDefault: () => void; }, number: React.SetStateAction<number>): void => {
     e.preventDefault();
     setCurrentPage(number);
   }

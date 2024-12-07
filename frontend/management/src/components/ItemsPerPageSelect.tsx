@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/items-per-page.css"
 
 function ItemPerPageSelect({itemsPerPage, handleSelect} : Props) {
@@ -17,6 +16,6 @@ function ItemPerPageSelect({itemsPerPage, handleSelect} : Props) {
 
 interface Props {
   itemsPerPage: number;
-  handleSelect: (e) => void;
+  handleSelect: (e: any) => void;
 }
 export default ItemPerPageSelect;

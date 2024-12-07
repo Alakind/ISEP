@@ -1,0 +1,14 @@
+.status-item {
+    background-color: var(--status-item);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.status-item--info {
+    color: white;
+}
+
+.status-item--error {
+    color: var(--status-item--error);
+}

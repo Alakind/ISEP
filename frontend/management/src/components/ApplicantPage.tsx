@@ -1,15 +1,22 @@
 import { ApplicantInterface } from "../utils/types";
+import "../styles/applicant-page.css"
 
-function ApplicantPage({ applicant, goToApplicantsPage }: ApplicantPageProps) {
+
+function ApplicantPage({ applicant, goToApplicantsPage }: Props) {
   return (
-    <div>
-      <button onClick={goToApplicantsPage}>Back to all applicants</button>
-      This is personal page of {applicant.name} {applicant.surname}
-    </div>
+    <>
+      <span className="applicant-page__header">
+        <button className="btn btn--mod applicant-page__header__back-btn" onClick={goToApplicantsPage}><i className="bi bi-arrow-left-square"></i>Back to all applicants</button>
+      </span>
+      <div className="applicant-page__container">
+
+        This is personal page of {applicant.name}
+      </div>
+    </>
   );
 }
 
-interface ApplicantPageProps {
+interface Props {
   applicant: ApplicantInterface;
   goToApplicantsPage: () => void;
 }

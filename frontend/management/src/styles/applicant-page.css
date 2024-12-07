@@ -1,0 +1,24 @@
+.applicant-page__header {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 30px;
+}
+
+.applicant-page__container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: var(--question-block);
+    border-radius: 5px;
+    margin: 0 15px;
+    width: 100%;
+}
+
+.applicant-page__header__back-btn {
+    margin: 0 !important;
+}
+
+.bi-arrow-left-square {
+    margin-right: 10px;
+}

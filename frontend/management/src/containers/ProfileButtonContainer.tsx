@@ -1,4 +1,3 @@
-import React from 'react'
 import ProfileButton from "../components/ProfileButton.tsx";
 
 function ProfileButtonContainer({urlPrefix} : Props) {
