@@ -1,13 +1,8 @@
 package ut.isep.management.service
 
-import dto.*
-import entity.User
-import jakarta.transaction.Transactional
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import dto.UserCreateReadDTO
 import org.springframework.stereotype.Service
-import ut.isep.management.model.entity.*
+import ut.isep.management.model.entity.User
 import ut.isep.management.repository.UserRepository
 import kotlin.NoSuchElementException
 
