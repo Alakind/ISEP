@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ApplicantInterface } from "../utils/types";
-import ApplicantPage from "../components/ApplicantPage";
+import { ApplicantInterface } from "../../utils/types.tsx";
+import ApplicantPage from "../../components/applicant-personal/ApplicantPage.tsx";
 import {useEffect, useState} from "react";
-import {getApplicant} from "../utils/apiFunctions.tsx";
+import {getApplicant} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
-import LoadingPage from "../components/LoadingPage.tsx";
+import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantPageContainer() {
-  const [applicantData, setApplicantData] = useState<ApplicantInterface>();
+  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -26,7 +26,8 @@ function ApplicantPageContainer() {
         setApplicantData(data);
       }
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.message)
+      navigate(`/applicants`);
     } finally {
       setLoading(false);
     }
@@ -37,12 +38,13 @@ function ApplicantPageContainer() {
   };
 
 
-  if (loading || !applicantData) {
+  if (loading || applicantData.id == "0") {
     return <LoadingPage />;
   } else {
     return (
       <ApplicantPage
         applicant={applicantData}
+        setApplicant={setApplicantData}
         goToApplicantsPage={goToApplicantsPage}
       />
     );

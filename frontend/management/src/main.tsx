@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ApplicantsListContainer from "./containers/ApplicantsListPageContainer.tsx";
-import ApplicantPageContainer from "./containers/ApplicantPageContainer";
+import ApplicantPageContainer from "./containers/applicant-personal/ApplicantPageContainer.tsx";
 import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 import LoadingPage from "./components/LoadingPage.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";

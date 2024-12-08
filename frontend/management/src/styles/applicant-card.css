@@ -1,0 +1,29 @@
+.applicant-card__btns {
+    margin-top: 10px;
+}
+
+.applicant-card__btns>button:not(:first-child):not(:last-child) {
+    margin: 0 10px !important;
+}
+
+.applicant-card__btns>button:first-child {
+    margin: 0 10px 0 0 !important;
+}
+
+.applicant-card__btns>button:last-child {
+  margin: 0 0 0 10px !important;
+}
+
+@media (max-width: 1280px) {
+    .applicant-card__btn__text {
+        display: none;
+    }
+    .bi-pencil,
+    .bi-x,
+    .bi-floppy,
+    .bi-trash,
+    .bi-bell,
+    .bi-envelope {
+        margin-right: 0 !important;
+    }
+}
