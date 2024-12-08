@@ -14,14 +14,19 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import ut.isep.management.service.UserService
+import ut.isep.management.service.user.UserCreateService
+import ut.isep.management.service.user.UserReadService
+import ut.isep.management.service.user.UserUpdateService
 import java.net.URI
 import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User")
-class UserController(val userService: UserService) {
+class UserController(
+    val userReadService: UserReadService,
+    val userCreateService: UserCreateService,
+    val userUpdateService: UserUpdateService) {
 
 
     @GetMapping
@@ -34,7 +39,7 @@ class UserController(val userService: UserService) {
                        @RequestParam(required = false) page: Int?,
                        @RequestParam(required = false,) sort: String?
     ): PaginatedDTO<UserReadDTO> {
-        return userService.getAllUsers(limit, page, sort)
+        return userReadService.getPaginated(limit, page, sort)
     }
 
 
@@ -57,7 +62,7 @@ class UserController(val userService: UserService) {
     )
     fun getUser(@PathVariable id: Long): ResponseEntity<UserReadDTO> {
         return try {
-            ResponseEntity.ok(userService.getUserById(id))
+            ResponseEntity.ok(userReadService.getById(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
@@ -76,7 +81,7 @@ class UserController(val userService: UserService) {
         ]
     )
     fun postUser(@RequestBody user: UserCreateDTO): ResponseEntity<String> {
-        val createdUser = userService.createUser(user)
+        val createdUser = userCreateService.create(user)
         val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
             .buildAndExpand(createdUser.id)
@@ -104,7 +109,7 @@ class UserController(val userService: UserService) {
     )
     fun putUser(@RequestBody userDTO: UserUpdateDTO): ResponseEntity<String> {
         return try {
-            userService.updateUser(userDTO)
+            userUpdateService.update(userDTO)
             ResponseEntity.ok("Updated an user")
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -129,7 +134,7 @@ class UserController(val userService: UserService) {
     )
     fun deleteUser(@PathVariable id: Long): ResponseEntity<String> {
         return try {
-            userService.deleteUser(id)
+            userReadService.delete(id)
             ResponseEntity.noContent().build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

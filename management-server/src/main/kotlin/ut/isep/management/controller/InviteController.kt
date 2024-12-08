@@ -12,14 +12,17 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ut.isep.management.service.InviteService
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import ut.isep.management.service.invite.InviteCreateService
+import ut.isep.management.service.invite.InviteReadService
 import java.net.URI
+import java.util.UUID
 import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/invite")
 @Tag(name = "Invite")
-class InviteController(val inviteService: InviteService) {
+class InviteController(val inviteReadService: InviteReadService, val inviteCreateService: InviteCreateService) {
 
 
     @GetMapping
@@ -29,7 +32,7 @@ class InviteController(val inviteService: InviteService) {
         description = "Returns a list of all invites",
     )
     fun getInvites(): List<InviteReadDTO> {
-        return inviteService.allInvites
+        return inviteReadService.getAll()
     }
 
     @GetMapping("{id}")
@@ -49,9 +52,9 @@ class InviteController(val inviteService: InviteService) {
             )
         ]
     )
-    fun getInvite(@PathVariable id: Long): ResponseEntity<InviteReadDTO> {
+    fun getInvite(@PathVariable id: UUID): ResponseEntity<InviteReadDTO> {
         return try {
-            ResponseEntity.ok(inviteService.getInviteReadDtoById(id))
+            ResponseEntity.ok(inviteReadService.getById(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
@@ -77,7 +80,12 @@ class InviteController(val inviteService: InviteService) {
         @RequestBody inviteRequest: InviteCreateDTO
     ): ResponseEntity<URI> {
         return try {
-            val inviteUrl = inviteService.createInvite(inviteRequest)
+            val createdInvite = inviteCreateService.create(inviteRequest)
+            val inviteUrl = ServletUriComponentsBuilder
+                .fromCurrentRequestUri() // Use the current request's URI
+                .replacePath("/invite/${createdInvite.id}") // Replace the path with the desired path
+                .build()
+                .toUri()
             ResponseEntity.created(inviteUrl).build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -101,9 +109,9 @@ class InviteController(val inviteService: InviteService) {
             )
         ]
     )
-    fun deleteInvite(@PathVariable id: Long): ResponseEntity<String> {
+    fun deleteInvite(@PathVariable id: UUID): ResponseEntity<String> {
         return try {
-            inviteService.deleteInvite(id)
+            inviteReadService.delete(id)
             ResponseEntity.noContent().build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -132,9 +140,9 @@ class InviteController(val inviteService: InviteService) {
             )
         ]
     )
-    fun getAssessment(@PathVariable id: Long): ResponseEntity<AssessmentReadDTO?> {
+    fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val assessment: AssessmentReadDTO = inviteService.getAssessmentByInviteId(id)
+            val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
             ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
