@@ -63,7 +63,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 
 
   if (!response.ok) {
-    throw new Error(`Failed to retrieve applicant with id: ${id}`);
+    throw new Error(`Failed to retrieve applicant`);
   }
 
   return await response.json();
@@ -120,7 +120,7 @@ export async function deleteApplicant(id: string): Promise<string> {
     throw new Error(`Failed to delete applicant: ${response.statusText}`);
   }
 
-  return `Deleted applicant with id: ${id}`;
+  return `Successfully deleted applicant`;
 }
 
 // --------------------------------- USER -----------------------------------//
@@ -194,7 +194,7 @@ export async function deleteUser(id: string): Promise<string> {
     throw new Error(`Failed to delete user: ${response.statusText}`);
   }
 
-  return `Deleted user with id: ${id}`;
+  return `Successfully deleted user`;
 }
 
 
