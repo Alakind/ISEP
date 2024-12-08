@@ -10,14 +10,13 @@ function TableRowUsers({data, columns, handleSelect, isSelected} : Props) {
       {columns.map(({ accessor }) => {
         if (accessor == "role") {
           let disabled = false;
-          if (data.id == "12345678901" /* TODO to this currentUser.id*/ || data.id == import.meta.env.VITE_DEFAULT_ADMIN_ID /*Standard admin*/) {
+          if (data.id == "6" /* TODO to this currentUser.id*/ || data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL /*Standard admin*/) {
             disabled = true
           }
 
-          const subUrl =  "/user/" + data.id;
           return (
             <td key={accessor}>
-                <RoleSelectContainer id={data.id} subUrl={subUrl} disabled={disabled} initialRole={data.role}/>
+                <RoleSelectContainer id={data.id} disabled={disabled} initialRole={data.role}/>
             </td>
           );
         } else if (accessor == "select") {

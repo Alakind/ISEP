@@ -1,7 +1,4 @@
-//https://jasonwatmore.com/post/2020/11/02/react-fetch-http-put-request-examples
-
 import {ApplicantInterface, UserInterface} from "./types.tsx";
-import {Roles} from "./constants.tsx"
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -73,7 +70,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 }
 
 
-export async function addApplicant(applicant: ApplicantInterface) : Promise<{data: ApplicantInterface}> {
+export async function addApplicant(data: Record<string, any>) : Promise<{data: ApplicantInterface}> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "POST",
     headers: {
@@ -81,10 +78,7 @@ export async function addApplicant(applicant: ApplicantInterface) : Promise<{dat
     },
     body: JSON.stringify({
       id: 0,
-      name: applicant.name,
-      email: applicant.email,
-      status: applicant.status.toString(),
-      preferredLanguage: applicant.preferredLanguage,
+      ...data,
     }),
   });
 
@@ -92,7 +86,41 @@ export async function addApplicant(applicant: ApplicantInterface) : Promise<{dat
     throw new Error(`Failed to add applicant: ${response.statusText}`);
   }
 
-  return await response.json();
+  return {data: await response.json()};
+}
+
+export async function updateApplicant(id: string, data: Record<string, any>) : Promise<{ data: any }> {
+  const response: Response = await fetch(`${baseUrl}/applicant`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update applicant: ${response.statusText}`);
+  }
+
+  return {data: await response.json()};
+}
+
+export async function deleteApplicant(id: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/applicant/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete applicant: ${response.statusText}`);
+  }
+
+  return `Deleted applicant with id: ${id}`;
 }
 
 // --------------------------------- USER -----------------------------------//
@@ -123,25 +151,32 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
   return {data: data.data as UserInterface[], totalItems: data.total} ;
 }
 
-export async function updateRole(id: string, subUrl: string, role: typeof Roles): Promise<UserInterface> {
-  if (id == import.meta.env.VITE_DEFAULT_ADMIN_ID) {
+// addUser is not part of the system
+
+export async function updateUser(id: string, data: Record<string, any>): Promise<{ data: any }> {
+  if (data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL) {
     throw new Error("The standard admin can't be deleted");
   }
-  const response: Response = await fetch(`${baseUrl}${subUrl}`, {
+  const response: Response = await fetch(`${baseUrl}/user`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      role: role.toString()
+      id: id,
+      ...data,
     }),
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to update role: ${response.statusText}`);
+    throw new Error(`Failed to update user: ${response.statusText}`);
   }
 
-  return await response.json();
+  return {data: {
+      id: id,
+      ...data
+    }
+  };
 }
 
 export async function deleteUser(id: string): Promise<string> {
@@ -159,7 +194,7 @@ export async function deleteUser(id: string): Promise<string> {
     throw new Error(`Failed to delete user: ${response.statusText}`);
   }
 
-  return await response.json();
+  return `Deleted user with id: ${id}`;
 }
 
 

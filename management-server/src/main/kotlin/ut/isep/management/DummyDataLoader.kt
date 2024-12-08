@@ -1,6 +1,7 @@
 package ut.isep.management
 
 import enumerable.ApplicantStatus
+import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
@@ -72,11 +73,12 @@ class DummyDataLoader(
 
         assessmentRepository.save(assessment1)
 
-        val user1 = User(name = "Abba", email = "abba@gmail.com", role = UserRole.Recruiter)
+        val user1 = User(name = "Default admin", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
         val user2 = User(name = "Abbc", email = "abbc@gmail.com")
         val user3 = User(name = "SuperUser", email = "su@sudo.com", role = UserRole.Admin)
         val user4 = User(name = "Inge Interviewer", email = "inge@infosupport.nl", role = UserRole.Interviewer)
-        val user5 = User(name = "Zacharias", email = "z@hotmail.com", role = UserRole.Admin)
+        val user5 = User(name = "Zacharias", email = "z@hotmail.com", role = UserRole.Recruiter)
+        val user6 = User(name = "Jurre", email = "jurre@infosupport.nl", role = UserRole.Admin)
 
         userRepository.apply {
             save(user1)
@@ -84,6 +86,7 @@ class DummyDataLoader(
             save(user3)
             save(user4)
             save(user5)
+            save(user6)
         }
 
 
