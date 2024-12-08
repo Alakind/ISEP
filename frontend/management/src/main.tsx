@@ -28,6 +28,15 @@ const router = createBrowserRouter(
         //   errorElement: <ErrorBoundary error={new Error("Page not found")} />,
         // },
         {
+          path: "settings",
+          element: (
+            <Suspense fallback={<LoadingPage />}>
+              <>/settings</> {/*TODO show the welcome message of applicant and make it able to change it and show the standard invite email and make it able to change it.*/}
+            </Suspense>
+          ),
+          errorElement: <ErrorBoundary error={new Error("Page not found")} />,
+        },
+        {
           path: "profile",
           element: (
             <Suspense fallback={<LoadingPage />}>

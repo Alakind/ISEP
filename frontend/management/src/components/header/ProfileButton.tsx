@@ -7,7 +7,8 @@ function ProfileButton({urlPrefix, currentUser} : Props) {
         <a className={`nav-link`} href="#" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-person-circle"></i><span className="profile-button__name">{currentUser}</span></a>
         <ul className="dropdown-menu">
           <li><a className="dropdown-item" href={`${urlPrefix}/profile`}>My profile</a></li>
-          <li><hr className="dropdown-divider" /></li>
+          <li><a className="dropdown-item" href={`${urlPrefix}/settings`}>Settings</a></li>
+          <li><hr className="dropdown-divider"/></li>
           <li><a className="dropdown-item" href={`${urlPrefix}/logout`}>Logout</a></li>
         </ul>
       </li>
