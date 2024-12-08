@@ -6,7 +6,8 @@ export interface ApplicantInterface {
   email: string;
   status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
   score?: number;
-  preferredLanguage: typeof PreferredLanguages;
+  preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
+  invite?: string
 }
 
 export interface UserInterface {
