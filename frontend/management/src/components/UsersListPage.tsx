@@ -1,15 +1,15 @@
 import {Selection, UserInterface} from "../utils/types";
-import SearchContainer from "../containers/SearchContainer.tsx";
+import SearchContainer from "../containers/table/SearchContainer.tsx";
 import {useEffect, useState} from "react";
-import PaginationContainer from "../containers/PaginationContainer.tsx";
+import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
-import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
+import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
-import UsersTableContainer from "../containers/UsersTableContainer.tsx";
+import UsersTableContainer from "../containers/table/UsersTableContainer.tsx";
 import {userColumns} from "../utils/constants.tsx";
-import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
-import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
+import BulkActionSelectContainer from "../containers/table/BulkActionSelectContainer.tsx";
+import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 
 
 function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {

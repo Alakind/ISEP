@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import HeaderContainer from "./containers/HeaderContainer";
+import HeaderContainer from "./containers/header/HeaderContainer.tsx";
 
 function App() {
   return (

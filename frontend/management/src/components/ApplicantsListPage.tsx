@@ -1,13 +1,13 @@
 import {ApplicantInterface} from "../utils/types";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import SearchContainer from "../containers/SearchContainer.tsx";
-import ApplicantsTableContainer from "../containers/ApplicantsTableContainer.tsx";
-import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
-import PaginationContainer from "../containers/PaginationContainer.tsx";
+import SearchContainer from "../containers/table/SearchContainer.tsx";
+import ApplicantsTableContainer from "../containers/table/ApplicantsTableContainer.tsx";
+import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
+import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
 import {getApplicants} from "../utils/apiFunctions.tsx";
-import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
+import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 import {applicantColumns} from "../utils/constants.tsx";
 
 function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
