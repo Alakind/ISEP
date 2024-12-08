@@ -47,6 +47,11 @@
     --loading-cell: lightgrey;
 }
 
+:root {
+    min-width: 500px;
+    overflow-x: auto;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -126,6 +131,6 @@ main {
     padding: 25px;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto;
+    overflow: hidden auto;
     margin-right: 5px;
 }
