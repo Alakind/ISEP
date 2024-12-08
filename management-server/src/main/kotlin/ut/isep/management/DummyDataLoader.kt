@@ -28,34 +28,32 @@ class DummyDataLoader(
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
-            options = listOf("42", "Isaac Newton", "Madagascar"),
-            isMultipleAnswers = false,
+            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
         )
 
         val assignment2 = AssignmentMultipleChoice(
             description = "Which member(s) should receive a red card?",
-            options = listOf("Aleks", "Jarno", "Jesse", "Ruben", "Everard"),
-            isMultipleAnswers = true
+            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
         )
 
         val assignment3 = AssignmentMultipleChoice(
             description = "You are a 15th century plague doctor, please cure this sick person",
-            options = listOf("Mouse bites", "Leeches", "More mouse bites", "All of the above"),
-            isMultipleAnswers = false
+            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
         )
 
         val assignment4 = AssignmentMultipleChoice(
             description = "How Long is a Chinese person",
-            options = listOf("Option A", "169.7 cm (5 ft 7 in)", "Trick question"),
-            isMultipleAnswers = false
+            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
         )
 
         val openAssignment1 = AssignmentOpen(
-            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon."
+            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
+            referenceSolution = "words words words"
         )
 
         val openAssignment2 = AssignmentOpen(
-            description = "Prove whether or not P = NP in 150 words"
+            description = "Prove whether or not P = NP in 150 words",
+            referenceSolution = "Let P = NP, then PN = P."
         )
 
         val section1 = Section(
@@ -69,9 +67,13 @@ class DummyDataLoader(
         )
 
         val assessment1 = Assessment(sections = mutableListOf(section1, section2))
+        section1.assessment = assessment1
+        section2.assessment = assessment1
 
 
         assessmentRepository.save(assessment1)
+        sectionRepository.save(section1)
+        sectionRepository.save(section2)
 
         val user1 = User(name = "Abba", email = "abba@gmail.com", role = UserRole.Recruiter)
         val user2 = User(name = "Abbc", email = "abbc@gmail.com")
