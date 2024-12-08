@@ -16,15 +16,19 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import ut.isep.management.service.ApplicantService
+import ut.isep.management.service.applicant.ApplicantCreateService
+import ut.isep.management.service.applicant.ApplicantReadService
+import ut.isep.management.service.applicant.ApplicantUpdateService
 import java.net.URI
 import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/applicant")
 @Tag(name = "Applicant")
-class ApplicantController(val applicantService: ApplicantService) {
-
+class ApplicantController(val applicantReadService: ApplicantReadService,
+                          val applicantUpdateService: ApplicantUpdateService,
+                          val applicantCreateService: ApplicantCreateService
+) {
 
     @GetMapping
     @Operation(summary = "Get all applicants", description = "Returns a list of all applicants")
@@ -36,7 +40,7 @@ class ApplicantController(val applicantService: ApplicantService) {
                        @RequestParam(required = false) page: Int?,
                        @RequestParam(required = false,) sort: String?
     ): PaginatedDTO<ApplicantReadDTO> {
-        return applicantService.getAllApplicants(limit, page, sort)
+        return applicantReadService.getPaginated(limit, page, sort)
     }
 
 
@@ -59,7 +63,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     )
     fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantReadDTO> {
         return try {
-            ResponseEntity.ok(applicantService.getApplicantById(id))
+            ResponseEntity.ok(applicantReadService.getById(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
@@ -78,7 +82,7 @@ class ApplicantController(val applicantService: ApplicantService) {
         ]
     )
     fun postApplicant(@RequestBody applicant: ApplicantCreateDTO): ResponseEntity<String> {
-        val createdApplicant = applicantService.createApplicant(applicant)
+        val createdApplicant = applicantCreateService.create(applicant)
         val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{id}")
             .buildAndExpand(createdApplicant.id)
@@ -106,7 +110,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     )
     fun putApplicant(@RequestBody applicantDTO: ApplicantUpdateDTO): ResponseEntity<String> {
         return try {
-            applicantService.updateApplicant(applicantDTO)
+            applicantUpdateService.update(applicantDTO)
             ResponseEntity.ok("Updated an applicant")
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -131,7 +135,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     )
     fun deleteApplicant(@PathVariable id: Long): ResponseEntity<String> {
         return try {
-            applicantService.deleteApplicant(id)
+            applicantReadService.delete(id)
             ResponseEntity.noContent().build()
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -158,7 +162,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     )
     fun getApplicantInvite(@PathVariable id: Long): ResponseEntity<InviteReadDTO> {
         return try {
-            val invite: InviteReadDTO? = applicantService.getInviteByApplicantId(id)
+            val invite: InviteReadDTO? = applicantReadService.getInviteByApplicantId(id)
             ResponseEntity.ok(invite)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
@@ -188,7 +192,7 @@ class ApplicantController(val applicantService: ApplicantService) {
     )
     fun getAssessment(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
         return try {
-            val assessment: AssessmentReadDTO? = applicantService.getAssessmentByApplicantId(applicantId)
+            val assessment: AssessmentReadDTO? = applicantReadService.getAssessmentByApplicantId(applicantId)
             ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

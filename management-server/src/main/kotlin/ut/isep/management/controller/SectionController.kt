@@ -10,13 +10,13 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import ut.isep.management.service.SectionService
+import ut.isep.management.service.section.SectionReadService
 import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("/section")
 @Tag(name = "Section")
-class SectionController(val sectionService: SectionService) {
+class SectionController(val sectionReadService: SectionReadService) {
 
 
     @GetMapping("/id")
@@ -25,7 +25,7 @@ class SectionController(val sectionService: SectionService) {
         description = "Returns a list of all section IDs",
     )
     fun getSectionIDs(): ResponseEntity<List<Long>> {
-       return ResponseEntity.ok(sectionService.allSectionIDs)
+       return ResponseEntity.ok(sectionReadService.getAll().map {it.id})
     }
 
     @GetMapping
@@ -34,7 +34,7 @@ class SectionController(val sectionService: SectionService) {
         description = "Returns a list of all (full) sections",
     )
     fun getSections(): ResponseEntity<List<SectionReadDTO>> {
-        return ResponseEntity.ok(sectionService.allSections)
+        return ResponseEntity.ok(sectionReadService.getAll())
     }
 
 
@@ -55,7 +55,7 @@ class SectionController(val sectionService: SectionService) {
     ])
     fun getSection(@PathVariable id: Long): ResponseEntity<SectionReadDTO> {
         return try {
-            return ResponseEntity.ok(sectionService.getSectionById(id))
+            return ResponseEntity.ok(sectionReadService.getById(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
