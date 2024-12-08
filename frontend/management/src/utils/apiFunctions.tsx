@@ -50,7 +50,7 @@ export async function getApplicants(currentPage: number, itemsPerPage: number, o
 
   const data = await response.json();
 
-  return {data: data.applicants as ApplicantInterface[], totalItems: data.total} ;
+  return {data: data.data as ApplicantInterface[], totalItems: data.total} ;
 }
 
 export async function getApplicant(id: string): Promise<ApplicantInterface> {
