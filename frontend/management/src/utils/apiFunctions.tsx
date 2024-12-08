@@ -105,7 +105,11 @@ export async function updateApplicant(id: string, data: Record<string, any>) : P
     throw new Error(`Failed to update applicant: ${response.statusText}`);
   }
 
-  return {data: await response.json()};
+  return {data: {
+      id: id,
+      ...data
+    }
+  };
 }
 
 export async function deleteApplicant(id: string): Promise<string> {
