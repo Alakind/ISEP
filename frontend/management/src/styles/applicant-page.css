@@ -1,6 +1,6 @@
 .applicant-page {
-    width: 70%;
-    min-width: 450px;
+    width: 80%;
+    min-width: 500px;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -16,7 +16,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-content: flex-start;
     padding: 15px;
     background-color: var(--question-block);
     border-radius: 5px;
@@ -39,13 +38,7 @@
     }
 }
 
-.bi-arrow-left-short,
-.bi-pencil,
-.bi-x,
-.bi-floppy,
-.bi-trash,
-.bi-bell,
-.bi-envelope {
+.bi-arrow-left-short {
     margin-right: 10px;
 }
 
@@ -55,6 +48,11 @@
     padding: 10px 10px 15px;
     height: fit-content;
     width: 250px;
+    min-width: 220px;
+}
+
+.applicant-page__container__info {
+    min-width: 200px;
 }
 
 .applicant-page__results {

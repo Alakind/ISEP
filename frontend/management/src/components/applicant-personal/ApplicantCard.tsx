@@ -5,7 +5,7 @@ import "../../styles/applicant-card.css";
 function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel  }: Props) {
   return (
     <div>
-      <form >
+      <form id={`form_${applicant.id}`}>
         <div>
           <label>Name:</label>
           <input
