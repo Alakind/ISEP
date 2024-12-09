@@ -29,7 +29,6 @@ class InviteCreateService(
 
         // Create the Invite
         val invite = Invite.createInvite(applicant = applicant, assessment = assessment)
-//        invite.solutions = emptySolvedAssignments(assessment, invite)
         val savedInvite = repository.save(invite)
 
         // Update the applicant with the new invite
