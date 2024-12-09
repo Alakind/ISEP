@@ -31,7 +31,7 @@ All functional and non-functional requirements are listed down below:
 4. Recruiters must be able to check the status of the applicant interview questionnaire.
 5. Recruiters must be able to send an invitation link to applicants.
 6. Recruiters must be able to see applicant results (TODO: research best option PDF or HTML, PDF in DevSkiller).
-   - Interviewers must be able to view the submitted applicants’ questionnaire results. (FIXME: same as Priority 1 point 8)
+   <!-- - Interviewers must be able to view the submitted applicants’ questionnaire results. (FIXME: same as Priority 1 point 8) -->
 7. Recruiters must be able to make a new applicant user and assign them a questionnaire with their preferred coding languages (???maybe a minimum amount).
 <!-- 10. Interviewers and recruiters must be able to log in with their Info Support account. -->
 8. Interviewers must be able to see the difference between the starting code and the submitted code.
