@@ -1,7 +1,7 @@
 package ut.isep.management.service
 
 import dto.UpdateDTO
-import entity.BaseEntity
+import ut.isep.management.model.entity.BaseEntity
 import jakarta.transaction.Transactional
 import org.springframework.data.jpa.repository.JpaRepository
 import ut.isep.management.service.converter.UpdateConverter

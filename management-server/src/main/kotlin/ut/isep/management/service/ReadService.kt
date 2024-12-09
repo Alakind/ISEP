@@ -2,7 +2,7 @@ package ut.isep.management.service
 
 import dto.PaginatedDTO
 import dto.ReadDTO
-import entity.BaseEntity
+import ut.isep.management.model.entity.BaseEntity
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

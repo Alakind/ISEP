@@ -11,6 +11,7 @@ class AssessmentReadConverter : ReadConverter<Assessment, AssessmentReadDTO> {
     override fun toDTO(entity: Assessment): AssessmentReadDTO {
         return AssessmentReadDTO(
             id = entity.id,
+            tag = entity.tag,
             sections = entity.sections.map {it.id}
         )
     }
