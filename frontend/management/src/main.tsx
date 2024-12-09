@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import UsersListContainer from "./containers/UsersListPageContainer.tsx";
 import App from "./App.tsx";
 import ApplicantAddContainer from "./containers/applicant-add/ApplicantAddContainer.tsx";
+import ApplicantInviteContainer from "./containers/applicant-invite/ApplicantInviteContainer.tsx";
 
 const router = createBrowserRouter(
   [
@@ -65,15 +66,6 @@ const router = createBrowserRouter(
           errorElement: <ErrorBoundary error={new Error("Page not found")} />,
         },
         {
-          path: "users/:id/info",
-          element: (
-            <Suspense fallback={<LoadingPage />}>
-              <>/users/:id/info</>
-            </Suspense>
-          ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")} />,
-        },
-        {
           path: "applicants",
           element: (
             <Suspense fallback={<LoadingPage />}>
@@ -111,17 +103,6 @@ const router = createBrowserRouter(
                   ),
                 },
                 {
-                  path: "edit",
-                  element: (
-                    <Suspense fallback={<LoadingPage />}>
-                      <>/applicants/:id/edit</>
-                    </Suspense>
-                  ),
-                  errorElement: (
-                    <ErrorBoundary error={new Error("Page not found")} />
-                  ),
-                },
-                {
                   path: "invite",
                   children: [
                     {
@@ -139,18 +120,7 @@ const router = createBrowserRouter(
                       path: "add",
                       element: (
                         <Suspense fallback={<LoadingPage />}>
-                          <>/applicants/:id/invite/add</>
-                        </Suspense>
-                      ),
-                      errorElement: (
-                        <ErrorBoundary error={new Error("Page not found")} />
-                      ),
-                    },
-                    {
-                      path: "edit",
-                      element: (
-                        <Suspense fallback={<LoadingPage />}>
-                          <>/applicants/:id/invite/edit</>
+                          <ApplicantInviteContainer />
                         </Suspense>
                       ),
                       errorElement: (

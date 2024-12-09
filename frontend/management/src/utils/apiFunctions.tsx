@@ -1,4 +1,4 @@
-import {ApplicantInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, InviteInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -132,6 +132,26 @@ export async function deleteApplicant(id: string): Promise<string> {
   return `Successfully deleted applicant`;
 }
 
+
+export async function inviteApplicant(applicantId: string, assessmentId: string): Promise<{ data: InviteInterface }> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applicantId: applicantId,
+      assessmentId: assessmentId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to invite applicant: ${response.statusText}`);
+  }
+
+  return {data: await response.json()};
+}
+
 // --------------------------------- USER -----------------------------------//
 
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: UserInterface[], totalItems: number}> {
@@ -206,4 +226,30 @@ export async function deleteUser(id: string): Promise<string> {
   return `Successfully deleted user`;
 }
 
+// --------------------------------- ASSESSMENT -----------------------------------//
 
+export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", keyword: string = ""): Promise<{data: AssessmentInterface[], totalItems: number}> {
+  let url;
+  if (itemsPerPage != -1) {
+    url = `${baseUrl}/assessment?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+  } else if (orderBy != "") {
+    url = `${baseUrl}/assessment${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+  } else {
+    url = `${baseUrl}/assessment${keyword != "" ? "?search=" + keyword : ""}`
+  }
+
+  const response: Response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve assessments`);
+  }
+
+  return {data: data.data as AssessmentInterface[], totalItems: data.total} ;
+}

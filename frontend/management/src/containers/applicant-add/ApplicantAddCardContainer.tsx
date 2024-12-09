@@ -23,7 +23,7 @@ function ApplicantAddCardContainer({}: Props) {
     setNewApplicant(emptyApplicantData)
   }
 
-  async function handleAdd() {
+  async function handleAdd(goToInvite: boolean) {
     if (newApplicant.name != "" && newApplicant.email != "" && newApplicant.email.includes("@")) {
       try {
         const res = await addApplicant({name: newApplicant.name, email: newApplicant.email, preferredLanguage: newApplicant.preferredLanguage});
@@ -32,6 +32,9 @@ function ApplicantAddCardContainer({}: Props) {
           id: res.id,
         }));
         toast.success("Successfully added applicant!");
+        if (goToInvite) {
+          navigate(`/applicants/${res.id}/invite/add`);
+        }
       } catch (error: any) {
         toast.error(error.message);
       }
@@ -39,11 +42,6 @@ function ApplicantAddCardContainer({}: Props) {
     } else {
       toast.info("Could not add applicant. Fill in the required fields and a valid email address.");
     }
-  }
-
-  async function handleAddInvite() {
-    await handleAdd();
-    navigate(`/applicant/${newApplicant.id}/invite/add`);
   }
 
   function handleChange(e: any) {
@@ -60,7 +58,6 @@ function ApplicantAddCardContainer({}: Props) {
       newApplicant={newApplicant}
       handleCancel={handleCancel}
       handleAdd={handleAdd}
-      handleAddInvite={handleAddInvite}
       handleChange={handleChange}
     />
   )
