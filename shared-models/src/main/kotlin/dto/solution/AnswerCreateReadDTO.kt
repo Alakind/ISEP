@@ -11,21 +11,21 @@ import dto.ReadDTO
 @Schema(description = "Answer objects for open, multiple-choice, and coding questions")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
-    JsonSubTypes.Type(value = SolvedAssignmentCreateReadDTO.MultipleChoiceAnswer::class, name = "MultipleChoice"),
-    JsonSubTypes.Type(value = SolvedAssignmentCreateReadDTO.OpenAnswer::class, name = "Open"),
-    JsonSubTypes.Type(value = SolvedAssignmentCreateReadDTO.CodingAnswer::class, name = "Coding")
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.MultipleChoice::class, name = "MultipleChoice"),
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.Open::class, name = "Open"),
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.Coding::class, name = "Coding")
 )
-sealed class SolvedAssignmentCreateReadDTO : CreateDTO, ReadDTO {
+sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
 
-    data class MultipleChoiceAnswer @JsonCreator constructor(
+    data class MultipleChoice @JsonCreator constructor(
         @JsonProperty("answer") val answer: List<Int>
-    ) : SolvedAssignmentCreateReadDTO()
+    ) : AnswerCreateReadDTO()
 
-    data class OpenAnswer @JsonCreator constructor(
+    data class Open @JsonCreator constructor(
         @JsonProperty("answer") val answer: String
-    ) : SolvedAssignmentCreateReadDTO()
+    ) : AnswerCreateReadDTO()
 
-    data class CodingAnswer @JsonCreator constructor(
+    data class Coding @JsonCreator constructor(
         @JsonProperty("answer") val answer: String
-    ) : SolvedAssignmentCreateReadDTO()
+    ) : AnswerCreateReadDTO()
 }

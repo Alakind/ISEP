@@ -1,7 +1,7 @@
 package ut.isep.management.service.solution
 
 import dto.solution.SolutionsUpdateDTO
-import dto.solution.SolvedAssignmentCreateReadDTO
+import dto.solution.AnswerCreateReadDTO
 import ut.isep.management.model.entity.*
 import org.springframework.stereotype.Service
 import ut.isep.management.repository.SolvedAssignmentRepository
@@ -26,27 +26,27 @@ class SolutionUpdateService(
         }
     }
 
-    private fun updateSolution(existingSolution: SolvedAssignment, answerDTO: SolvedAssignmentCreateReadDTO) {
+    private fun updateSolution(existingSolution: SolvedAssignment, answerDTO: AnswerCreateReadDTO) {
         when (existingSolution) {
-            is SolvedAssignmentMultipleChoice -> updateMCSolution(existingSolution, answerDTO as SolvedAssignmentCreateReadDTO.MultipleChoiceAnswer)
-            is SolvedAssignmentCoding -> updateCodingSolution(existingSolution, answerDTO as SolvedAssignmentCreateReadDTO.CodingAnswer)
-            is SolvedAssignmentOpen -> updateOpenSolution(existingSolution, answerDTO as SolvedAssignmentCreateReadDTO.OpenAnswer)
+            is SolvedAssignmentMultipleChoice -> updateMCSolution(existingSolution, answerDTO as AnswerCreateReadDTO.MultipleChoice)
+            is SolvedAssignmentCoding -> updateCodingSolution(existingSolution, answerDTO as AnswerCreateReadDTO.Coding)
+            is SolvedAssignmentOpen -> updateOpenSolution(existingSolution, answerDTO as AnswerCreateReadDTO.Open)
             else -> throw UnsupportedOperationException("Unsupported assignment type: ${existingSolution::class}")
         }
     }
 
-    private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: SolvedAssignmentCreateReadDTO.MultipleChoiceAnswer) {
+    private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
         solution.userOptionsMarkedCorrect = answerDto.answer
          repository.save(solution)
     }
 
-    private fun updateCodingSolution(solution: SolvedAssignmentCoding, answerDto: SolvedAssignmentCreateReadDTO.CodingAnswer) {
+    private fun updateCodingSolution(solution: SolvedAssignmentCoding, answerDto: AnswerCreateReadDTO.Coding) {
         solution.userCode = answerDto.answer
         repository.save(solution)
 
     }
 
-    private fun updateOpenSolution(solution: SolvedAssignmentOpen, answerDto: SolvedAssignmentCreateReadDTO.OpenAnswer) {
+    private fun updateOpenSolution(solution: SolvedAssignmentOpen, answerDto: AnswerCreateReadDTO.Open) {
         solution.userSolution = answerDto.answer
         repository.save(solution)
     }
