@@ -1,6 +1,6 @@
-import Button from "./Button.tsx";
-import ApplicantAddCardContainer from "../containers/applicant-add/ApplicantAddCardContainer.tsx";
-import "../styles/applicant-add-card.css"
+import Button from "../Button.tsx";
+import ApplicantAddCardContainer from "../../containers/applicant-add/ApplicantAddCardContainer.tsx";
+import "../../styles/applicant-add-card.css"
 
 function ApplicantAdd({goToApplicantsPage} : Props) {
   return (

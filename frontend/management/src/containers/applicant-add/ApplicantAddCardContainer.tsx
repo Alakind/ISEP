@@ -1,6 +1,6 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import {useState} from "react";
-import ApplicantAddCard from "../../components/ApplicantAddCard.tsx";
+import ApplicantAddCard from "../../components/applicant-add/ApplicantAddCard.tsx";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import {addApplicant} from "../../utils/apiFunctions.tsx";

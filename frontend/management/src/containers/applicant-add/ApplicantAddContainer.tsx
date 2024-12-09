@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import ApplicantAdd from "../../components/ApplicantAdd.tsx";
+import ApplicantAdd from "../../components/applicant-add/ApplicantAdd.tsx";
 
 function ApplicantAddContainer({} : Props) {
   const navigate = useNavigate();
