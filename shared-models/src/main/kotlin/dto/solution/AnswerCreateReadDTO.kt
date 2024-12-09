@@ -1,29 +1,31 @@
-package dto.assignment
+package dto.solution
 
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import io.swagger.v3.oas.annotations.media.Schema
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import dto.CreateDTO
+import dto.ReadDTO
 
 @Schema(description = "Answer objects for open, multiple-choice, and coding questions")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(
-    JsonSubTypes.Type(value = AnswerUpdateDTO.MultipleChoiceAnswer::class, name = "MultipleChoice"),
-    JsonSubTypes.Type(value = AnswerUpdateDTO.OpenAnswer::class, name = "Open"),
-    JsonSubTypes.Type(value = AnswerUpdateDTO.CodingAnswer::class, name = "Coding")
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.MultipleChoice::class, name = "MultipleChoice"),
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.Open::class, name = "Open"),
+    JsonSubTypes.Type(value = AnswerCreateReadDTO.Coding::class, name = "Coding")
 )
-sealed class AnswerUpdateDTO {
+sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
 
-    data class MultipleChoiceAnswer @JsonCreator constructor(
+    data class MultipleChoice @JsonCreator constructor(
         @JsonProperty("answer") val answer: List<Int>
-    ) : AnswerUpdateDTO()
+    ) : AnswerCreateReadDTO()
 
-    data class OpenAnswer @JsonCreator constructor(
+    data class Open @JsonCreator constructor(
         @JsonProperty("answer") val answer: String
-    ) : AnswerUpdateDTO()
+    ) : AnswerCreateReadDTO()
 
-    data class CodingAnswer @JsonCreator constructor(
+    data class Coding @JsonCreator constructor(
         @JsonProperty("answer") val answer: String
-    ) : AnswerUpdateDTO()
+    ) : AnswerCreateReadDTO()
 }

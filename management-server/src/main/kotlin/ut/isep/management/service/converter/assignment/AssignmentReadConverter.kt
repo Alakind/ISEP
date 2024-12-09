@@ -28,8 +28,8 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
         return AssignmentMultipleChoiceReadDTO(
             id = entity.id,
             description = entity.description,
-            isMultipleAnswers = entity.isMultipleAnswers,
-            options = entity.options
+            isMultipleAnswers = entity.optionToSolution.values.count{ it } > 1,
+            options = entity.optionToSolution.keys.toList()
         )
     }
 
