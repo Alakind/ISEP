@@ -68,7 +68,7 @@ class DummyDataLoader(
             assignments = listOf(assignment3, assignment4, openAssignment2)
         )
 
-        val assessment1 = Assessment(sections = mutableListOf(section1, section2))
+        val assessment1 = Assessment(tag = "test assessment", sections = mutableListOf(section1, section2))
         section1.assessment = assessment1
         section2.assessment = assessment1
 
