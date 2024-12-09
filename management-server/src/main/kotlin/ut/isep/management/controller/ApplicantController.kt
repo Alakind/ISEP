@@ -4,7 +4,6 @@ import dto.*
 import dto.applicant.ApplicantCreateDTO
 import dto.applicant.ApplicantReadDTO
 import dto.applicant.ApplicantUpdateDTO
-import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -168,35 +167,4 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
             ResponseEntity.status(404).build()
         }
     }
-
-    @GetMapping("/{applicantId}/assessment")
-    @Tag(name = "Assessment")
-    @Operation(
-        summary = "Get the assessment for the applicant",
-        description = "Return a list of section IDs"
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(
-                responseCode = "200",
-                description = "Found the assessment",
-            ),
-            ApiResponse(
-                responseCode = "404",
-                description = "Applicant not found",
-                content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
-                )]
-            )
-        ]
-    )
-    fun getAssessment(@PathVariable applicantId: Long): ResponseEntity<AssessmentReadDTO?> {
-        return try {
-            val assessment: AssessmentReadDTO? = applicantReadService.getAssessmentByApplicantId(applicantId)
-            ResponseEntity.ok(assessment)
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
-    }
-
 }
