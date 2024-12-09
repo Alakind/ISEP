@@ -70,7 +70,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 }
 
 
-export async function addApplicant(data: Record<string, any>) : Promise<{data: ApplicantInterface}> {
+export async function addApplicant(data: Record<string, any>) : Promise<{id: string}> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "POST",
     headers: {
@@ -86,7 +86,12 @@ export async function addApplicant(data: Record<string, any>) : Promise<{data: A
     throw new Error(`Failed to add applicant: ${response.statusText}`);
   }
 
-  return {data: await response.json()};
+  const id = response.headers.get("Location")?.split("/")[4];
+  if (!id) {
+    throw new Error(`Failed to add applicant: ${response.statusText}`);
+  }
+
+  return {id: id};
 }
 
 export async function updateApplicant(id: string, data: Record<string, any>) : Promise<{ data: any }> {
