@@ -14,16 +14,18 @@ class DummyDataLoader(
     private val inviteRepository: InviteRepository,
     private val sectionRepository: SectionRepository,
     private val assignmentRepository: AssignmentRepository,
+    private val solvedAssignmentRepository: SolvedAssignmentRepository,
     private val userRepository: UserRepository
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
         // clear database in the correct order to avoid foreign key constraint violations
-        inviteRepository.deleteAll()        // Delete child entities first
-        applicantRepository.deleteAll()     // Delete applicants if necessary
-        assessmentRepository.deleteAll()    // Then delete parent entities
-        sectionRepository.deleteAll()       // Finally delete the sections
-        assignmentRepository.deleteAll()    // And any other related entities
+        solvedAssignmentRepository.deleteAll()
+        inviteRepository.deleteAll()        // This will cascade to delete SolvedAssignments
+        applicantRepository.deleteAll()     // Delete applicants
+        assessmentRepository.deleteAll()    // Delete assessments
+        sectionRepository.deleteAll()       // Delete sections
+        assignmentRepository.deleteAll()    // Delete assignments
         userRepository.deleteAll()
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
@@ -185,7 +187,7 @@ class DummyDataLoader(
 
         applicants.forEach { applicantRepository.save(it) }
 
-        val inviteApplicant1Assessment1 = Invite(applicant = applicants[0], assessment = assessment1)
+        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
 
         inviteRepository.save(inviteApplicant1Assessment1)
 

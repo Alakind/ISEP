@@ -26,7 +26,7 @@ import dto.ReadDTO
 )
 sealed class AssignmentReadDTO : ReadDTO {
     @get:Schema(hidden = true)
-    abstract val id: Long?
+    abstract val id: Long
 
     @get:Schema(type = "string", allowableValues = ["Coding", "MultipleChoice", "Open"])
     abstract val type: AssignmentType

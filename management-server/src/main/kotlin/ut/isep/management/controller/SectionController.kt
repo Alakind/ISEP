@@ -1,6 +1,7 @@
 package ut.isep.management.controller
 
 import dto.section.SectionReadDTO
+import dto.section.SolvedSectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -11,7 +12,7 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ut.isep.management.service.section.SectionReadService
-import java.util.NoSuchElementException
+import java.util.*
 
 @RestController
 @RequestMapping("/section")
@@ -61,4 +62,16 @@ class SectionController(val sectionReadService: SectionReadService) {
         }
     }
 
+
+    @GetMapping("/{sectionId}/solved-assignments")
+    fun getSolvedAssignmentsBySection(
+        @RequestParam inviteId: UUID,
+        @PathVariable sectionId: Long
+    ): ResponseEntity<SolvedSectionReadDTO> {
+        return try {
+            ResponseEntity.ok(sectionReadService.getSolvedSection(inviteId, sectionId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
 }

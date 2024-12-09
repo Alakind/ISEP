@@ -140,7 +140,7 @@ class InviteController(val inviteReadService: InviteReadService, val inviteCreat
             )
         ]
     )
-    fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO?> {
+    fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO> {
         return try {
             val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
             ResponseEntity.ok(assessment)

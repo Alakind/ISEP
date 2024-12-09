@@ -3,7 +3,7 @@ package ut.isep.management.service.invite
 import dto.invite.InviteCreateDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import ut.isep.management.model.entity.Invite
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.ApplicantRepository
 import ut.isep.management.repository.AssessmentRepository
 import ut.isep.management.repository.InviteRepository
@@ -28,7 +28,8 @@ class InviteCreateService(
         }
 
         // Create the Invite
-        val invite = Invite(applicant = applicant, assessment = assessment)
+        val invite = Invite.createInvite(applicant = applicant, assessment = assessment)
+//        invite.solutions = emptySolvedAssignments(assessment, invite)
         val savedInvite = repository.save(invite)
 
         // Update the applicant with the new invite
@@ -42,7 +43,6 @@ class InviteCreateService(
             this.invites.add(savedInvite)
             assessmentRepository.save(this)
         }
-
         return savedInvite
     }
 }

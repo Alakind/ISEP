@@ -15,7 +15,8 @@ class SolutionUpdateService(
 
     fun updateSolutions(inviteId: UUID, createDTO: SolutionsUpdateDTO) {
         createDTO.entries.forEach { (assignmentId, answerDTO) ->
-            val existingSolution = repository.findById(assignmentId.toLong()).orElseThrow {
+            val key = SolvedAssignmentId(inviteId, assignmentId.toLong())
+            val existingSolution = repository.findById(key).orElseThrow {
                 NoSuchElementException("No existing solution for assignment ID: $assignmentId")
             }
             // Ensure we're not updating solvedAssignments that do not belong to our invite
