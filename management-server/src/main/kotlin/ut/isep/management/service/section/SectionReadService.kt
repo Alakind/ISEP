@@ -24,7 +24,7 @@ class SectionReadService(
     fun getSolvedSection(inviteId: UUID, sectionId: Long): SolvedSectionReadDTO {
         val section = repository.findById(sectionId).orElseThrow {NoSuchElementException("No section with ID: $sectionId")}
         val invite = inviteRepository.findById(inviteId).orElseThrow {NoSuchElementException("No invite with ID: $inviteId")}
-        // O(n^2)! look into this after presentation 2
+        // O(n^2)! TODO: look into this after presentation 2
         val assignmentDTOs = invite.solutions.filter {it.assignment in section.assignments}.map {solvedAssignmentReadConverter.toDTO(it)}
         return SolvedSectionReadDTO(id = sectionId, title = section.title, assignments = assignmentDTOs)
     }
