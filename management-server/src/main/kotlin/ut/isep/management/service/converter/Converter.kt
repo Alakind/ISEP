@@ -3,7 +3,7 @@ package ut.isep.management.service.converter
 import dto.CreateDTO
 import dto.ReadDTO
 import dto.UpdateDTO
-import entity.BaseEntity
+import ut.isep.management.model.entity.BaseEntity
 
 interface ReadConverter<E : BaseEntity<*>, R : ReadDTO> {
     fun toDTO(entity: E): R
