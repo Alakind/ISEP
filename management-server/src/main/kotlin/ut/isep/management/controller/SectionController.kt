@@ -63,11 +63,11 @@ class SectionController(val sectionReadService: SectionReadService) {
     }
 
 
-    @GetMapping("/{sectionId}/solved-assignments")
+    @GetMapping("/{sectionId}/solution/{inviteId}")
     fun getSolvedAssignmentsBySection(
-        @RequestParam inviteId: UUID,
-        @PathVariable sectionId: Long
-    ): ResponseEntity<SolvedSectionReadDTO> {
+        @PathVariable sectionId: Long,
+        @PathVariable inviteId: UUID
+        ): ResponseEntity<SolvedSectionReadDTO> {
         return try {
             ResponseEntity.ok(sectionReadService.getSolvedSection(inviteId, sectionId))
         } catch (e: NoSuchElementException) {
