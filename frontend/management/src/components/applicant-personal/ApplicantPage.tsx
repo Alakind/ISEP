@@ -36,7 +36,6 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage }: Props) {
         </div> :
         <></>
       }
-
     </div>
   );
 }
