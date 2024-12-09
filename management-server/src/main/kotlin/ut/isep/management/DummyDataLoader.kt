@@ -58,6 +58,36 @@ class DummyDataLoader(
             referenceSolution = "Let P = NP, then PN = P."
         )
 
+        val assignment5 = AssignmentMultipleChoice(
+            description = "What will I get if I will sum 2 and 2?",
+            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
+        )
+
+        val assignment6 = AssignmentMultipleChoice(
+            description = "Which member(s) should receive a red card?",
+            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
+        )
+
+        val assignment7 = AssignmentMultipleChoice(
+            description = "You are a 15th century plague doctor, please cure this sick person",
+            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
+        )
+
+        val assignment8 = AssignmentMultipleChoice(
+            description = "How Long is a Chinese person",
+            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
+        )
+
+        val openAssignment3 = AssignmentOpen(
+            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
+            referenceSolution = "words words words"
+        )
+
+        val openAssignment4 = AssignmentOpen(
+            description = "Prove whether or not P = NP in 150 words",
+            referenceSolution = "Let P = NP, then PN = P."
+        )
+
         val section1 = Section(
             title = "Demo Section 1",
             assignments = listOf(assignment1, assignment2, openAssignment1)
@@ -68,14 +98,30 @@ class DummyDataLoader(
             assignments = listOf(assignment3, assignment4, openAssignment2)
         )
 
-        val assessment1 = Assessment(tag = "test assessment", sections = mutableListOf(section1, section2))
+        val section3 = Section(
+            title = "Demo Section 1",
+            assignments = listOf(assignment5, assignment6, openAssignment3)
+        )
+
+        val section4 = Section(
+            title = "Demo Section 2",
+            assignments = listOf(assignment7, assignment8, openAssignment4)
+        )
+
+        val assessment1 = Assessment(tag = "JAVA assessment", sections = mutableListOf(section1, section2))
         section1.assessment = assessment1
         section2.assessment = assessment1
 
+        val assessment2 = Assessment(tag = "SQL assessment", sections = mutableListOf(section3, section4))
+        section3.assessment = assessment2
+        section4.assessment = assessment2
 
         assessmentRepository.save(assessment1)
+        assessmentRepository.save(assessment2)
         sectionRepository.save(section1)
         sectionRepository.save(section2)
+        sectionRepository.save(section3)
+        sectionRepository.save(section4)
 
         val user1 = User(name = "Default admin", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
         val user2 = User(name = "Abbc", email = "abbc@gmail.com")

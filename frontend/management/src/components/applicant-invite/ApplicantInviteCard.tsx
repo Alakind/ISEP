@@ -1,7 +1,7 @@
 import {ApplicantInterface, AssessmentInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 
-function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleChange}: Props) {
+function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleSelect, selectedOption}: Props) {
   return (
     <div>
       <form>
@@ -11,8 +11,7 @@ function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, hand
             type="text"
             name="name"
             value={applicantData.name}
-            onChange={handleChange}
-            required
+            disabled
           />
         </div>
         <div>
@@ -21,20 +20,20 @@ function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, hand
             type="text"
             name="email"
             value={applicantData.email}
-            onChange={handleChange}
-            required
+            disabled
           />
         </div>
         <div>
           <label>Assessment:</label>
           <select
-            name="preferredLanguage"
-            value={applicantData.preferredLanguage.toString()}
-            onChange={handleChange}
-          />
-          {assessmentsData.map((assessment: AssessmentInterface) => {
-            return (<option key={assessment.id} value={assessment.tag}>{assessment.tag}</option>)
-          })}
+            name="assessment"
+            onChange={(e) => handleSelect(e)}
+            defaultValue={assessmentsData[selectedOption]?.tag ?? 0}
+          >
+            {assessmentsData.map((assessment: AssessmentInterface) => {
+              return (<option key={assessment.id} id={assessment.id} value={assessment.id}>{assessment.tag}</option>)
+            })}
+          </select>
         </div>
       </form>
       <div className="applicant-add__btns">
@@ -50,7 +49,8 @@ interface Props {
   assessmentsData: AssessmentInterface[];
   handleCancel: () => void;
   handleInvite: () => void;
-  handleChange: (e: any) => void;
+  handleSelect: (e: any) => void;
+  selectedOption: number;
 }
 
 export default ApplicantInviteCard

@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, InviteInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -133,9 +133,9 @@ export async function deleteApplicant(id: string): Promise<string> {
 }
 
 
-export async function inviteApplicant(applicantId: string, assessmentId: string): Promise<{ data: InviteInterface }> {
+export async function inviteApplicant(applicantId: string, assessmentId: string): Promise<string> {
   const response: Response = await fetch(`${baseUrl}/invite`, {
-    method: "GET",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -149,7 +149,7 @@ export async function inviteApplicant(applicantId: string, assessmentId: string)
     throw new Error(`Failed to invite applicant: ${response.statusText}`);
   }
 
-  return {data: await response.json()};
+  return "Successfully invited applicant";
 }
 
 // --------------------------------- USER -----------------------------------//

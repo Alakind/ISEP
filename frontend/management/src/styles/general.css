@@ -103,6 +103,11 @@ html {
     margin-right: 15px;
 }
 
+.page--mod {
+    height: 180px !important;
+    width: 560px !important;
+}
+
 .btn--mod {
     margin: 40px 0;
     background-color: var(--tertiary-color);
