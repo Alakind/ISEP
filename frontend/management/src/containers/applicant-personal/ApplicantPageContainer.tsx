@@ -22,7 +22,7 @@ function ApplicantPageContainer() {
   async function getInviteData(inviteId: string): Promise<void> {
     setLoading(true);
     try {
-      if (inviteId !== undefined) {
+      if (inviteId !== undefined && inviteId !== null) {
         const data: InviteInterface = await getInvite(inviteId)
         setAssessmentId(data.assessmentId);
       }

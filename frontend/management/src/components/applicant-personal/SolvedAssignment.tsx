@@ -2,7 +2,7 @@ import {AssignmentInterface} from "../../utils/types.tsx";
 
 function SolvedAssignment({assignment}: Props) {
   return (
-    <div>{assignment.description}</div>
+    <div>{assignment.description}<div>{assignment.answer.answer}</div></div>
   )
 }
 

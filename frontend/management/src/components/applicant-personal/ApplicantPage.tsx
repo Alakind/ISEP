@@ -30,9 +30,9 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessment
           <StatusItem status={mapStatus(applicant.status)}/>
         </span>
       </div>
-      {mapStatus(applicant.status) == (ApplicantStatuses.APP_FINISHED || ApplicantStatuses.INTERVIEW_FINISHED || ApplicantStatuses.INTERVIEW_INVITED) ?
+      {mapStatus(applicant.status) == (ApplicantStatuses.APP_FINISHED || ApplicantStatuses.INTERVIEW_FINISHED || ApplicantStatuses.INTERVIEW_INVITED) && applicant.invite ?
         <div className="applicant-page__results">
-          <AssessmentResultsViewerContainer assessmentId={assessmentId}/>
+          <AssessmentResultsViewerContainer assessmentId={assessmentId} inviteUuid={applicant.invite}/>
         </div> :
         <></>
       }
