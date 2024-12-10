@@ -1,14 +1,16 @@
 import {ApplicantInterface} from "../utils/types";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import SearchContainer from "../containers/SearchContainer.tsx";
-import ApplicantsTableContainer from "../containers/ApplicantsTableContainer.tsx";
-import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
-import PaginationContainer from "../containers/PaginationContainer.tsx";
+import SearchContainer from "../containers/table/SearchContainer.tsx";
+import ApplicantsTableContainer from "../containers/table/ApplicantsTableContainer.tsx";
+import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
+import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
 import {getApplicants} from "../utils/apiFunctions.tsx";
-import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
+import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 import {applicantColumns} from "../utils/constants.tsx";
+import Button from "./Button.tsx";
+import {useNavigate} from "react-router-dom";
 
 function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
   const [data, setData] = useState<ApplicantInterface[]>(initialData);
@@ -17,6 +19,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
   const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
   const [loading, setLoading] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async() => {
@@ -35,16 +38,31 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
     fetchData();
   }, [currentPage, itemsPerPage, orderBy]);
 
+  function handleAddApplicant() {
+    navigate("/applicants/add");
+  }
+
   return (
     <div className="applicant-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+      <span>
+        <Button
+          handleClick={handleAddApplicant}
+          btnClasses={"applicant-list-page__back-btn"}
+          isModal={true}
+          modalTargetId={"#exampleModalCenter"}
+          iconClass={"bi-person-add"}
+          spanTextClass={"applicant-list-page__btn__text"}
+          text={"Add applicant"}
+        />
+        <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+      </span>
       {
         (totalItems == 0 || loading) ?
           <TableLoadingContainer columns={applicantColumns} itemsPerPage={itemsPerPage}/> :
           <>
             <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
             <div className="user-list-page__inner">
-              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>
           </>

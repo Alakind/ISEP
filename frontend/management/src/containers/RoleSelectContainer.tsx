@@ -1,20 +1,20 @@
 import {useState} from 'react'
 import RoleSelect from "../components/RoleSelect.tsx";
-import {updateRole} from "../utils/apiFunctions.tsx";
+import {updateUser} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Roles} from "../utils/constants.tsx"
 
 
-function RoleSelectContainer({id, subUrl, disabled, initialRole}: Props) {
+function RoleSelectContainer({id, disabled, initialRole}: Props) {
   const [selectedOption, setSelectedOption] = useState<(typeof Roles)[keyof typeof Roles]>(initialRole);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function changeState(e: { target: { value: any; }; }) {
     setLoading(true);
     try {
-      const res = await updateRole(id, subUrl, e.target.value);
-      e.target.value = res.role.toString();
-      setSelectedOption(res.role.toString());
+      const res = await updateUser(id, {role:  e.target.value});
+      e.target.value = res.data.role.toString();
+      setSelectedOption(res.data.role.toString());
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -32,7 +32,6 @@ function RoleSelectContainer({id, subUrl, disabled, initialRole}: Props) {
 
 interface Props {
   id: string;
-  subUrl: string;
   disabled: boolean;
   initialRole: (typeof Roles)[keyof typeof Roles];
 }
