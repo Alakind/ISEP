@@ -2,10 +2,10 @@ import { ApplicantInterface } from "../../utils/types.tsx";
 import {applicantColumns} from "../../utils/constants.tsx";
 import TableHeadContainer from "../../containers/table/TableHeadContainer.tsx";
 import TableBodyContainer from "../../containers/table/TableBodyContainer.tsx";
-import React from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import "../../styles/table.css";
 
-function ApplicantsTable({ data, orderBy, setOrderBy }: Props) {
+function ApplicantsTable({ data, orderBy, setOrderBy }: Props): ReactNode {
   return (
     <>
       <table className="table table-striped">
@@ -19,7 +19,7 @@ function ApplicantsTable({ data, orderBy, setOrderBy }: Props) {
 interface Props {
   data: ApplicantInterface[];
   orderBy: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
+  setOrderBy: Dispatch<SetStateAction<string>>;
 }
 
 export default ApplicantsTable;

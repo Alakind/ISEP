@@ -1,11 +1,12 @@
 import Checkbox from "../components/Checkbox.tsx";
 import {Selection} from "../utils/types.tsx";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 
 
-function CheckboxContainer({id, additionalAction, isSelected} : Props) {
+function CheckboxContainer({id, additionalAction, isSelected} : Props): ReactNode {
   const [isChecked, setIsChecked] = useState(false);
-  const handleOptionChange = (id: string) => {
+
+  function handleOptionChange(id: string): void {
     setIsChecked(!isChecked);
     if (additionalAction != undefined) {
       if (id == "checkbox-all") {
@@ -14,10 +15,10 @@ function CheckboxContainer({id, additionalAction, isSelected} : Props) {
         additionalAction(id);
       }
     }
-  };
+  }
 
   if (id != "checkbox-all") {
-    const selectedItem = (isSelected as Selection[]).find((item) => item.id === id);
+    const selectedItem: Selection | undefined = (isSelected as Selection[]).find((item: Selection): boolean => item.id === id);
     return (
       <Checkbox id={id} handleOptionChange={handleOptionChange} isChecked={selectedItem ? selectedItem.checked : false}/>
     )

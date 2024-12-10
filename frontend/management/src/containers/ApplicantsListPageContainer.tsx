@@ -2,17 +2,18 @@ import ApplicantsListPage from "../components/ApplicantsListPage";
 import {ApplicantInterface} from "../utils/types";
 import {toast} from "react-toastify";
 import {getApplicants} from "../utils/apiFunctions.tsx";
+import {ReactNode} from "react";
 
-function ApplicantsListContainer() {
+function ApplicantsListContainer(): ReactNode {
   let initialData: ApplicantInterface[] = [];
   const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
   let initialTotalItems = 0;
   const initialOrderBy = "name:asc"
 
-  const fetchData = async() => {
+  async function fetchData(): Promise<void> {
     try {
-      const res = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
+      const res: {data: ApplicantInterface[], totalItems: number} = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
       initialData = res.data;
       initialTotalItems =res.totalItems;
@@ -20,7 +21,7 @@ function ApplicantsListContainer() {
       toast.error(error.message)
     }
   }
-  fetchData();
+  fetchData().then();
 
   return (
     <ApplicantsListPage

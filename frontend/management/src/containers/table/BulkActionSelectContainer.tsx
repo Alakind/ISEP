@@ -1,26 +1,26 @@
-import {useState} from 'react'
+import {ReactNode, useState} from 'react'
 import BulkActionSelect from "../../components/table/BulkActionSelect.tsx";
 import {deleteUser} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Selection} from "../../utils/types.tsx";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function BulkActionSelectContainer({isSelected} : Props) {
+function BulkActionSelectContainer({isSelected} : Props): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("-")
   const options: string[] = ["-","Delete selected"];
 
-  function proceedAction() {
-    deleteUsers();
+  function proceedAction(): void {
+    deleteUsers().then();
   }
 
-  function cancelAction() {
+  function cancelAction(): void {
     setLoading(false);
   }
 
-  async function deleteUsers() {
+  async function deleteUsers(): Promise<void> {
     try {
-      for (let i = 0; i < isSelected.length; i++) {
+      for (let i: number = 0; i < isSelected.length; i++) {
         if (isSelected[i].checked) {
           await deleteUser(isSelected[i].id);
         }
@@ -31,13 +31,13 @@ function BulkActionSelectContainer({isSelected} : Props) {
       setLoading(false);
     }
   }
-  async function handleSelect(e: { preventDefault: () => void; target: { value: string; }; }) {
+  async function handleSelect(e: { preventDefault: () => void; target: { value: string; }; }): Promise<void> {
     e.preventDefault();
 
     if (e.target.value == "Delete selected") {
       setLoading(true);
       
-      if (isSelected.some((selection) => selection.checked)) {
+      if (isSelected.some((selection: Selection): boolean => selection.checked)) {
         toast.warn(<CustomWarnToast proceedAction={proceedAction} cancelAction={cancelAction} message={"Are you sure you want to delete these users? State can't be" +
           " restored!"}/>, {hideProgressBar: true, autoClose: false,});
       } else {

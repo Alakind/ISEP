@@ -1,11 +1,11 @@
-import React from "react";
+import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 import "../../styles/items-per-page.css"
 import ItemPerPageSelect from "../../components/table/ItemsPerPageSelect.tsx";
 
-function ItemPerPageSelectContainer({itemsPerPage, setItemsPerPage} : Props) {
-  const handleSelect = (e: { preventDefault: () => void; target: { value: React.SetStateAction<number>; }; }): void => {
+function ItemPerPageSelectContainer({itemsPerPage, setItemsPerPage} : Props): ReactNode {
+  function handleSelect(e: ChangeEvent<HTMLSelectElement>): void {
     e.preventDefault();
-    setItemsPerPage(e.target.value);
+    setItemsPerPage(Number(e.target.value));
   }
 
   return (
@@ -15,6 +15,6 @@ function ItemPerPageSelectContainer({itemsPerPage, setItemsPerPage} : Props) {
 
 interface Props {
   itemsPerPage: number;
-  setItemsPerPage: React.Dispatch<React.SetStateAction<number>>
+  setItemsPerPage: Dispatch<SetStateAction<number>>
 }
 export default ItemPerPageSelectContainer;

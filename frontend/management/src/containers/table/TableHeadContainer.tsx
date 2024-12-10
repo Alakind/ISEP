@@ -1,27 +1,28 @@
 import {Selection, Column} from "../../utils/types.tsx";
-import React, {useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useState} from "react";
 import TableHead from "../../components/table/TableHead.tsx";
 
-function TableHeadContainer({ columns, orderBy, setOrderBy, setIsSelected } : Props) {
+function TableHeadContainer({ columns, orderBy, setOrderBy, setIsSelected } : Props): ReactNode {
   const [sortField, setSortField] = useState<string>(orderBy.split(":")[0]);
   const [order, setOrder] = useState<string>(orderBy.split(":")[1]);
-  const handleSorting = (accessor: string) => {
-    const sortOrder = accessor === sortField && order === "asc" ? "desc" : "asc";
+
+  function handleSorting(accessor: string): void {
+    const sortOrder: "asc" | "desc" = accessor === sortField && order === "asc" ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
     setOrderBy(`${accessor}:${sortOrder}`)
-  };
+  }
 
-  const handleSelectAll = (value: boolean) => {
+  function handleSelectAll(value: boolean): void {
     if (setIsSelected) {
-      setIsSelected((prevState: Selection[]) => {
-        return prevState.map(item => ({
+      setIsSelected((prevState: Selection[]): Selection[] => {
+        return prevState.map((item: Selection): Selection => ({
           ...item,
           checked: value,
         }));
       });
     }
-  };
+  }
 
   return (
    <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting} handleSelectAll={handleSelectAll}/>
@@ -31,7 +32,7 @@ function TableHeadContainer({ columns, orderBy, setOrderBy, setIsSelected } : Pr
 interface Props {
   columns: Column[];
   orderBy: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
-  setIsSelected?: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  setIsSelected?: Dispatch<SetStateAction<Selection[]>>;
 }
 export default TableHeadContainer

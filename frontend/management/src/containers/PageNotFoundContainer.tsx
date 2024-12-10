@@ -1,7 +1,8 @@
 import "../styles/general.css";
 import {Link} from "react-router-dom";
+import {ReactNode} from "react";
 
-function PageNotFoundContainer() {
+function PageNotFoundContainer(): ReactNode {
     return (
         <div className="page page--center">
             <h1>404</h1>

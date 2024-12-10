@@ -1,13 +1,14 @@
 import "../../styles/pagination.css"
+import {MouseEvent, ReactNode} from "react";
 
 // In case if the current page is either 1 till 4 the first 5 pages are shown
-function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Props) {
+function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Props): ReactNode {
   return (
     <>
-      {pageNumbers.map((number, index) => (
+      {pageNumbers.map((number: number, index: number): false | ReactNode => (
         index + 1 <= 5 && (
           <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
-            <a onClick={(e) => handleClick(e, number)} href="#" className="page-link">
+            <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, number)} href="#" className="page-link">
               {number+1}
             </a>
           </li>)
@@ -18,7 +19,7 @@ function PaginationLeft({ pageNumbers, lastPage, currentPage, handleClick } : Pr
         </a>
       </li>
       <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
-        <a onClick={(e) => handleClick(e, lastPage)} href="#" className="page-link">
+        <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, lastPage)} href="#" className="page-link">
           {lastPage+1}
         </a>
       </li>
@@ -30,7 +31,7 @@ interface Props {
   pageNumbers: number[];
   lastPage: number;
   currentPage: number;
-  handleClick: (e: any, number: number) => void;
+  handleClick: (e: MouseEvent<HTMLAnchorElement>, number: number) => void;
 }
 
 export default PaginationLeft

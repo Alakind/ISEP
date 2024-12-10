@@ -1,11 +1,11 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
-import {useState} from "react";
+import {ChangeEvent, ReactNode, useState} from "react";
 import ApplicantAddCard from "../../components/applicant-add/ApplicantAddCard.tsx";
 import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 import {addApplicant} from "../../utils/apiFunctions.tsx";
 
-function ApplicantAddCardContainer({}: Props) {
+function ApplicantAddCardContainer({}: Props): ReactNode {
   const emptyApplicantData: ApplicantInterface = {
     id: "0",
     name: "",
@@ -13,9 +13,9 @@ function ApplicantAddCardContainer({}: Props) {
     status: "",
     preferredLanguage: ""};
   const [newApplicant, setNewApplicant] = useState<ApplicantInterface>(emptyApplicantData);
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
-  function handleCancel() {
+  function handleCancel(): void {
     navigate("/applicants");
   }
 
@@ -23,11 +23,11 @@ function ApplicantAddCardContainer({}: Props) {
     setNewApplicant(emptyApplicantData)
   }
 
-  async function handleAdd(goToInvite: boolean) {
+  async function handleAdd(goToInvite: boolean): Promise<void> {
     if (newApplicant.name != "" && newApplicant.email != "" && newApplicant.email.includes("@")) {
       try {
-        const res = await addApplicant({name: newApplicant.name, email: newApplicant.email, preferredLanguage: newApplicant.preferredLanguage});
-        setNewApplicant((prev) => ({
+        const res: {id: string} = await addApplicant({name: newApplicant.name, email: newApplicant.email, preferredLanguage: newApplicant.preferredLanguage});
+        setNewApplicant((prev: ApplicantInterface): ApplicantInterface => ({
           ...prev,
           id: res.id,
         }));
@@ -44,10 +44,10 @@ function ApplicantAddCardContainer({}: Props) {
     }
   }
 
-  function handleChange(e: any) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>): void {
     const { name, value } = e.target;
 
-    setNewApplicant((prev) => ({
+    setNewApplicant((prev: ApplicantInterface): ApplicantInterface => ({
       ...prev,
       [name]: value,
     }));

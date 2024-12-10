@@ -1,6 +1,7 @@
 import "../../styles/profile-button.css";
+import {ReactNode} from "react";
 
-function ProfileButton({urlPrefix, currentUser} : Props) {
+function ProfileButton({urlPrefix, currentUser} : Props): ReactNode {
   return (
     <span className="profile-button">
       <li className="navbar-nav dropdown">

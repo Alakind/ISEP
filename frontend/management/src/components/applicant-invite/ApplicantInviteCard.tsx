@@ -1,7 +1,8 @@
 import {ApplicantInterface, AssessmentInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
+import {ChangeEvent, ReactNode} from "react";
 
-function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleSelect, selectedOption}: Props) {
+function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleSelect, selectedOption}: Props): ReactNode {
   return (
     <div>
       <form>
@@ -27,7 +28,7 @@ function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, hand
           <label>Assessment:</label>
           <select
             name="assessment"
-            onChange={(e) => handleSelect(e)}
+            onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)}
             defaultValue={assessmentsData[selectedOption]?.tag ?? 0}
           >
             {assessmentsData.map((assessment: AssessmentInterface) => {
@@ -49,7 +50,7 @@ interface Props {
   assessmentsData: AssessmentInterface[];
   handleCancel: () => void;
   handleInvite: () => void;
-  handleSelect: (e: any) => void;
+  handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOption: number;
 }
 

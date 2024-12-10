@@ -1,4 +1,6 @@
-function CheckboxLoading({ id }: Props) {
+import {ReactNode} from "react";
+
+function CheckboxLoading({ id }: Props): ReactNode {
   return (
     <input
       className={`checkbox__input checkbox__input--loading`}

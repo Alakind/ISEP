@@ -6,10 +6,10 @@ import {mapStatus} from "../../utils/mapping.tsx";
 import AssessmentResultsViewerContainer from "../../containers/applicant-personal/AssessmentResultsViewerContainer.tsx";
 import Button from "../Button.tsx";
 import ApplicantCardContainer from "../../containers/applicant-personal/ApplicantCardContainer.tsx";
-import React from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 
 
-function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessmentId }: Props) {
+function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessmentId }: Props): ReactNode {
   return (
     <div className="applicant-page">
       <span className="applicant-page__header">
@@ -42,7 +42,7 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessment
 
 interface Props {
   applicant: ApplicantInterface;
-  setApplicant: React.Dispatch<React.SetStateAction<ApplicantInterface>>;
+  setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
   goToApplicantsPage: () => void
   assessmentId: string;
 }

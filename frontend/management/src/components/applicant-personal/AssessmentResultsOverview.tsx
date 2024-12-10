@@ -1,4 +1,6 @@
-function AssessmentResultsOverview({}: Props) {
+import {ReactNode} from "react";
+
+function AssessmentResultsOverview({}: Props): ReactNode {
   return (
     <div>Coming soon</div>
   )

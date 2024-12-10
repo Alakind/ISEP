@@ -2,14 +2,15 @@ import {ApplicantInterface, Column} from "../../utils/types.tsx";
 import Progressbar from "../Progressbar.tsx";
 import StatusItem from "../StatusItem.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
+import {ReactNode} from "react";
 
-function TableRowApplicants({data, columns, goToApplicantPage} : Props ) {
+function TableRowApplicants({data, columns, goToApplicantPage} : Props ): ReactNode {
   return (
     <tr>
-      {columns.map(({ accessor }) => {
+      {columns.map(({ accessor }: Column): ReactNode => {
         if (accessor == "name") {
           return (
-            <th className="table-row__link" key={accessor} scope="row" onClick={() => goToApplicantPage(data.id)}>
+            <th className="table-row__link" key={accessor} scope="row" onClick={(): void => goToApplicantPage(data.id)}>
               {data.name}
             </th>
           );
@@ -18,7 +19,7 @@ function TableRowApplicants({data, columns, goToApplicantPage} : Props ) {
         } else if (accessor == "status") {
           return <td key={accessor}><StatusItem status={mapStatus(data.status)}/></td>
         }  else {
-          const value = accessor in data ? (data as ApplicantInterface)[accessor as keyof ApplicantInterface] : "——";
+          const value: string | number | undefined = accessor in data ? (data as ApplicantInterface)[accessor as keyof ApplicantInterface] : "——";
           return <td key={accessor}>{typeof value === "string" || typeof value === "number" ? value : "——"}</td>;
         }
       })}
@@ -29,7 +30,7 @@ function TableRowApplicants({data, columns, goToApplicantPage} : Props ) {
 interface Props {
   data: ApplicantInterface;
   columns: Column[];
-  goToApplicantPage: (arg0: string) => void;
+  goToApplicantPage: (id: string) => void;
 }
 
 export default TableRowApplicants

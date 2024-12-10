@@ -1,19 +1,19 @@
 import TableBody from "../../components/table/TableBody.tsx";
 import {Selection, ApplicantInterface, Column, UserInterface} from "../../utils/types.tsx";
-import {useNavigate} from "react-router-dom";
-import React from "react";
+import {NavigateFunction, useNavigate} from "react-router-dom";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 
-function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : Props) {
-  const navigate = useNavigate();
+function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : Props): ReactNode {
+  const navigate: NavigateFunction = useNavigate();
 
-  const goToApplicantPage = (applicantId: string): void => {
+  function goToApplicantPage(applicantId: string): void {
     navigate(`/applicants/${applicantId}/info`);
-  };
+  }
 
-  const handleSelect = (id: string) => {
+  function handleSelect(id: string): void {
     if (setIsSelected) {
-      setIsSelected((prevState: Selection[]) => {
-        return prevState.map((item) =>
+      setIsSelected((prevState: Selection[]): Selection[] => {
+        return prevState.map((item: Selection): Selection =>
           item.id === id ? {...item, checked: !item.checked} : item
         );
       });
@@ -28,7 +28,7 @@ function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : 
 interface Props {
   columns: Column[];
   tableData: UserInterface[] | ApplicantInterface[];
-  setIsSelected?: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setIsSelected?: Dispatch<SetStateAction<Selection[]>>;
   isSelected?: Selection[];
 }
 

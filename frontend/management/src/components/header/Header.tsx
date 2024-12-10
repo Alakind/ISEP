@@ -2,8 +2,9 @@ import ThemeSwitchContainer from "../../containers/header/ThemeSwitchContainer.t
 import {Bounce, ToastContainer} from "react-toastify";
 import ProfileButtonContainer from "../../containers/header/ProfileButtonContainer.tsx";
 import "../../styles/header.css"
+import {ReactNode} from "react";
 
-function Header({currentPage, urlPrefix} : Props) {
+function Header({currentPage, urlPrefix} : Props): ReactNode {
   return (
     <header className="header">
       <span className="header__left">

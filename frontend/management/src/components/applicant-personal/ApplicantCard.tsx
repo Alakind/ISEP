@@ -1,8 +1,9 @@
 import { ApplicantInterface } from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import "../../styles/applicant-card.css";
+import {ChangeEvent, ReactNode} from "react";
 
-function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel  }: Props) {
+function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel  }: Props): ReactNode {
   return (
     <div>
       <form id={`form_${applicant.id}`}>
@@ -33,7 +34,7 @@ function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, 
             name="preferredLanguage"
             disabled={!isEditing}
             value={applicant.preferredLanguage.toString()}
-            onChange={handleChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
           />
         </div>
         <div>
@@ -43,7 +44,7 @@ function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, 
             name="invite"
             disabled={true}
             value={applicant.invite ?? '-'}
-            onChange={handleChange}
+            onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
           />
         </div>
       </form>
@@ -68,7 +69,7 @@ function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, 
 
 interface Props {
   applicant: ApplicantInterface;
-  handleChange: (arg0 : any) => void;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleRemind: () => void;
   handleEdit: () => void;
   handleDelete: () => void;

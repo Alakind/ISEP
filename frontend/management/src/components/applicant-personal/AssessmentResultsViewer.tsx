@@ -2,9 +2,9 @@ import "../../styles/assessment-results-viewer.css";
 import AssessmentResultsSections from "./AssessmentResultsSections.tsx";
 import AssessmentResultsOverview from "./AssessmentResultsOverview.tsx";
 import {SectionInterface} from "../../utils/types.tsx";
-import React from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 
-function AssessmentResultsViewer({sectionsData, activeSection, setActiveSection}: Props) {
+function AssessmentResultsViewer({sectionsData, activeSection, setActiveSection}: Props): ReactNode {
   return (
     <>
       <h4>Results Overview</h4>
@@ -23,7 +23,7 @@ function AssessmentResultsViewer({sectionsData, activeSection, setActiveSection}
 interface Props {
   sectionsData : SectionInterface[];
   activeSection: number;
-  setActiveSection: React.Dispatch<React.SetStateAction<number>>;
+  setActiveSection: Dispatch<SetStateAction<number>>;
 }
 
 export default AssessmentResultsViewer

@@ -1,8 +1,8 @@
-import React from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import UsersTable from "../../components/table/UsersTable.tsx";
 import {Selection, UserInterface} from "../../utils/types.tsx";
 
-function UsersTableContainer({ data, orderBy, setOrderBy, setIsSelected, isSelected }: Props) {
+function UsersTableContainer({ data, orderBy, setOrderBy, setIsSelected, isSelected }: Props): ReactNode {
   return (
     <UsersTable data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>
   )
@@ -11,8 +11,8 @@ function UsersTableContainer({ data, orderBy, setOrderBy, setIsSelected, isSelec
 interface Props {
   data: UserInterface[];
   orderBy: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
-  setIsSelected: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  setIsSelected: Dispatch<SetStateAction<Selection[]>>;
   isSelected: Selection[];
 }
 

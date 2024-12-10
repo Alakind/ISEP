@@ -48,7 +48,7 @@ export async function getApplicants(currentPage: number, itemsPerPage: number, o
     throw new Error(`Failed to retrieve applicants`);
   }
 
-  const data = await response.json();
+  const data: {data: ApplicantInterface[], total: number} = await response.json();
 
   return {data: data.data as ApplicantInterface[], totalItems: data.total} ;
 }
@@ -186,7 +186,7 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
     },
   });
 
-  const data = await response.json();
+  const data: {data: UserInterface[], total: number} = await response.json();
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve users`);
@@ -260,7 +260,7 @@ export async function getAssessments(currentPage: number = 0, itemsPerPage: numb
     },
   });
 
-  const data = await response.json();
+  const data: {data: AssessmentInterface[], total: number} = await response.json();
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve assessments`);

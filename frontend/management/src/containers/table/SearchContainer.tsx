@@ -1,15 +1,15 @@
 import "../../styles/search.css"
-import React, {useEffect, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useEffect, useState} from "react";
 import {UserInterface} from "../../utils/types.tsx";
 import {toast} from "react-toastify";
 import {getApplicants, getUsers} from "../../utils/apiFunctions.tsx";
 import Search from "../../components/table/Search.tsx";
 
-function SearchContainer({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange, orderBy } : Props ) {
+function SearchContainer({ setData, setTotalItems, setLoading, currentPage, itemsPerPage, subUrl, handleIsSelectedChange, orderBy } : Props ): ReactNode {
   const [query, setQuery] = useState<string>("");
 
-  useEffect(() => {
-    const fetchData = async() => {
+  useEffect((): void => {
+    async function fetchData(): Promise<void> {
       setLoading(true);
       try {
         let res;
@@ -34,7 +34,7 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
     fetchData();
   }, [query]);
 
-  const clearSearch = () => {
+  function clearSearch(): void {
     setQuery("");
   }
 
@@ -44,9 +44,9 @@ function SearchContainer({ setData, setTotalItems, setLoading, currentPage, item
 }
 
 interface Props {
-  setData: React.Dispatch<React.SetStateAction<any>>;
-  setTotalItems: React.Dispatch<React.SetStateAction<number>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setData: Dispatch<SetStateAction<any>>;
+  setTotalItems: Dispatch<SetStateAction<number>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
   currentPage: number;
   itemsPerPage: number;
   subUrl: string;

@@ -1,12 +1,13 @@
 import {Column} from "../../../utils/types.tsx";
-import CheckboxLoading from "../../CheckboxLoading.tsx";
+import CheckboxLoadingContainer from "../../../containers/CheckboxLoadingContainer.tsx";
+import {ReactNode} from "react";
 
-function TableRowLoading({columns, id} : Props) {
+function TableRowLoading({columns, id} : Props): ReactNode {
   return (
     <tr className="table-loading__row">
-      {columns.map(({accessor}) => {
+      {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "select") {
-          return <td key={accessor} ><CheckboxLoading id={id} /></td>;
+          return <td key={accessor} ><CheckboxLoadingContainer id={id} /></td>;
         } else {
           return <td key={accessor} ><span className="table-loading__row__cell"></span></td>;
         }

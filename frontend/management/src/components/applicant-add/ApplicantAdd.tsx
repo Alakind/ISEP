@@ -1,8 +1,9 @@
 import Button from "../Button.tsx";
 import ApplicantAddCardContainer from "../../containers/applicant-add/ApplicantAddCardContainer.tsx";
 import "../../styles/applicant-add-card.css"
+import {ReactNode} from "react";
 
-function ApplicantAdd({goToApplicantsPage} : Props) {
+function ApplicantAdd({goToApplicantsPage} : Props): ReactNode {
   return (
     <div className="applicant-add">
       <span className="applicant-page__header">

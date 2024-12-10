@@ -1,6 +1,6 @@
 import {Selection, UserInterface} from "../utils/types";
 import SearchContainer from "../containers/table/SearchContainer.tsx";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
@@ -12,7 +12,7 @@ import BulkActionSelectContainer from "../containers/table/BulkActionSelectConta
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 
 
-function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {
+function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props): ReactNode {
   const [data, setData] = useState<UserInterface[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
@@ -21,19 +21,19 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
   const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
   const [isSelected, setIsSelected] = useState<Selection[]>(initialSelection);
 
-  function handleIsSelectedChange(data: UserInterface[]) {
+  function handleIsSelectedChange(data: UserInterface[]): void {
     let changedState: Selection[] = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i: number = 0; i < data.length; i++) {
       changedState.push({id: data[i].id, checked: false});
     }
     setIsSelected(changedState);
   }
 
-  useEffect(() => {
-    const fetchData = async() => {
+  useEffect((): void => {
+    async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res = await getUsers(currentPage, itemsPerPage, orderBy, "");
+        const res: {data: UserInterface[], totalItems: number} = await getUsers(currentPage, itemsPerPage, orderBy, "");
 
         handleIsSelectedChange(res.data);
         setData(res.data);
@@ -44,17 +44,15 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
         setLoading(false);
       }
     }
-    fetchData();
+    fetchData().then();
   }, [currentPage, itemsPerPage, orderBy]);
-
-
 
   return (
     <div className="user-list-page">
       <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
                                       handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
       {
-        loading ?
+        (totalItems == 0 || loading) ?
           <TableLoadingContainer columns={userColumns} itemsPerPage={itemsPerPage}/> :
           <>
             <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>

@@ -1,19 +1,19 @@
-import React from 'react'
+import {Dispatch, MouseEvent, ReactNode, SetStateAction} from 'react'
 import Pagination from "../../components/table/Pagination.tsx";
 
-function PaginationContainer({ itemsPerPage, totalItems, setCurrentPage, currentPage } : Props) {
+function PaginationContainer({ itemsPerPage, totalItems, setCurrentPage, currentPage } : Props): ReactNode {
   const pageNumbers: number[] = [];
 
   if (itemsPerPage != -1) {
-    for (let i = 0; i < Math.ceil(totalItems / itemsPerPage); i++) {
+    for (let i: number = 0; i < Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
   } else {
     pageNumbers.push(0);
   }
-  const lastPage = pageNumbers[pageNumbers.length-1];
+  const lastPage: number = pageNumbers[pageNumbers.length-1];
 
-  const handleClick = (e: { preventDefault: () => void; }, number: React.SetStateAction<number>): void => {
+  function handleClick(e: MouseEvent<HTMLAnchorElement>, number: SetStateAction<number>): void {
     e.preventDefault();
     setCurrentPage(number);
   }
@@ -32,7 +32,7 @@ function PaginationContainer({ itemsPerPage, totalItems, setCurrentPage, current
 interface Props {
   itemsPerPage: number;
   totalItems: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
   currentPage: number;
 }
 

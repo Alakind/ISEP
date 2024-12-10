@@ -4,22 +4,24 @@ import ThemeSwitch from "../../components/header/ThemeSwitch.tsx";
 
 function ThemeSwitchContainer() {
 
-    const [theme, setTheme] = useState<Themes>(Themes.DARK);
+    const [theme, setTheme] = useState<(typeof Themes)[keyof typeof Themes]>(Themes.DARK);
 
-    useEffect(() => {
-        let storedTheme = localStorage.getItem("Theme");
+    useEffect((): void => {
+        let storedTheme: string | null = localStorage.getItem("Theme");
         if (storedTheme == "LIGHT") {
             setTheme(Themes.LIGHT);
         }
     }, []);
 
-    useEffect(() => {
+    useEffect((): void => {
         localStorage.setItem("Theme", theme === Themes.DARK ? "DARK" : "LIGHT");
-        document.querySelector("body").setAttribute("data-theme", theme.toString())
+        document.querySelector("body")?.setAttribute("data-theme", theme.toString())
     }, [theme]);
 
-    const switchTheme = () => {
-        setTheme((theme) => (theme === Themes.DARK ? Themes.LIGHT : Themes.DARK));
+    function switchTheme(): void {
+        setTheme((theme: string): string => (
+          theme === Themes.DARK ? Themes.LIGHT : Themes.DARK
+        ));
     }
 
     return (

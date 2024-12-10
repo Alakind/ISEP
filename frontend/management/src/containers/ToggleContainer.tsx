@@ -7,7 +7,7 @@ function ToggleContainer({ checked, subUrl, disabled } : Props) {
   const [toggleValue, setToggleValue] = useState<boolean>(checked ?? false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function changeState() {
+  async function changeState(): Promise<void> {
     setLoading(true);
     try {
       // await updateAccess(subUrl, !toggleValue); //TODO remove container and component is not used anymore

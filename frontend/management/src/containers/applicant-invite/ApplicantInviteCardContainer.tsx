@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {getApplicant, getAssessments, inviteApplicant} from "../../utils/apiFunctions.tsx";
@@ -6,7 +6,7 @@ import {toast} from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
 
-function ApplicantInviteCardContainer() {
+function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0" });
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
@@ -14,11 +14,11 @@ function ApplicantInviteCardContainer() {
   const navigate: NavigateFunction = useNavigate();
   const { id } = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
-  console.log(assessmentsData);
-  useEffect(() => {
+
+  useEffect((): void => {
     if (id) {
-      getData();
-      getAssessmentsData();
+      getData().then();
+      getAssessmentsData().then();
     }
   }, [id]);
 
@@ -55,11 +55,11 @@ function ApplicantInviteCardContainer() {
     }
   }
 
-  const goToApplicantPage = (): void => {
+  function goToApplicantPage(): void {
     navigate(`/applicants/${id}/info`);
-  };
+  }
 
-  async function handleInvite() {
+  async function handleInvite(): Promise<void> {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
       try {
         await inviteApplicant(inviteData.applicantId, inviteData.assessmentId);
@@ -73,16 +73,15 @@ function ApplicantInviteCardContainer() {
     }
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     navigate("/applicants");
   }
 
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e);
-    const selectedId = Number(e.target.value);
+  function handleSelect(e: ChangeEvent<HTMLSelectElement>): void {
+    const selectedId: number = Number(e.target.value);
     setSelectedOption(selectedId);
 
-    setInviteData((prev) => ({
+    setInviteData((prev: InviteInterface): InviteInterface => ({
       ...prev,
       assessmentId: `${selectedId}`,
     }));

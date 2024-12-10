@@ -16,7 +16,7 @@ function Button({isDisabled = false, activeTooltip = false, isModal = false, mod
 }
 
 interface Props {
-  handleClick: (arg0? : any) => void;
+  handleClick: (arg0?: any) => void; //TODO find out why arg0?
   btnClasses: string;
   iconClass?: string;
   spanTextClass: string;

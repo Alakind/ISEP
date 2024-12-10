@@ -1,13 +1,13 @@
 import "../../styles/bulk-action.css"
-import React from "react";
+import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 
-function BulkActionSelect({ loading, options, handleSelect, selectedOption, setSelectedOption} : Props) {
+function BulkActionSelect({ loading, options, handleSelect, selectedOption, setSelectedOption} : Props): ReactNode {
   return (
     <span className="bulk-action-select">
       <label htmlFor="bulkActionSelect">Actions:</label>
-      <select disabled={loading} onChange={(e) => handleSelect(e)} className="form-select" id="bulkActionSelect" defaultValue={selectedOption}>
-        {options.map((option,index) => (
-          <option key={index} value={option} onClick={() => setSelectedOption(option)}>{option}</option>
+      <select disabled={loading} onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} className="form-select" id="bulkActionSelect" defaultValue={selectedOption}>
+        {options.map((option: string, index: number): ReactNode => (
+          <option key={index} value={option} onClick={(): void => setSelectedOption(option)}>{option}</option>
         ))}
       </select>
     </span>
@@ -17,8 +17,8 @@ function BulkActionSelect({ loading, options, handleSelect, selectedOption, setS
 interface Props {
   loading: boolean;
   options: string[];
-  handleSelect: (e: any) => void;
+  handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOption: string;
-  setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedOption: Dispatch<SetStateAction<string>>;
 }
 export default BulkActionSelect

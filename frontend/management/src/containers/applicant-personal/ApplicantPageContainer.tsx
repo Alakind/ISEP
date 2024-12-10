@@ -1,21 +1,21 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {ApplicantInterface, InviteInterface} from "../../utils/types.tsx";
 import ApplicantPage from "../../components/applicant-personal/ApplicantPage.tsx";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {getApplicant, getInvite} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import LoadingPage from "../../components/LoadingPage.tsx";
 
-function ApplicantPageContainer() {
+function ApplicantPageContainer(): ReactNode {
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
   const [assessmentId, setAssessmentId] = useState<string>("0");
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const { id } = useParams();
 
-  useEffect(() => {
+  useEffect((): void => {
     if (id) {
-      getData();
+      getData().then();
     }
   }, [id]);
 
@@ -33,11 +33,11 @@ function ApplicantPageContainer() {
     }
   }
 
-  async function getData() {
+  async function getData(): Promise<void> {
     setLoading(true);
     try {
       if (id !== undefined) {
-        const data = await getApplicant(id);
+        const data: ApplicantInterface = await getApplicant(id);
         setApplicantData(data);
         if (data.invite !== undefined) {
           await getInviteData(data.invite);
@@ -51,9 +51,9 @@ function ApplicantPageContainer() {
     }
   }
 
-  const goToApplicantsPage = (): void => {
+  function goToApplicantsPage(): void {
     navigate(`/applicants`);
-  };
+  }
 
 
   if (loading || applicantData.id == "0") {

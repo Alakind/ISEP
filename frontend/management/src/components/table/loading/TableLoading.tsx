@@ -2,8 +2,9 @@ import TableHeadLoadingContainer from "../../../containers/table/loading/TableHe
 import TableBodyLoadingContainer from "../../../containers/table/loading/TableBodyLoadingContainer.tsx";
 import {Column} from "../../../utils/types.tsx";
 import "../../../styles/table-loading.css";
+import {ReactNode} from "react";
 
-function TableLoading({columns, itemsPerPage}:Props) {
+function TableLoading({columns, itemsPerPage}:Props): ReactNode {
   return (
     <>
       <table className="table table-striped">

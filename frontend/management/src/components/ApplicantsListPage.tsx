@@ -1,5 +1,5 @@
 import {ApplicantInterface} from "../utils/types";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import SearchContainer from "../containers/table/SearchContainer.tsx";
 import ApplicantsTableContainer from "../containers/table/ApplicantsTableContainer.tsx";
@@ -10,22 +10,22 @@ import {getApplicants} from "../utils/apiFunctions.tsx";
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 import {applicantColumns} from "../utils/constants.tsx";
 import Button from "./Button.tsx";
-import {useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
-function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props) {
+function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props): ReactNode {
   const [data, setData] = useState<ApplicantInterface[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
   const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
   const [loading, setLoading] = useState<boolean>(false);
   const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async() => {
+  useEffect((): void => {
+    async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+        const res: {data: ApplicantInterface[], totalItems: number} = await getApplicants(currentPage, itemsPerPage, orderBy, "");
 
         setData(res.data);
         setTotalItems(res.totalItems);
@@ -35,10 +35,10 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
         setLoading(false);
       }
     }
-    fetchData();
+    fetchData().then();
   }, [currentPage, itemsPerPage, orderBy]);
 
-  function handleAddApplicant() {
+  function handleAddApplicant(): void {
     navigate("/applicants/add");
   }
 

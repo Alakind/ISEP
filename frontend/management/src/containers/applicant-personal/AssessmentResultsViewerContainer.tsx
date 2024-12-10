@@ -1,30 +1,30 @@
 import AssessmentResultsViewer from "../../components/applicant-personal/AssessmentResultsViewer.tsx";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
-import {getAssessment, getSection, getSectionSolution} from "../../utils/apiFunctions.tsx";
+import {getAssessment, getSectionSolution} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
-function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props) {
+function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): ReactNode {
   const [assessmentData, setAssessmentData] = useState<AssessmentInterface>();
   const [sectionsData, setSectionsData] = useState<SectionInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<number>(0);
 
-  useEffect(() => {
+  useEffect((): void => {
     if (assessmentId != "0") {
-      getData()
+      getData().then();
     }
   }, [assessmentId])
 
 
-  async function getData() {
+  async function getData(): Promise<void> {
     setLoading(true);
     try {
-      const data = await getAssessment(assessmentId);
+      const data: AssessmentInterface = await getAssessment(assessmentId);
       setAssessmentData(data);
 
-      const retrievedSections = await Promise.all(
-        data.sections.map((sectionId) => getSectionSolution(`${sectionId}`, inviteUuid))
+      const retrievedSections: SectionInterface[] = await Promise.all(
+        data.sections.map((sectionId: number): Promise<SectionInterface> => getSectionSolution(`${sectionId}`, inviteUuid))
       );
       setSectionsData(retrievedSections);
     } catch (error: any) {

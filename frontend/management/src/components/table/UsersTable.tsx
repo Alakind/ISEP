@@ -2,10 +2,10 @@ import {Selection, UserInterface} from "../../utils/types.tsx";
 import TableBodyContainer from "../../containers/table/TableBodyContainer.tsx";
 import TableHeadContainer from "../../containers/table/TableHeadContainer.tsx";
 import {userColumns} from "../../utils/constants.tsx";
-import React from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import "../../styles/table.css";
 
-function UsersTable({ data, orderBy, setOrderBy, setIsSelected, isSelected }: Props) {
+function UsersTable({ data, orderBy, setOrderBy, setIsSelected, isSelected }: Props): ReactNode {
   return (
     <>
       <table className="table table-striped">
@@ -19,8 +19,8 @@ function UsersTable({ data, orderBy, setOrderBy, setIsSelected, isSelected }: Pr
 interface Props {
   data: UserInterface[];
   orderBy: string;
-  setOrderBy: React.Dispatch<React.SetStateAction<string>>;
-  setIsSelected: React.Dispatch<React.SetStateAction<Selection[]>>;
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  setIsSelected: Dispatch<SetStateAction<Selection[]>>;
   isSelected: Selection[];
 }
 

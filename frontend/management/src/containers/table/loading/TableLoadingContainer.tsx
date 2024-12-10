@@ -1,7 +1,8 @@
 import TableLoading from "../../../components/table/loading/TableLoading.tsx";
 import {Column} from "../../../utils/types.tsx";
+import {ReactNode} from "react";
 
-function TableLoadingContainer({columns, itemsPerPage} : Props) {
+function TableLoadingContainer({columns, itemsPerPage} : Props): ReactNode {
   return (
     <TableLoading columns={columns} itemsPerPage={itemsPerPage} />
   )
