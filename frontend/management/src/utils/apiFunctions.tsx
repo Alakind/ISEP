@@ -301,6 +301,22 @@ export async function getSection(id: string): Promise<SectionInterface> {
   return await response.json();
 }
 
+export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionInterface> {
+  const response: Response = await fetch(`${baseUrl}/section/${id}/solution/${inviteUuid}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve solutions of section`);
+  }
+
+  return await response.json();
+}
+
 export async function getAssignment(id: string): Promise<AssignmentInterface> {
   const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
     method: "GET",

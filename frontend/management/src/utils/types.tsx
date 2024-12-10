@@ -45,6 +45,40 @@ export interface SectionInterface {
   title: string;
 }
 
+export interface SectionSolvedInterface {
+  id: string;
+  assignments: AssignmentSolvedInterface[];
+  title: string;
+}
+
+export interface AssignmentSolvedInterface {
+  id: string;
+  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+  isSolved: boolean;
+  description: string;
+  answer: { type: string; answer: string };
+}
+
+export interface AssignmentMultipleChoiceSolvedInterface {
+  id: string;
+  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+  isSolved: boolean;
+  description: string;
+  options: string[];
+  isMultipleAnswers: boolean;
+  answer: { type: string; answer: number[] };
+}
+
+export interface AssignmentCodingSolvedInterface {
+  id: string;
+  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+  isSolved: boolean;
+  text: string;
+  image: string;
+  files: File[];
+  answer: { type: string; answer: File[] };
+}
+
 export interface AssignmentInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];

@@ -62,7 +62,7 @@ function AssessmentPageContainer() {
             );
           }
           const section = await responseSection.json();
-          //   console.log(section);
+            console.log(section);
           sectionsFetched.push({
             assignments: section.assignments,
             title: section.title,
