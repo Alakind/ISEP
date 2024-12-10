@@ -36,7 +36,7 @@ export interface Selection {
 export interface AssessmentInterface {
   id: string;
   tag: string;
-  sections: SectionInterface[]
+  sections: number[]
 }
 
 export interface SectionInterface {

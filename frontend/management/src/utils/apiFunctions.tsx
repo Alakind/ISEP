@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, AssignmentInterface, InviteInterface, SectionInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -152,6 +152,21 @@ export async function inviteApplicant(applicantId: string, assessmentId: string)
   return "Successfully invited applicant";
 }
 
+export async function getInvite(id: string): Promise<InviteInterface> {
+  const response: Response = await fetch(`${baseUrl}/invite/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve invite`);
+  }
+
+  return await response.json();
+}
+
 // --------------------------------- USER -----------------------------------//
 
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: UserInterface[], totalItems: number}> {
@@ -252,4 +267,52 @@ export async function getAssessments(currentPage: number = 0, itemsPerPage: numb
   }
 
   return {data: data.data as AssessmentInterface[], totalItems: data.total} ;
+}
+
+export async function getAssessment(id: string): Promise<AssessmentInterface> {
+  const response: Response = await fetch(`${baseUrl}/assessment/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve assessment`);
+  }
+
+  return await response.json();
+}
+
+export async function getSection(id: string): Promise<SectionInterface> {
+  const response: Response = await fetch(`${baseUrl}/section/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve section`);
+  }
+
+  return await response.json();
+}
+
+export async function getAssignment(id: string): Promise<AssignmentInterface> {
+  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve assignment`);
+  }
+
+  return await response.json();
 }

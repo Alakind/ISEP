@@ -51,6 +51,7 @@ function ApplicantCardContainer({applicant, setApplicant} : Props) {
 
   function handleReInvite() {
     //TODO implement mail resend invite
+    navigate(`/applicants/${applicant.id}/invite/add`);
   }
 
   async function handleSave() {

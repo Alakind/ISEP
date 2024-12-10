@@ -3,13 +3,13 @@ import "../../styles/applicant-page.css"
 import StatusItem from "../StatusItem.tsx";
 import {ApplicantStatuses} from "../../utils/constants.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
-import AssessmentResultsViewerContainer from "../../containers/AssessmentResultsViewerContainer.tsx";
+import AssessmentResultsViewerContainer from "../../containers/applicant-personal/AssessmentResultsViewerContainer.tsx";
 import Button from "../Button.tsx";
 import ApplicantCardContainer from "../../containers/applicant-personal/ApplicantCardContainer.tsx";
 import React from "react";
 
 
-function ApplicantPage({ applicant, setApplicant, goToApplicantsPage }: Props) {
+function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessmentId }: Props) {
   return (
     <div className="applicant-page">
       <span className="applicant-page__header">
@@ -32,7 +32,7 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage }: Props) {
       </div>
       {mapStatus(applicant.status) == (ApplicantStatuses.APP_FINISHED || ApplicantStatuses.INTERVIEW_FINISHED || ApplicantStatuses.INTERVIEW_INVITED) ?
         <div className="applicant-page__results">
-          <AssessmentResultsViewerContainer/>
+          <AssessmentResultsViewerContainer assessmentId={assessmentId}/>
         </div> :
         <></>
       }
@@ -43,7 +43,8 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage }: Props) {
 interface Props {
   applicant: ApplicantInterface;
   setApplicant: React.Dispatch<React.SetStateAction<ApplicantInterface>>;
-  goToApplicantsPage: () => void;
+  goToApplicantsPage: () => void
+  assessmentId: string;
 }
 
 export default ApplicantPage;
