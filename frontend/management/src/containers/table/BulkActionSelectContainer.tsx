@@ -5,10 +5,10 @@ import {toast} from "react-toastify";
 import {Selection} from "../../utils/types.tsx";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function BulkActionSelectContainer({isSelected} : Props): ReactNode {
+function BulkActionSelectContainer({isSelected}: Props): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("-")
-  const options: string[] = ["-","Delete selected"];
+  const options: string[] = ["-", "Delete selected"];
 
   function proceedAction(): void {
     deleteUsers().then();
@@ -25,18 +25,23 @@ function BulkActionSelectContainer({isSelected} : Props): ReactNode {
           await deleteUser(isSelected[i].id);
         }
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
   }
+
   async function handleSelect(e: { preventDefault: () => void; target: { value: string; }; }): Promise<void> {
     e.preventDefault();
 
     if (e.target.value == "Delete selected") {
       setLoading(true);
-      
+
       if (isSelected.some((selection: Selection): boolean => selection.checked)) {
         toast.warn(<CustomWarnToast proceedAction={proceedAction} cancelAction={cancelAction} message={"Are you sure you want to delete these users? State can't be" +
           " restored!"}/>, {hideProgressBar: true, autoClose: false,});

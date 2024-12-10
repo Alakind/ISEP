@@ -1,4 +1,4 @@
-function Button({isDisabled = false, activeTooltip = false, isModal = false, modalTargetId, handleClick, btnClasses, iconClass, spanTextClass, text} : Props) {
+function Button({isDisabled = false, activeTooltip = false, isModal = false, modalTargetId, handleClick, btnClasses, iconClass, spanTextClass, text}: Props) {
   return (
     <button
       disabled={isDisabled}
@@ -16,7 +16,7 @@ function Button({isDisabled = false, activeTooltip = false, isModal = false, mod
 }
 
 interface Props {
-  handleClick: (arg0?: any) => void; //TODO find out why arg0?
+  handleClick: () => void;
   btnClasses: string;
   iconClass?: string;
   spanTextClass: string;

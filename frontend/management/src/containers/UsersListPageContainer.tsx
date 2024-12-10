@@ -10,7 +10,7 @@ function UsersListContainer(): ReactNode {
   const initialItemsPerPage = 10;
   let initialTotalItems: number = 0;
   const initialOrderBy = "name:asc"
-  let initialSelection: Selection[] = [];
+  const initialSelection: Selection[] = [];
 
   function handleIsSelectedChange(data: UserInterface[]): void {
     for (let i: number = 0; i < data.length; i++) {
@@ -20,18 +20,24 @@ function UsersListContainer(): ReactNode {
 
   async function fetchData(): Promise<void> {
     try {
-      const res: {data: UserInterface[], totalItems: number} = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
+      const res: { data: UserInterface[], totalItems: number } = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
       initialData = res.data;
-      initialTotalItems =res.totalItems;
+      initialTotalItems = res.totalItems;
       handleIsSelectedChange(initialData);
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     }
   }
+
   fetchData().then();
 
-  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems} initialOrderBy={initialOrderBy} initialSelection={initialSelection}/>;
+  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems}
+                        initialOrderBy={initialOrderBy} initialSelection={initialSelection}/>;
 }
 
 export default UsersListContainer;

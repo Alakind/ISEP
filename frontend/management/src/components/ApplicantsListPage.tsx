@@ -12,7 +12,7 @@ import {applicantColumns} from "../utils/constants.tsx";
 import Button from "./Button.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
-function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy }: Props): ReactNode {
+function ApplicantsListPage({initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy}: Props): ReactNode {
   const [data, setData] = useState<ApplicantInterface[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
@@ -25,21 +25,30 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
     async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res: {data: ApplicantInterface[], totalItems: number} = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+        const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
 
         setData(res.data);
         setTotalItems(res.totalItems);
-      } catch (error: any) {
-        toast.error(error.message)
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message)
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
     }
+
     fetchData().then();
   }, [currentPage, itemsPerPage, orderBy]);
 
   function handleAddApplicant(): void {
     navigate("/applicants/add");
+  }
+
+  function updateData(data: ApplicantInterface[]): void {
+    setData(data)
   }
 
   return (
@@ -54,7 +63,7 @@ function ApplicantsListPage({ initialData, initialCurrentPage, initialItemsPerPa
           spanTextClass={"applicant-list-page__btn__text"}
           text={"Add applicant"}
         />
-        <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+        <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
       </span>
       {
         (totalItems == 0 || loading) ?

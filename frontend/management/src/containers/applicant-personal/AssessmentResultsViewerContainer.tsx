@@ -27,8 +27,12 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
         data.sections.map((sectionId: number): Promise<SectionInterface> => getSectionSolution(`${sectionId}`, inviteUuid))
       );
       setSectionsData(retrievedSections);
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -36,7 +40,7 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
 
   return (
     <>
-      <AssessmentResultsViewer sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection} />
+      <AssessmentResultsViewer sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
     </>
   )
 }

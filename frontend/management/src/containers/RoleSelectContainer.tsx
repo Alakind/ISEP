@@ -12,11 +12,15 @@ function RoleSelectContainer({id, disabled, initialRole}: Props): ReactNode {
   async function changeState(e: ChangeEvent<HTMLSelectElement>): Promise<void> {
     setLoading(true);
     try {
-      const res: {data: any} = await updateUser(id, {role:  e.target.value});
+      const res: { data: { id: string, role: typeof Roles } } = await updateUser(id, {role: e.target.value});
       e.target.value = res.data.role.toString();
       setSelectedOption(res.data.role.toString());
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }

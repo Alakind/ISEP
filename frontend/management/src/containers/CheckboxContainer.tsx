@@ -3,16 +3,16 @@ import {Selection} from "../utils/types.tsx";
 import {ReactNode, useState} from "react";
 
 
-function CheckboxContainer({id, additionalAction, isSelected} : Props): ReactNode {
+function CheckboxContainer<T extends string | boolean>({id, additionalAction, isSelected}: Props<T>): ReactNode {
   const [isChecked, setIsChecked] = useState(false);
 
   function handleOptionChange(id: string): void {
     setIsChecked(!isChecked);
     if (additionalAction != undefined) {
       if (id == "checkbox-all") {
-        additionalAction(!isChecked);
+        additionalAction(!isChecked as T);
       } else {
-        additionalAction(id);
+        additionalAction(id as T);
       }
     }
   }
@@ -29,9 +29,9 @@ function CheckboxContainer({id, additionalAction, isSelected} : Props): ReactNod
   }
 }
 
-interface Props {
+interface Props<T> {
   id: string;
-  additionalAction?: (arg0: any ) => void;
+  additionalAction?: (arg0: T) => void;
   isSelected?: Selection[];
 }
 

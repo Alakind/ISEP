@@ -7,11 +7,11 @@ import {toast} from "react-toastify";
 import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantPageContainer(): ReactNode {
-  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
+  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
   const [assessmentId, setAssessmentId] = useState<string>("0");
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
-  const { id } = useParams();
+  const {id} = useParams();
 
   useEffect((): void => {
     if (id) {
@@ -26,8 +26,12 @@ function ApplicantPageContainer(): ReactNode {
         const data: InviteInterface = await getInvite(inviteId)
         setAssessmentId(data.assessmentId);
       }
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -43,8 +47,12 @@ function ApplicantPageContainer(): ReactNode {
           await getInviteData(data.invite);
         }
       }
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
       navigate(`/applicants`);
     } finally {
       setLoading(false);
@@ -57,7 +65,7 @@ function ApplicantPageContainer(): ReactNode {
 
 
   if (loading || applicantData.id == "0") {
-    return <LoadingPage />;
+    return <LoadingPage/>;
   } else {
     return (
       <ApplicantPage

@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import ApplicantAdd from "../../components/applicant-add/ApplicantAdd.tsx";
 import {ReactNode} from "react";
 
-function ApplicantAddContainer({} : Props): ReactNode {
+function ApplicantAddContainer(): ReactNode {
   const navigate = useNavigate();
 
   function goToApplicantsPage(): void {
@@ -10,11 +10,8 @@ function ApplicantAddContainer({} : Props): ReactNode {
   }
 
   return (
-    <ApplicantAdd goToApplicantsPage={goToApplicantsPage} />
+    <ApplicantAdd goToApplicantsPage={goToApplicantsPage}/>
   );
-}
-
-interface Props {
 }
 
 export default ApplicantAddContainer

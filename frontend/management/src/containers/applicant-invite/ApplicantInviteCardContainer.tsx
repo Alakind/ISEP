@@ -7,12 +7,12 @@ import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInvi
 import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
-  const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0" });
-  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
+  const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0"});
+  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
-  const { id } = useParams();
+  const {id} = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   useEffect((): void => {
@@ -35,8 +35,12 @@ function ApplicantInviteCardContainer(): ReactNode {
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
       handleCancel();
     } finally {
       setLoading(false);
@@ -46,10 +50,14 @@ function ApplicantInviteCardContainer(): ReactNode {
   async function getAssessmentsData(): Promise<void> {
     setLoading(true);
     try {
-      const data: {data: AssessmentInterface[], totalItems: number} = await getAssessments();
+      const data: { data: AssessmentInterface[], totalItems: number } = await getAssessments();
       setAssessmentsData(data.data);
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -65,8 +73,12 @@ function ApplicantInviteCardContainer(): ReactNode {
         await inviteApplicant(inviteData.applicantId, inviteData.assessmentId);
         goToApplicantPage();
         toast.success("Applicant successfully invited.");
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message)
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       }
     } else {
       toast.error("Couldn't invite applicant, because the assessment could not be found.");
@@ -88,7 +100,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   if (loading) {
-    return (<LoadingPage additionalClasses={"page--mod"} />);
+    return (<LoadingPage additionalClasses={"page--mod"}/>);
   } else {
     return (
       <ApplicantInviteCard

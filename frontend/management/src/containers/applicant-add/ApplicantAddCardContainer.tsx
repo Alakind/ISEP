@@ -5,13 +5,14 @@ import {toast} from "react-toastify";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {addApplicant} from "../../utils/apiFunctions.tsx";
 
-function ApplicantAddCardContainer({}: Props): ReactNode {
+function ApplicantAddCardContainer(): ReactNode {
   const emptyApplicantData: ApplicantInterface = {
     id: "0",
     name: "",
     email: "",
     status: "",
-    preferredLanguage: ""};
+    preferredLanguage: ""
+  };
   const [newApplicant, setNewApplicant] = useState<ApplicantInterface>(emptyApplicantData);
   const navigate: NavigateFunction = useNavigate();
 
@@ -26,7 +27,7 @@ function ApplicantAddCardContainer({}: Props): ReactNode {
   async function handleAdd(goToInvite: boolean): Promise<void> {
     if (newApplicant.name != "" && newApplicant.email != "" && newApplicant.email.includes("@")) {
       try {
-        const res: {id: string} = await addApplicant({name: newApplicant.name, email: newApplicant.email, preferredLanguage: newApplicant.preferredLanguage});
+        const res: { id: string } = await addApplicant({name: newApplicant.name, email: newApplicant.email, preferredLanguage: newApplicant.preferredLanguage});
         setNewApplicant((prev: ApplicantInterface): ApplicantInterface => ({
           ...prev,
           id: res.id,
@@ -35,8 +36,12 @@ function ApplicantAddCardContainer({}: Props): ReactNode {
         if (goToInvite) {
           navigate(`/applicants/${res.id}/invite/add`);
         }
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message)
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       }
       clearFields()
     } else {
@@ -45,7 +50,7 @@ function ApplicantAddCardContainer({}: Props): ReactNode {
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
 
     setNewApplicant((prev: ApplicantInterface): ApplicantInterface => ({
       ...prev,
@@ -61,9 +66,6 @@ function ApplicantAddCardContainer({}: Props): ReactNode {
       handleChange={handleChange}
     />
   )
-}
-
-interface Props {
 }
 
 export default ApplicantAddCardContainer

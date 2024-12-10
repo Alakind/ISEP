@@ -13,14 +13,19 @@ function ApplicantsListContainer(): ReactNode {
 
   async function fetchData(): Promise<void> {
     try {
-      const res: {data: ApplicantInterface[], totalItems: number} = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
+      const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
       initialData = res.data;
-      initialTotalItems =res.totalItems;
-    } catch (error: any) {
-      toast.error(error.message)
+      initialTotalItems = res.totalItems;
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     }
   }
+
   fetchData().then();
 
   return (

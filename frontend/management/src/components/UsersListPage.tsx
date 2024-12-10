@@ -12,7 +12,7 @@ import BulkActionSelectContainer from "../containers/table/BulkActionSelectConta
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 
 
-function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props): ReactNode {
+function UsersListPage({initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props): ReactNode {
   const [data, setData] = useState<UserInterface[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
   const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
@@ -22,7 +22,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
   const [isSelected, setIsSelected] = useState<Selection[]>(initialSelection);
 
   function handleIsSelectedChange(data: UserInterface[]): void {
-    let changedState: Selection[] = [];
+    const changedState: Selection[] = [];
     for (let i: number = 0; i < data.length; i++) {
       changedState.push({id: data[i].id, checked: false});
     }
@@ -33,24 +33,33 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res: {data: UserInterface[], totalItems: number} = await getUsers(currentPage, itemsPerPage, orderBy, "");
+        const res: { data: UserInterface[], totalItems: number } = await getUsers(currentPage, itemsPerPage, orderBy, "");
 
         handleIsSelectedChange(res.data);
         setData(res.data);
         setTotalItems(res.totalItems);
-      } catch (error: any) {
-        toast.error(error.message)
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message)
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
     }
+
     fetchData().then();
   }, [currentPage, itemsPerPage, orderBy]);
 
+  function updateData(data: UserInterface[]): void {
+    setData(data);
+  }
+
   return (
     <div className="user-list-page">
-      <SearchContainer setData={setData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
-                                      handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy} />
+      <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
+                       handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy}/>
       {
         (totalItems == 0 || loading) ?
           <TableLoadingContainer columns={userColumns} itemsPerPage={itemsPerPage}/> :
@@ -58,7 +67,7 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
             <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>
             <div className="user-list-page__inner">
               <BulkActionSelectContainer isSelected={isSelected}/>
-              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} />
+              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>
           </>
