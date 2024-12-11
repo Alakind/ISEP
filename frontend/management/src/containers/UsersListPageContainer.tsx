@@ -2,72 +2,42 @@ import UsersListPage from "../components/UsersListPage";
 import {Selection, UserInterface} from "../utils/types";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
-import {Roles} from "../utils/constants.tsx";
+import {ReactNode} from "react";
 
-function UsersListContainer() {
+function UsersListContainer(): ReactNode {
   let initialData: UserInterface[] = [];
   const initialCurrentPage = 0;
   const initialItemsPerPage = 10;
-  let initialTotalItems = 0;
+  let initialTotalItems: number = 0;
   const initialOrderBy = "name:asc"
-  let initialSelection: Selection[] = [];
+  const initialSelection: Selection[] = [];
 
-  function handleIsSelectedChange(data: UserInterface[]) {
-    for (let i = 0; i < data.length; i++) {
+  function handleIsSelectedChange(data: UserInterface[]): void {
+    for (let i: number = 0; i < data.length; i++) {
       initialSelection.push({id: data[i].id, checked: false});
     }
   }
 
-  const fetchData = async() => {
+  async function fetchData(): Promise<void> {
     try {
-      //TODO uncomment this when there is a working api
-      // const res = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
+      const res: { data: UserInterface[], totalItems: number } = await getUsers(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
 
-      const res = {
-        data: [
-          {
-            name: "Fenna",
-            id: "12345678909",
-            email: "Fenna@email.com",
-            role: undefined,
-          },
-          {
-            name: "Jurre",
-            id: "12345678901",
-            email: "Jurre@email.com",
-            role: Roles.ADMIN,
-          },
-          {
-            name: "Channa",
-            id: "12345678902",
-            email: "Channa@email.com",
-            role: Roles.RECRUITER,
-          },
-          {
-            name: "Nico",
-            id: "12345678903",
-            email: "Nico@email.com",
-            role: Roles.INTERVIEWER,
-          },
-          {
-            name: "FallbackAdmin",
-            id: "523",
-            email: "fallbackAdmin@infosupport.nl",
-            role: Roles.ADMIN,
-          },
-        ],
-        totalItems: 5
-      }
-      initialData = res.data; //TODO WILL BE FIXED WITH API IMPLEMENTATION
-      initialTotalItems =res.totalItems;
+      initialData = res.data;
+      initialTotalItems = res.totalItems;
       handleIsSelectedChange(initialData);
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     }
   }
-  fetchData();
 
-  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems} initialOrderBy={initialOrderBy} initialSelection={initialSelection}/>;
+  fetchData().then();
+
+  return <UsersListPage initialData={initialData} initialCurrentPage={initialCurrentPage} initialItemsPerPage={initialItemsPerPage} initialTotalItems={initialTotalItems}
+                        initialOrderBy={initialOrderBy} initialSelection={initialSelection}/>;
 }
 
 export default UsersListContainer;

@@ -1,0 +1,7 @@
+.results-container {
+    width: 100%;
+    background: var(--question-block);
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 5px;
+}

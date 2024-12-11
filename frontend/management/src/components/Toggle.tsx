@@ -1,6 +1,7 @@
 import "../styles/toggle.css";
+import {ReactNode} from "react";
 
-function Toggle({ toggleValue, changeState, disabled, loading } : Props) {
+function Toggle({ toggleValue, changeState, disabled, loading } : Props): ReactNode {
   return (
     <label className="switch">
       <input type="checkbox" checked={toggleValue} onChange={changeState} disabled={disabled ? disabled : loading}></input>
