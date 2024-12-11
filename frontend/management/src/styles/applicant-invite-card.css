@@ -2,15 +2,15 @@
     margin-top: 30px;
 }
 
-.applicant-invite__btns>button:not(:first-child):not(:last-child) {
+.applicant-invite__btns > button:not(:first-child):not(:last-child) {
     margin: 0 10px !important;
 }
 
-.applicant-invite__btns>button:first-child {
+.applicant-invite__btns > button:first-child {
     margin: 0 10px 0 0 !important;
 }
 
-.applicant-invite__btns>button:last-child {
+.applicant-invite__btns > button:last-child {
     margin: 0 0 0 10px !important;
 }
 
@@ -19,6 +19,7 @@
     .applicant-invite__header__btn__text {
         display: none;
     }
+
     .bi-arrow-left-short,
     .bi-person-lines-fill,
     .bi-person-add {

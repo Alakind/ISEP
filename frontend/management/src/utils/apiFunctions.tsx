@@ -4,7 +4,7 @@ const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
 // ------------------------------- GENERAL ----------------------------------//
 
-export async function getSearch(currentPage: number, itemsPerPage: number, subUrl: string, keyword: string): Promise<{data: ApplicantInterface[] | UserInterface[], totalItems: number}> {
+export async function getSearch(currentPage: number, itemsPerPage: number, subUrl: string, keyword: string): Promise<{ data: ApplicantInterface[] | UserInterface[], totalItems: number }> {
   const response: Response = await fetch(`${baseUrl}${subUrl}?page=${currentPage}&limit=${itemsPerPage}&search=${keyword}`, {
     method: "GET",
     headers: {
@@ -28,12 +28,12 @@ export async function getSearch(currentPage: number, itemsPerPage: number, subUr
 
 // ------------------------------ APPLICANT ---------------------------------//
 
-export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: ApplicantInterface[], totalItems: number}> {
+export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/applicant${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
   } else {
     url = `${baseUrl}/applicant${keyword != "" ? "?search=" + keyword : ""}`
   }
@@ -48,9 +48,9 @@ export async function getApplicants(currentPage: number, itemsPerPage: number, o
     throw new Error(`Failed to retrieve applicants`);
   }
 
-  const data: {data: ApplicantInterface[], total: number} = await response.json();
+  const data: { data: ApplicantInterface[], total: number } = await response.json();
 
-  return {data: data.data as ApplicantInterface[], totalItems: data.total} ;
+  return {data: data.data as ApplicantInterface[], totalItems: data.total};
 }
 
 export async function getApplicant(id: string): Promise<ApplicantInterface> {
@@ -70,7 +70,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 }
 
 
-export async function addApplicant(data: Record<string, any>) : Promise<{id: string}> {
+export async function addApplicant(data: Record<string, any>): Promise<{ id: string }> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "POST",
     headers: {
@@ -94,7 +94,7 @@ export async function addApplicant(data: Record<string, any>) : Promise<{id: str
   return {id: id};
 }
 
-export async function updateApplicant(id: string, data: Record<string, any>) : Promise<{ data: any }> {
+export async function updateApplicant(id: string, data: Record<string, any>): Promise<{ data: any }> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "PUT",
     headers: {
@@ -110,7 +110,8 @@ export async function updateApplicant(id: string, data: Record<string, any>) : P
     throw new Error(`Failed to update applicant: ${response.statusText}`);
   }
 
-  return {data: {
+  return {
+    data: {
       id: id,
       ...data
     }
@@ -169,12 +170,12 @@ export async function getInvite(id: string): Promise<InviteInterface> {
 
 // --------------------------------- USER -----------------------------------//
 
-export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{data: UserInterface[], totalItems: number}> {
+export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{ data: UserInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/user${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
   } else {
     url = `${baseUrl}/user${keyword != "" ? "?search=" + keyword : ""}`
   }
@@ -186,13 +187,13 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
     },
   });
 
-  const data: {data: UserInterface[], total: number} = await response.json();
+  const data: { data: UserInterface[], total: number } = await response.json();
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve users`);
   }
 
-  return {data: data.data as UserInterface[], totalItems: data.total} ;
+  return {data: data.data as UserInterface[], totalItems: data.total};
 }
 
 // addUser is not part of the system
@@ -216,7 +217,8 @@ export async function updateUser(id: string, data: Record<string, any>): Promise
     throw new Error(`Failed to update user: ${response.statusText}`);
   }
 
-  return {data: {
+  return {
+    data: {
       id: id,
       ...data
     }
@@ -243,12 +245,12 @@ export async function deleteUser(id: string): Promise<string> {
 
 // --------------------------------- ASSESSMENT -----------------------------------//
 
-export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", keyword: string = ""): Promise<{data: AssessmentInterface[], totalItems: number}> {
+export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", keyword: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/assessment?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/assessment?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/assessment${orderBy != "" ? "?sort="+ orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/assessment${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
   } else {
     url = `${baseUrl}/assessment${keyword != "" ? "?search=" + keyword : ""}`
   }
@@ -260,13 +262,13 @@ export async function getAssessments(currentPage: number = 0, itemsPerPage: numb
     },
   });
 
-  const data: {data: AssessmentInterface[], total: number} = await response.json();
+  const data: { data: AssessmentInterface[], total: number } = await response.json();
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve assessments`);
   }
 
-  return {data: data.data as AssessmentInterface[], totalItems: data.total} ;
+  return {data: data.data as AssessmentInterface[], totalItems: data.total};
 }
 
 export async function getAssessment(id: string): Promise<AssessmentInterface> {

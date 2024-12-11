@@ -5,7 +5,7 @@
     width: 100%;
 }
 
-.role-select__select>option {
+.role-select__select > option {
     color: var(--text-black);
     background: var(--white-background-transparent);
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);

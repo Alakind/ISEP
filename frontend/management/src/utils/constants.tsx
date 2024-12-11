@@ -22,7 +22,7 @@ export const ApplicantStatuses = {
   INTERVIEW_INVITED: "Interview Invited",
   INTERVIEW_FINISHED: "Interview Finished",
   CANCELLED: "Cancelled",
-
+  APP_CREATED: "Applicant Created",
 };
 
 export const PreferredLanguages = {

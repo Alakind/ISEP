@@ -39,7 +39,8 @@ function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}:
       <div className="applicant-add__btns">
         <Button handleClick={handleCancel} iconClass={"bi-x"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Cancel"} activeTooltip={true}/>
         <Button handleClick={(): void => handleAdd(false)} iconClass={"bi-person-add"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Add"} activeTooltip={true}/>
-        <Button handleClick={(): void => handleAdd(true)} iconClass={"bi-person-lines-fill"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Add & Invite"} activeTooltip={true}/>
+        <Button handleClick={(): void => handleAdd(true)} iconClass={"bi-person-lines-fill"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Add & Invite"}
+                activeTooltip={true}/>
       </div>
     </div>
   )

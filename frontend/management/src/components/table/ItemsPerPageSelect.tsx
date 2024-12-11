@@ -1,7 +1,7 @@
 import "../../styles/items-per-page.css"
 import {ChangeEvent, ReactNode} from "react";
 
-function ItemPerPageSelect({itemsPerPage, handleSelect} : Props): ReactNode {
+function ItemPerPageSelect({itemsPerPage, handleSelect}: Props): ReactNode {
   return (
     <span className="items-per-page-select">
       <label htmlFor="floatingSelectGrid">Items per page:</label>
@@ -19,4 +19,5 @@ interface Props {
   itemsPerPage: number;
   handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
+
 export default ItemPerPageSelect;

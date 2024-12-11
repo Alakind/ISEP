@@ -1,9 +1,9 @@
-import { ApplicantInterface } from "../../utils/types.tsx";
+import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import "../../styles/applicant-card.css";
 import {ChangeEvent, ReactNode} from "react";
 
-function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel  }: Props): ReactNode {
+function ApplicantCard({applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
   return (
     <div>
       <form id={`form_${applicant.id}`}>
@@ -54,7 +54,7 @@ function ApplicantCard({ applicant, handleChange, handleRemind, handleReInvite, 
             <Button handleClick={handleCancel} iconClass={"bi-x"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Cancel"} activeTooltip={true}/>
             <Button handleClick={handleSave} iconClass={"bi-floppy"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Save"} activeTooltip={true}/>
           </>
-           :
+          :
           <>
             <Button handleClick={handleEdit} iconClass={"bi-pencil"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Edit"} activeTooltip={true}/>
             <Button handleClick={handleDelete} iconClass={"bi-trash"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Delete"} activeTooltip={true}/>
@@ -75,7 +75,7 @@ interface Props {
   handleDelete: () => void;
   handleReInvite: () => void;
   isEditing: boolean;
-  handleSave: (applicant: ApplicantInterface) => void;
+  handleSave: () => void;
   handleCancel: () => void;
 }
 

@@ -1,13 +1,9 @@
 import {ReactNode} from "react";
 
-function AssessmentResultsOverview({}: Props): ReactNode {
+function AssessmentResultsOverview(): ReactNode {
   return (
     <div>Coming soon</div>
   )
-}
-
-interface Props {
-
 }
 
 export default AssessmentResultsOverview

@@ -3,7 +3,7 @@ import "../../styles/applicant-invite-card.css"
 import ApplicantInviteCardContainer from "../../containers/applicant-invite/ApplicantInviteCardContainer.tsx";
 import {ReactNode} from "react";
 
-function ApplicantInvite({goToApplicantsPage} : Props): ReactNode {
+function ApplicantInvite({goToApplicantsPage}: Props): ReactNode {
   return (
     <div className="applicant-add">
       <span className="applicant-page__header">

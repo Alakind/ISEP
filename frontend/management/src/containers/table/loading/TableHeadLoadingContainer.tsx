@@ -2,9 +2,9 @@ import TableHeadLoading from "../../../components/table/loading/TableHeadLoading
 import {Column} from "../../../utils/types.tsx";
 import {ReactNode} from "react";
 
-function TableHeadLoadingContainer({columns}:Props): ReactNode {
+function TableHeadLoadingContainer({columns}: Props): ReactNode {
   return (
-    <TableHeadLoading columns={columns} />
+    <TableHeadLoading columns={columns}/>
   )
 }
 

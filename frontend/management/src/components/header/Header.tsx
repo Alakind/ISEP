@@ -4,13 +4,13 @@ import ProfileButtonContainer from "../../containers/header/ProfileButtonContain
 import "../../styles/header.css"
 import {ReactNode} from "react";
 
-function Header({currentPage, urlPrefix} : Props): ReactNode {
+function Header({currentPage, urlPrefix}: Props): ReactNode {
   return (
     <header className="header">
       <span className="header__left">
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            <a className="navbar-brand" href={`${urlPrefix}/`}><img  src={`${import.meta.env.VITE_DOMAIN}/favicon-180x180.png`} width={30} alt="InfoSupport logo"/> Asserberus</a>
+            <a className="navbar-brand" href={`${urlPrefix}/`}><img src={`${import.meta.env.VITE_DOMAIN}/favicon-180x180.png`} width={30} alt="InfoSupport logo"/> Asserberus</a>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
               <span>
                 <i className="bi bi-list"></i>
@@ -19,7 +19,7 @@ function Header({currentPage, urlPrefix} : Props): ReactNode {
             <div className="collapse navbar-collapse header__left__nav" id="navbarScroll">
               <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
                 <li className="nav-item">
-                  <a className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} href={`${urlPrefix}/applicants`} ><i className="bi bi-people-fill"></i>Applicants</a>
+                  <a className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} href={`${urlPrefix}/applicants`}><i className="bi bi-people-fill"></i>Applicants</a>
                 </li>
                 <li className="nav-item">
                   <a className={`nav-link nav-link--mod ${currentPage == "assessments" ? "active" : ""}`} href={`${urlPrefix}/assessments`}><i className="bi bi-clipboard"></i>Assessments</a>
@@ -31,7 +31,7 @@ function Header({currentPage, urlPrefix} : Props): ReactNode {
               </ul>
               <span className="navbar-text navbar-text--mod">
                 <ProfileButtonContainer urlPrefix={urlPrefix}/>
-                <ThemeSwitchContainer />
+                <ThemeSwitchContainer/>
               </span>
             </div>
           </div>

@@ -4,10 +4,10 @@ import StatusItem from "../StatusItem.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
 import {ReactNode} from "react";
 
-function TableRowApplicants({data, columns, goToApplicantPage} : Props ): ReactNode {
+function TableRowApplicants({data, columns, goToApplicantPage}: Props): ReactNode {
   return (
     <tr>
-      {columns.map(({ accessor }: Column): ReactNode => {
+      {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "name") {
           return (
             <th className="table-row__link" key={accessor} scope="row" onClick={(): void => goToApplicantPage(data.id)}>
@@ -15,10 +15,10 @@ function TableRowApplicants({data, columns, goToApplicantPage} : Props ): ReactN
             </th>
           );
         } else if (accessor == "score") {
-          return <td key={accessor}><span className="table-row__score">{data.score ? data.score : 0}/100</span><Progressbar  applicant={data}/></td>
+          return <td key={accessor}><span className="table-row__score">{data.score ? data.score : 0}/100</span><Progressbar applicant={data}/></td>
         } else if (accessor == "status") {
           return <td key={accessor}><StatusItem status={mapStatus(data.status)}/></td>
-        }  else {
+        } else {
           const value: string | number | undefined = accessor in data ? (data as ApplicantInterface)[accessor as keyof ApplicantInterface] : "——";
           return <td key={accessor}>{typeof value === "string" || typeof value === "number" ? value : "——"}</td>;
         }

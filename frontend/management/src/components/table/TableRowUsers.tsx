@@ -3,10 +3,10 @@ import RoleSelectContainer from "../../containers/RoleSelectContainer.tsx";
 import CheckboxContainer from "../../containers/CheckboxContainer.tsx";
 import {ReactNode} from "react";
 
-function TableRowUsers({data, columns, handleSelect, isSelected} : Props): ReactNode {
+function TableRowUsers({data, columns, handleSelect, isSelected}: Props): ReactNode {
   return (
     <tr>
-      {columns.map(({ accessor }: Column): ReactNode => {
+      {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "role") {
           let disabled: boolean = false;
           if (data.id == "6" /* TODO to this currentUser.id*/ || data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL /*Standard admin*/) {
@@ -15,11 +15,11 @@ function TableRowUsers({data, columns, handleSelect, isSelected} : Props): React
 
           return (
             <td key={accessor}>
-                <RoleSelectContainer id={data.id} disabled={disabled} initialRole={data.role}/>
+              <RoleSelectContainer id={data.id} disabled={disabled} initialRole={data.role}/>
             </td>
           );
         } else if (accessor == "select") {
-          return <th key={accessor} ><CheckboxContainer id={data.id} additionalAction={handleSelect} isSelected={isSelected}/></th>
+          return <th key={accessor}><CheckboxContainer id={data.id} additionalAction={handleSelect} isSelected={isSelected}/></th>
         } else {
           const value: string = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
           return <td key={accessor}>{value}</td>;

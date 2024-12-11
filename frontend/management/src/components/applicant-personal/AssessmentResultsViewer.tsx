@@ -14,14 +14,14 @@ function AssessmentResultsViewer({sectionsData, activeSection, setActiveSection}
       <br/>
       <h4>Results Sections</h4>
       <div className="results-container">
-        <AssessmentResultsSections sections={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection} />
+        <AssessmentResultsSections sections={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
       </div>
     </>
   )
 }
 
 interface Props {
-  sectionsData : SectionInterface[];
+  sectionsData: SectionInterface[];
   activeSection: number;
   setActiveSection: Dispatch<SetStateAction<number>>;
 }

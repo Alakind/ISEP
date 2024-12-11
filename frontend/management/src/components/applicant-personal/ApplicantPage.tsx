@@ -1,4 +1,4 @@
-import { ApplicantInterface } from "../../utils/types.tsx";
+import {ApplicantInterface} from "../../utils/types.tsx";
 import "../../styles/applicant-page.css"
 import StatusItem from "../StatusItem.tsx";
 import {ApplicantStatuses} from "../../utils/constants.tsx";
@@ -9,7 +9,7 @@ import ApplicantCardContainer from "../../containers/applicant-personal/Applican
 import {Dispatch, ReactNode, SetStateAction} from "react";
 
 
-function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessmentId }: Props): ReactNode {
+function ApplicantPage({applicant, setApplicant, goToApplicantsPage, assessmentId}: Props): ReactNode {
   return (
     <div className="applicant-page">
       <span className="applicant-page__header">
@@ -23,7 +23,7 @@ function ApplicantPage({ applicant, setApplicant, goToApplicantsPage, assessment
       </span>
       <div className="applicant-page__container">
         <span className="applicant-page__container__info">
-          <ApplicantCardContainer applicant={applicant} setApplicant={setApplicant} />
+          <ApplicantCardContainer applicant={applicant} setApplicant={setApplicant}/>
         </span>
         <span className="applicant-page__container__status-overview">
           <h4>Status</h4>

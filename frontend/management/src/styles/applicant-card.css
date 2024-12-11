@@ -2,22 +2,23 @@
     margin-top: 30px;
 }
 
-.applicant-card__btns>button:not(:first-child):not(:last-child) {
+.applicant-card__btns > button:not(:first-child):not(:last-child) {
     margin: 0 10px !important;
 }
 
-.applicant-card__btns>button:first-child {
+.applicant-card__btns > button:first-child {
     margin: 0 10px 0 0 !important;
 }
 
-.applicant-card__btns>button:last-child {
-  margin: 0 0 0 10px !important;
+.applicant-card__btns > button:last-child {
+    margin: 0 0 0 10px !important;
 }
 
 @media (max-width: 1130px) {
     .applicant-card__btn__text {
         display: none;
     }
+
     .bi-pencil,
     .bi-x,
     .bi-floppy,
@@ -41,7 +42,7 @@ form label {
     width: 200px
 }
 
-form>div {
+form > div {
     margin-bottom: 15px;
 }
 
