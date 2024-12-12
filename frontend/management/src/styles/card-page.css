@@ -1,0 +1,70 @@
+.card-page {
+    width: 80%;
+    min-width: 500px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.card-page__header {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 30px;
+}
+
+.card-page__body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: var(--card-body);
+    border-radius: 5px;
+    width: 100%;
+}
+
+.card-page__body__btns {
+    margin-top: 30px;
+}
+
+.card-page__body__btns > button:not(:first-child):not(:last-child) {
+    margin: 0 10px !important;
+}
+
+.card-page__body__btns > button:first-child {
+    margin: 0 10px 0 0 !important;
+}
+
+.card-page__body__btns > button:last-child {
+    margin: 0 0 0 10px !important;
+}
+
+@media (max-width: 992px) {
+    .card-page__body__btn__text,
+    .card-page__header__btn__text {
+        display: none;
+    }
+
+    .bi-pencil,
+    .bi-x,
+    .bi-floppy,
+    .bi-trash,
+    .bi-bell,
+    .bi-envelope,
+    .bi-arrow-left-short,
+    .bi-person-lines-fill,
+    .bi-person-add {
+        margin-right: 0 !important;
+    }
+}
+
+.bi-pencil,
+.bi-x,
+.bi-floppy,
+.bi-trash,
+.bi-bell,
+.bi-envelope,
+.bi-arrow-left-short,
+.bi-person-lines-fill,
+.bi-person-add {
+    margin-right: 10px;
+}
