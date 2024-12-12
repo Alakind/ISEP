@@ -56,7 +56,6 @@ function ApplicantsListPage({initialData, initialCurrentPage, initialItemsPerPag
       <span>
         <Button
           handleClick={handleAddApplicant}
-          btnClasses={"applicant-list-page__back-btn"}
           isModal={true}
           modalTargetId={"#exampleModalCenter"}
           iconClass={"bi-person-add"}
