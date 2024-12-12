@@ -1,22 +1,22 @@
-.role-select__select {
+.dropdown__select {
     background-color: var(--transparent);
     border: none;
     color: var(--text-primary);
     width: 100%;
 }
 
-.role-select__select > option {
+.dropdown__select > option {
     color: var(--text-black);
     background: var(--white-background-transparent);
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
-.role-select__select--disabled {
+.dropdown__select--disabled {
     opacity: 0.5;
     margin-left: 5px;
 }
 
-.role-select__select:focus-visible, .role-select__select:hover {
+.dropdown__select:focus-visible, .dropdown__select:hover {
     outline: var(--transparent) none 0;
 }
 

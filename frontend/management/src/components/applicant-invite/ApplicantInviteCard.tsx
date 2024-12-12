@@ -2,6 +2,8 @@ import {ApplicantInterface, AssessmentInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css";
+import "../../styles/dropdown.css";
+
 
 function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleSelect, selectedOption}: Props): ReactNode {
   return (
@@ -25,14 +27,16 @@ function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, hand
             disabled
           />
         </div>
-        <div>
+        <div className={"dropdown"}>
           <label>Assessment:</label>
           <select
             name="assessment"
             onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)}
-            defaultValue={assessmentsData[selectedOption]?.tag ?? 0}
+            defaultValue={assessmentsData[selectedOption]?.tag ?? "default"}
+            className={"dropdown__select"}
           >
-            {assessmentsData.map((assessment: AssessmentInterface) => {
+            <option id={"default"} value={"default"}>--- Choose an assessment ---</option>
+            {assessmentsData.map((assessment: AssessmentInterface): ReactNode => {
               return (<option key={assessment.id} id={assessment.id} value={assessment.id}>{assessment.tag}</option>)
             })}
           </select>

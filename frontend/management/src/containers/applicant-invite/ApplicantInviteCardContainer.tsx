@@ -86,7 +86,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   function handleCancel(): void {
-    navigate("/applicants");
+    goToApplicantPage();
   }
 
   function handleSelect(e: ChangeEvent<HTMLSelectElement>): void {

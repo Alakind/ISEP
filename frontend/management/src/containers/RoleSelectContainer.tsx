@@ -4,7 +4,6 @@ import {updateUser} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Roles} from "../utils/constants.tsx"
 
-
 function RoleSelectContainer({id, disabled, initialRole}: Props): ReactNode {
   const [selectedOption, setSelectedOption] = useState<(typeof Roles)[keyof typeof Roles]>(initialRole);
   const [loading, setLoading] = useState<boolean>(false);
@@ -15,6 +14,7 @@ function RoleSelectContainer({id, disabled, initialRole}: Props): ReactNode {
       const res: { data: { id: string, role: typeof Roles } } = await updateUser(id, {role: e.target.value});
       e.target.value = res.data.role.toString();
       setSelectedOption(res.data.role.toString());
+      toast.success("Successfully changed role");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

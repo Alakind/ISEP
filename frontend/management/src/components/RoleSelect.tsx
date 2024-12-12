@@ -1,14 +1,14 @@
 import {Roles} from "../utils/constants.tsx";
-import "../styles/role-select.css";
+import "../styles/dropdown.css";
 import {ChangeEvent, ReactNode} from "react";
 
 function RoleSelect({id, selectedOption, handleSelect, disabled}: Props): ReactNode {
   return (
-    <span className="role-select">
+    <span className="dropdown">
       {
         disabled ?
-          <span className="role-select__select role-select__select--disabled">{selectedOption ? selectedOption.toString() : ""}</span> :
-          <select id={`role-select_${id}`} onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} className="role-select__select"
+          <span className="dropdown__select dropdown__select--disabled">{selectedOption ? selectedOption.toString() : ""}</span> :
+          <select id={`role-select_${id}`} onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} className="dropdown__select"
                   defaultValue={selectedOption ? selectedOption.toString() : ""}>
             <option value={Roles.NO_ACCESS.toString()}>{Roles.NO_ACCESS.toString()}</option>
             <option value={Roles.ADMIN.toString()}>{Roles.ADMIN.toString()}</option>
