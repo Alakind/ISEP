@@ -114,8 +114,8 @@ html {
 }
 
 .page--mod {
-    height: 180px !important;
-    width: 560px !important;
+    height: 300px;
+    width: 100%;
 }
 
 .btn--mod {
