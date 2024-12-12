@@ -17,7 +17,7 @@ function Button({isDisabled = false, activeTooltip = false, isModal = false, mod
 
 interface Props {
   handleClick: () => void;
-  btnClasses: string;
+  btnClasses?: string;
   iconClass?: string;
   spanTextClass: string;
   text: string;
