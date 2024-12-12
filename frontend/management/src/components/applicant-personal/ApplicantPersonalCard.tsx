@@ -1,7 +1,7 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
-import "../../styles/applicant-card.css";
 import {ChangeEvent, ReactNode} from "react";
+import "../../styles/form.css";
 
 function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
   return (

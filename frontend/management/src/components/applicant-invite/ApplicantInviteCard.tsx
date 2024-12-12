@@ -1,6 +1,7 @@
 import {ApplicantInterface, AssessmentInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
+import "../../styles/form.css";
 
 function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, handleInvite, handleSelect, selectedOption}: Props): ReactNode {
   return (

@@ -1,6 +1,7 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
+import "../../styles/form.css";
 
 function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}: Props): ReactNode {
   return (
