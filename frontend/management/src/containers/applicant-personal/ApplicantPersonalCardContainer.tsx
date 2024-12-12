@@ -1,4 +1,4 @@
-import ApplicantCard from "../../components/applicant-personal/ApplicantCard.tsx";
+import ApplicantPersonalCard from "../../components/applicant-personal/ApplicantPersonalCard.tsx";
 import {ApplicantInterface} from "../../utils/types.tsx";
 import {ChangeEvent, Dispatch, ReactNode, SetStateAction, useState} from "react";
 import {toast} from "react-toastify";
@@ -6,7 +6,7 @@ import {deleteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function ApplicantCardContainer({applicant, setApplicant}: Props): ReactNode {
+function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): ReactNode {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [prevApplicantData, setPrevApplicantData] = useState<ApplicantInterface>(applicant);
   const navigate: NavigateFunction = useNavigate();
@@ -86,7 +86,7 @@ function ApplicantCardContainer({applicant, setApplicant}: Props): ReactNode {
   }
 
   return (
-    <ApplicantCard
+    <ApplicantPersonalCard
       isEditing={isEditing}
       applicant={applicant}
       handleRemind={handleRemind}
@@ -105,4 +105,4 @@ interface Props {
   setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
 }
 
-export default ApplicantCardContainer
+export default ApplicantPersonalCardContainer

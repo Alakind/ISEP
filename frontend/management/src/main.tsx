@@ -5,7 +5,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ApplicantsListContainer from "./containers/ApplicantsListPageContainer.tsx";
-import ApplicantPageContainer from "./containers/applicant-personal/ApplicantPageContainer.tsx";
+import ApplicantPersonalPageContainer from "./containers/applicant-personal/ApplicantPersonalPageContainer.tsx";
 import PageNotFound from "./containers/PageNotFound.tsx";
 import LoadingPage from "./components/LoadingPage.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
@@ -96,7 +96,7 @@ const router = createBrowserRouter(
                   path: "info",
                   element: (
                     <Suspense fallback={<LoadingPage/>}>
-                      <ApplicantPageContainer/>
+                      <ApplicantPersonalPageContainer/>
                     </Suspense>
                   ),
                   errorElement: (

@@ -3,7 +3,7 @@ import Button from "../Button.tsx";
 import "../../styles/applicant-card.css";
 import {ChangeEvent, ReactNode} from "react";
 
-function ApplicantCard({applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
+function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
   return (
     <div>
       <form id={`form_${applicant.id}`}>
@@ -48,18 +48,18 @@ function ApplicantCard({applicant, handleChange, handleRemind, handleReInvite, h
           />
         </div>
       </form>
-      <div className="applicant-card__btns">
+      <div className="card-page__body__btns">
         {isEditing ?
           <>
-            <Button handleClick={handleCancel} iconClass={"bi-x"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Cancel"} activeTooltip={true}/>
-            <Button handleClick={handleSave} iconClass={"bi-floppy"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Save"} activeTooltip={true}/>
+            <Button handleClick={handleCancel} iconClass={"bi-x"} spanTextClass={"card-page__body__btn__text"} text={"Cancel"} activeTooltip={true}/>
+            <Button handleClick={handleSave} iconClass={"bi-floppy"} spanTextClass={"card-page__body__btn__text"} text={"Save"} activeTooltip={true}/>
           </>
           :
           <>
-            <Button handleClick={handleEdit} iconClass={"bi-pencil"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Edit"} activeTooltip={true}/>
-            <Button handleClick={handleDelete} iconClass={"bi-trash"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Delete"} activeTooltip={true}/>
-            <Button handleClick={handleRemind} iconClass={"bi-bell"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Send reminder"} activeTooltip={true}/>
-            <Button handleClick={handleReInvite} iconClass={"bi-envelope"} btnClasses={"applicant-card__btn"} spanTextClass={"applicant-card__btn__text"} text={"Resend invite"} activeTooltip={true}/>
+            <Button handleClick={handleEdit} iconClass={"bi-pencil"} spanTextClass={"card-page__body__btn__text"} text={"Edit"} activeTooltip={true}/>
+            <Button handleClick={handleDelete} iconClass={"bi-trash"} spanTextClass={"card-page__body__btn__text"} text={"Delete"} activeTooltip={true}/>
+            <Button handleClick={handleRemind} iconClass={"bi-bell"} spanTextClass={"card-page__body__btn__text"} text={"Send reminder"} activeTooltip={true}/>
+            <Button handleClick={handleReInvite} iconClass={"bi-envelope"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
           </>
         }
       </div>
@@ -79,4 +79,4 @@ interface Props {
   handleCancel: () => void;
 }
 
-export default ApplicantCard;
+export default ApplicantPersonalCard;
