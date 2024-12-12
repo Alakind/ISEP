@@ -2,7 +2,7 @@ function Button({isDisabled = false, activeTooltip = false, isModal = false, mod
   return (
     <button
       disabled={isDisabled}
-      className={`btn btn--mod ${btnClasses}`}
+      className={`btn btn--mod ${btnClasses ?? ""}`}
       onClick={handleClick}
       data-toggle={activeTooltip && isModal ? "tooltip modal" : activeTooltip ? "tooltip" : isModal ? "modal" : ""}
       data-placement={activeTooltip ? "bottom" : ""}

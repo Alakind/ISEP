@@ -10,9 +10,8 @@ function ApplicantInvitePage({goToApplicantsPage}: Props): ReactNode {
       <CardHeaderContainer>
         <Button
           handleClick={goToApplicantsPage}
-          btnClasses={"applicant-invite__header__back-btn"}
           iconClass={"bi-arrow-left-short"}
-          spanTextClass={"applicant-invite__header__btn__text"}
+          spanTextClass={"card-page__header__btn__text"}
           text={"Back to all applicants"}
         />
       </CardHeaderContainer>

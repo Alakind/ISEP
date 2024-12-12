@@ -39,8 +39,8 @@ function ApplicantInviteCard({applicantData, assessmentsData, handleCancel, hand
         </div>
       </form>
       <div className="card-page__body__btns">
-        <Button handleClick={handleCancel} iconClass={"bi-x"} spanTextClass={"applicant-add__btn__text"} text={"Cancel"} activeTooltip={true}/>
-        <Button handleClick={handleInvite} iconClass={"bi-person-lines-fill"} spanTextClass={"applicant-add__btn__text"} text={"Invite"} activeTooltip={true}/>
+        <Button handleClick={handleCancel} iconClass={"bi-x"} spanTextClass={"card-page__body__btn__text"} text={"Cancel"} activeTooltip={true}/>
+        <Button handleClick={handleInvite} iconClass={"bi-person-lines-fill"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
       </div>
     </div>
   )
