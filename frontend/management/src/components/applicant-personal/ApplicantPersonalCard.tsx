@@ -58,7 +58,7 @@ function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReI
           <>
             <Button handleClick={handleEdit} iconClass={"bi-pencil"} spanTextClass={"card-page__body__btn__text"} text={"Edit"} activeTooltip={true}/>
             <Button handleClick={handleDelete} iconClass={"bi-trash"} spanTextClass={"card-page__body__btn__text"} text={"Delete"} activeTooltip={true}/>
-            <Button handleClick={handleRemind} iconClass={"bi-bell"} spanTextClass={"card-page__body__btn__text"} text={"Send reminder"} activeTooltip={true}/>
+            <Button handleClick={handleRemind} iconClass={"bi-bell"} spanTextClass={"card-page__body__btn__text"} text={"Remind"} activeTooltip={true}/>
             <Button handleClick={handleReInvite} iconClass={"bi-envelope"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
           </>
         }
