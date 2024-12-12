@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import UsersListContainer from "./containers/UsersListPageContainer.tsx";
 import App from "./App.tsx";
 import ApplicantAddPageContainer from "./containers/applicant-add/ApplicantAddPageContainer.tsx";
+import ApplicantInvitePageContainer from "./containers/applicant-invite/ApplicantInvitePageContainer.tsx";
 
 const router = createBrowserRouter(
   [
@@ -120,7 +121,7 @@ const router = createBrowserRouter(
                       path: "add",
                       element: (
                         <Suspense fallback={<LoadingPage/>}>
-                          <ApplicantInviteContainer/>
+                          <ApplicantInvitePageContainer/>
                         </Suspense>
                       ),
                       errorElement: (
