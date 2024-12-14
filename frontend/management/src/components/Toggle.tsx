@@ -1,10 +1,10 @@
 import "../styles/toggle.css";
 import {ReactNode} from "react";
 
-function Toggle({id, toggleValue, changeState, disabled, loading}: Props): ReactNode {
+function Toggle({id, toggleValue, handleChange, disabled}: Props): ReactNode {
   return (
     <label className="switch">
-      <input id={id} name={id} type="checkbox" checked={toggleValue} onChange={changeState} disabled={disabled ? disabled : loading}></input>
+      <input id={id} name={id} type="checkbox" checked={toggleValue} onChange={handleChange} disabled={disabled}></input>
       <span className="slider round"></span>
     </label>
   )
@@ -13,9 +13,8 @@ function Toggle({id, toggleValue, changeState, disabled, loading}: Props): React
 interface Props {
   id: string;
   toggleValue: boolean;
-  changeState: () => void;
+  handleChange: () => void;
   disabled: boolean;
-  loading: boolean;
 }
 
 export default Toggle

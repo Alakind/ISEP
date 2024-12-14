@@ -10,7 +10,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
-
+  const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -109,8 +109,9 @@ function ApplicantInviteCardContainer(): ReactNode {
     console.log(inviteData)
   }
 
-  function handleToggleMail(checked: boolean): void {
-    console.log(checked);
+  function handleToggleMail(): void {
+    console.log(sendMailToggle);
+    setSendMailToggle(!sendMailToggle);
     //TODO uncomment when mails can be set
     // setInviteData((prev: InviteInterface): InviteInterface => ({
     //   ...prev,
@@ -156,6 +157,7 @@ function ApplicantInviteCardContainer(): ReactNode {
         expirationDate={expirationDate}
         handleChangeExpirationDate={handleChangeExpirationDate}
         inviteData={inviteData}
+        toggleValue={sendMailToggle}
       />
     );
   }

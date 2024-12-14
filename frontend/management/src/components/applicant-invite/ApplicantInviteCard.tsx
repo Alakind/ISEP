@@ -14,9 +14,10 @@ function ApplicantInviteCard({
                                handleSelect,
                                selectedOption,
                                handleToggleMail,
-                               expirationDate,
                                handleChangeExpirationDate,
-                               inviteData
+                               inviteData,
+                               expirationDate,
+                               toggleValue
                              }: Props): ReactNode {
   return (
     <>
@@ -41,7 +42,7 @@ function ApplicantInviteCard({
           </div>
           <div>
             <label htmlFor={"mailToggle"}>Send invitation mail:</label>
-            <span>OFF<ToggleContainer id={"mailToggle"} checked={true} disabled={false} functionCall={handleToggleMail}/>ON</span>
+            <span>OFF<ToggleContainer id={"mailToggle"} disabled={false} handleChange={handleToggleMail} toggleValue={toggleValue}/>ON</span>
           </div>
           <div>
             <label htmlFor="name">Invitation will be valid for <b>{import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS} days</b> and will expire on:</label>
@@ -74,6 +75,7 @@ function ApplicantInviteCard({
               onChange={(e: ChangeEvent<HTMLInputElement>): void => console.log(e.target.value)}
               value={applicantData.email}
               autoComplete="off"
+              disabled={!toggleValue}
               required
             />
           </div>
@@ -84,7 +86,7 @@ function ApplicantInviteCard({
               name="message"
               onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => console.log(e.target.value)} //TODO implement mail sending
               value={import.meta.env.VITE_STANDARD_MAIL ?? `${applicantData.name ? `Dear ${applicantData.name}` : "Dear Sir/Madame,"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`}
-              disabled={true}
+              disabled={!toggleValue}
               required
             />
           </div>
@@ -101,10 +103,11 @@ interface Props {
   handleInvite: () => void;
   handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOption: number;
-  handleToggleMail: (checked: boolean) => void;
+  handleToggleMail: () => void;
   expirationDate: string;
   handleChangeExpirationDate: (e: ChangeEvent<HTMLInputElement>) => void;
   inviteData: InviteInterface;
+  toggleValue: boolean;
 }
 
 export default ApplicantInviteCard
