@@ -22,7 +22,7 @@
     .bi-bell,
     .bi-envelope,
     .bi-arrow-left-short,
-    .bi-person-lines-fill,
+    .bi-send,
     .bi-person-add {
         margin-right: 0 !important;
     }
@@ -45,6 +45,13 @@
     width: 100%;
 }
 
+.card-page__body__inner {
+    background-color: var(--card-body-inner) !important;
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+}
+
 .card-page__body__btns {
     margin-top: 30px;
 }
@@ -61,10 +68,6 @@
     margin: 0 0 0 10px !important;
 }
 
-/*@media (max-width: 992px) {*/
-
-/*}*/
-
 .bi-pencil,
 .bi-x,
 .bi-floppy,
@@ -72,7 +75,11 @@
 .bi-bell,
 .bi-envelope,
 .bi-arrow-left-short,
-.bi-person-lines-fill,
+.bi-send,
 .bi-person-add {
     margin-right: 10px;
+}
+
+.card-page__body--col2 {
+    width: 48%;
 }

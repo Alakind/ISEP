@@ -1,18 +1,30 @@
+form {
+    width: 100%;
+}
+
 form label {
-    width: 200px
+    width: 100%;
+    margin-bottom: 5px;
 }
 
-form > div {
-    margin-bottom: 15px;
+form > div:not(:last-child) {
+    margin-bottom: 30px;
 }
 
-form input {
-    width: 360px;
+form input, form select {
+    width: 100%;
     background-color: transparent;
     color: var(--text-primary);
     border-color: var(--transparent);
     border-bottom-color: var(--text-primary);
-    word-wrap: anywhere;
+}
+
+form select {
+    border-bottom: solid 2px !important;
+}
+
+[data-theme="dark"] form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
 }
 
 form input:disabled {
@@ -20,8 +32,19 @@ form input:disabled {
     border-color: var(--transparent);
 }
 
-@media (max-width: 1280px) {
-    form input {
-        width: 85%;
-    }
+form textarea {
+    width: 100%;
+    background-color: var(--question-block);
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    padding: 5px;
+    min-height: 147px;
+}
+
+form textarea:disabled {
+    color: var(--text-primary-disabled);
+}
+
+h4 {
+    margin-bottom: 15px;
 }

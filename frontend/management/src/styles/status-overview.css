@@ -1,5 +1,5 @@
 .status-overview {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--card-body-inner);
     border-radius: 5px;
     padding: 10px 10px 15px;
     height: fit-content;

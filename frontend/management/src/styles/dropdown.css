@@ -20,3 +20,6 @@
     outline: var(--transparent) none 0;
 }
 
+.dropdown__select__default-option {
+    color: var(--text-primary-disabled);
+}

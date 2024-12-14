@@ -1,7 +1,7 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
-import "../../styles/form.css";
+import "../../styles/form.css"
 
 function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}: Props): ReactNode {
   return (
@@ -58,7 +58,7 @@ function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}:
                 activeTooltip={true}
         />
         <Button handleClick={(): void => handleAdd(true)}
-                iconClass={"bi-person-lines-fill"}
+                iconClass={"bi-send"}
                 spanTextClass={"card-page__body__btn__text"}
                 text={"Add & Invite"}
                 activeTooltip={true}

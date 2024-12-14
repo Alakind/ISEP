@@ -8,6 +8,9 @@ import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0"});
+  //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
+  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
+
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -90,13 +93,52 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   function handleSelect(e: ChangeEvent<HTMLSelectElement>): void {
-    const selectedId: number = Number(e.target.value);
+    let selectedId: number;
+    if (e.target.value != "default") {
+      selectedId = Number(e.target.value);
+    } else {
+      selectedId = 0;
+    }
     setSelectedOption(selectedId);
 
     setInviteData((prev: InviteInterface): InviteInterface => ({
       ...prev,
       assessmentId: `${selectedId}`,
     }));
+
+    console.log(inviteData)
+  }
+
+  function handleToggleMail(checked: boolean): void {
+    console.log(checked);
+    //TODO uncomment when mails can be set
+    // setInviteData((prev: InviteInterface): InviteInterface => ({
+    //   ...prev,
+    //   sentMail: `${checked}`,
+    // }));
+  }
+
+  function getExpirationDate(): string {
+    const today = new Date();
+    const dd: string = String(today.getDate() + Number(import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS)).padStart(2, '0');
+    const mm: string = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy: number = today.getFullYear();
+
+    return yyyy + '-' + mm + '-' + dd;
+  }
+
+  function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>): void {
+    const selectedDate: number = new Date(e.target.value).setHours(0, 0, 0, 0);
+    const today: number = new Date().setHours(0, 0, 0, 0);
+    if (today > selectedDate) {
+      toast.error("Select today or a day in the future.");
+      return;
+    }
+    setExpirationDate(e.target.value); //TODO temporary expiration date state
+    // setInviteData((prev: InviteInterface): InviteInterface => ({
+    //   ...prev,
+    //   expirationDate: `${e.target.value}`,
+    // }));
   }
 
   if (loading) {
@@ -110,6 +152,10 @@ function ApplicantInviteCardContainer(): ReactNode {
         assessmentsData={assessmentsData}
         handleSelect={handleSelect}
         selectedOption={selectedOption}
+        handleToggleMail={handleToggleMail}
+        expirationDate={expirationDate}
+        handleChangeExpirationDate={handleChangeExpirationDate}
+        inviteData={inviteData}
       />
     );
   }

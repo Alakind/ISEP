@@ -6,6 +6,7 @@
     --highlight: #17489b; /* hover buttons */
     --highlight-hover: #008bbd;
     --card-body: #faf9f62d;
+    --card-body-inner: #faf9f62d;
     --assigntment-menu: #344050bf;
     --text-primary: #faf9f6;
     --text-primary-disabled: grey;
@@ -33,10 +34,11 @@
     --tertiary-color: #008bbd; /* buttons, borders*/
     --highlight: #17489b; /* hover buttons */
     --highlight-hover: #17489b;
-    --card-body: rgba(52, 51, 51, 0.18);
+    --card-body: #fdfdfd;
+    --card-body-inner: #f7f7f7;
     --assigntment-menu: rgba(20, 61, 108, 0.75);
     --text-primary: black;
-    --text-primary-disabled: whitesmoke;
+    --text-primary-disabled: lightgrey;
     --text-primary-reverse: #faf9f6;
     --text-secondary: white;
     --text-header: #faf9f6;
@@ -127,6 +129,11 @@ html {
 
 .btn--mod:hover {
     border-color: var(--highlight-hover);
+}
+
+.btn--mod:disabled {
+    border-color: var(--text-primary-disabled);
+    color: var(--text-primary-disabled);
 }
 
 .page--center {

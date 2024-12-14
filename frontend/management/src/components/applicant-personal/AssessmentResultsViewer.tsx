@@ -17,7 +17,7 @@ function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeS
         }
       </div>
       <br/>
-      <h4>Results Sections</h4>
+      <h4>Summary Assessment</h4>
       <div className="results__body">
         {
           loading ?
