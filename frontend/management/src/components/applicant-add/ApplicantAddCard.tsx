@@ -8,29 +8,35 @@ function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}:
     <div>
       <form>
         <div>
-          <label>Name:</label>
+          <label htmlFor={"name"}>Name:</label>
           <input
             type="text"
+            id={"name"}
             name="name"
             value={newApplicant.name}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoFocus
+            autoComplete="off"
             required
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label htmlFor={"email"}>Email:</label>
           <input
-            type="text"
+            type="email"
+            id={"email"}
             name="email"
             value={newApplicant.email}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoComplete="off"
             required
           />
         </div>
         <div>
-          <label>Preferred language:</label>
+          <label htmlFor={"preferredLanguage"}>Preferred language:</label>
           <input
             type="text"
+            id={"preferredLanguage"}
             name="preferredLanguage"
             value={newApplicant.preferredLanguage.toString()}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}

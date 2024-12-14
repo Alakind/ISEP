@@ -8,43 +8,51 @@ function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReI
     <div>
       <form id={`form_${applicant.id}`}>
         <div>
-          <label>Name:</label>
+          <label htmlFor={"name"}>Name:</label>
           <input
             type="text"
+            id={"name"}
             name="name"
             disabled={!isEditing}
             value={applicant.name}
             onChange={handleChange}
+            autoComplete="off"
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label htmlFor={"email"}>Email:</label>
           <input
-            type="text"
+            type="email"
+            id={"email"}
             name="email"
             disabled={!isEditing}
             value={applicant.email}
             onChange={handleChange}
+            autoComplete="off"
           />
         </div>
         <div>
-          <label>Preferred language:</label>
+          <label htmlFor={"preferredLanguage"}>Preferred language:</label>
           <input
             type="text"
+            id={"preferredLanguage"}
             name="preferredLanguage"
             disabled={!isEditing}
             value={applicant.preferredLanguage.toString()}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoComplete="off"
           />
         </div>
         <div>
-          <label>Invite link:</label>
+          <label htmlFor={"invite"}>Invite link:</label>
           <input
             type="text"
+            id={"invite"}
             name="invite"
             disabled={true}
             value={applicant.invite ?? '-'}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoComplete="off"
           />
         </div>
       </form>
