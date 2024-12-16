@@ -2,6 +2,7 @@ package ut.isep.management.service.converter.assessment
 
 
 import dto.assessment.AssessmentReadDTO
+import dto.assessment.SectionLazyReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.Assessment
 import ut.isep.management.service.converter.ReadConverter
@@ -12,7 +13,7 @@ class AssessmentReadConverter : ReadConverter<Assessment, AssessmentReadDTO> {
         return AssessmentReadDTO(
             id = entity.id,
             tag = entity.tag,
-            sections = entity.sections.map {it.id}
+            sections = entity.sections.map { SectionLazyReadDTO(it.id, it.title, it.assignments.size) }
         )
     }
 }
