@@ -11,7 +11,6 @@ class ApplicantUpdateConverter : UpdateConverter<Applicant, ApplicantUpdateDTO> 
         return entity.apply {
             updateDTO.name?.let { this.name = it }
             updateDTO.email?.let { this.email = it }
-            updateDTO.status?.let { this.status = it }
             updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
             updateDTO.score?.let { this.score = it }
         }

@@ -18,11 +18,11 @@ class ApplicantReadService(
     private val inviteConverter: InviteReadConverter,
 ) : ReadService<Applicant, ApplicantReadDTO, Long>(repository, converter) {
 
-    fun getInviteByApplicantId(applicantId: Long): InviteReadDTO? {
+    fun getInviteByApplicantId(applicantId: Long): List<InviteReadDTO> {
         val applicant = repository.findById(applicantId)
             .orElseThrow { NoSuchElementException("Applicant not found") }
 
-        return applicant.invite?.let {
+        return applicant.invites.map {
             inviteConverter.toDTO(it)
         }
     }

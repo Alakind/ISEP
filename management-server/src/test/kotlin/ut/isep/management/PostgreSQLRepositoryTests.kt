@@ -1,6 +1,5 @@
 package ut.isep.management
 
-import enumerable.ApplicantStatus
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,8 +18,8 @@ class PostgreSQLRepositoryTests @Autowired constructor(
 
     @Test
     fun `test repository connection to PostgreSQL`() {
-        val entity = applicantRepository.save(
-            Applicant(status = ApplicantStatus.app_finished, preferredLanguage = null)
+        applicantRepository.save(
+            Applicant(preferredLanguage = null)
         )
         assert(true)
     }
