@@ -13,7 +13,9 @@ class InviteReadConverter : ReadConverter<Invite, InviteReadDTO> {
             id = entity.id,
             applicantId = entity.applicant.id,
             assessmentId = entity.assessment.id,
-            invitedAt = entity.invitedAt
+            invitedAt = entity.invitedAt,
+            expiresAt = entity.expiresAt,
+            status = entity.status
         )
     }
 }

@@ -22,10 +22,6 @@ class InviteCreateService(
         val assessment = assessmentRepository.findById(createDto.assessmentId)
             .orElseThrow { NoSuchElementException("Assessment not found") }
 
-        // Check if there is already an invite for this applicant
-        applicant.invite?.let {
-            throw IllegalStateException("Invite already exists for this applicant")
-        }
 
         // Create the Invite
         val invite = Invite.createInvite(applicant = applicant, assessment = assessment)
@@ -33,7 +29,7 @@ class InviteCreateService(
 
         // Update the applicant with the new invite
         applicant.apply {
-            this.invite = savedInvite
+            this.invites.add(savedInvite)
             applicantRepository.save(this)
         }
 

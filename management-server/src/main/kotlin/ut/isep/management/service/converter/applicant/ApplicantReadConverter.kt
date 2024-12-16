@@ -13,10 +13,9 @@ class ApplicantReadConverter : ReadConverter<Applicant, ApplicantReadDTO> {
             id = entity.id,
             name = entity.name,
             email = entity.email,
-            status = entity.status,
             preferredLanguage = entity.preferredLanguage,
             score = entity.score,
-            invite = entity.invite?.id
+            invites = entity.invites.map {it.id}
         )
     }
 }
