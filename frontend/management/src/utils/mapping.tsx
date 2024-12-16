@@ -22,6 +22,8 @@ export function mapStatus(status: string): string {
       return ApplicantStatuses.INTERVIEW_INVITED
     case "not_started":
       return ApplicantStatuses.NOT_STARTED
+    case "app_created":
+      return ApplicantStatuses.APP_CREATED
     default:
       return "Unknown"
   }

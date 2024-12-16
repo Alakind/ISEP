@@ -1,4 +1,6 @@
-function InfoSupportLogo() {
+import {ReactNode} from "react";
+
+function InfoSupportLogo(): ReactNode {
   return (
     <>
       <svg

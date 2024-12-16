@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import {
   ApplicantInterface,
   AssessmentInterface,
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
 
-function ApplicantInviteCardContainer() {
+function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({
     applicantId: "0",
     assessmentId: "0",
@@ -35,10 +35,11 @@ function ApplicantInviteCardContainer() {
   const navigate: NavigateFunction = useNavigate();
   const { id } = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
-  useEffect(() => {
+
+  useEffect((): void => {
     if (id) {
-      getData();
-      getAssessmentsData();
+      getData().then();
+      getAssessmentsData().then();
     }
   }, [id]);
 
@@ -57,8 +58,12 @@ function ApplicantInviteCardContainer() {
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Unknown error occurred.");
+      }
       handleCancel();
     } finally {
       setLoading(false);
@@ -71,25 +76,33 @@ function ApplicantInviteCardContainer() {
       const data: { data: AssessmentInterface[]; totalItems: number } =
         await getAssessments();
       setAssessmentsData(data.data);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
   }
 
-  const goToApplicantPage = (): void => {
+  function goToApplicantPage(): void {
     navigate(`/applicants/${id}/info`);
-  };
+  }
 
-  async function handleInvite() {
+  async function handleInvite(): Promise<void> {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
       try {
         await inviteApplicant(inviteData.applicantId, inviteData.assessmentId);
         goToApplicantPage();
         toast.success("Applicant successfully invited.");
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Unknown error occurred.");
+        }
       }
     } else {
       toast.error(
@@ -98,18 +111,20 @@ function ApplicantInviteCardContainer() {
     }
   }
 
-  function handleCancel() {
+  function handleCancel(): void {
     navigate("/applicants");
   }
 
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    const selectedId = Number(e.target.value);
+  function handleSelect(e: ChangeEvent<HTMLSelectElement>): void {
+    const selectedId: number = Number(e.target.value);
     setSelectedOption(selectedId);
 
-    setInviteData((prev) => ({
-      ...prev,
-      assessmentId: `${selectedId}`,
-    }));
+    setInviteData(
+      (prev: InviteInterface): InviteInterface => ({
+        ...prev,
+        assessmentId: `${selectedId}`,
+      })
+    );
   }
 
   if (loading) {
