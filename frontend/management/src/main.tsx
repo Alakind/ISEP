@@ -5,14 +5,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import ApplicantsListContainer from "./containers/ApplicantsListPageContainer.tsx";
-import ApplicantPageContainer from "./containers/applicant-personal/ApplicantPageContainer.tsx";
+import ApplicantPageContainer from "./containers/ApplicantPageContainer";
 import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 import LoadingPage from "./components/LoadingPage.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
 import UsersListContainer from "./containers/UsersListPageContainer.tsx";
 import App from "./App.tsx";
-import ApplicantAddContainer from "./containers/applicant-add/ApplicantAddContainer.tsx";
-import ApplicantInviteContainer from "./containers/applicant-invite/ApplicantInviteContainer.tsx";
 
 const router = createBrowserRouter(
   [
@@ -29,15 +27,6 @@ const router = createBrowserRouter(
         //   ),
         //   errorElement: <ErrorBoundary error={new Error("Page not found")} />,
         // },
-        {
-          path: "settings",
-          element: (
-            <Suspense fallback={<LoadingPage />}>
-              <>/settings</> {/*TODO show the welcome message of applicant and make it able to change it and show the standard invite email and make it able to change it.*/}
-            </Suspense>
-          ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")} />,
-        },
         {
           path: "profile",
           element: (
@@ -66,6 +55,15 @@ const router = createBrowserRouter(
           errorElement: <ErrorBoundary error={new Error("Page not found")} />,
         },
         {
+          path: "users/:id/info",
+          element: (
+            <Suspense fallback={<LoadingPage />}>
+              <>/users/:id/info</>
+            </Suspense>
+          ),
+          errorElement: <ErrorBoundary error={new Error("Page not found")} />,
+        },
+        {
           path: "applicants",
           element: (
             <Suspense fallback={<LoadingPage />}>
@@ -81,7 +79,7 @@ const router = createBrowserRouter(
               path: "add",
               element: (
                 <Suspense fallback={<LoadingPage />}>
-                  <ApplicantAddContainer />
+                  <>/applicants/add</>
                 </Suspense>
               ),
               errorElement: (
@@ -96,6 +94,17 @@ const router = createBrowserRouter(
                   element: (
                     <Suspense fallback={<LoadingPage />}>
                       <ApplicantPageContainer />
+                    </Suspense>
+                  ),
+                  errorElement: (
+                    <ErrorBoundary error={new Error("Page not found")} />
+                  ),
+                },
+                {
+                  path: "edit",
+                  element: (
+                    <Suspense fallback={<LoadingPage />}>
+                      <>/applicants/:id/edit</>
                     </Suspense>
                   ),
                   errorElement: (
@@ -120,7 +129,18 @@ const router = createBrowserRouter(
                       path: "add",
                       element: (
                         <Suspense fallback={<LoadingPage />}>
-                          <ApplicantInviteContainer />
+                          <>/applicants/:id/invite/add</>
+                        </Suspense>
+                      ),
+                      errorElement: (
+                        <ErrorBoundary error={new Error("Page not found")} />
+                      ),
+                    },
+                    {
+                      path: "edit",
+                      element: (
+                        <Suspense fallback={<LoadingPage />}>
+                          <>/applicants/:id/invite/edit</>
                         </Suspense>
                       ),
                       errorElement: (

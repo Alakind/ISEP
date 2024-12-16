@@ -1,15 +1,15 @@
 import {Selection, UserInterface} from "../utils/types";
-import SearchContainer from "../containers/table/SearchContainer.tsx";
+import SearchContainer from "../containers/SearchContainer.tsx";
 import {useEffect, useState} from "react";
-import PaginationContainer from "../containers/table/PaginationContainer.tsx";
+import PaginationContainer from "../containers/PaginationContainer.tsx";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
-import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
+import ItemPerPageSelectContainer from "../containers/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
-import UsersTableContainer from "../containers/table/UsersTableContainer.tsx";
-import {userColumns} from "../utils/constants.tsx";
-import BulkActionSelectContainer from "../containers/table/BulkActionSelectContainer.tsx";
-import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
+import UsersTableContainer from "../containers/UsersTableContainer.tsx";
+import {Roles, userColumns} from "../utils/constants.tsx";
+import BulkActionSelectContainer from "../containers/BulkActionSelectContainer.tsx";
+import TableLoadingContainer from "../containers/TableLoadingContainer.tsx";
 
 
 function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props) {
@@ -33,10 +33,45 @@ function UsersListPage({ initialData, initialCurrentPage, initialItemsPerPage, i
     const fetchData = async() => {
       setLoading(true);
       try {
-        const res = await getUsers(currentPage, itemsPerPage, orderBy, "");
+        // const res = await getUsers(currentPage, itemsPerPage, orderBy, "");
 
-        handleIsSelectedChange(res.data);
-        setData(res.data);
+        const res = {
+          data: [
+            {
+              name: "Fenna",
+              id: "12345678909",
+              email: "Fenna@email.com",
+              role: "",
+            },
+            {
+              name: "Jurre",
+              id: "12345678901",
+              email: "Jurre@email.com",
+              role: Roles.ADMIN,
+            },
+            {
+              name: "Channa",
+              id: "12345678902",
+              email: "Channa@email.com",
+              role: Roles.RECRUITER,
+            },
+            {
+              name: "Nico",
+              id: "12345678903",
+              email: "Nico@email.com",
+              role: Roles.INTERVIEWER,
+            },
+            {
+              name: "FallbackAdmin",
+              id: "523",
+              email: "fallbackAdmin@infosupport.nl",
+              role: Roles.ADMIN,
+            },
+          ],
+          totalItems: 90
+        }
+        handleIsSelectedChange(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
+        setData(res.data); //TODO WILL BE FIXED WITH API IMPLEMENTATION
         setTotalItems(res.totalItems);
       } catch (error: any) {
         toast.error(error.message)

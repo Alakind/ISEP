@@ -1,8 +1,8 @@
 import ReactLoading from 'react-loading';
 
-function LoadingPage({errorMessage, additionalClasses} : Props ) {
+function LoadingPage({errorMessage} : Props ) {
     return (
-        <div className={`page page--center ${additionalClasses}`}>
+        <div className="page page--center">
             <ReactLoading type="spin" color='var(--text-primary)' height={'80px'} width={'80px'} />
             <br></br>
             <p>
@@ -14,7 +14,6 @@ function LoadingPage({errorMessage, additionalClasses} : Props ) {
 
 export interface Props {
     errorMessage?: string;
-    additionalClasses?: string;
 }
 
 export default LoadingPage

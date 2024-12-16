@@ -12,6 +12,5 @@ class WebConfig : WebMvcConfigurer {
             .allowedOrigins("*") // Allow all origins
             .allowedMethods("*") // Allow all HTTP methods
             .allowedHeaders("*") // Allow all headers
-            .exposedHeaders("Location")
     }
 }
