@@ -1,9 +1,7 @@
 import {Selection, UserInterface} from "../utils/types";
 import SearchContainer from "../containers/table/SearchContainer.tsx";
-import {ReactNode, useEffect, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import PaginationContainer from "../containers/table/PaginationContainer.tsx";
-import {getUsers} from "../utils/apiFunctions.tsx";
-import {toast} from "react-toastify";
 import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
 import "../styles/user-list-page.css"
 import UsersTableContainer from "../containers/table/UsersTableContainer.tsx";
@@ -11,49 +9,24 @@ import {userColumns} from "../utils/constants.tsx";
 import BulkActionSelectContainer from "../containers/table/BulkActionSelectContainer.tsx";
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 
-function UsersListPage({initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy, initialSelection}: Props): ReactNode {
-  const [data, setData] = useState<UserInterface[]>(initialData);
-  const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
-  const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
-  const [isSelected, setIsSelected] = useState<Selection[]>(initialSelection);
+function UsersListPage({
+                         handleIsSelectedChange,
+                         data,
+                         updateData,
+                         totalItems,
+                         setTotalItems,
+                         loading,
+                         setLoading,
+                         currentPage,
+                         setCurrentPage,
+                         itemsPerPage,
+                         setItemsPerPage,
+                         orderBy,
+                         setOrderBy,
+                         isSelected,
+                         setIsSelected
+                       }: Props): ReactNode {
 
-  function handleIsSelectedChange(data: UserInterface[]): void {
-    const changedState: Selection[] = [];
-    for (let i: number = 0; i < data.length; i++) {
-      changedState.push({id: data[i].id, checked: false});
-    }
-    setIsSelected(changedState);
-  }
-
-  useEffect((): void => {
-    async function fetchData(): Promise<void> {
-      setLoading(true);
-      try {
-        const res: { data: UserInterface[], totalItems: number } = await getUsers(currentPage, itemsPerPage, orderBy, "");
-
-        handleIsSelectedChange(res.data);
-        setData(res.data);
-        setTotalItems(res.totalItems);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error("Unknown error occurred.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy]);
-
-  function updateData(data: UserInterface[]): void {
-    setData(data);
-  }
 
   return (
     <div className="user-list-page">
@@ -76,12 +49,21 @@ function UsersListPage({initialData, initialCurrentPage, initialItemsPerPage, in
 }
 
 interface Props {
-  initialData: UserInterface[];
-  initialCurrentPage: number;
-  initialItemsPerPage: number;
-  initialTotalItems: number;
-  initialOrderBy: string;
-  initialSelection: Selection[];
+  handleIsSelectedChange: (data: UserInterface[]) => void;
+  data: UserInterface[];
+  updateData: (data: UserInterface[]) => void;
+  totalItems: number;
+  setTotalItems: Dispatch<SetStateAction<number>>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  itemsPerPage: number;
+  setItemsPerPage: Dispatch<SetStateAction<number>>;
+  orderBy: string;
+  setOrderBy: Dispatch<SetStateAction<string>>;
+  isSelected: Selection[];
+  setIsSelected: Dispatch<SetStateAction<Selection[]>>;
 }
 
 export default UsersListPage;
