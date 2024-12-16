@@ -12,7 +12,7 @@ class SectionReadConverter(val assignmentReadConverter: AssignmentReadConverter)
     override fun toDTO(entity: Section): SectionReadDTO {
         return SectionReadDTO(
             id = entity.id,
-            title = entity.title,
+            title = entity.title!!,
             assignments = entity.assignments.map { assignmentReadConverter.toDTO(it) }
         )
     }

@@ -11,8 +11,8 @@ class InviteReadConverter : ReadConverter<Invite, InviteReadDTO> {
     override fun toDTO(entity: Invite): InviteReadDTO {
         return InviteReadDTO(
             id = entity.id,
-            applicantId = entity.applicant.id,
-            assessmentId = entity.assessment.id,
+            applicantId = entity.applicant!!.id,
+            assessmentId = entity.assessment!!.id,
             invitedAt = entity.invitedAt,
             expiresAt = entity.expiresAt,
             status = entity.status

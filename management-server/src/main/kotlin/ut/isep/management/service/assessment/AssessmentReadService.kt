@@ -12,4 +12,3 @@ class AssessmentReadService(
     repository: AssessmentRepository,
     converter: AssessmentReadConverter,
 ) : ReadService<Assessment, AssessmentReadDTO, Long>(repository, converter)
-

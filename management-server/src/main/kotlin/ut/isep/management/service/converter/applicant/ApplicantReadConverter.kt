@@ -11,8 +11,8 @@ class ApplicantReadConverter : ReadConverter<Applicant, ApplicantReadDTO> {
     override fun toDTO(entity: Applicant): ApplicantReadDTO {
         return ApplicantReadDTO(
             id = entity.id,
-            name = entity.name,
-            email = entity.email,
+            name = entity.name!!,
+            email = entity.email!!,
             preferredLanguage = entity.preferredLanguage,
             score = entity.score,
             invites = entity.invites.map {it.id}

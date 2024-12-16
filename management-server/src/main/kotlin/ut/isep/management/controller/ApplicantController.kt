@@ -1,6 +1,6 @@
 package ut.isep.management.controller
 
-import dto.*
+import dto.PaginatedDTO
 import dto.applicant.ApplicantCreateDTO
 import dto.applicant.ApplicantReadDTO
 import dto.applicant.ApplicantUpdateDTO
@@ -12,21 +12,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import ut.isep.management.model.entity.Applicant
 import ut.isep.management.service.applicant.ApplicantCreateService
 import ut.isep.management.service.applicant.ApplicantReadService
 import ut.isep.management.service.applicant.ApplicantUpdateService
 import java.net.URI
-import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/applicant")
 @Tag(name = "Applicant")
-class ApplicantController(val applicantReadService: ApplicantReadService,
-                          val applicantUpdateService: ApplicantUpdateService,
-                          val applicantCreateService: ApplicantCreateService
+class ApplicantController(
+    val applicantReadService: ApplicantReadService,
+    val applicantUpdateService: ApplicantUpdateService,
+    val applicantCreateService: ApplicantCreateService
 ) {
 
     @GetMapping
@@ -35,11 +39,20 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
         responseCode = "200",
         description = "Returns a list of all applicants",
     )
-    fun getApplicants( @RequestParam(required = false) limit: Int?,
-                       @RequestParam(required = false) page: Int?,
-                       @RequestParam(required = false,) sort: String?
+    fun getApplicants(
+        @PageableDefault(
+            size = Int.MAX_VALUE, sort = ["name"],
+            direction = Sort.Direction.ASC
+        ) pageable: Pageable,
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) email: String?
     ): PaginatedDTO<ApplicantReadDTO> {
-        return applicantReadService.getPaginated(limit, page, sort)
+        val exampleApplicant = if (name != null || email != null) {
+            Applicant(name = name, email = email)
+        } else {
+            null
+        }
+        return applicantReadService.getPaginated(exampleApplicant, pageable)
     }
 
 
@@ -71,7 +84,8 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
     @PostMapping
     @Operation(
         summary = "Add an applicant",
-        description = "Add an applicant to the PostGreSQL Management database")
+        description = "Add an applicant to the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -94,7 +108,8 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
     @PutMapping
     @Operation(
         summary = "Update an applicant",
-        description = "Update an applicant in the PostGreSQL Management database")
+        description = "Update an applicant in the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -119,7 +134,8 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
     @DeleteMapping("{id}")
     @Operation(
         summary = "Delete an applicant",
-        description = "Delete an applicant from the PostGreSQL Management database")
+        description = "Delete an applicant from the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -146,7 +162,8 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
     @Tag(name = "Invite")
     @Operation(
         summary = "Get the invite of an applicant",
-        description = "Return the assessment ID if applicant has been invited")
+        description = "Return the assessment ID if applicant has been invited"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -161,7 +178,7 @@ class ApplicantController(val applicantReadService: ApplicantReadService,
     )
     fun getApplicantInvites(@PathVariable id: Long): ResponseEntity<List<InviteReadDTO>> {
         return try {
-            val invites: List<InviteReadDTO> = applicantReadService.getInviteByApplicantId(id)
+            val invites: List<InviteReadDTO> = applicantReadService.getInvitesByApplicantId(id)
             ResponseEntity.ok(invites)
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()

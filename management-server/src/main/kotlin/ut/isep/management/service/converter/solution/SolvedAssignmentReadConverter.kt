@@ -24,9 +24,9 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
 
         return SolvedAssignmentCodingReadDTO(
             id = codingAssignment.id,
-            description = codingAssignment.description,
-            codeUri = codingAssignment.codeUri,
-            language = codingAssignment.language,
+            description = codingAssignment.description!!,
+            codeUri = codingAssignment.codeUri!!,
+            language = codingAssignment.language!!,
             answer = AnswerCreateReadDTO.Coding(entity.userCode)
         )
     }
@@ -37,7 +37,7 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
 
         return SolvedAssignmentMultipleChoiceReadDTO(
             id = multipleChoiceAssignment.id,
-            description = multipleChoiceAssignment.description,
+            description = multipleChoiceAssignment.description!!,
             options = multipleChoiceAssignment.optionToSolution.keys.toList(),
             isMultipleAnswers = multipleChoiceAssignment.optionToSolution.values.count{ it } > 1,
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
@@ -50,7 +50,7 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
 
         return SolvedAssignmentOpenReadDTO(
             id = openAssignment.id,
-            description = openAssignment.description,
+            description = openAssignment.description!!,
             answer = AnswerCreateReadDTO.Open(entity.userSolution)
         )
     }
