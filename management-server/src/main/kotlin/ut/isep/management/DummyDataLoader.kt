@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
+import java.net.URI
 
 @Component
 class DummyDataLoader(
@@ -15,7 +16,8 @@ class DummyDataLoader(
     private val sectionRepository: SectionRepository,
     private val assignmentRepository: AssignmentRepository,
     private val solvedAssignmentRepository: SolvedAssignmentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val gitHubAssignmentRepository: GitHubAssignmentRepository,
 ) : CommandLineRunner {
 
     override fun run(vararg args: String?) {
@@ -232,7 +234,8 @@ class DummyDataLoader(
             Applicant(name = "Hazel", status = ApplicantStatus.not_started, preferredLanguage = "Go", email = "hazel@example.com")
         )
 
-
+        val ghAssignment = GitHubAssignmentMultipleChoice(id = 2, url = URI("https://raw.githubusercontent.com/eefscheef/ISEP-questions/refs/heads/main/General/question1.md"))
+        gitHubAssignmentRepository.save(ghAssignment)
         applicants.forEach { applicantRepository.save(it) }
 
         val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
