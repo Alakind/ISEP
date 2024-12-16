@@ -48,9 +48,13 @@ function UsersListContainer(): ReactNode {
     setData(data);
   }
 
+  function removeUser(id: string): void {
+    setData((prev: UserInterface[]): UserInterface[] => prev.filter((user: UserInterface): boolean => user.id !== id));
+  }
+
   return <UsersListPage handleIsSelectedChange={handleIsSelectedChange} data={data} updateData={updateData} totalItems={totalItems} setTotalItems={setTotalItems} loading={loading}
                         setLoading={setLoading} currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} orderBy={orderBy}
-                        setOrderBy={setOrderBy} isSelected={isSelected} setIsSelected={setIsSelected}/>;
+                        setOrderBy={setOrderBy} isSelected={isSelected} setIsSelected={setIsSelected} removeUser={removeUser}/>;
 }
 
 export default UsersListContainer;

@@ -24,7 +24,8 @@ function UsersListPage({
                          orderBy,
                          setOrderBy,
                          isSelected,
-                         setIsSelected
+                         setIsSelected,
+                         removeUser
                        }: Props): ReactNode {
 
 
@@ -38,7 +39,7 @@ function UsersListPage({
           <>
             <UsersTableContainer data={data} setOrderBy={setOrderBy} setIsSelected={setIsSelected} isSelected={isSelected} orderBy={orderBy}/>
             <div className="user-list-page__inner">
-              <BulkActionSelectContainer isSelected={isSelected}/>
+              <BulkActionSelectContainer isSelected={isSelected} removeUser={removeUser}/>
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
               <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
             </div>
@@ -64,6 +65,7 @@ interface Props {
   setOrderBy: Dispatch<SetStateAction<string>>;
   isSelected: Selection[];
   setIsSelected: Dispatch<SetStateAction<Selection[]>>;
+  removeUser: (id: string) => void;
 }
 
 export default UsersListPage;
