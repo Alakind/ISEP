@@ -10,10 +10,6 @@ function Main({
   currentSectionIndex,
   currentAssignmentIndex,
 }: Props) {
-  //   console.log(assessment.sections[currentSectionIndex].assignments);
-  //   console.log([currentAssignmentIndex[currentSectionIndex]]);
-  console.log(currentAssignmentIndex);
-  console.log(currentAssignmentIndex[currentSectionIndex]);
   useEffect(() => {
     scrollToAssignment(
       assessment.sections[currentSectionIndex].assignments[
@@ -22,7 +18,6 @@ function Main({
     );
   }, [currentSectionIndex, currentAssignmentIndex]);
 
-  console.log(assessment);
   return (
     <main>
       <div className="main__container">

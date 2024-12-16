@@ -1,20 +1,40 @@
-import React, {useEffect, useState} from "react";
-import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
-import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {getApplicant, getAssessments, inviteApplicant} from "../../utils/apiFunctions.tsx";
-import {toast} from "react-toastify";
+import React, { useEffect, useState } from "react";
+import {
+  ApplicantInterface,
+  AssessmentInterface,
+  InviteInterface,
+} from "../../utils/types.tsx";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
+import {
+  getApplicant,
+  getAssessments,
+  inviteApplicant,
+} from "../../utils/apiFunctions.tsx";
+import { toast } from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantInviteCardContainer() {
-  const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0" });
-  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: "" });
-  const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
+  const [inviteData, setInviteData] = useState<InviteInterface>({
+    applicantId: "0",
+    assessmentId: "0",
+  });
+  const [applicantData, setApplicantData] = useState<ApplicantInterface>({
+    id: "0",
+    name: "",
+    email: "",
+    status: "",
+    preferredLanguage: "",
+    score: 0,
+    invite: "",
+  });
+  const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>(
+    [{ id: "0", tag: "", sections: [] }]
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
   const { id } = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
-  console.log(assessmentsData);
   useEffect(() => {
     if (id) {
       getData();
@@ -28,15 +48,17 @@ function ApplicantInviteCardContainer() {
       if (id !== undefined) {
         const data: ApplicantInterface = await getApplicant(id);
         setApplicantData(data);
-        setInviteData((prev: InviteInterface): InviteInterface => ({
-          ...prev,
-          applicantId: `${data.id}`,
-        }));
+        setInviteData(
+          (prev: InviteInterface): InviteInterface => ({
+            ...prev,
+            applicantId: `${data.id}`,
+          })
+        );
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message);
       handleCancel();
     } finally {
       setLoading(false);
@@ -46,10 +68,11 @@ function ApplicantInviteCardContainer() {
   async function getAssessmentsData(): Promise<void> {
     setLoading(true);
     try {
-      const data: {data: AssessmentInterface[], totalItems: number} = await getAssessments();
+      const data: { data: AssessmentInterface[]; totalItems: number } =
+        await getAssessments();
       setAssessmentsData(data.data);
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -69,7 +92,9 @@ function ApplicantInviteCardContainer() {
         toast.error(error.message);
       }
     } else {
-      toast.error("Couldn't invite applicant, because the assessment could not be found.");
+      toast.error(
+        "Couldn't invite applicant, because the assessment could not be found."
+      );
     }
   }
 
@@ -78,7 +103,6 @@ function ApplicantInviteCardContainer() {
   }
 
   function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e);
     const selectedId = Number(e.target.value);
     setSelectedOption(selectedId);
 
@@ -89,7 +113,7 @@ function ApplicantInviteCardContainer() {
   }
 
   if (loading) {
-    return (<LoadingPage additionalClasses={"page--mod"} />);
+    return <LoadingPage additionalClasses={"page--mod"} />;
   } else {
     return (
       <ApplicantInviteCard
@@ -104,4 +128,4 @@ function ApplicantInviteCardContainer() {
   }
 }
 
-export default ApplicantInviteCardContainer
+export default ApplicantInviteCardContainer;

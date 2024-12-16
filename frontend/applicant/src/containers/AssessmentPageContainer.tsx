@@ -4,13 +4,14 @@ import Footer from "../components/Footer.tsx";
 import "../styles/general.css";
 import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
+import { SectionInterface } from "../utils/types.tsx";
 
 function AssessmentPageContainer() {
-  const [assessment, setAssessment] = useState<{ sections: object[] }>({
+  const [assessment, setAssessment] = useState<{
+    sections: SectionInterface[];
+  }>({
     sections: [],
   });
-  const [sections, setSections] = useState([]);
-  const [section, setSection] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
   const [endOfAssessment, setEndOfAssessment] = useState<boolean>(false);
@@ -43,7 +44,6 @@ function AssessmentPageContainer() {
         }
 
         const data = await response.json();
-        setSections(data.sections);
 
         const sectionsFetched = [];
         const assignmentsFetched = [];
@@ -62,23 +62,24 @@ function AssessmentPageContainer() {
             );
           }
           const section = await responseSection.json();
-            console.log(section);
           sectionsFetched.push({
+            id: section.id,
             assignments: section.assignments,
             title: section.title,
           });
           assignmentsFetched.push(0);
         }
 
-        // TODO: remove the stub
         setAssessment({ sections: sectionsFetched });
-        // setCurrentAssignmentIndex(assignmentsFetched);
-        // console.log({ sections: sectionsFetched });
+
         const initialAssignments = Array(sectionsFetched.length).fill(0);
         setCurrentAssignmentIndex(initialAssignments);
 
         setIsLoading(false);
       } catch (error) {
+        if (!(error instanceof Error)) {
+          return;
+        }
         if (
           error instanceof TypeError &&
           error.message.includes("Failed to fetch")

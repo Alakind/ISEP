@@ -32,6 +32,11 @@ function AssignmentMultipleChoice({ assignment }: Props) {
       }
     });
 
+    if (!assignment.isMultipleAnswers) {
+      await sendMultipleChoiceSolution(assignment, [index]);
+      return;
+    }
+
     const answer = [];
     for (let i = 0; i < isChecked.length; i++) {
       if (i == index) {
