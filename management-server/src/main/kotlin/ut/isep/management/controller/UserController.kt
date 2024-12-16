@@ -1,6 +1,6 @@
 package ut.isep.management.controller
 
-import dto.*
+import dto.PaginatedDTO
 import dto.user.UserCreateDTO
 import dto.user.UserReadDTO
 import dto.user.UserUpdateDTO
@@ -11,14 +11,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import ut.isep.management.model.entity.User
 import ut.isep.management.service.user.UserCreateService
 import ut.isep.management.service.user.UserReadService
 import ut.isep.management.service.user.UserUpdateService
 import java.net.URI
-import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("/user")
@@ -26,7 +29,8 @@ import kotlin.NoSuchElementException
 class UserController(
     val userReadService: UserReadService,
     val userCreateService: UserCreateService,
-    val userUpdateService: UserUpdateService) {
+    val userUpdateService: UserUpdateService
+) {
 
 
     @GetMapping
@@ -35,11 +39,20 @@ class UserController(
         responseCode = "200",
         description = "Returns a list of all users",
     )
-    fun getUsers( @RequestParam(required = false) limit: Int?,
-                       @RequestParam(required = false) page: Int?,
-                       @RequestParam(required = false,) sort: String?
+    fun getUsers(
+        @PageableDefault(
+            size = Int.MAX_VALUE, sort = ["name"],
+            direction = Sort.Direction.ASC
+        ) pageable: Pageable,
+        @RequestParam(required = false) name: String?,
+        @RequestParam(required = false) email: String?
     ): PaginatedDTO<UserReadDTO> {
-        return userReadService.getPaginated(limit, page, sort)
+        val exampleUser = if (name != null || email != null) {
+            User(name = name, email = email)
+        } else {
+            null
+        }
+        return userReadService.getPaginated(exampleUser, pageable)
     }
 
 
@@ -71,7 +84,8 @@ class UserController(
     @PostMapping
     @Operation(
         summary = "Add an user",
-        description = "Add an user to the PostGreSQL Management database")
+        description = "Add an user to the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -94,7 +108,8 @@ class UserController(
     @PutMapping
     @Operation(
         summary = "Update an user",
-        description = "Update an user in the PostGreSQL Management database")
+        description = "Update an user in the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -119,7 +134,8 @@ class UserController(
     @DeleteMapping("{id}")
     @Operation(
         summary = "Delete an user",
-        description = "Delete an user from the PostGreSQL Management database")
+        description = "Delete an user from the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
