@@ -11,10 +11,6 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
   const [prevApplicantData, setPrevApplicantData] = useState<ApplicantInterface>(applicant);
   const navigate: NavigateFunction = useNavigate();
 
-  function handleRemind(): void {
-    //TODO implement mail reminder
-  }
-
   function handleEdit(): void {
     setIsEditing(true);
   }
@@ -99,7 +95,6 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
     <ApplicantPersonalCard
       isEditing={isEditing}
       applicant={applicant}
-      handleRemind={handleRemind}
       handleEdit={handleEdit}
       handleReInvite={handleReInvite}
       handleDelete={handleDelete}

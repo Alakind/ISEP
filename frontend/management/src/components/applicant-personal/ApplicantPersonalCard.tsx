@@ -3,7 +3,7 @@ import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css";
 
-function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
+function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
   return (
     <div>
       <form id={`form_${applicant.id}`}>
@@ -66,7 +66,6 @@ function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReI
           <>
             <Button handleClick={handleEdit} iconClass={"bi-pencil"} spanTextClass={"card-page__body__btn__text"} text={"Edit"} activeTooltip={true}/>
             <Button handleClick={handleDelete} iconClass={"bi-trash"} spanTextClass={"card-page__body__btn__text"} text={"Delete"} activeTooltip={true}/>
-            <Button handleClick={handleRemind} iconClass={"bi-bell"} spanTextClass={"card-page__body__btn__text"} text={"Remind"} activeTooltip={true}/>
             <Button handleClick={handleReInvite} iconClass={"bi-envelope"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
           </>
         }
@@ -78,7 +77,6 @@ function ApplicantPersonalCard({applicant, handleChange, handleRemind, handleReI
 interface Props {
   applicant: ApplicantInterface;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleRemind: () => void;
   handleEdit: () => void;
   handleDelete: () => void;
   handleReInvite: () => void;
