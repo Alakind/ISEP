@@ -70,7 +70,7 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 }
 
 
-export async function addApplicant(data: Record<string, any>): Promise<{ id: string }> {
+export async function addApplicant(data: Partial<ApplicantInterface>): Promise<{ id: string }> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "POST",
     headers: {
@@ -94,7 +94,7 @@ export async function addApplicant(data: Record<string, any>): Promise<{ id: str
   return {id: id};
 }
 
-export async function updateApplicant(id: string, data: Record<string, any>): Promise<{ data: any }> {
+export async function updateApplicant(id: string, data: Partial<ApplicantInterface>): Promise<{ data: Partial<ApplicantInterface> }> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
     method: "PUT",
     headers: {
@@ -198,7 +198,7 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
 
 // addUser is not part of the system
 
-export async function updateUser(id: string, data: Record<string, any>): Promise<{ data: any }> {
+export async function updateUser(id: string, data: Partial<UserInterface>): Promise<{ data: Partial<UserInterface> }> {
   if (data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL) {
     throw new Error("The standard admin can't be deleted");
   }

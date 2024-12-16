@@ -62,7 +62,17 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
   async function handleSave(): Promise<void> {
     let res: { data: ApplicantInterface } = {data: prevApplicantData};
     try {
-      res = await updateApplicant(applicant.id, {name: applicant.name, email: applicant.email, preferredLanguage: applicant.preferredLanguage});
+      const updatedApplicant: { data: Partial<ApplicantInterface> } = await updateApplicant(applicant.id, {
+        name: applicant.name,
+        email: applicant.email,
+        preferredLanguage: applicant.preferredLanguage
+      });
+      res = {
+        data: {
+          ...prevApplicantData,
+          ...updatedApplicant.data,
+        },
+      };
       toast.success("Successfully saved!");
     } catch (error) {
       if (error instanceof Error) {
