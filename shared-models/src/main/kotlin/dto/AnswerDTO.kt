@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 )
 sealed class AnswerDTO {
     @get:Schema(hidden = true)
-    abstract val id: Long?
+    abstract val assignmentId: Long
 
     @get:Schema(type = "string", allowableValues = ["MultipleChoice", "Open"])
     abstract val type: AssignmentDTO.AssignmentType

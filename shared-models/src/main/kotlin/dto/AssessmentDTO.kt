@@ -3,9 +3,9 @@ package dto
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "A test, consisting of multiple Sections")
-data class InterviewDTO(
-    val id: Long?,
+data class AssessmentDTO(
+    val id: Long,
     val sections: List<SectionDTO>
 ) {
-    constructor(): this(null, emptyList())
+    constructor(): this(0, emptyList())
 }

@@ -1,8 +1,7 @@
 package ut.isep.management.controller
 
 import dto.ApplicantDTO
-import dto.InterviewDTO
-import dto.SectionDTO
+import dto.AssessmentDTO
 import enumerable.ApplicantStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -13,7 +12,11 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ut.isep.management.model.pgsql.Applicant
+import ut.isep.management.model.pgsql.AssignmentMultipleChoice
+import ut.isep.management.model.pgsql.AssignmentOpen
+import ut.isep.management.model.pgsql.Section
 import ut.isep.management.service.ApplicantService
+import ut.isep.management.service.toDTO
 
 @RestController
 @RequestMapping("/applicant")
@@ -110,9 +113,54 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<InterviewDTO> {
+    fun getInterview(@PathVariable applicantId: Int): ResponseEntity<AssessmentDTO> {
         //TODO implement
-        return ResponseEntity.ok(InterviewDTO(69, listOf()))
+
+        val assignment1 = AssignmentMultipleChoice(
+            description = "What will I get if I will sum 2 and 2?",
+            options = listOf("42", "Isaac Newton", "Madagascar"),
+            isMultipleAnswers = false,
+        )
+
+        val assignment2 = AssignmentMultipleChoice(
+            description = "Which member(s) should receive a red card?",
+            options = listOf("Aleks", "Jarno", "Jesse", "Ruben", "Everard"),
+            isMultipleAnswers = true
+        )
+
+        val assignment3 = AssignmentMultipleChoice(
+            description = "You are a 15th century plague doctor, please cure this sick person",
+            options = listOf("Mouse bites", "Leeches", "More mouse bites", "All of the above"),
+            isMultipleAnswers = false
+        )
+
+        val assignment4 = AssignmentMultipleChoice(
+            description = "How Long is a Chinese person",
+            options = listOf("Option A", "169.7 cm (5 ft 7 in)", "Trick question"),
+            isMultipleAnswers = false
+        )
+
+        val openAssignment1 = AssignmentOpen(
+            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon."
+        )
+
+        val openAssignment2 = AssignmentOpen(
+            description = "Prove whether or not P = NP in 150 words"
+        )
+
+        val section1 = Section(
+            title = "Demo Section 1",
+            assignments = setOf(assignment1, assignment2, openAssignment1)
+        )
+
+        // Create a Section with these assignments
+        val section2 = Section(
+            title = "Demo Section 2",
+            assignments = setOf(assignment3, assignment4, openAssignment2)
+        )
+        return ResponseEntity.ok(AssessmentDTO(69, listOf(
+            section1.toDTO(), section2.toDTO()
+        )))
     }
 
     @PostMapping("/{applicantId}/submit")
@@ -132,7 +180,7 @@ class ApplicantController(val applicantService: ApplicantService) {
             )
         ]
     )
-    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: InterviewDTO) {
+    fun postInterviewSubmit(@PathVariable applicantId: Int, @RequestBody interview: AssessmentDTO) {
         //TODO implement
     }
 }

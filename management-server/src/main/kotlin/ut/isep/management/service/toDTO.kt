@@ -10,8 +10,8 @@ fun Applicant.toDTO(): ApplicantDTO {
         preferredLanguage = this.preferredLanguage)
 }
 
-fun Interview.toDTO(): InterviewDTO {
-    return InterviewDTO(
+fun Interview.toDTO(): AssessmentDTO {
+    return AssessmentDTO(
         id = this.id,
         sections = this.sections.map {it.toDTO() }
     )
@@ -39,14 +39,18 @@ fun AssignmentMultipleChoice.toDTO(): AssignmentMultipleChoiceDTO {
         id = this.id,
         description = this.description,
         isMultipleAnswers = this.isMultipleAnswers,
-        options = this.options
+        options = this.options,
+        type = AssignmentDTO.AssignmentType.MultipleChoice,
+        answer = null
     )
 }
 
 fun AssignmentOpen.toDTO(): AssignmentOpenDTO {
     return AssignmentOpenDTO(
         id = this.id,
-        description = this.description
+        description = this.description,
+        type = AssignmentDTO.AssignmentType.Open,
+        answer = null
     )
 }
 

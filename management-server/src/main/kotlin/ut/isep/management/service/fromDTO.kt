@@ -10,7 +10,7 @@ fun ApplicantDTO.fromDTO(): Applicant {
     )
 }
 
-fun InterviewDTO.fromDTO(): Interview {
+fun AssessmentDTO.fromDTO(): Interview {
     return Interview(
         sections = this.sections.map {it.fromDTO() }
     )

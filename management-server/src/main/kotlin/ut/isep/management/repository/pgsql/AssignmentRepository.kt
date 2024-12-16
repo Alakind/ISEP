@@ -13,5 +13,5 @@ interface AssignmentRepository : JpaRepository<Assignment, Long> {
 
     fun findAssignmentById(id: Long): Assignment
 
-    fun findAssignmentByDescription(description: List<String>): Optional<Assignment>
+    fun findAssignmentByDescription(description: String): Optional<Assignment>
 }
