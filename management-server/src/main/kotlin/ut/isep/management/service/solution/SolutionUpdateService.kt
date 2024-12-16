@@ -37,8 +37,12 @@ class SolutionUpdateService(
     }
 
     private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
+        val assignment = solution.assignment as AssignmentMultipleChoice
+        if (assignment.optionToSolution.values.count {it == true} == 1 && answerDto.answer.size > 1) {
+            throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${assignment.id}")
+        }
         solution.userOptionsMarkedCorrect = answerDto.answer
-         repository.save(solution)
+        repository.save(solution)
     }
 
     private fun updateCodingSolution(solution: SolvedAssignmentCoding, answerDto: AnswerCreateReadDTO.Coding) {
