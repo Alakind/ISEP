@@ -29,8 +29,6 @@ function ApplicantsListPage({
       <span>
         <Button
           handleClick={handleAddApplicant}
-          isModal={true}
-          modalTargetId={"#exampleModalCenter"}
           iconClass={"bi-person-add"}
           spanTextClass={"applicant-list-page__btn__text"}
           text={"Add applicant"}
