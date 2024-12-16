@@ -29,7 +29,7 @@ form select {
 
 form input:disabled {
     color: var(--text-primary-disabled);
-    border-color: var(--transparent);
+    border-bottom-color: var(--text-primary-disabled);
 }
 
 form textarea {
@@ -47,4 +47,24 @@ form textarea:disabled {
 
 h4 {
     margin-bottom: 15px;
+}
+
+form input.input-email {
+    width: 80%;
+}
+
+form i {
+    margin-left: 10px;
+}
+
+.input-email--edit {
+    color: var(--text-primary);
+}
+
+.input-email--disabled {
+    cursor: default;
+}
+
+.i--disabled {
+    color: var(--text-primary-disabled);
 }

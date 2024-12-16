@@ -1,7 +1,7 @@
 import {ChangeEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {getApplicant, getAssessments, inviteApplicant} from "../../utils/apiFunctions.tsx";
+import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
@@ -11,7 +11,11 @@ function ApplicantInviteCardContainer(): ReactNode {
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
-  const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
+
+  const [editingEmail, setEditingEmail] = useState<boolean>(false);
+  const [applicantEmail, setApplicantEmail] = useState<string>("");
+  const [applicantName, setApplicantName] = useState<string>("");
+  const [prevApplicantEmail, setPrevApplicantEmail] = useState<string>("");
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
@@ -30,7 +34,9 @@ function ApplicantInviteCardContainer(): ReactNode {
     try {
       if (id !== undefined) {
         const data: ApplicantInterface = await getApplicant(id);
-        setApplicantData(data);
+        setApplicantEmail(data.email);
+        setApplicantName(data.name);
+        setPrevApplicantEmail(data.email);
         setInviteData((prev: InviteInterface): InviteInterface => ({
           ...prev,
           applicantId: `${data.id}`,
@@ -105,13 +111,14 @@ function ApplicantInviteCardContainer(): ReactNode {
       ...prev,
       assessmentId: `${selectedId}`,
     }));
-
-    console.log(inviteData)
   }
 
   function handleToggleMail(): void {
-    console.log(sendMailToggle);
+    if (sendMailToggle) {
+      setEditingEmail(false);
+    }
     setSendMailToggle(!sendMailToggle);
+
     //TODO uncomment when mails can be set
     // setInviteData((prev: InviteInterface): InviteInterface => ({
     //   ...prev,
@@ -142,12 +149,57 @@ function ApplicantInviteCardContainer(): ReactNode {
     // }));
   }
 
+  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
+    setApplicantEmail(e.target.value);
+  }
+
+  function handleEditingEmail(): void {
+    if (sendMailToggle) {
+      if (editingEmail && prevApplicantEmail != applicantEmail) {
+        handleSaveEmail().then();
+      }
+      setEditingEmail(!editingEmail);
+    }
+
+  }
+
+  async function handleSaveEmail(): Promise<void> {
+    let res: { email: string } = {email: prevApplicantEmail};
+    try {
+      const updatedApplicant: { data: Partial<ApplicantInterface> } = await updateApplicant(inviteData.applicantId, {email: applicantEmail});
+      if (updatedApplicant.data.email) {
+        res = {email: updatedApplicant.data.email};
+      }
+      toast.success("Email successfully updated");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    } finally {
+      setApplicantEmail(res.email);
+    }
+  }
+
+  function handleCancelEditingEmail(): void {
+    if (sendMailToggle && editingEmail) {
+      setEditingEmail(false);
+      if (prevApplicantEmail) {
+        setApplicantEmail(prevApplicantEmail);
+      } else {
+        toast.error('No previous data to restore!');
+      }
+    }
+  }
+
   if (loading) {
     return (<LoadingPage additionalClasses={"page--mod"}/>);
   } else {
     return (
       <ApplicantInviteCard
-        applicantData={applicantData}
+        applicantEmail={applicantEmail}
+        applicantName={applicantName}
         handleInvite={handleInvite}
         handleCancel={handleCancel}
         assessmentsData={assessmentsData}
@@ -158,6 +210,10 @@ function ApplicantInviteCardContainer(): ReactNode {
         handleChangeExpirationDate={handleChangeExpirationDate}
         inviteData={inviteData}
         toggleValue={sendMailToggle}
+        handleChangeEmail={handleChangeEmail}
+        editingEmail={editingEmail}
+        handleEditingEmail={handleEditingEmail}
+        handleCancelEditingEmail={handleCancelEditingEmail}
       />
     );
   }

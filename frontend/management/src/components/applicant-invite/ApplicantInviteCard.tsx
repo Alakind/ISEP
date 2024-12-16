@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
+import {AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css";
@@ -7,7 +7,8 @@ import ToggleContainer from "../../containers/ToggleContainer.tsx";
 
 
 function ApplicantInviteCard({
-                               applicantData,
+                               applicantEmail,
+                               applicantName,
                                assessmentsData,
                                handleCancel,
                                handleInvite,
@@ -17,7 +18,11 @@ function ApplicantInviteCard({
                                handleChangeExpirationDate,
                                inviteData,
                                expirationDate,
-                               toggleValue
+                               toggleValue,
+                               handleChangeEmail,
+                               editingEmail,
+                               handleEditingEmail,
+                               handleCancelEditingEmail
                              }: Props): ReactNode {
   return (
     <>
@@ -60,7 +65,7 @@ function ApplicantInviteCard({
         <div className="card-page__body__btns">
           <Button handleClick={handleCancel} iconClass={"bi-x"} spanTextClass={"card-page__body__btn__text"} text={"Cancel"} activeTooltip={true}/>
           <Button handleClick={handleInvite} iconClass={"bi-send"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}
-                  isDisabled={applicantData.email == "" || applicantData.email == null || inviteData.assessmentId == "0"}/>
+                  isDisabled={applicantEmail == "" || applicantEmail == null || inviteData.assessmentId == "0"}/>
         </div>
       </div>
       <div className={"card-page__body--col2 card-page__body__inner"}>
@@ -68,16 +73,33 @@ function ApplicantInviteCard({
         <form>
           <div>
             <label htmlFor="to">To:</label>
-            <input
-              type="email"
-              id="to"
-              name="to"
-              onChange={(e: ChangeEvent<HTMLInputElement>): void => console.log(e.target.value)}
-              value={applicantData.email}
-              autoComplete="off"
-              disabled={!toggleValue}
-              required
-            />
+            <span>
+              <input
+                type="email"
+                id="to"
+                name="to"
+                className={`input-email`}
+                onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeEmail(e)}
+                value={applicantEmail}
+                autoComplete="off"
+                disabled={!editingEmail}
+                required
+              />
+              {
+                editingEmail ?
+                  <a onClick={(): void => handleCancelEditingEmail()} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
+                    <i className={"bi bi-x-lg"}></i>
+                  </a> :
+                  <></>
+              }
+              <a onClick={(): void => handleEditingEmail()} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
+                {
+                  editingEmail ?
+                    <i className="bi bi-floppy"></i> :
+                    <i className={`bi bi-pencil ${!toggleValue ? "i--disabled" : ""}`}></i>
+                }
+              </a>
+            </span>
           </div>
           <div>
             <label htmlFor="message">Message:</label>
@@ -85,7 +107,7 @@ function ApplicantInviteCard({
               id="message"
               name="message"
               onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => console.log(e.target.value)} //TODO implement mail sending
-              value={import.meta.env.VITE_STANDARD_MAIL ?? `${applicantData.name ? `Dear ${applicantData.name}` : "Dear Sir/Madame,"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`}
+              value={import.meta.env.VITE_STANDARD_MAIL ?? `${applicantName ? `Dear ${applicantName}` : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`}
               disabled={!toggleValue}
               required
             />
@@ -97,7 +119,8 @@ function ApplicantInviteCard({
 }
 
 interface Props {
-  applicantData: ApplicantInterface;
+  applicantEmail: string;
+  applicantName: string;
   assessmentsData: AssessmentInterface[];
   handleCancel: () => void;
   handleInvite: () => void;
@@ -108,6 +131,10 @@ interface Props {
   handleChangeExpirationDate: (e: ChangeEvent<HTMLInputElement>) => void;
   inviteData: InviteInterface;
   toggleValue: boolean;
+  handleChangeEmail: (e: ChangeEvent<HTMLInputElement>) => void;
+  editingEmail: boolean;
+  handleEditingEmail: () => void;
+  handleCancelEditingEmail: () => void;
 }
 
 export default ApplicantInviteCard
