@@ -1,7 +1,7 @@
-import AssessmentResultsViewer from "../../components/applicant-personal/AssessmentResultsViewer.tsx";
+import AssessmentResultsViewer from "../../../components/applicant-personal/results/AssessmentResultsViewer.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
-import {getAssessment, getSectionSolution} from "../../utils/apiFunctions.tsx";
+import {AssessmentInterface, SectionInterface} from "../../../utils/types.tsx";
+import {getAssessment, getSectionSolution} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
 function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): ReactNode {

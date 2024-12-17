@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import {AssessmentInterface} from "../../utils/types.tsx";
+import {AssessmentInterface} from "../../../utils/types.tsx";
 
 function AssessmentResultsOverview({assessmentData}: Props): ReactNode {
   return (

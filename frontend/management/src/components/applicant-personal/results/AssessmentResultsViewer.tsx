@@ -1,9 +1,9 @@
-import "../../styles/assessment-results-viewer.css";
+import "../../../styles/assessment-results-viewer.css";
 import AssessmentResultsSections from "./AssessmentResultsSections.tsx";
 import AssessmentResultsOverview from "./AssessmentResultsOverview.tsx";
-import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
+import {AssessmentInterface, SectionInterface} from "../../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
-import LoadingPage from "../LoadingPage.tsx";
+import LoadingPage from "../../LoadingPage.tsx";
 
 function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeSection, setActiveSection}: Props): ReactNode {
   return (

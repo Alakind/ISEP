@@ -1,4 +1,4 @@
-import {AssignmentInterface} from "../../utils/types.tsx";
+import {AssignmentInterface} from "../../../utils/types.tsx";
 import {ReactNode} from "react";
 
 function SolvedAssignment({assignment}: Props): ReactNode {

@@ -1,4 +1,4 @@
-import {AssignmentInterface, SectionInterface} from "../../utils/types.tsx";
+import {AssignmentInterface, SectionInterface} from "../../../utils/types.tsx";
 import SolvedAssignment from "./SolvedAssignment.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 
