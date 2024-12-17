@@ -28,5 +28,5 @@
 
 .btn--toast:hover {
     border-color: var(--transparent);
-    background-color: var(--highlight);
+    background-color: var(--tertiary-color);
 }

@@ -1,8 +1,8 @@
-import {Selection, Column} from "../../utils/types.tsx";
+import {Column, Selection} from "../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction, useState} from "react";
 import TableHead from "../../components/table/TableHead.tsx";
 
-function TableHeadContainer({ columns, orderBy, setOrderBy, setIsSelected } : Props): ReactNode {
+function TableHeadContainer({columns, orderBy, setOrderBy, setIsSelected}: Props): ReactNode {
   const [sortField, setSortField] = useState<string>(orderBy.split(":")[0]);
   const [order, setOrder] = useState<string>(orderBy.split(":")[1]);
 
@@ -25,7 +25,7 @@ function TableHeadContainer({ columns, orderBy, setOrderBy, setIsSelected } : Pr
   }
 
   return (
-   <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting} handleSelectAll={handleSelectAll}/>
+    <TableHead columns={columns} sortField={sortField} order={order} handleSorting={handleSorting} handleSelectAll={handleSelectAll}/>
   )
 }
 
@@ -35,4 +35,5 @@ interface Props {
   setOrderBy: Dispatch<SetStateAction<string>>;
   setIsSelected?: Dispatch<SetStateAction<Selection[]>>;
 }
+
 export default TableHeadContainer

@@ -1,7 +1,7 @@
 import "../styles/custom-toast.css";
 import {ReactNode} from "react";
 
-function CustomWarnToast({proceedAction, cancelAction, message} : Props ): ReactNode {
+function CustomWarnToast({proceedAction, cancelAction, message}: Props): ReactNode {
   return (<div className="custom-warn-toast__container">
     {message}
     <br/>

@@ -1,64 +1,34 @@
 import {ApplicantInterface} from "../utils/types";
-import {ReactNode, useEffect, useState} from "react";
-import {toast} from "react-toastify";
+import {Dispatch, ReactNode, SetStateAction} from "react";
 import SearchContainer from "../containers/table/SearchContainer.tsx";
 import ApplicantsTableContainer from "../containers/table/ApplicantsTableContainer.tsx";
 import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectContainer.tsx";
 import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
-import {getApplicants} from "../utils/apiFunctions.tsx";
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 import {applicantColumns} from "../utils/constants.tsx";
 import Button from "./Button.tsx";
-import {NavigateFunction, useNavigate} from "react-router-dom";
 
-function ApplicantsListPage({initialData, initialCurrentPage, initialItemsPerPage, initialTotalItems, initialOrderBy}: Props): ReactNode {
-  const [data, setData] = useState<ApplicantInterface[]>(initialData);
-  const [currentPage, setCurrentPage] = useState<number>(initialCurrentPage);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(initialItemsPerPage);
-  const [totalItems, setTotalItems] = useState<number>(initialTotalItems);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>(initialOrderBy);
-  const navigate: NavigateFunction = useNavigate();
-
-  useEffect((): void => {
-    async function fetchData(): Promise<void> {
-      setLoading(true);
-      try {
-        const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
-
-        setData(res.data);
-        setTotalItems(res.totalItems);
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message)
-        } else {
-          toast.error("Unknown error occurred.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy]);
-
-  function handleAddApplicant(): void {
-    navigate("/applicants/add");
-  }
-
-  function updateData(data: ApplicantInterface[]): void {
-    setData(data)
-  }
-
+function ApplicantsListPage({
+                              handleAddApplicant,
+                              data,
+                              updateData,
+                              totalItems,
+                              setTotalItems,
+                              loading,
+                              setLoading,
+                              currentPage,
+                              setCurrentPage,
+                              itemsPerPage,
+                              setItemsPerPage,
+                              orderBy,
+                              setOrderBy
+                            }: Props): ReactNode {
   return (
     <div className="applicant-list-page">
       <span>
         <Button
           handleClick={handleAddApplicant}
-          btnClasses={"applicant-list-page__back-btn"}
-          isModal={true}
-          modalTargetId={"#exampleModalCenter"}
           iconClass={"bi-person-add"}
           spanTextClass={"applicant-list-page__btn__text"}
           text={"Add applicant"}
@@ -81,11 +51,19 @@ function ApplicantsListPage({initialData, initialCurrentPage, initialItemsPerPag
 }
 
 interface Props {
-  initialData: ApplicantInterface[];
-  initialCurrentPage: number;
-  initialItemsPerPage: number;
-  initialTotalItems: number;
-  initialOrderBy: string;
+  handleAddApplicant: () => void;
+  data: ApplicantInterface[];
+  updateData: (data: ApplicantInterface[]) => void;
+  totalItems: number;
+  setTotalItems: Dispatch<SetStateAction<number>>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  currentPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  itemsPerPage: number;
+  setItemsPerPage: Dispatch<SetStateAction<number>>;
+  orderBy: string;
+  setOrderBy: Dispatch<SetStateAction<string>>;
 }
 
 export default ApplicantsListPage;

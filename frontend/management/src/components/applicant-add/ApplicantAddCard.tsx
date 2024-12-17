@@ -1,45 +1,68 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
+import "../../styles/form.css"
 
 function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}: Props): ReactNode {
   return (
     <div>
       <form>
         <div>
-          <label>Name:</label>
+          <label htmlFor={"name"}>Name:</label>
           <input
             type="text"
+            id={"name"}
             name="name"
             value={newApplicant.name}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoFocus
+            autoComplete="off"
             required
           />
         </div>
         <div>
-          <label>Email:</label>
+          <label htmlFor={"email"}>Email:</label>
           <input
-            type="text"
+            type="email"
+            id={"email"}
             name="email"
             value={newApplicant.email}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            autoComplete="off"
             required
           />
         </div>
         <div>
-          <label>Preferred language:</label>
+          <label htmlFor={"preferredLanguage"}>Preferred language:</label>
           <input
             type="text"
+            id={"preferredLanguage"}
             name="preferredLanguage"
             value={newApplicant.preferredLanguage.toString()}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
           />
         </div>
       </form>
-      <div className="applicant-add__btns">
-        <Button handleClick={handleCancel} iconClass={"bi-x"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Cancel"} activeTooltip={true}/>
-        <Button handleClick={(): void => handleAdd(false)} iconClass={"bi-person-add"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Add"} activeTooltip={true}/>
-        <Button handleClick={(): void => handleAdd(true)} iconClass={"bi-person-lines-fill"} btnClasses={"applicant-add__btn"} spanTextClass={"applicant-add__btn__text"} text={"Add & Invite"} activeTooltip={true}/>
+      <div className="card-page__body__btns">
+        <Button
+          handleClick={handleCancel}
+          iconClass={"bi-x"}
+          spanTextClass={"card-page__body__btn__text"}
+          text={"Cancel"}
+          activeTooltip={true}
+        />
+        <Button handleClick={(): void => handleAdd(false)}
+                iconClass={"bi-person-add"}
+                spanTextClass={"card-page__body__btn__text"}
+                text={"Add"}
+                activeTooltip={true}
+        />
+        <Button handleClick={(): void => handleAdd(true)}
+                iconClass={"bi-send"}
+                spanTextClass={"card-page__body__btn__text"}
+                text={"Add & Invite"}
+                activeTooltip={true}
+        />
       </div>
     </div>
   )

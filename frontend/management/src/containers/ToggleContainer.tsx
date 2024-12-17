@@ -1,37 +1,17 @@
 import "../styles/toggle.css";
-import {useState} from "react";
-import {toast} from "react-toastify";
 import Toggle from "../components/Toggle.tsx";
 
-function ToggleContainer({checked, subUrl, disabled}: Props) {
-  const [toggleValue, setToggleValue] = useState<boolean>(checked ?? false);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  async function changeState(): Promise<void> {
-    setLoading(true);
-    try {
-      // await updateAccess(subUrl, !toggleValue); //TODO remove container and component is not used anymore
-      setToggleValue(!toggleValue);
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message)
-      } else {
-        toast.error("Unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
+function ToggleContainer({id, disabled, handleChange, toggleValue}: Props) {
   return (
-    <Toggle toggleValue={toggleValue} changeState={changeState} disabled={disabled} loading={loading}/>
+    <Toggle id={id} toggleValue={toggleValue} handleChange={handleChange} disabled={disabled ?? false}/>
   )
 }
 
 interface Props {
-  checked: boolean | undefined;
-  subUrl: string;
-  disabled: boolean;
+  id: string;
+  disabled?: boolean;
+  handleChange: () => void;
+  toggleValue: boolean
 }
 
 export default ToggleContainer

@@ -1,4 +1,4 @@
-.active>.page-link, .page-link.active {
+.active > .page-link, .page-link.active {
     color: var(--text-secondary);
     background-color: var(--tertiary-color);
     border-color: var(--tertiary-color);

@@ -1,7 +1,7 @@
 import "../../styles/bulk-action.css"
 import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 
-function BulkActionSelect({ loading, options, handleSelect, selectedOption, setSelectedOption} : Props): ReactNode {
+function BulkActionSelect({loading, options, handleSelect, selectedOption, setSelectedOption}: Props): ReactNode {
   return (
     <span className="bulk-action-select">
       <label htmlFor="bulkActionSelect">Actions:</label>
@@ -21,4 +21,5 @@ interface Props {
   selectedOption: string;
   setSelectedOption: Dispatch<SetStateAction<string>>;
 }
+
 export default BulkActionSelect

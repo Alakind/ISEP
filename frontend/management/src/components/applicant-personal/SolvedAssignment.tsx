@@ -3,7 +3,9 @@ import {ReactNode} from "react";
 
 function SolvedAssignment({assignment}: Props): ReactNode {
   return (
-    <div>{assignment.description}<div>{assignment.answer.answer}</div></div>
+    <div>{assignment.description}
+      <div>{assignment.answer.answer}</div>
+    </div>
   )
 }
 

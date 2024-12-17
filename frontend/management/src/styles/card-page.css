@@ -1,0 +1,83 @@
+.card-page {
+    width: 750px;
+    min-width: 500px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (max-width: 815px) {
+    .card-page {
+        width: 100%;
+    }
+
+    .card-page__body__btn__text,
+    .card-page__header__btn__text {
+        display: none;
+    }
+
+    .bi-pencil,
+    .bi-x,
+    .bi-floppy,
+    .bi-trash,
+    .bi-envelope,
+    .bi-arrow-left-short,
+    .bi-send,
+    .bi-person-add {
+        margin-right: 0 !important;
+    }
+}
+
+.card-page__header {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 30px;
+}
+
+.card-page__body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: var(--card-body);
+    border-radius: 5px;
+    width: 100%;
+}
+
+.card-page__body__inner {
+    background-color: var(--card-body-inner) !important;
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.card-page__body__btns {
+    margin-top: 30px;
+}
+
+.card-page__body__btns > button:not(:first-child):not(:last-child) {
+    margin: 0 10px !important;
+}
+
+.card-page__body__btns > button:first-child {
+    margin: 0 10px 0 0 !important;
+}
+
+.card-page__body__btns > button:last-child {
+    margin: 0 0 0 10px !important;
+}
+
+.bi-pencil,
+.bi-x,
+.bi-floppy,
+.bi-trash,
+.bi-envelope,
+.bi-arrow-left-short,
+.bi-send,
+.bi-person-add {
+    margin-right: 10px;
+}
+
+.card-page__body--col2 {
+    width: 48%;
+}

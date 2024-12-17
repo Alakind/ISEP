@@ -3,7 +3,7 @@ import RoleSelect from "../components/RoleSelect.tsx";
 import {updateUser} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Roles} from "../utils/constants.tsx"
-
+import {UserInterface} from "../utils/types.tsx";
 
 function RoleSelectContainer({id, disabled, initialRole}: Props): ReactNode {
   const [selectedOption, setSelectedOption] = useState<(typeof Roles)[keyof typeof Roles]>(initialRole);
@@ -12,9 +12,14 @@ function RoleSelectContainer({id, disabled, initialRole}: Props): ReactNode {
   async function changeState(e: ChangeEvent<HTMLSelectElement>): Promise<void> {
     setLoading(true);
     try {
-      const res: { data: { id: string, role: typeof Roles } } = await updateUser(id, {role: e.target.value});
-      e.target.value = res.data.role.toString();
-      setSelectedOption(res.data.role.toString());
+      const res: { data: Partial<UserInterface> } = await updateUser(id, {role: e.target.value});
+      if (res.data.role !== undefined) {
+        e.target.value = res.data.role.toString();
+        setSelectedOption(res.data.role.toString());
+        toast.success("Successfully changed role");
+      } else {
+        throw new Error("Failed to update role: role is undefined in the response.");
+      }
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

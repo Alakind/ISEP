@@ -40,11 +40,11 @@
 }
 
 input:checked + .slider {
-    background-color: green;
+    background-color: var(--highlight-hover);
 }
 
 input + .slider {
-    background-color: red;
+    background-color: grey;
 }
 
 input:disabled + .slider {
