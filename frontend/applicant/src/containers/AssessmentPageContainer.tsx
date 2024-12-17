@@ -5,6 +5,7 @@ import "../styles/general.css";
 import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { SectionInterface } from "../utils/types.tsx";
+import { fetchAssessment } from "../utils/apiFunctions.tsx";
 
 function AssessmentPageContainer() {
   const [assessment, setAssessment] = useState<{
@@ -27,52 +28,15 @@ function AssessmentPageContainer() {
       throw new Error("Couldn't get invite Id.");
     }
 
-    const API_SECTIONS_URL =
-      import.meta.env.VITE_API_APPLICANT_URL +
-      "/invite/" +
-      inviteId +
-      "/assessment";
-
     const fetchData = async () => {
       try {
-        const response = await fetch(API_SECTIONS_URL);
+        const assessmentFetched = await fetchAssessment(inviteId);
 
-        if (!response.ok) {
-          throw new Error(
-            "Couldn't connect to the server, please try again or email InfoSupport!"
-          );
-        }
+        setAssessment(assessmentFetched);
 
-        const data = await response.json();
-
-        const sectionsFetched = [];
-        const assignmentsFetched = [];
-        for (let i = 0; i < data.sections.length; i++) {
-          const API_SECTION_URL =
-            import.meta.env.VITE_API_APPLICANT_URL +
-            "/section/" +
-            data.sections[i] +
-            "/solution/" +
-            inviteId;
-
-          const responseSection = await fetch(API_SECTION_URL);
-          if (!response.ok) {
-            throw new Error(
-              "Couldn't connect to the server, please try again or email InfoSupport!"
-            );
-          }
-          const section = await responseSection.json();
-          sectionsFetched.push({
-            id: section.id,
-            assignments: section.assignments,
-            title: section.title,
-          });
-          assignmentsFetched.push(0);
-        }
-
-        setAssessment({ sections: sectionsFetched });
-
-        const initialAssignments = Array(sectionsFetched.length).fill(0);
+        const initialAssignments = Array(
+          assessmentFetched.sections.length
+        ).fill(0);
         setCurrentAssignmentIndex(initialAssignments);
 
         setIsLoading(false);

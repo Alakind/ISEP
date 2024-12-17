@@ -17,11 +17,7 @@ export interface AssignmentInterface {
   description: string;
 }
 
-export interface AssignmentMultipleChoiceInterface extends AssessmentInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
-  description: string;
+export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
   options: string[];
   isMultipleAnswers: boolean;
 }

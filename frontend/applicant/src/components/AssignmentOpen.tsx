@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { AssignmentInterface } from "../utils/types";
 import { sendOpenSolution } from "../utils/apiFunctions";
 
@@ -30,9 +30,7 @@ function AssignmentOpen({ assignment }: Props) {
     await handleSendSolution(value);
   };
 
-  const handleTextChange = async (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleTextChange = async (event: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = event.target.value;
     setValue(newValue);
   };
@@ -47,7 +45,9 @@ function AssignmentOpen({ assignment }: Props) {
         className="assignment__textarea"
         placeholder="Type here ..."
         name={assignment.id}
-        onChange={(event) => handleTextChange(event)}
+        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+          handleTextChange(event)
+        }
         value={value}
         onFocus={handleOnFocus}
         onBlur={handleBlur}
