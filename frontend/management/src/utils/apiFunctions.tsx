@@ -403,3 +403,70 @@ export async function getBarChartStats(inviteUuid: string): Promise<BarChartInte
     ]
   };
 }
+
+export async function getSkillsStats(inviteUuid: string): Promise<SkillsInterface[]> {
+  //TODO uncomment next part when implemented
+  /*const response: Response = await fetch(`${baseUrl}/skills`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inviteUuid: inviteUuid,
+    }),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve skills`);
+  }
+
+  return await response.json();*/
+  return [
+    {
+      name: "C#",
+      scoredPoints: 11,
+      totalPoints: 26
+    },
+    {
+      name: "SQL",
+      scoredPoints: 7,
+      totalPoints: 19
+    },
+    {
+      name: "LINQ",
+      scoredPoints: 0,
+      totalPoints: 5
+    },
+    {
+      name: "Threading",
+      scoredPoints: 2,
+      totalPoints: 5
+    },
+    {
+      name: "Database",
+      scoredPoints: 2,
+      totalPoints: 5
+    },
+    {
+      name: "Design",
+      scoredPoints: 3,
+      totalPoints: 3
+    },
+    {
+      name: "Scrum",
+      scoredPoints: 2,
+      totalPoints: 3
+    },
+    {
+      name: "Cross language",
+      scoredPoints: 2,
+      totalPoints: 3
+    },
+    {
+      name: "Artificial Intelligence",
+      scoredPoints: 2,
+      totalPoints: 2
+    }
+  ]
+}

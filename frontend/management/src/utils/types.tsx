@@ -113,3 +113,9 @@ export interface BarGroupInterface {
   value: string;
   isSelected: boolean;
 }
+
+export interface SkillsInterface {
+  name: string;
+  scoredPoints: number;
+  totalPoints: number;
+}

@@ -2,6 +2,7 @@ import {ReactNode} from "react";
 import {AssessmentInterface} from "../../../utils/types.tsx";
 import "../../../styles/results-overview.css";
 import BarChartContainer from "../../../containers/applicant-personal/results/bar-chart/BarChartContainer.tsx";
+import SkillsBlockContainer from "../../../containers/applicant-personal/results/skills/SkillsBlockContainer.tsx";
 
 function AssessmentResultsOverview({assessmentData, inviteUuid}: Props): ReactNode {
   //TODO retrieve this data from back-end
@@ -26,7 +27,7 @@ function AssessmentResultsOverview({assessmentData, inviteUuid}: Props): ReactNo
       <div className={"results-overview__skills"}>
         <h5>Skills</h5>
         <div className={"results-overview__skills__progress"}>
-          <div></div>
+          <SkillsBlockContainer inviteUuid={inviteUuid}/>
         </div>
       </div>
     </div>
