@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, AssignmentInterface, InviteInterface, SectionInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SkillsInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -337,4 +337,69 @@ export async function getAssignment(id: string): Promise<AssignmentInterface> {
   }
 
   return await response.json();
+}
+
+export async function getBarChartStats(inviteUuid: string): Promise<BarChartInterface> {
+  //TODO uncomment next part when implemented
+  /*const response: Response = await fetch(`${baseUrl}/statistics`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inviteUuid: inviteUuid,
+    }),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve bar chart statistics`);
+  }
+
+  return await response.json();*/
+  return {
+    percentage: "46.17",
+    barGroups: [
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "4",
+        isSelected: false,
+      },
+      {
+        value: "14",
+        isSelected: false,
+      },
+      {
+        value: "24",
+        isSelected: false,
+      },
+      {
+        value: "31",
+        isSelected: true,
+      },
+      {
+        value: "14",
+        isSelected: false,
+      },
+      {
+        value: "9",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+    ]
+  };
 }

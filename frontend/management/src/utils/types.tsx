@@ -103,3 +103,13 @@ export interface AssignmentCodingInterface {
   image: string;
   files: File[];
 }
+
+export interface BarChartInterface {
+  percentage: string;
+  barGroups: BarGroupInterface[];
+}
+
+export interface BarGroupInterface {
+  value: string;
+  isSelected: boolean;
+}

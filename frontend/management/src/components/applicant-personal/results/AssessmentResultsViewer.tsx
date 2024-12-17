@@ -5,7 +5,7 @@ import {Dispatch, ReactNode, SetStateAction} from "react";
 import LoadingPage from "../../LoadingPage.tsx";
 import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
 
-function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeSection, setActiveSection}: Props): ReactNode {
+function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeSection, setActiveSection, inviteUuid}: Props): ReactNode {
   return (
     <div className="results__container">
       <h4>Results Overview</h4>
@@ -13,7 +13,7 @@ function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeS
         {
           loading ?
             <LoadingPage additionalClasses={"page--mod"}/> :
-            <AssessmentResultsOverviewContainer assessmentData={assessmentData}/>
+            <AssessmentResultsOverviewContainer assessmentData={assessmentData} inviteUuid={inviteUuid}/>
         }
       </div>
       <br/>
@@ -35,6 +35,7 @@ interface Props {
   sectionsData: SectionInterface[];
   activeSection: number;
   setActiveSection: Dispatch<SetStateAction<number>>;
+  inviteUuid: string;
 }
 
 export default AssessmentResultsViewer
