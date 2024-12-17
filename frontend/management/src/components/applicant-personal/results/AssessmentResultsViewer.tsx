@@ -1,9 +1,9 @@
 import "../../../styles/assessment-results-viewer.css";
 import AssessmentResultsSections from "./AssessmentResultsSections.tsx";
-import AssessmentResultsOverview from "./AssessmentResultsOverview.tsx";
 import {AssessmentInterface, SectionInterface} from "../../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import LoadingPage from "../../LoadingPage.tsx";
+import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
 
 function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeSection, setActiveSection}: Props): ReactNode {
   return (
@@ -13,7 +13,7 @@ function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeS
         {
           loading ?
             <LoadingPage additionalClasses={"page--mod"}/> :
-            <AssessmentResultsOverview assessmentData={assessmentData}/>
+            <AssessmentResultsOverviewContainer assessmentData={assessmentData}/>
         }
       </div>
       <br/>

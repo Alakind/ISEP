@@ -1,0 +1,12 @@
+.results-overview {
+    display: flex;
+    justify-content: space-between;
+}
+
+.results-overview__score__percentage {
+    font-size: 40px;
+}
+
+.results-overview__score__points, .results-overview__score__points span {
+    font-size: 12px;
+}
