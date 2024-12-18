@@ -1,16 +1,25 @@
-import {AssignmentInterface} from "../../../utils/types.tsx";
-import {ReactNode} from "react";
+import {AssignmentSolvedInterface} from "../../../utils/types.tsx";
+import {Children, JSXElementConstructor, ReactElement, ReactNode, ReactPortal} from "react";
 
-function SolvedAssignment({assignment}: Props): ReactNode {
+function SolvedAssignment({assignment, index, children}: Props): ReactNode {
   return (
-    <div>{assignment.description}
-      <div>{assignment.answer.answer}</div>
-    </div>
-  )
+    <>
+      <div className="assignment__header"><span>{index + 1}. {assignment.description}</span><span>{assignment.scoredPoints ?? 0} / {assignment.totalPoints ?? 0}</span></div>
+      <div className="assignment__block">
+        {Children.map(children, (child: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined): ReactNode =>
+          <>
+            {child}
+          </>
+        )}
+      </div>
+    </>
+  );
 }
 
 interface Props {
-  assignment: AssignmentInterface;
+  assignment: AssignmentSolvedInterface;
+  index: number;
+  children: ReactNode;
 }
 
 export default SolvedAssignment

@@ -1,6 +1,6 @@
 import "../../../styles/assessment-results-viewer.css";
 import AssessmentResultsSections from "./AssessmentResultsSections.tsx";
-import {AssessmentInterface, SectionInterface} from "../../../utils/types.tsx";
+import {AssessmentInterface, SectionSolvedInterface} from "../../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import LoadingPage from "../../LoadingPage.tsx";
 import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
@@ -22,7 +22,7 @@ function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeS
         {
           loading ?
             <LoadingPage additionalClasses={"page--mod"}/> :
-            <AssessmentResultsSections sections={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
+            <AssessmentResultsSections inviteUuid={inviteUuid} sections={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
         }
       </div>
     </div>
@@ -32,7 +32,7 @@ function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeS
 interface Props {
   assessmentData: AssessmentInterface;
   loading: boolean;
-  sectionsData: SectionInterface[];
+  sectionsData: SectionSolvedInterface[];
   activeSection: number;
   setActiveSection: Dispatch<SetStateAction<number>>;
   inviteUuid: string;
