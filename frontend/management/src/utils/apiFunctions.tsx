@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SkillsInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -307,7 +307,7 @@ export async function getSection(id: string): Promise<SectionInterface> {
   return await response.json();
 }
 
-export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionInterface> {
+export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionSolvedInterface> {
   const response: Response = await fetch(`${baseUrl}/section/${id}/solution/${inviteUuid}`, {
     method: "GET",
     headers: {
@@ -339,7 +339,7 @@ export async function getAssignment(id: string): Promise<AssignmentInterface> {
   return await response.json();
 }
 
-export async function getBarChartStats(inviteUuid: string): Promise<BarChartInterface> {
+export async function getBarChartStats(inviteId: string): Promise<BarChartInterface> {
   //TODO uncomment next part when implemented
   /*const response: Response = await fetch(`${baseUrl}/statistics`, {
     method: "GET",
@@ -347,7 +347,7 @@ export async function getBarChartStats(inviteUuid: string): Promise<BarChartInte
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      inviteUuid: inviteUuid,
+      inviteId: inviteId,
     }),
   });
 
@@ -404,7 +404,7 @@ export async function getBarChartStats(inviteUuid: string): Promise<BarChartInte
   };
 }
 
-export async function getSkillsStats(inviteUuid: string): Promise<SkillsInterface[]> {
+export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[]> {
   //TODO uncomment next part when implemented
   /*const response: Response = await fetch(`${baseUrl}/skills`, {
     method: "GET",
@@ -412,7 +412,7 @@ export async function getSkillsStats(inviteUuid: string): Promise<SkillsInterfac
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      inviteUuid: inviteUuid,
+      inviteId: inviteId,
     }),
   });
 
