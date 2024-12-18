@@ -49,34 +49,40 @@ export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
   title: string;
+  measuredTime: string;
+  suggestedTime: string;
+  scoredPoints: number;
+  totalPoints: number;
 }
 
 export interface AssignmentSolvedInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
   description: string;
-  answer: { type: string; answer: string };
+  scoredPoints: number;
+  totalPoints: number;
+  // isChecked: boolean; //TODO uncomment when implemented that you can check assignments
 }
 
-export interface AssignmentMultipleChoiceSolvedInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
-  description: string;
+export interface AssignmentOpenSolvedInterface extends AssignmentSolvedInterface {
+  answer: { type: string; answer: string };
+  solution: { type: string; correctAnswer: string };
+}
+
+export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolvedInterface {
   options: string[];
   isMultipleAnswers: boolean;
   answer: { type: string; answer: number[] };
+  solution: { type: string; correctAnswer: number[] };
 }
 
-export interface AssignmentCodingSolvedInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
-  text: string;
+export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
   image: string;
   files: File[];
+  codeUri: string;
+  language: string;
   answer: { type: string; answer: File[] };
+  solution: { type: string; correctAnswer: File[] };
 }
 
 export interface AssignmentInterface {
@@ -86,20 +92,12 @@ export interface AssignmentInterface {
   description: string;
 }
 
-export interface AssignmentMultipleChoiceInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
-  description: string;
+export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
   options: string[];
   isMultipleAnswers: boolean;
 }
 
-export interface AssignmentCodingInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  isSolved: boolean;
-  text: string;
+export interface AssignmentCodingInterface extends AssignmentInterface {
   image: string;
   files: File[];
 }
