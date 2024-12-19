@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import {
   AssessmentInterface,
   AssignmentInterface,
@@ -36,6 +37,7 @@ export async function sendMultipleChoiceSolution(
 
     return;
   } else {
+    toast.error(`Failed to retrive invite ID`);
     throw new Error(`Failed to retrive invite ID from localstorage`);
   }
 }
@@ -70,6 +72,7 @@ export async function sendOpenSolution(
 
     return;
   } else {
+    toast.error(`Failed to retrive invite ID`);
     throw new Error(`Failed to retrive invite ID from localstorage`);
   }
 }
