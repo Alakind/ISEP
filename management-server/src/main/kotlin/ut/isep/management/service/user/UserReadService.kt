@@ -18,6 +18,6 @@ class UserReadService(
         .withIgnoreNullValues()
         .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-        .withIgnorePaths("role")
+        .withIgnorePaths("id", "role")
 }
 
