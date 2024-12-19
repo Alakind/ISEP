@@ -2,30 +2,6 @@ import {ApplicantInterface, AssessmentInterface, AssignmentInterface, InviteInte
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
-// ------------------------------- GENERAL ----------------------------------//
-
-export async function getSearch(currentPage: number, itemsPerPage: number, subUrl: string, keyword: string): Promise<{ data: ApplicantInterface[] | UserInterface[], totalItems: number }> {
-  const response: Response = await fetch(`${baseUrl}${subUrl}?page=${currentPage}&limit=${itemsPerPage}&search=${keyword}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const data = await response.json();
-
-
-  if (!response.ok) {
-    throw new Error(`Failed to search for: ${keyword}`);
-  }
-
-  if (subUrl == "/user") {
-    return {data: (data.data as UserInterface[]), totalItems: data.total};
-  } else {
-    return {data: (data.data as ApplicantInterface[]), totalItems: data.total};
-  }
-}
-
 // ------------------------------ APPLICANT ---------------------------------//
 
 export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
