@@ -1,10 +1,10 @@
 import "../styles/status-item.css";
-import {ApplicantStatuses} from "../utils/constants.tsx";
+import {InviteStatuses} from "../utils/constants.tsx";
 import {ReactNode} from "react";
 
 function StatusItem({status}: Props): ReactNode {
   return (
-    <span className={`status-item ${status == ApplicantStatuses.ASSESSMENT_EXPIRED ? "status-item--error" : "status-item--info"} `}>{status}</span>
+    <span className={`status-item ${status == InviteStatuses.EXPIRED ? "status-item--error" : "status-item--info"} `}>{status}</span>
   )
 }
 

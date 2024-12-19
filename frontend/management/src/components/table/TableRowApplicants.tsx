@@ -16,10 +16,24 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Props): ReactNod
           );
         } else if (accessor == "score") {
           return <td key={accessor}><span className="table-row__score">{data.score ? data.score : 0}/100</span><Progressbar applicant={data}/></td>
-        } else if (accessor == "status") {
-          return <td key={accessor}><StatusItem status={mapStatus(data.status)}/></td>
+        } else if (accessor == "statuses") {
+          return (
+            <td key={accessor}>
+              {
+                data.statuses && data.statuses.length != 0 ? data.statuses.map((status: string, index: number): ReactNode => (
+                      <StatusItem key={index} status={mapStatus(status)}/>
+                    )
+                  ) :
+                  data.invites && data.invites.length != 0 ? data.invites.map((_: string, index: number): ReactNode => (
+                        <StatusItem key={index} status={"Invited"}/>
+                      )
+                    ) :
+                    <StatusItem status={"Created"}/>
+              }
+            </td>
+          )
         } else {
-          const value: string | number | undefined = accessor in data ? (data as ApplicantInterface)[accessor as keyof ApplicantInterface] : "——";
+          const value: string | number | string[] | undefined = accessor in data ? (data as ApplicantInterface)[accessor as keyof ApplicantInterface] : "——";
           return <td key={accessor}>{typeof value === "string" || typeof value === "number" ? value : "——"}</td>;
         }
       })}
