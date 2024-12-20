@@ -2,7 +2,7 @@ import {ApplicantInterface} from "../../utils/types.tsx";
 import "../../styles/applicant-personal-page.css"
 import {ApplicantStatuses} from "../../utils/constants.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
-import AssessmentResultsViewerContainer from "../../containers/applicant-personal/AssessmentResultsViewerContainer.tsx";
+import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
 import Button from "../Button.tsx";
 import ApplicantPersonalCardContainer from "../../containers/applicant-personal/ApplicantPersonalCardContainer.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";

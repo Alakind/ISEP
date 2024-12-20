@@ -1,0 +1,35 @@
+@media (max-width: 800px) {
+    .skill-row__progress {
+        display: none;
+    }
+
+    .skill-row__percentage {
+        font-size: clamp(10px, 1vw, 12px) !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .skill-row__points-of {
+        display: none;
+    }
+}
+
+.skill-row td {
+    font-size: 12px;
+}
+
+.skill-row td:first-child {
+    padding-right: 7px;
+}
+
+.skill-row td:not(:first-child):not(:last-child) {
+    padding: 0 7px;
+}
+
+.skill-row td:last-child {
+    padding-left: 7px;
+}
+
+.skill-row__percentage, .skill-row__points-of {
+    text-align: right;
+}

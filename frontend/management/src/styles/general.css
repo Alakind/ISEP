@@ -6,7 +6,7 @@
     --highlight: #17489b; /* hover buttons */
     --highlight-hover: #008bbd;
     --card-body: #faf9f62d;
-    --card-body-inner: #faf9f62d;
+    --card-body-inner: #57616D;
     --assigntment-menu: #344050bf;
     --text-primary: #faf9f6;
     --text-primary-disabled: grey;
@@ -29,13 +29,13 @@
 }
 
 [data-theme="light"] {
-    --primary-color: #faf9f6; /* background page */
+    --primary-color: #efefef; /* background page */
     --secondary-color: #5a9cd7; /* header, footer */
     --tertiary-color: #008bbd; /* buttons, borders*/
     --highlight: #17489b; /* hover buttons */
     --highlight-hover: #17489b;
     --card-body: #fdfdfd;
-    --card-body-inner: #f7f7f7;
+    --card-body-inner: #d3d3d3;
     --assigntment-menu: rgba(20, 61, 108, 0.75);
     --text-primary: black;
     --text-primary-disabled: lightgrey;
