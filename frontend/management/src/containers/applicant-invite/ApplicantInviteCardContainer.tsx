@@ -7,6 +7,7 @@ import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInvi
 import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
+
   const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
@@ -19,7 +20,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   useEffect((): void => {
@@ -40,13 +41,14 @@ function ApplicantInviteCardContainer(): ReactNode {
         setInviteData((prev: InviteInterface): InviteInterface => ({
           ...prev,
           applicantId: `${data.id}`,
-        }));
+        })
+      );
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message)
+        toast.error(error.message);
       } else {
         toast.error("Unknown error occurred.");
       }
@@ -59,11 +61,12 @@ function ApplicantInviteCardContainer(): ReactNode {
   async function getAssessmentsData(): Promise<void> {
     setLoading(true);
     try {
-      const data: { data: AssessmentInterface[], totalItems: number } = await getAssessments();
+      const data: { data: AssessmentInterface[]; totalItems: number } =
+        await getAssessments();
       setAssessmentsData(data.data);
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message)
+        toast.error(error.message);
       } else {
         toast.error("Unknown error occurred.");
       }
@@ -84,13 +87,15 @@ function ApplicantInviteCardContainer(): ReactNode {
         toast.success("Applicant successfully invited.");
       } catch (error) {
         if (error instanceof Error) {
-          toast.error(error.message)
+          toast.error(error.message);
         } else {
           toast.error("Unknown error occurred.");
         }
       }
     } else {
-      toast.error("Couldn't invite applicant, because the assessment could not be found.");
+      toast.error(
+        "Couldn't invite applicant, because the assessment could not be found."
+      );
     }
   }
 
@@ -107,10 +112,12 @@ function ApplicantInviteCardContainer(): ReactNode {
     }
     setSelectedOption(selectedId);
 
-    setInviteData((prev: InviteInterface): InviteInterface => ({
-      ...prev,
-      assessmentId: `${selectedId}`,
-    }));
+    setInviteData(
+      (prev: InviteInterface): InviteInterface => ({
+        ...prev,
+        assessmentId: `${selectedId}`,
+      })
+    );
   }
 
   function handleToggleMail(): void {
@@ -194,7 +201,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   if (loading) {
-    return (<LoadingPage additionalClasses={"page--mod"}/>);
+    return <LoadingPage additionalClasses={"page--mod"} />;
   } else {
     return (
       <ApplicantInviteCard
@@ -219,4 +226,4 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 }
 
-export default ApplicantInviteCardContainer
+export default ApplicantInviteCardContainer;
