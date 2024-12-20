@@ -2,40 +2,51 @@ import ApplicantsListPage from "../components/ApplicantsListPage";
 import {ApplicantInterface} from "../utils/types";
 import {toast} from "react-toastify";
 import {getApplicants} from "../utils/apiFunctions.tsx";
-import {ReactNode} from "react";
+import {ReactNode, useEffect, useState} from "react";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 function ApplicantsListContainer(): ReactNode {
-  let initialData: ApplicantInterface[] = [];
-  const initialCurrentPage = 0;
-  const initialItemsPerPage = 10;
-  let initialTotalItems = 0;
-  const initialOrderBy = "name:asc"
+  const [data, setData] = useState<ApplicantInterface[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [totalItems, setTotalItems] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [orderBy, setOrderBy] = useState<string>("name:asc");
+  const navigate: NavigateFunction = useNavigate();
 
-  async function fetchData(): Promise<void> {
-    try {
-      const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(initialCurrentPage, initialItemsPerPage, initialOrderBy, "");
+  useEffect((): void => {
+    async function fetchData(): Promise<void> {
+      setLoading(true);
+      try {
+        const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
 
-      initialData = res.data;
-      initialTotalItems = res.totalItems;
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message)
-      } else {
-        toast.error("Unknown error occurred.");
+        setData(res.data);
+        setTotalItems(res.totalItems);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message)
+        } else {
+          toast.error("Unknown error occurred.");
+        }
+      } finally {
+        setLoading(false);
       }
     }
+
+    fetchData().then();
+  }, [currentPage, itemsPerPage, orderBy]);
+
+  function handleAddApplicant(): void {
+    navigate("/applicants/add");
   }
 
-  fetchData().then();
+  function updateData(data: ApplicantInterface[]): void {
+    setData(data)
+  }
 
   return (
-    <ApplicantsListPage
-      initialData={initialData}
-      initialCurrentPage={initialCurrentPage}
-      initialItemsPerPage={initialItemsPerPage}
-      initialTotalItems={initialTotalItems}
-      initialOrderBy={initialOrderBy}
-    />
+    <ApplicantsListPage handleAddApplicant={handleAddApplicant} data={data} updateData={updateData} totalItems={totalItems} setTotalItems={setTotalItems} loading={loading} setLoading={setLoading}
+                        currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} orderBy={orderBy} setOrderBy={setOrderBy}/>
   );
 }
 

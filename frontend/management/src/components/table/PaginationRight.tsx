@@ -2,7 +2,7 @@ import "../../styles/pagination.css"
 import {MouseEvent, ReactNode} from "react";
 
 // In case if the current page is either the last pages or 4 indexes less the last 5 pages are shown.
-function PaginationRight({ pageNumbers, lastPage, currentPage, handleClick } : Props): ReactNode {
+function PaginationRight({pageNumbers, lastPage, currentPage, handleClick}: Props): ReactNode {
   return (
     <>
       <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
@@ -19,7 +19,7 @@ function PaginationRight({ pageNumbers, lastPage, currentPage, handleClick } : P
         index >= lastPage - 4 && (
           <li key={"right_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, number)} href="#" className="page-link">
-              {number+1}
+              {number + 1}
             </a>
           </li>)
       ))}

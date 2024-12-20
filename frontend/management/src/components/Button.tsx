@@ -1,12 +1,11 @@
-function Button({isDisabled = false, activeTooltip = false, isModal = false, modalTargetId, handleClick, btnClasses, iconClass, spanTextClass, text}: Props) {
+function Button({isDisabled = false, activeTooltip = false, handleClick, btnClasses, iconClass, spanTextClass, text}: Props) {
   return (
     <button
       disabled={isDisabled}
-      className={`btn btn--mod ${btnClasses}`}
+      className={`btn btn--mod ${btnClasses ?? ""}`}
       onClick={handleClick}
-      data-toggle={activeTooltip && isModal ? "tooltip modal" : activeTooltip ? "tooltip" : isModal ? "modal" : ""}
+      data-toggle={activeTooltip ? "tooltip" : ""}
       data-placement={activeTooltip ? "bottom" : ""}
-      data-target={modalTargetId ?? ""}
       title={activeTooltip ? text : ""}
     >
       {iconClass ? <i className={`bi ${iconClass}`}></i> : <></>}
@@ -17,14 +16,12 @@ function Button({isDisabled = false, activeTooltip = false, isModal = false, mod
 
 interface Props {
   handleClick: () => void;
-  btnClasses: string;
+  btnClasses?: string;
   iconClass?: string;
   spanTextClass: string;
   text: string;
   isDisabled?: boolean;
   activeTooltip?: boolean;
-  isModal?: boolean;
-  modalTargetId?: string;
 }
 
 export default Button

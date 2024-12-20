@@ -13,6 +13,9 @@
 .btn--search {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
+    background-color: var(--tertiary-color) !important;
+    border-color: var(--transparent) !important;
+    color: var(--text-white) !important;
 }
 
 .input--mod {

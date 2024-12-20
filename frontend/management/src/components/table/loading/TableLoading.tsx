@@ -4,12 +4,12 @@ import {Column} from "../../../utils/types.tsx";
 import "../../../styles/table-loading.css";
 import {ReactNode} from "react";
 
-function TableLoading({columns, itemsPerPage}:Props): ReactNode {
+function TableLoading({columns, itemsPerPage}: Props): ReactNode {
   return (
     <>
       <table className="table table-striped">
-        <TableHeadLoadingContainer columns={columns} />
-        <TableBodyLoadingContainer columns={columns} itemsPerPage={itemsPerPage} />
+        <TableHeadLoadingContainer columns={columns}/>
+        <TableBodyLoadingContainer columns={columns} itemsPerPage={itemsPerPage}/>
       </table>
     </>
   )

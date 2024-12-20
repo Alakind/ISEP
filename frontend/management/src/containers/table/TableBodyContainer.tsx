@@ -1,9 +1,9 @@
 import TableBody from "../../components/table/TableBody.tsx";
-import {Selection, ApplicantInterface, Column, UserInterface} from "../../utils/types.tsx";
+import {ApplicantInterface, Column, Selection, UserInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 
-function TableBodyContainer({ columns, tableData, setIsSelected, isSelected } : Props): ReactNode {
+function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Props): ReactNode {
   const navigate: NavigateFunction = useNavigate();
 
   function goToApplicantPage(applicantId: string): void {

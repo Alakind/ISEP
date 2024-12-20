@@ -40,7 +40,11 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
 
   return (
     <>
-      <AssessmentResultsViewer sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
+      {
+        loading || assessmentData == undefined ?
+          <></> :
+          <AssessmentResultsViewer assessmentData={assessmentData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
+      }
     </>
   )
 }

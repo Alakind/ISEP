@@ -2,7 +2,7 @@ import "../../styles/pagination.css"
 import {MouseEvent, ReactNode} from "react";
 
 // In case if the current page is higher than 4 or lower than last page - 4
-function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : Props): ReactNode {
+function PaginationCenter({pageNumbers, lastPage, currentPage, handleClick}: Props): ReactNode {
   return (
     <>
       <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
@@ -19,7 +19,7 @@ function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : 
         index >= currentPage - 1 && index <= currentPage + 1 && (
           <li key={"center_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
             <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, number)} href="#" className="page-link">
-              {number+1}
+              {number + 1}
             </a>
           </li>)
       ))}
@@ -30,7 +30,7 @@ function PaginationCenter({ pageNumbers, lastPage, currentPage, handleClick } : 
       </li>
       <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
         <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, lastPage)} href="#" className="page-link">
-          {lastPage+1}
+          {lastPage + 1}
         </a>
       </li>
     </>

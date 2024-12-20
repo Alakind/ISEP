@@ -1,4 +1,4 @@
-import ApplicantCard from "../../components/applicant-personal/ApplicantCard.tsx";
+import ApplicantPersonalCard from "../../components/applicant-personal/ApplicantPersonalCard.tsx";
 import {ApplicantInterface} from "../../utils/types.tsx";
 import {ChangeEvent, Dispatch, ReactNode, SetStateAction, useState} from "react";
 import {toast} from "react-toastify";
@@ -6,14 +6,10 @@ import {deleteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function ApplicantCardContainer({applicant, setApplicant}: Props): ReactNode {
+function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): ReactNode {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [prevApplicantData, setPrevApplicantData] = useState<ApplicantInterface>(applicant);
   const navigate: NavigateFunction = useNavigate();
-
-  function handleRemind(): void {
-    //TODO implement mail reminder
-  }
 
   function handleEdit(): void {
     setIsEditing(true);
@@ -62,7 +58,17 @@ function ApplicantCardContainer({applicant, setApplicant}: Props): ReactNode {
   async function handleSave(): Promise<void> {
     let res: { data: ApplicantInterface } = {data: prevApplicantData};
     try {
-      res = await updateApplicant(applicant.id, {name: applicant.name, email: applicant.email, preferredLanguage: applicant.preferredLanguage});
+      const updatedApplicant: { data: Partial<ApplicantInterface> } = await updateApplicant(applicant.id, {
+        name: applicant.name,
+        email: applicant.email,
+        preferredLanguage: applicant.preferredLanguage
+      });
+      res = {
+        data: {
+          ...prevApplicantData,
+          ...updatedApplicant.data,
+        },
+      };
       toast.success("Successfully saved!");
     } catch (error) {
       if (error instanceof Error) {
@@ -86,10 +92,9 @@ function ApplicantCardContainer({applicant, setApplicant}: Props): ReactNode {
   }
 
   return (
-    <ApplicantCard
+    <ApplicantPersonalCard
       isEditing={isEditing}
       applicant={applicant}
-      handleRemind={handleRemind}
       handleEdit={handleEdit}
       handleReInvite={handleReInvite}
       handleDelete={handleDelete}
@@ -105,4 +110,4 @@ interface Props {
   setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
 }
 
-export default ApplicantCardContainer
+export default ApplicantPersonalCardContainer

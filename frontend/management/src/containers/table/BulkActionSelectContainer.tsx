@@ -5,7 +5,7 @@ import {toast} from "react-toastify";
 import {Selection} from "../../utils/types.tsx";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function BulkActionSelectContainer({isSelected}: Props): ReactNode {
+function BulkActionSelectContainer({isSelected, removeUser}: Props): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("-")
   const options: string[] = ["-", "Delete selected"];
@@ -23,6 +23,7 @@ function BulkActionSelectContainer({isSelected}: Props): ReactNode {
       for (let i: number = 0; i < isSelected.length; i++) {
         if (isSelected[i].checked) {
           await deleteUser(isSelected[i].id);
+          removeUser(isSelected[i].id);
         }
       }
     } catch (error) {
@@ -61,7 +62,8 @@ function BulkActionSelectContainer({isSelected}: Props): ReactNode {
 }
 
 interface Props {
-  isSelected: Selection[]
+  isSelected: Selection[];
+  removeUser: (id: string) => void;
 }
 
 export default BulkActionSelectContainer

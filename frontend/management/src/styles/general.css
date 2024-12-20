@@ -4,10 +4,13 @@
     --secondary-color: #11243e; /* header, footer */
     --tertiary-color: #008bbd; /* buttons, borders*/
     --highlight: #17489b; /* hover buttons */
-    --question-block: #faf9f62d;
+    --highlight-hover: #008bbd;
+    --card-body: #faf9f62d;
+    --card-body-inner: #faf9f62d;
     --assigntment-menu: #344050bf;
     --text-primary: #faf9f6;
     --text-primary-disabled: grey;
+    --text-primary-reverse: black;
     --text-secondary: #b2b9c2;
     --text-header: #faf9f6;
     --text-header-hover: grey;
@@ -17,6 +20,7 @@
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
     --text-black: black;
+    --text-white: #faf9f6;
     --background-table-odd: #414040;
     --background-table-even: #2f2e2e;
     --status-item--error: #ef5353;
@@ -29,10 +33,13 @@
     --secondary-color: #5a9cd7; /* header, footer */
     --tertiary-color: #008bbd; /* buttons, borders*/
     --highlight: #17489b; /* hover buttons */
-    --question-block: rgba(52, 51, 51, 0.18);
+    --highlight-hover: #17489b;
+    --card-body: #fdfdfd;
+    --card-body-inner: #f7f7f7;
     --assigntment-menu: rgba(20, 61, 108, 0.75);
     --text-primary: black;
-    --text-primary-disabled: whitesmoke;
+    --text-primary-disabled: lightgrey;
+    --text-primary-reverse: #faf9f6;
     --text-secondary: white;
     --text-header: #faf9f6;
     --text-header-hover: black;
@@ -42,6 +49,7 @@
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
     --text-black: black;
+    --text-white: #faf9f6;
     --background-table-odd: #F2F2F2;
     --background-table-even: white;
     --status-item--error: #ef5353;
@@ -59,6 +67,7 @@ body, html {
     padding: 0;
     background-color: var(--primary-color);
     color: var(--text-primary);
+    font-size: 14px;
     font-family: Verdana, sans-serif;
     text-align: left;
     overflow: hidden;
@@ -70,15 +79,18 @@ body, html {
     height: 5px;
     border-radius: 10px;
 }
+
 ::-webkit-scrollbar-track {
     width: 10px;
     margin-block: 20px;
 }
+
 /* Handle scrollbar */
 ::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
     border-radius: 10px;
 }
+
 /* Handle scrollbar on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: var(--scrollbar-thumb-hover);
@@ -87,9 +99,10 @@ body, html {
 
 /* Reset scrollbar for IE, Edge and Firefox */
 html {
-    -ms-overflow-style: scrollbar;  /* IE and Edge */
-    scrollbar-width: thin;  /* Firefox */
+    -ms-overflow-style: scrollbar; /* IE and Edge */
+    scrollbar-width: thin; /* Firefox */
 }
+
 ::-webkit-scrollbar-track-piece {
     background-color: transparent;
     -webkit-border-radius: 8px;
@@ -104,20 +117,23 @@ html {
 }
 
 .page--mod {
-    height: 180px !important;
-    width: 560px !important;
+    height: 300px;
+    width: 100%;
 }
 
 .btn--mod {
-    margin: 40px 0;
-    background-color: var(--tertiary-color);
-    border-color: var(--transparent);
+    background-color: var(--transparent);
+    border-color: var(--text-primary);
     color: var(--text-primary);
 }
 
 .btn--mod:hover {
-    border-color: var(--transparent);
-    background-color: var(--highlight);
+    border-color: var(--highlight-hover);
+}
+
+.btn--mod:disabled {
+    border-color: var(--text-primary-disabled);
+    color: var(--text-primary-disabled);
 }
 
 .page--center {
@@ -130,7 +146,7 @@ html {
 a {
     color: var(--tertiary-color);
     cursor: pointer;
- }
+}
 
 main {
     height: 90vh;

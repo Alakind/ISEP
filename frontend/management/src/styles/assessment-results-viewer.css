@@ -1,7 +1,15 @@
-.results-container {
+.results__body {
     width: 100%;
-    background: var(--question-block);
+    background: var(--card-body);
     border-radius: 5px;
     padding: 15px;
     margin-top: 5px;
+}
+
+.results__container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 100%;
 }

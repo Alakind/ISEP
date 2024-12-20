@@ -3,10 +3,10 @@ import TableRowUsers from "./TableRowUsers.tsx";
 import TableRowApplicants from "./TableRowApplicants.tsx";
 import {ReactNode} from "react";
 
-function TableBody({ columns, tableData, goToApplicantPage, handleSelect, isSelected } : Props): ReactNode {
+function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelected}: Props): ReactNode {
   return (
     <tbody className="table__body">
-    {tableData.map((data : UserInterface | ApplicantInterface): ReactNode | null  => {
+    {tableData.map((data: UserInterface | ApplicantInterface): ReactNode | null => {
       if ("role" in data) { // Users //TODO find another way of checking for a certain interface with checking all accessors
         return (
           <TableRowUsers key={data.id} data={(data as UserInterface)} columns={columns} handleSelect={handleSelect} isSelected={isSelected}/>

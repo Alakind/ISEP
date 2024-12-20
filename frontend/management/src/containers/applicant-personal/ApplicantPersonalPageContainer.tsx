@@ -1,12 +1,13 @@
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {ApplicantInterface, InviteInterface} from "../../utils/types.tsx";
-import ApplicantPage from "../../components/applicant-personal/ApplicantPage.tsx";
+import ApplicantPersonalPage from "../../components/applicant-personal/ApplicantPersonalPage.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {getApplicant, getInvite} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import LoadingPage from "../../components/LoadingPage.tsx";
+import CardPageContainer from "../card/CardPageContainer.tsx";
 
-function ApplicantPageContainer(): ReactNode {
+function ApplicantPersonalPageContainer(): ReactNode {
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({id: "0", name: "", email: "", status: "", preferredLanguage: "", score: 0, invite: ""});
   const [assessmentId, setAssessmentId] = useState<string>("0");
   const [loading, setLoading] = useState<boolean>(false);
@@ -68,14 +69,16 @@ function ApplicantPageContainer(): ReactNode {
     return <LoadingPage/>;
   } else {
     return (
-      <ApplicantPage
-        applicant={applicantData}
-        setApplicant={setApplicantData}
-        goToApplicantsPage={goToApplicantsPage}
-        assessmentId={assessmentId}
-      />
+      <CardPageContainer>
+        <ApplicantPersonalPage
+          applicant={applicantData}
+          setApplicant={setApplicantData}
+          goToApplicantsPage={goToApplicantsPage}
+          assessmentId={assessmentId}
+        />
+      </CardPageContainer>
     );
   }
 }
 
-export default ApplicantPageContainer;
+export default ApplicantPersonalPageContainer;
