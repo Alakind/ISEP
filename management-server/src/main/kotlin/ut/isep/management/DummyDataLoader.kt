@@ -235,13 +235,16 @@ class DummyDataLoader(
 
         applicants.forEach { applicantRepository.save(it) }
 
-        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
-        inviteApplicant1Assessment1.status = InviteStatus.app_started
-        val inviteApplicant1Assessment2 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
-        inviteApplicant1Assessment2.status = InviteStatus.app_started
+        val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
+        inviteApplicant0Assessment1.status = InviteStatus.not_started
+        val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
+        inviteApplicant0Assessment2.status = InviteStatus.app_finished
+        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
+        inviteApplicant1Assessment1.status = InviteStatus.app_finished
 
+        inviteRepository.save(inviteApplicant0Assessment1)
+        inviteRepository.save(inviteApplicant0Assessment2)
         inviteRepository.save(inviteApplicant1Assessment1)
-        inviteRepository.save(inviteApplicant1Assessment2)
         println("Dummy data loaded!")
     }
 }
