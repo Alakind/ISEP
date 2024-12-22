@@ -53,3 +53,9 @@ export const applicantColumns: Column[] = [
   {label: "Status", accessor: "status", sortable: true},
   {label: "Score", accessor: "score", sortable: true},
 ]
+
+export const dashboardColumns: Column[] = [
+  {label: "Name", accessor: "name", sortable: false},
+  {label: "Email", accessor: "email", sortable: false},
+  {label: "Score", accessor: "score", sortable: false},
+]

@@ -13,6 +13,7 @@ import UsersListContainer from "./containers/UsersListPageContainer.tsx";
 import App from "./App.tsx";
 import ApplicantAddPageContainer from "./containers/applicant-add/ApplicantAddPageContainer.tsx";
 import ApplicantInvitePageContainer from "./containers/applicant-invite/ApplicantInvitePageContainer.tsx";
+import DashboardContainer from "./containers/dashboard/DashboardContainer.tsx";
 
 const router = createBrowserRouter(
   [
@@ -32,17 +33,17 @@ const router = createBrowserRouter(
         {
           path: "dashboard",
           element: (
-              <Suspense fallback={<LoadingPage/>}>
-                <>/dashboard</>
-              </Suspense>
+            <Suspense fallback={<LoadingPage/>}>
+              <DashboardContainer/>
+            </Suspense>
           ),
           children: [
             {
               path: "*",
               element: (
-                  <Suspense fallback={<LoadingPage/>}>
-                    <>/dashboard</>
-                  </Suspense>
+                <Suspense fallback={<LoadingPage/>}>
+                  <DashboardContainer/>
+                </Suspense>
               ),
             }
           ],

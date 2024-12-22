@@ -23,7 +23,7 @@ function ApplicantsListPage({
                               setItemsPerPage,
                               orderBy,
                               setOrderBy
-                            }: Props): ReactNode {
+                            }: Readonly<Props>): ReactNode {
   return (
     <div className="applicant-list-page">
       <span>
@@ -33,7 +33,8 @@ function ApplicantsListPage({
           spanTextClass={"applicant-list-page__btn__text"}
           text={"Add applicant"}
         />
-        <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+        <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading}
+                         currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
       </span>
       {
         (totalItems == 0 || loading) ?
@@ -42,7 +43,8 @@ function ApplicantsListPage({
             <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
             <div className="user-list-page__inner">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
-              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage}
+                                   currentPage={currentPage}/>
             </div>
           </>
       }
