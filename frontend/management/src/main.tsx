@@ -30,6 +30,25 @@ const router = createBrowserRouter(
         //   errorElement: <ErrorBoundary error={new Error("Page not found")} />,
         // },
         {
+          path: "dashboard",
+          element: (
+              <Suspense fallback={<LoadingPage/>}>
+                <>/dashboard</>
+              </Suspense>
+          ),
+          children: [
+            {
+              path: "*",
+              element: (
+                  <Suspense fallback={<LoadingPage/>}>
+                    <>/dashboard</>
+                  </Suspense>
+              ),
+            }
+          ],
+          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+        },
+        {
           path: "settings",
           element: (
             <Suspense fallback={<LoadingPage/>}>
