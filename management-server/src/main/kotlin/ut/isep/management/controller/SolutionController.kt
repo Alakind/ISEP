@@ -1,6 +1,5 @@
 package ut.isep.management.controller
 
-import dto.section.ResultSectionReadDTO
 import dto.section.SolvedSectionReadDTO
 import dto.solution.SolutionsUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
@@ -60,18 +59,6 @@ class SolutionController(
     ): ResponseEntity<SolvedSectionReadDTO> {
         return try {
             ResponseEntity.ok(solutionReadService.getSolvedSection(inviteId, sectionId))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-    @GetMapping("section/{sectionId}/result/{inviteId}")
-    fun getResultsBySection(
-        @PathVariable sectionId: Long,
-        @PathVariable inviteId: UUID
-    ): ResponseEntity<ResultSectionReadDTO> {
-        return try {
-            ResponseEntity.ok(solutionReadService.getResultSection(inviteId, sectionId))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }

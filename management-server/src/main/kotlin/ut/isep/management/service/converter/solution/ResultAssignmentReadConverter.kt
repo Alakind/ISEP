@@ -29,7 +29,7 @@ class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignm
         return ResultAssignmentCodingReadDTO(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!),
-            scoredPoints = entity.scoredPoints!!
+            scoredPoints = entity.scoredPoints
         )
     }
 
@@ -44,7 +44,7 @@ class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignm
                     .withIndex()
                     .filter { (_, key) -> key.value == true }
                     .map { it.index }),
-            scoredPoints = entity.scoredPoints!!
+            scoredPoints = entity.scoredPoints
         )
     }
 
@@ -55,7 +55,7 @@ class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignm
         return ResultAssignmentOpenReadDTO(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.Open(openAssignment.referenceAnswer!!),
-            scoredPoints = entity.scoredPoints!!
+            scoredPoints = entity.scoredPoints
         )
     }
 }

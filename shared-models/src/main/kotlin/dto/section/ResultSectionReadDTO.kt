@@ -10,5 +10,5 @@ data class ResultSectionReadDTO (
     @field: JsonUnwrapped
     val sectionInfo: SectionInfo,
     val assignments: List<ResultAssignmentReadDTO>,
-    val scoredPoints: Int,
+    val scoredPoints: Int?,
 ) : ReadDTO
