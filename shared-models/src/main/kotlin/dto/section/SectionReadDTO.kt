@@ -10,4 +10,5 @@ data class SectionReadDTO(
     @field: JsonUnwrapped
     val sectionInfo: SectionInfo,
     val assignments: List<AssignmentReadDTO>,
+    val size: Int = assignments.size
 ) : ReadDTO

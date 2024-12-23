@@ -1,12 +1,12 @@
-import AssessmentResultsViewer from "../../components/applicant-personal/AssessmentResultsViewer.tsx";
+import AssessmentResultsViewer from "../../../components/applicant-personal/results/AssessmentResultsViewer.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
-import {getAssessment, getSectionSolution} from "../../utils/apiFunctions.tsx";
+import {AssessmentInterface, SectionSolvedInterface} from "../../../utils/types.tsx";
+import {getAssessment, getSectionSolution} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
 function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): ReactNode {
   const [assessmentData, setAssessmentData] = useState<AssessmentInterface>();
-  const [sectionsData, setSectionsData] = useState<SectionInterface[]>([]);
+  const [sectionsData, setSectionsData] = useState<SectionSolvedInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<number>(0);
 
@@ -23,8 +23,8 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
       const data: AssessmentInterface = await getAssessment(assessmentId);
       setAssessmentData(data);
 
-      const retrievedSections: SectionInterface[] = await Promise.all(
-        data.sections.map((sectionId: number): Promise<SectionInterface> => getSectionSolution(`${sectionId}`, inviteUuid))
+      const retrievedSections: SectionSolvedInterface[] = await Promise.all(
+        data.sections.map((sectionId: number): Promise<SectionSolvedInterface> => getSectionSolution(`${sectionId}`, inviteUuid))
       );
       setSectionsData(retrievedSections);
     } catch (error) {
@@ -43,7 +43,8 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
       {
         loading || assessmentData == undefined ?
           <></> :
-          <AssessmentResultsViewer assessmentData={assessmentData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
+          <AssessmentResultsViewer assessmentData={assessmentData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}
+                                   inviteUuid={inviteUuid}/>
       }
     </>
   )

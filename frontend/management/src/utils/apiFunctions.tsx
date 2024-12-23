@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, AssignmentInterface, InviteInterface, SectionInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -300,7 +300,7 @@ export async function getSection(id: string): Promise<SectionInterface> {
   return await response.json();
 }
 
-export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionInterface> {
+export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionSolvedInterface> {
   const response: Response = await fetch(`${baseUrl}/section/${id}/solution/${inviteUuid}`, {
     method: "GET",
     headers: {
@@ -330,4 +330,136 @@ export async function getAssignment(id: string): Promise<AssignmentInterface> {
   }
 
   return await response.json();
+}
+
+export async function getBarChartStats(inviteId: string): Promise<BarChartInterface> {
+  //TODO uncomment next part when implemented
+  /*const response: Response = await fetch(`${baseUrl}/statistics`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inviteId: inviteId,
+    }),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve bar chart statistics`);
+  }
+
+  return await response.json();*/
+  return {
+    percentage: "46.17",
+    barGroups: [
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "4",
+        isSelected: false,
+      },
+      {
+        value: "14",
+        isSelected: false,
+      },
+      {
+        value: "24",
+        isSelected: false,
+      },
+      {
+        value: "31",
+        isSelected: true,
+      },
+      {
+        value: "14",
+        isSelected: false,
+      },
+      {
+        value: "9",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+      {
+        value: "1",
+        isSelected: false,
+      },
+    ]
+  };
+}
+
+export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[]> {
+  //TODO uncomment next part when implemented
+  /*const response: Response = await fetch(`${baseUrl}/skills`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      inviteId: inviteId,
+    }),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve skills`);
+  }
+
+  return await response.json();*/
+  return [
+    {
+      name: "C#",
+      scoredPoints: 11,
+      totalPoints: 26
+    },
+    {
+      name: "SQL",
+      scoredPoints: 7,
+      totalPoints: 19
+    },
+    {
+      name: "LINQ",
+      scoredPoints: 0,
+      totalPoints: 5
+    },
+    {
+      name: "Threading",
+      scoredPoints: 2,
+      totalPoints: 5
+    },
+    {
+      name: "Database",
+      scoredPoints: 2,
+      totalPoints: 5
+    },
+    {
+      name: "Design",
+      scoredPoints: 3,
+      totalPoints: 3
+    },
+    {
+      name: "Scrum",
+      scoredPoints: 2,
+      totalPoints: 3
+    },
+    {
+      name: "Cross language",
+      scoredPoints: 2,
+      totalPoints: 3
+    },
+    {
+      name: "Artificial Intelligence",
+      scoredPoints: 2,
+      totalPoints: 2
+    }
+  ]
 }
