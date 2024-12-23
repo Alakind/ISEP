@@ -1,3 +1,4 @@
 [submodule "shared-entities"]
 	path = shared-entities
 	url = https://github.com/eefscheef/ISEP-shared-entities.git
+	branch = add-results
