@@ -1,5 +1,6 @@
 package ut.isep.management.service.section
 
+import dto.section.SectionInfo
 import dto.section.SectionReadDTO
 import dto.section.SolvedSectionReadDTO
 import org.springframework.data.repository.findByIdOrNull
@@ -35,6 +36,6 @@ class SectionReadService(
             solvedAssignmentRepository.findByIdOrNull(SolvedAssignmentId(inviteId, assignment.id))
                 ?.let { solvedAssignmentReadConverter.toDTO(it) }
         }
-        return SolvedSectionReadDTO(id = sectionId, title = section.title!!, assignments = assignmentDTOs)
+        return SolvedSectionReadDTO(SectionInfo(id = sectionId, title = section.title!!, availablePoints = section.availablePoints), assignments = assignmentDTOs)
     }
 }

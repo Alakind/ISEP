@@ -31,66 +31,78 @@ class DummyDataLoader(
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
             optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
+            availablePoints = 10
         )
 
         val assignment2 = AssignmentMultipleChoice(
             description = "Which member(s) should receive a red card?",
             optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
+            availablePoints = 3
         )
 
         val assignment3 = AssignmentMultipleChoice(
             description = "You are a 15th century plague doctor, please cure this sick person",
             optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
+            availablePoints = 34
         )
 
         val assignment4 = AssignmentMultipleChoice(
             description = "How Long is a Chinese person",
             optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
+            availablePoints = 3
         )
 
         val openAssignment1 = AssignmentOpen(
             description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
-            referenceSolution = "words words words"
+            referenceAnswer = "words words words",
+            availablePoints = 9
         )
 
         val openAssignment2 = AssignmentOpen(
             description = "Prove whether or not P = NP in 150 words",
-            referenceSolution = "Let P = NP, then PN = P."
+            referenceAnswer = "Let P = NP, then PN = P.",
+            availablePoints = 5
         )
 
         val assignment5 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
             optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
+            availablePoints = 10
         )
 
         val assignment6 = AssignmentMultipleChoice(
             description = "Which member(s) should receive a red card?",
             optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
+            availablePoints = 10
         )
 
         val assignment7 = AssignmentMultipleChoice(
             description = "You are a 15th century plague doctor, please cure this sick person",
             optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
+            availablePoints = 2
         )
 
         val assignment8 = AssignmentMultipleChoice(
             description = "How Long is a Chinese person",
             optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
+            availablePoints = 3
         )
 
         val openAssignment3 = AssignmentOpen(
             description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
-            referenceSolution = "words words words"
+            referenceAnswer = "words words words",
+            availablePoints = 2
         )
 
         val openAssignment4 = AssignmentOpen(
             description = "Prove whether or not P = NP in 150 words",
-            referenceSolution = "Let P = NP, then PN = P."
+            referenceAnswer = "Let P = NP, then PN = P.",
+            availablePoints = 59
         )
 
         val section1 = Section(
             title = "Demo Section 1",
-            assignments = listOf(assignment1, assignment2, openAssignment1)
+            assignments = listOf(assignment1, assignment2, openAssignment1),
         )
 
         val section2 = Section(

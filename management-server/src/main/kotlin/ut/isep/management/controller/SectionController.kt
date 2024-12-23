@@ -26,7 +26,7 @@ class SectionController(val sectionReadService: SectionReadService) {
         description = "Returns a list of all section IDs",
     )
     fun getSectionIDs(): ResponseEntity<List<Long>> {
-       return ResponseEntity.ok(sectionReadService.getAll().map {it.id})
+       return ResponseEntity.ok(sectionReadService.getAll().map {it.sectionInfo.id})
     }
 
     @GetMapping

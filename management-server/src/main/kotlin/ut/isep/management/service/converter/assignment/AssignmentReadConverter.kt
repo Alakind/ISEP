@@ -29,14 +29,16 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
             id = entity.id,
             description = entity.description!!,
             isMultipleAnswers = entity.optionToSolution.values.count{ it } > 1,
-            options = entity.optionToSolution.keys.toList()
+            options = entity.optionToSolution.keys.toList(),
+            availablePoints = entity.availablePoints!!
         )
     }
 
     fun toDTO(entity: AssignmentOpen): AssignmentOpenReadDTO {
         return AssignmentOpenReadDTO(
             id = entity.id,
-            description = entity.description!!
+            description = entity.description!!,
+            availablePoints = entity.availablePoints!!
         )
     }
 
@@ -45,7 +47,8 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
             id = entity.id,
             description = entity.description!!,
             language = entity.language!!,
-            codeUri = entity.codeUri!! // Replace with actual fetching of the files
+            codeUri = entity.codeUri!!, // Replace with actual fetching of the files
+            availablePoints = entity.availablePoints!!
         )
     }
 }
