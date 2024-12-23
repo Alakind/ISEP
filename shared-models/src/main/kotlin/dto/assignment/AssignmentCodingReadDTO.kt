@@ -9,6 +9,6 @@ data class AssignmentCodingReadDTO(
     override val description: String,
     val codeUri: URI,
     val language: String
-) : AssignmentReadDTO() {
+) : BaseAssignment(), AssignmentReadDTO {
     override val type: AssignmentType = AssignmentType.Coding
 }

@@ -23,10 +23,12 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
             ?: throw IllegalStateException("SolvedAssignmentCoding ${entity.id} has an assignment field that is null")
 
         return SolvedAssignmentCodingReadDTO(
-            id = codingAssignment.id,
-            description = codingAssignment.description!!,
-            codeUri = codingAssignment.codeUri!!,
-            language = codingAssignment.language!!,
+            baseAssignment = AssignmentCodingReadDTO(
+                id = codingAssignment.id,
+                description = codingAssignment.description!!,
+                codeUri = codingAssignment.codeUri!!,
+                language = codingAssignment.language!!
+            ),
             answer = AnswerCreateReadDTO.Coding(entity.userCode)
         )
     }
@@ -36,10 +38,12 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
             ?: throw IllegalStateException("SolvedAssignmentMultipleChoice ${entity.id} has an assignment field that is null")
 
         return SolvedAssignmentMultipleChoiceReadDTO(
-            id = multipleChoiceAssignment.id,
-            description = multipleChoiceAssignment.description!!,
-            options = multipleChoiceAssignment.optionToSolution.keys.toList(),
-            isMultipleAnswers = multipleChoiceAssignment.optionToSolution.values.count{ it } > 1,
+            baseAssignment = AssignmentMultipleChoiceReadDTO(
+                id = multipleChoiceAssignment.id,
+                description = multipleChoiceAssignment.description!!,
+                options = multipleChoiceAssignment.optionToSolution.keys.toList(),
+                isMultipleAnswers = multipleChoiceAssignment.optionToSolution.values.count{ it } > 1
+            ),
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
         )
     }
@@ -49,8 +53,10 @@ class SolvedAssignmentReadConverter : ReadConverter<SolvedAssignment, SolvedAssi
             ?: throw IllegalStateException("SolvedAssignmentOpen ${entity.id} has an assignment field that is null")
 
         return SolvedAssignmentOpenReadDTO(
-            id = openAssignment.id,
-            description = openAssignment.description!!,
+            baseAssignment = AssignmentOpenReadDTO(
+                id = openAssignment.id,
+                description = openAssignment.description!!
+            ),
             answer = AnswerCreateReadDTO.Open(entity.userSolution)
         )
     }
