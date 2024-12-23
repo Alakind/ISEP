@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "An open assignment complete with user solution and reference answer")
 data class ResultAssignmentOpenReadDTO(
     @field: JsonUnwrapped
-    val baseAssignment: AssignmentOpenReadDTO,
-    override val userAnswer: AnswerCreateReadDTO.Open,
-    override val referenceAnswer: AnswerCreateReadDTO.Open
+    override val solvedAssignment: SolvedAssignmentOpenReadDTO,
+    override val referenceAnswer: AnswerCreateReadDTO.Open,
+    override val scoredPoints: Int
 ) : ResultAssignmentReadDTO

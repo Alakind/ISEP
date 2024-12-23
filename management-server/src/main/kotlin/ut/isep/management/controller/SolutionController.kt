@@ -1,5 +1,7 @@
 package ut.isep.management.controller
 
+import dto.section.ResultSectionReadDTO
+import dto.section.SolvedSectionReadDTO
 import dto.solution.SolutionsUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -8,20 +10,23 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ut.isep.management.service.solution.SolutionReadService
 import ut.isep.management.service.solution.SolutionUpdateService
-import java.util.UUID
+import java.util.*
 
 @RestController
-@RequestMapping("/solution")
 @Tag(name = "Solution")
-class SolutionController(val solutionUpdateService: SolutionUpdateService) {
+class SolutionController(
+    val solutionReadService: SolutionReadService,
+    val solutionUpdateService: SolutionUpdateService
+) {
 
     /**
      * Hello.
      * This mapping has no useful logic; it's just a documentation example.
      *
      */
-    @PutMapping("/{uuid}")
+    @PutMapping("solution/{uuid}")
     @Operation(
         description = "Test method for putting solutions",
         operationId = "solution",
@@ -34,7 +39,10 @@ class SolutionController(val solutionUpdateService: SolutionUpdateService) {
             )
         )]
     )
-    fun updateSolutions(@PathVariable uuid: UUID, @RequestBody solutionsUpdateDTO: SolutionsUpdateDTO): ResponseEntity<String> {
+    fun updateSolutions(
+        @PathVariable uuid: UUID,
+        @RequestBody solutionsUpdateDTO: SolutionsUpdateDTO
+    ): ResponseEntity<String> {
         return try {
             solutionUpdateService.updateSolutions(uuid, solutionsUpdateDTO)
             ResponseEntity.ok("Updated ${solutionsUpdateDTO.size} solutions")
@@ -42,6 +50,30 @@ class SolutionController(val solutionUpdateService: SolutionUpdateService) {
             ResponseEntity.status(404).build()
         } catch (e: UnsupportedOperationException) {
             ResponseEntity.status(403).build()
+        }
+    }
+
+    @GetMapping("section/{sectionId}/solution/{inviteId}")
+    fun getSolvedAssignmentsBySection(
+        @PathVariable sectionId: Long,
+        @PathVariable inviteId: UUID
+    ): ResponseEntity<SolvedSectionReadDTO> {
+        return try {
+            ResponseEntity.ok(solutionReadService.getSolvedSection(inviteId, sectionId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @GetMapping("section/{sectionId}/result/{inviteId}")
+    fun getResultsBySection(
+        @PathVariable sectionId: Long,
+        @PathVariable inviteId: UUID
+    ): ResponseEntity<ResultSectionReadDTO> {
+        return try {
+            ResponseEntity.ok(solutionReadService.getResultSection(inviteId, sectionId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
         }
     }
 }

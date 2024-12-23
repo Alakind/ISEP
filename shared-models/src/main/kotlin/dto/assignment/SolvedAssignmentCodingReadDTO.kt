@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "Solved coding assignment")
 data class SolvedAssignmentCodingReadDTO(
     @field: JsonUnwrapped
-    val baseAssignment: AssignmentCodingReadDTO,
+    override val unsolvedAssignment: AssignmentCodingReadDTO,
     override val answer: AnswerCreateReadDTO.Coding,
 ) : SolvedAssignmentReadDTO

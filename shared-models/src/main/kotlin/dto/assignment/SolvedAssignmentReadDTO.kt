@@ -18,5 +18,6 @@ import io.swagger.v3.oas.annotations.media.Schema
     ), DiscriminatorMapping(value = "Open", schema = SolvedAssignmentOpenReadDTO::class)]
 )
 sealed interface SolvedAssignmentReadDTO : ReadDTO {
+    val unsolvedAssignment: AssignmentReadDTO
     val answer: AnswerCreateReadDTO
 }
