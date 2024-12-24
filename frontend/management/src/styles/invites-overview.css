@@ -1,0 +1,31 @@
+.invites-overview {
+    background-color: var(--card-body-inner);
+    border-radius: 5px;
+    padding: 10px 10px 15px;
+}
+
+.invites-overview__body {
+    overflow-y: scroll;
+    height: 254px;
+}
+
+.invites-overview__body__item {
+    margin-bottom: 10px;
+}
+
+.invites-overview__body__item__label {
+    margin-right: 10px;
+    text-decoration: underline;
+}
+
+@media (max-width: 610px) {
+    .invites-overview__body__item > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .invites-overview__body__item > div > span:nth-child(2) {
+        margin-left: 10px;
+        width: fit-content;
+    }
+}
