@@ -1,12 +1,12 @@
-import "../../styles/assessment-results-viewer.css";
+import "../../../styles/assessment-results-viewer.css";
 import AssessmentResultsSections from "./AssessmentResultsSections.tsx";
-import AssessmentResultsOverview from "./AssessmentResultsOverview.tsx";
-import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
+import {AssessmentInterface, InviteInterface, SectionSolvedInterface} from "../../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
-import LoadingPage from "../LoadingPage.tsx";
-import StatusItem from "../StatusItem.tsx";
+import LoadingPage from "../../LoadingPage.tsx";
+import StatusItem from "../../StatusItem.tsx";
+import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
 
-function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment}: Props): ReactNode {
+function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment, invitesData}: Props): ReactNode {
   return (
     <>
       <div className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
@@ -29,7 +29,7 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
           {
             loading ?
               <LoadingPage additionalClasses={"page--mod"}/> :
-              <AssessmentResultsOverview assessmentData={assessmentsData[activeAssessment]}/>
+              <AssessmentResultsOverviewContainer inviteUuid={invitesData[activeAssessment].id} assessmentData={assessmentsData[activeAssessment]}/>
           }
         </div>
         <br/>
@@ -38,7 +38,7 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
           {
             loading ?
               <LoadingPage additionalClasses={"page--mod"}/> :
-              <AssessmentResultsSections sections={sectionsData[activeAssessment]} activeSection={activeSection} setActiveSection={setActiveSection}/>
+              <AssessmentResultsSections inviteUuid={invitesData[activeAssessment].id} sections={sectionsData[activeAssessment]} activeSection={activeSection} setActiveSection={setActiveSection}/>
           }
         </div>
       </div>
@@ -49,11 +49,12 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
 interface Props {
   assessmentsData: AssessmentInterface[];
   loading: boolean;
-  sectionsData: SectionInterface[][];
+  sectionsData: SectionSolvedInterface[][];
   activeSection: number;
   setActiveSection: Dispatch<SetStateAction<number>>;
   activeAssessment: number;
   setActiveAssessment: Dispatch<SetStateAction<number>>;
+  invitesData: InviteInterface[];
 }
 
 export default AssessmentResultsViewer

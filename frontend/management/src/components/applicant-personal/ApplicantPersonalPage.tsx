@@ -6,7 +6,7 @@ import {Dispatch, ReactNode, SetStateAction} from "react";
 import CardHeaderContainer from "../../containers/card/CardHeaderContainer.tsx";
 import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
 import InvitesOverview from "./InvitesOverview.tsx";
-import AssessmentResultsViewerContainer from "../../containers/applicant-personal/AssessmentResultsViewerContainer.tsx";
+import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
 
 
 function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Props): ReactNode {

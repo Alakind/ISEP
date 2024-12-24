@@ -15,6 +15,8 @@ import dto.ReadDTO
     JsonSubTypes.Type(value = AnswerCreateReadDTO.Open::class, name = "Open"),
     JsonSubTypes.Type(value = AnswerCreateReadDTO.Coding::class, name = "Coding")
 )
+// TODO check if removing @JsonSubTypes breaks communication w/ front end. Remove if possible because
+//  the type property is redundant in all cases
 sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
 
     data class MultipleChoice @JsonCreator constructor(

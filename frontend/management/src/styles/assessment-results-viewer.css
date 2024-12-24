@@ -52,3 +52,124 @@
     box-shadow: 0 0 3px 1px var(--icons);
     cursor: default;
 }
+
+.section__header {
+    background-color: var(--card-body-inner);
+    border-color: var(--card-body-inner);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section__header__sug-time {
+    font-size: 11px;
+}
+
+.assignment__header {
+    border-bottom: var(--tertiary-color) solid 2px;
+    color: var(--text-black);
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.assignment__block {
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 15px 15px;
+}
+
+.assignment__input {
+    margin: 0 15px 10px 5px;
+}
+
+.assignment__label {
+    display: inline;
+    white-space: pre-line;
+}
+
+.assignment__label--wrong {
+    color: darkred;
+}
+
+.assignment__textarea {
+    background-color: var(--question-block);
+    color: var(--text-black);
+    padding: 5px;
+    min-height: 120px;
+    margin-bottom: 5px;
+}
+
+.assignment__input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    min-width: 1em;
+    min-height: 1em;
+    border-radius: 50%;
+    outline: none;
+    cursor: default;
+    margin: 4px 20px -3px 8px;
+    border: 0.15em solid var(--tertiary-color);
+}
+
+.assignment__input[type="checkbox"] {
+    border-radius: 0.15em;
+}
+
+.assignment__input[type="radio"] {
+    border-radius: 50%;
+}
+
+.assignment__input--correct {
+    border-color: var(--transparent);
+    background-color: green;
+    position: relative;
+}
+
+.assignment__input--checked {
+    position: relative;
+}
+
+.assignment__input--wrong {
+    border-color: var(--transparent);
+    background-color: darkred;
+    position: relative;
+}
+
+.assignment__input--wrong::before {
+    content: "\2716";
+    font-size: 0.8em;
+    color: var(--icons);
+    position: absolute;
+    right: 0;
+    top: -3px;
+}
+
+.assignment__input--correct::before {
+    content: "\2714";
+    font-size: 0.8em;
+    color: var(--icons);
+    position: absolute;
+    right: 0;
+    top: -3px;
+}
+
+.assignment__option-wrapper {
+    padding: 5px 0;
+    display: flex;
+    align-items: flex-start;
+}
+
+.assignment__option-wrapper--correct {
+    background-color: #E1FFE1;
+    border-radius: 5px;
+    margin: 1px 0;
+}
+
+.assignment__option-wrapper:last-child {
+    padding-bottom: 10px;
+}

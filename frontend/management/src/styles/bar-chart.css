@@ -1,0 +1,13 @@
+.page--barchart {
+    width: auto;
+    height: auto;
+}
+
+.bar-chart__container {
+    margin-bottom: 10px;
+    height: 100%;
+}
+
+.bar-chart__text {
+    font-size: 12px;
+}
