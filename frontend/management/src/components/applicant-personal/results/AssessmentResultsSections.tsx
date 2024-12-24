@@ -21,7 +21,7 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
                data-parent={`#invite_accordion_${inviteUuid}`}>
             <div className="card-body">
               {section.assignments.map((assignment: AssignmentSolvedInterface, assignmentIndex: number): ReactNode => (
-                <>
+                <div key={assignmentIndex}>
                   {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
                     <SolvedAssignment assignment={assignment} index={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`}>
                       <SolvedAssignmentMultipleChoice
@@ -39,7 +39,7 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
                       <SolvedAssignmentCoding assignment={assignment as AssignmentCodingSolvedInterface}/>
                     </SolvedAssignment>
                   )}
-                </>
+                </div>
               ))
               }
             </div>

@@ -26,7 +26,7 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, inv
       </CardBodyContainer>
       {
         applicant.invites && invitesData && assessmentsData ?
-          <AssessmentResultsViewerContainer invitesData={invitesData} inviteUuids={applicant.invites} assessmentsData={assessmentsData}/> :
+          <AssessmentResultsViewerContainer invitesData={invitesData} assessmentsData={assessmentsData}/> :
           <></>
       }
     </>
