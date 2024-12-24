@@ -23,7 +23,7 @@ function InvitesOverview({invitesData, assessmentsData}: Props) {
                     <span className={"invites-overview__body__item__label"}>Available till:</span><span>{expirationDate.toDateString()}</span>
                   </div>
                   <div>
-                    <span className={"invites-overview__body__item__label"}>Status:</span><StatusItem status={mapStatus(invite.status)}/>
+                    <span className={"invites-overview__body__item__label"}>Status:</span><StatusItem status={mapStatus(invite.status)} additionalClass={"status-item--invite"}/>
                   </div>
                 </div>
               )
