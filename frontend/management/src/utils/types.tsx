@@ -16,7 +16,7 @@ export interface InviteInterface {
   assessmentId: string;
   status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
   invitedAt: string;
-  expiredAt: string;
+  expiresAt: string;
 }
 
 export interface UserInterface {
