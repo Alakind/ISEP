@@ -23,10 +23,11 @@ but why not simply query the file storage system we are already using: GitHub? W
 point towards the right version of a question, without having to store the entire file as a separate database entity. 
 
 ### Limitations
-The GitHub api allows for 5000 free requests per hour, which should be plenty for a few dozen of simultaneous applications, but it's harder to estimate the 
-amount of requests that 
+The GitHub api allows for 5000 free requests per hour, which should be plenty for a few dozen of simultaneous 
+assessments, but it's harder to estimate the amount of requests that recruiters and managers will make when 
+viewing assessment results, or commenting on them.
 
-### Should we generalize this approach to all assignments
+### Generalization to all assignments
 
 ## Decision
 
