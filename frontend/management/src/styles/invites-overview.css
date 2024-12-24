@@ -18,7 +18,7 @@
     text-decoration: underline;
 }
 
-@media (max-width: 610px) {
+@media (max-width: 650px) {
     .invites-overview__body__item > div {
         display: flex;
         flex-direction: column;
