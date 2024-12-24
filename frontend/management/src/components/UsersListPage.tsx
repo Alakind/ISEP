@@ -10,13 +10,9 @@ import BulkActionSelectContainer from "../containers/table/BulkActionSelectConta
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 
 function UsersListPage({
-                         handleIsSelectedChange,
                          data,
-                         updateData,
                          totalItems,
-                         setTotalItems,
                          loading,
-                         setLoading,
                          currentPage,
                          setCurrentPage,
                          itemsPerPage,
@@ -25,14 +21,14 @@ function UsersListPage({
                          setOrderBy,
                          isSelected,
                          setIsSelected,
-                         removeUser
+                         removeUser,
+                         setQuery,
                        }: Props): ReactNode {
 
 
   return (
     <div className="user-list-page">
-      <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading} currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/user"}
-                       handleIsSelectedChange={handleIsSelectedChange} orderBy={orderBy}/>
+      <SearchContainer setQuery={setQuery}/>
       {
         (totalItems == 0 || loading) ?
           <TableLoadingContainer columns={userColumns} itemsPerPage={itemsPerPage}/> :
@@ -50,13 +46,9 @@ function UsersListPage({
 }
 
 interface Props {
-  handleIsSelectedChange: (data: UserInterface[]) => void;
   data: UserInterface[];
-  updateData: (data: UserInterface[]) => void;
   totalItems: number;
-  setTotalItems: Dispatch<SetStateAction<number>>;
   loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   itemsPerPage: number;
@@ -66,6 +58,7 @@ interface Props {
   isSelected: Selection[];
   setIsSelected: Dispatch<SetStateAction<Selection[]>>;
   removeUser: (id: string) => void;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 export default UsersListPage;

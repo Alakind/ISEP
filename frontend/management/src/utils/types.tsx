@@ -1,18 +1,22 @@
-import {ApplicantStatuses, AssignmentTypes, PreferredLanguages, Roles} from "./constants";
+import {AssignmentTypes, InviteStatuses, PreferredLanguages, Roles} from "./constants";
 
 export interface ApplicantInterface {
   id: string;
   name: string;
   email: string;
-  status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
+  statuses?: (typeof InviteStatuses)[keyof typeof InviteStatuses][];
   score?: number;
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
-  invite?: string
+  invites?: string[];
 }
 
 export interface InviteInterface {
+  id: string;
   applicantId: string;
   assessmentId: string;
+  status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
+  invitedAt: string;
+  expiredAt: string;
 }
 
 export interface UserInterface {

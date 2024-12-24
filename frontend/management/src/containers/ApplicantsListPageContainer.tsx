@@ -1,7 +1,7 @@
 import ApplicantsListPage from "../components/ApplicantsListPage";
-import {ApplicantInterface} from "../utils/types";
+import {ApplicantInterface, InviteInterface} from "../utils/types";
 import {toast} from "react-toastify";
-import {getApplicants} from "../utils/apiFunctions.tsx";
+import {getApplicants, getInvites} from "../utils/apiFunctions.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
@@ -11,17 +11,30 @@ function ApplicantsListContainer(): ReactNode {
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>("name:asc");
+  const [orderBy, setOrderBy] = useState<string>("name,asc");
   const navigate: NavigateFunction = useNavigate();
+  const [query, setQuery] = useState<string>("");
 
   useEffect((): void => {
     async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+        const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, query);
+        const invitesResponse: InviteInterface[] = await getInvites();
 
-        setData(res.data);
-        setTotalItems(res.totalItems);
+        let applicantsWithStatuses: ApplicantInterface[] = applicantsResponse.data;
+        if (invitesResponse) {
+          applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface) => {
+            const applicantInvites = invitesResponse.filter((invite) => invite.applicantId === applicant.id);
+
+            return {
+              ...applicant,
+              statuses: applicantInvites.map((invite) => invite.status),
+            };
+          });
+        }
+        setData(applicantsWithStatuses);
+        setTotalItems(applicantsResponse.totalItems);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message)
@@ -34,19 +47,15 @@ function ApplicantsListContainer(): ReactNode {
     }
 
     fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy]);
+  }, [currentPage, itemsPerPage, orderBy, query]);
 
   function handleAddApplicant(): void {
     navigate("/applicants/add");
   }
 
-  function updateData(data: ApplicantInterface[]): void {
-    setData(data)
-  }
-
   return (
-    <ApplicantsListPage handleAddApplicant={handleAddApplicant} data={data} updateData={updateData} totalItems={totalItems} setTotalItems={setTotalItems} loading={loading} setLoading={setLoading}
-                        currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} orderBy={orderBy} setOrderBy={setOrderBy}/>
+    <ApplicantsListPage handleAddApplicant={handleAddApplicant} data={data} totalItems={totalItems} loading={loading} currentPage={currentPage} setCurrentPage={setCurrentPage}
+                        itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage} orderBy={orderBy} setOrderBy={setOrderBy} setQuery={setQuery}/>
   );
 }
 

@@ -1,6 +1,6 @@
 import {ApplicantInterface} from "../../utils/types.tsx";
 import "../../styles/applicant-personal-page.css"
-import {ApplicantStatuses} from "../../utils/constants.tsx";
+import {InviteStatuses} from "../../utils/constants.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
 import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
 import Button from "../Button.tsx";
@@ -26,7 +26,7 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, ass
         <ApplicantPersonalCardContainer applicant={applicant} setApplicant={setApplicant}/>
         <StatusOverview applicant={applicant}/>
       </CardBodyContainer>
-      {mapStatus(applicant.status) == (ApplicantStatuses.APP_FINISHED || ApplicantStatuses.INTERVIEW_FINISHED || ApplicantStatuses.INTERVIEW_INVITED) && applicant.invite ?
+      {mapStatus(applicant.status) == (InviteStatuses.APP_FINISHED || InviteStatuses.INTERVIEW_FINISHED || InviteStatuses.INTERVIEW_INVITED) && applicant.invite ?
         <AssessmentResultsViewerContainer assessmentId={assessmentId} inviteUuid={applicant.invite}/> :
         <></>
       }

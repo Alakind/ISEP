@@ -23,6 +23,6 @@ class InviteReadService(
     fun getAssessmentByInviteId(id: UUID): AssessmentReadDTO {
         val invite = repository.findById(id)
             .orElseThrow {NoSuchElementException("Invite not found")}
-        return assessmentReadConverter.toDTO(invite.assessment)
+        return assessmentReadConverter.toDTO(invite.assessment!!)
     }
 }

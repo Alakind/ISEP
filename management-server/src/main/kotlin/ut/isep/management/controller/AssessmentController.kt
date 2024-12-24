@@ -9,8 +9,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import ut.isep.management.service.assessment.AssessmentReadService
 
 
@@ -26,11 +32,13 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
         responseCode = "200",
         description = "Returns a list of all assessments",
     )
-    fun getAssessments(@RequestParam(required = false) limit: Int?,
-                      @RequestParam(required = false) page: Int?,
-                      @RequestParam(required = false,) sort: String?
+    fun getAssessments(
+        @PageableDefault(
+            size = Int.MAX_VALUE, sort = ["name"],
+            direction = Sort.Direction.ASC
+        ) pageable: Pageable,
     ): PaginatedDTO<AssessmentReadDTO> {
-        return assessmentReadService.getPaginated(limit, page, sort)
+        return assessmentReadService.getPaginated(pageable = pageable)
     }
 
 

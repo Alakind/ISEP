@@ -2,40 +2,16 @@ import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartIn
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
-// ------------------------------- GENERAL ----------------------------------//
-
-export async function getSearch(currentPage: number, itemsPerPage: number, subUrl: string, keyword: string): Promise<{ data: ApplicantInterface[] | UserInterface[], totalItems: number }> {
-  const response: Response = await fetch(`${baseUrl}${subUrl}?page=${currentPage}&limit=${itemsPerPage}&search=${keyword}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const data = await response.json();
-
-
-  if (!response.ok) {
-    throw new Error(`Failed to search for: ${keyword}`);
-  }
-
-  if (subUrl == "/user") {
-    return {data: (data.data as UserInterface[]), totalItems: data.total};
-  } else {
-    return {data: (data.data as ApplicantInterface[]), totalItems: data.total};
-  }
-}
-
 // ------------------------------ APPLICANT ---------------------------------//
 
-export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
+export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/applicant?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
   } else {
-    url = `${baseUrl}/applicant${keyword != "" ? "?search=" + keyword : ""}`
+    url = `${baseUrl}/applicant${query ? `?${query}` : ""}`
   }
   const response: Response = await fetch(url, {
     method: "GET",
@@ -153,6 +129,23 @@ export async function inviteApplicant(applicantId: string, assessmentId: string)
   return "Successfully invited applicant";
 }
 
+export async function getInvites(): Promise<InviteInterface[]> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data: InviteInterface[] = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve invites`);
+  }
+
+  return data;
+}
+
 export async function getInvite(id: string): Promise<InviteInterface> {
   const response: Response = await fetch(`${baseUrl}/invite/${id}`, {
     method: "GET",
@@ -170,14 +163,14 @@ export async function getInvite(id: string): Promise<InviteInterface> {
 
 // --------------------------------- USER -----------------------------------//
 
-export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, keyword: string): Promise<{ data: UserInterface[], totalItems: number }> {
+export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: UserInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/user?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
   } else {
-    url = `${baseUrl}/user${keyword != "" ? "?search=" + keyword : ""}`
+    url = `${baseUrl}/user${query ? `?${query}` : ""}`
   }
 
   const response: Response = await fetch(url, {

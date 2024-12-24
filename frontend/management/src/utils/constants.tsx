@@ -11,18 +11,14 @@ export const Themes = {
   LIGHT: "light",
 };
 
-export const ApplicantStatuses = {
-  APP_INVITED_START: "Applicant Invited (Phase 1)",
-  APP_INVITED_ASSESSMENT: "Applicant Invited (Phase 2)",
-  APP_REMINDED: "Applicant Reminded",
-  ASSESSMENT_EXPIRED: "Assessment Expired",
+export const InviteStatuses = {
+  APP_REMINDED_ONCE: "Applicant Reminded 1",
+  APP_REMINDED_TWICE: "Applicant Reminded 2",
+  EXPIRED: "Assessment Expired",
   NOT_STARTED: "Assessment Not Started",
-  APP_ASSESSMENT_IN_PROGRESS: "Assessment In Progress",
-  APP_FINISHED: "Applicant Finished",
-  INTERVIEW_INVITED: "Interview Invited",
-  INTERVIEW_FINISHED: "Interview Finished",
+  APP_STARTED: "Assessment In Progress",
+  APP_FINISHED: "Assessment Finished",
   CANCELLED: "Cancelled",
-  APP_CREATED: "Applicant Created",
 };
 
 export const PreferredLanguages = {
@@ -50,6 +46,6 @@ export const userColumns: Column[] = [
 export const applicantColumns: Column[] = [
   {label: "Name", accessor: "name", sortable: true},
   {label: "Email", accessor: "email", sortable: true},
-  {label: "Status", accessor: "status", sortable: true},
+  {label: "Statuses", accessor: "statuses", sortable: false},
   {label: "Score", accessor: "score", sortable: true},
 ]
