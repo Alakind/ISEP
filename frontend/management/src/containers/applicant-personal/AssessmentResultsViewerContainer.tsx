@@ -1,32 +1,34 @@
 import AssessmentResultsViewer from "../../components/applicant-personal/AssessmentResultsViewer.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
-import {getAssessment, getSectionSolution} from "../../utils/apiFunctions.tsx";
+import {AssessmentInterface, InviteInterface, SectionInterface} from "../../utils/types.tsx";
+import {getSectionSolution} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
-function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): ReactNode {
-  const [assessmentData, setAssessmentData] = useState<AssessmentInterface>();
-  const [sectionsData, setSectionsData] = useState<SectionInterface[]>([]);
+function AssessmentResultsViewerContainer({invitesData, inviteUuids, assessmentsData}: Props): ReactNode {
+  const [sectionsData, setSectionsData] = useState<SectionInterface[][]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<number>(0);
+  const [activeAssessment, setActiveAssessment] = useState<number>(0);
 
   useEffect((): void => {
-    if (assessmentId != "0") {
+    if (invitesData.length != 0 && assessmentsData.length != 0) {
       getData().then();
     }
-  }, [assessmentId])
+  }, [invitesData, assessmentsData]);
 
 
   async function getData(): Promise<void> {
     setLoading(true);
     try {
-      const data: AssessmentInterface = await getAssessment(assessmentId);
-      setAssessmentData(data);
+      const sections: SectionInterface[][] = []
+      for (let i: number = 0; i < assessmentsData.length; i++) {
+        const retrievedSections: SectionInterface[] = await Promise.all(
+          assessmentsData[i].sections.map((sectionId: number): Promise<SectionInterface> => getSectionSolution(`${sectionId}`, inviteUuids[i]))
+        );
+        sections.push(retrievedSections);
+      }
 
-      const retrievedSections: SectionInterface[] = await Promise.all(
-        data.sections.map((sectionId: number): Promise<SectionInterface> => getSectionSolution(`${sectionId}`, inviteUuid))
-      );
-      setSectionsData(retrievedSections);
+      setSectionsData(sections);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -41,17 +43,19 @@ function AssessmentResultsViewerContainer({assessmentId, inviteUuid}: Props): Re
   return (
     <>
       {
-        loading || assessmentData == undefined ?
+        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0 ?
           <></> :
-          <AssessmentResultsViewer assessmentData={assessmentData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
+          <AssessmentResultsViewer assessmentsData={assessmentsData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}
+                                   activeAssessment={activeAssessment} setActiveAssessment={setActiveAssessment}/>
       }
     </>
   )
 }
 
 interface Props {
-  assessmentId: string;
-  inviteUuid: string;
+  invitesData: InviteInterface[];
+  inviteUuids: string[];
+  assessmentsData: AssessmentInterface[];
 }
 
 export default AssessmentResultsViewerContainer

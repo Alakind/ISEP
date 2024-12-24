@@ -10,6 +10,45 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
+}
+
+.results__container--mod {
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.results__container--hidden {
+    display: none;
+}
+
+.results__container--single {
+    margin-top: 30px !important;
+}
+
+.results__container__span {
+    margin-right: 10px;
+}
+
+.results__container__assessment-select {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 50%;
+    overflow-x: scroll;
+}
+
+.results__container__assessment-select > a {
+    min-width: max-content;
+    margin: 15px;
+}
+
+.results__container__assessment-select__active > span {
+    border: white solid 2px;
+    box-shadow: 0 0 3px 1px var(--icons);
+    cursor: default;
 }

@@ -4,37 +4,56 @@ import AssessmentResultsOverview from "./AssessmentResultsOverview.tsx";
 import {AssessmentInterface, SectionInterface} from "../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import LoadingPage from "../LoadingPage.tsx";
+import StatusItem from "../StatusItem.tsx";
 
-function AssessmentResultsViewer({assessmentData, loading, sectionsData, activeSection, setActiveSection}: Props): ReactNode {
+function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment}: Props): ReactNode {
   return (
-    <div className="results__container">
-      <h4>Results Overview</h4>
-      <div className="results__body">
-        {
-          loading ?
-            <LoadingPage additionalClasses={"page--mod"}/> :
-            <AssessmentResultsOverview assessmentData={assessmentData}/>
-        }
+    <>
+      <div className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
+        <span className={"results__container__span"}>Select:</span>
+        <div className={"results__container__assessment-select"}>
+          {
+            assessmentsData.map((assessmentData: AssessmentInterface, index: number): ReactNode => {
+              return (
+                <a key={index} onClick={(): void => setActiveAssessment(index)} className={`${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
+                  <StatusItem status={assessmentData.tag}/>
+                </a>
+              )
+            })
+          }
+        </div>
       </div>
-      <br/>
-      <h4>Summary Assessment</h4>
-      <div className="results__body">
-        {
-          loading ?
-            <LoadingPage additionalClasses={"page--mod"}/> :
-            <AssessmentResultsSections sections={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}/>
-        }
+      <div className={`results__container ${assessmentsData.length === 1 ? "results__container--single" : ""}`}>
+        <h4>Results Overview</h4>
+        <div className="results__body">
+          {
+            loading ?
+              <LoadingPage additionalClasses={"page--mod"}/> :
+              <AssessmentResultsOverview assessmentData={assessmentsData[activeAssessment]}/>
+          }
+        </div>
+        <br/>
+        <h4>Summary Assessment</h4>
+        <div className="results__body">
+          {
+            loading ?
+              <LoadingPage additionalClasses={"page--mod"}/> :
+              <AssessmentResultsSections sections={sectionsData[activeAssessment]} activeSection={activeSection} setActiveSection={setActiveSection}/>
+          }
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
 interface Props {
-  assessmentData: AssessmentInterface;
+  assessmentsData: AssessmentInterface[];
   loading: boolean;
-  sectionsData: SectionInterface[];
+  sectionsData: SectionInterface[][];
   activeSection: number;
   setActiveSection: Dispatch<SetStateAction<number>>;
+  activeAssessment: number;
+  setActiveAssessment: Dispatch<SetStateAction<number>>;
 }
 
 export default AssessmentResultsViewer
