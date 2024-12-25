@@ -56,7 +56,7 @@ export interface SectionSolvedInterface {
   measuredTime: string;
   suggestedTime: string;
   scoredPoints: number;
-  totalPoints: number;
+  availablePoints: number;
 }
 
 export interface AssignmentSolvedInterface {
@@ -64,20 +64,19 @@ export interface AssignmentSolvedInterface {
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   description: string;
   scoredPoints: number;
-  totalPoints: number;
-  // isChecked: boolean; //TODO uncomment when implemented that you can check assignments
+  availablePoints: number;
 }
 
 export interface AssignmentOpenSolvedInterface extends AssignmentSolvedInterface {
   answer: { type: string; answer: string };
-  solution: { type: string; correctAnswer: string };
+  referenceAnswer: { type: string; answer: string };
 }
 
 export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolvedInterface {
   options: string[];
   isMultipleAnswers: boolean;
   answer: { type: string; answer: number[] };
-  solution: { type: string; correctAnswer: number[] };
+  referenceAnswer: { type: string; answer: number[] };
 }
 
 export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
@@ -86,7 +85,7 @@ export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterfa
   codeUri: string;
   language: string;
   answer: { type: string; answer: File[] };
-  solution: { type: string; correctAnswer: File[] };
+  referenceAnswer: { type: string; answer: File[] };
 }
 
 export interface AssignmentInterface {
@@ -117,7 +116,12 @@ export interface BarGroupInterface {
 }
 
 export interface SkillsInterface {
-  name: string;
+  title: string;
   scoredPoints: number;
-  totalPoints: number;
+  availablePoints: number;
+}
+
+export interface ScoredAssessmentInterface {
+  scoredPoints: number;
+  availablePoints: number;
 }

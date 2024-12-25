@@ -5,7 +5,7 @@ function SolvedAssignmentMultipleChoice({assignment}: Props) {
     <>
       {assignment.options.map((option: string, index: number) => {
         const inAnswer: boolean = assignment.answer.answer.includes(index);
-        const inSolution: boolean = assignment.solution?.correctAnswer?.includes(index)
+        const inSolution: boolean = assignment.referenceAnswer?.answer?.includes(index)
         return (
           <span key={index} className={`assignment__option-wrapper ${inSolution ? "assignment__option-wrapper--correct" : ""}`}>
             <input
