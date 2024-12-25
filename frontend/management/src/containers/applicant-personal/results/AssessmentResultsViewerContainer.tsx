@@ -1,7 +1,7 @@
 import AssessmentResultsViewer from "../../../components/applicant-personal/results/AssessmentResultsViewer.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {AssessmentInterface, InviteInterface, SectionSolvedInterface} from "../../../utils/types.tsx";
-import {getSectionSolution} from "../../../utils/apiFunctions.tsx";
+import {getSectionResult} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
 function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Props): ReactNode {
@@ -23,7 +23,7 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Props)
       const sections: SectionSolvedInterface[][] = []
       for (let i: number = 0; i < assessmentsData.length; i++) {
         const retrievedSections: SectionSolvedInterface[] = await Promise.all(
-          assessmentsData[i].sections.map((sectionId: number): Promise<SectionSolvedInterface> => getSectionSolution(`${sectionId}`, invitesData[i].id))
+          assessmentsData[i].sections.map((sectionId: number): Promise<SectionSolvedInterface> => getSectionResult(`${sectionId}`, invitesData[i].id))
         );
         sections.push(retrievedSections);
       }

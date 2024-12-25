@@ -29,7 +29,7 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
           {
             loading ?
               <LoadingPage additionalClasses={"page--mod"}/> :
-              <AssessmentResultsOverviewContainer inviteUuid={invitesData[activeAssessment].id} assessmentData={assessmentsData[activeAssessment]}/>
+              <AssessmentResultsOverviewContainer inviteId={invitesData[activeAssessment].id} assessmentData={assessmentsData[activeAssessment]}/>
           }
         </div>
         <br/>

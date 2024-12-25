@@ -138,7 +138,7 @@ export async function getInvites(): Promise<InviteInterface[]> {
   });
 
   const data: InviteInterface[] = await response.json();
-  
+
   if (!response.ok) {
     throw new Error(`Failed to retrieve invites`);
   }
@@ -300,8 +300,8 @@ export async function getSection(id: string): Promise<SectionInterface> {
   return await response.json();
 }
 
-export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionSolvedInterface> {
-  const response: Response = await fetch(`${baseUrl}/section/${id}/solution/${inviteUuid}`, {
+export async function getSectionResult(id: string, inviteId: string): Promise<SectionSolvedInterface> {
+  const response: Response = await fetch(`${baseUrl}/section/${id}/result/${inviteId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -310,7 +310,7 @@ export async function getSectionSolution(id: string, inviteUuid: string): Promis
 
 
   if (!response.ok) {
-    throw new Error(`Failed to retrieve solutions of section`);
+    throw new Error(`Failed to retrieve result of section`);
   }
 
   return await response.json();
@@ -397,16 +397,13 @@ export async function getBarChartStats(inviteId: string): Promise<BarChartInterf
   };
 }
 
-export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[]> {
+export async function getSkillsStats(assessmentId: string, inviteId: string): Promise<SkillsInterface[]> {
   //TODO uncomment next part when implemented
-  /*const response: Response = await fetch(`${baseUrl}/skills`, {
+  const response: Response = await fetch(`${baseUrl}/assessment/${assessmentId}/result/${inviteId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      inviteId: inviteId,
-    }),
   });
 
 
@@ -414,52 +411,5 @@ export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[
     throw new Error(`Failed to retrieve skills`);
   }
 
-  return await response.json();*/
-  return [
-    {
-      name: "C#",
-      scoredPoints: 11,
-      totalPoints: 26
-    },
-    {
-      name: "SQL",
-      scoredPoints: 7,
-      totalPoints: 19
-    },
-    {
-      name: "LINQ",
-      scoredPoints: 0,
-      totalPoints: 5
-    },
-    {
-      name: "Threading",
-      scoredPoints: 2,
-      totalPoints: 5
-    },
-    {
-      name: "Database",
-      scoredPoints: 2,
-      totalPoints: 5
-    },
-    {
-      name: "Design",
-      scoredPoints: 3,
-      totalPoints: 3
-    },
-    {
-      name: "Scrum",
-      scoredPoints: 2,
-      totalPoints: 3
-    },
-    {
-      name: "Cross language",
-      scoredPoints: 2,
-      totalPoints: 3
-    },
-    {
-      name: "Artificial Intelligence",
-      scoredPoints: 2,
-      totalPoints: 2
-    }
-  ]
+  return await response.json();
 }
