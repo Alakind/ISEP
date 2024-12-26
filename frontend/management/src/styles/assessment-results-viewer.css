@@ -75,6 +75,23 @@
     justify-content: space-between;
 }
 
+.assignment__header__score {
+    min-width: 70px;
+}
+
+.assignment__header__score__scored-points {
+    width: 25px;
+    margin: 0 5px 2px 5px;
+    text-align: right;
+}
+
+input[type=number].assignment__header__score__scored-points::-webkit-inner-spin-button,
+input[type=number].assignment__header__score__scored-points::-webkit-outer-spin-button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
 .assignment__block {
     display: flex;
     flex-direction: column;

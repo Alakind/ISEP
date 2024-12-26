@@ -413,3 +413,20 @@ export async function getSkillsStats(assessmentId: string, inviteId: string): Pr
 
   return await response.json();
 }
+
+export async function updateScoredPointsAssignment(id: string, value: number): Promise<void> {
+  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(value),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to update scored points for assignment ${id}`);
+  }
+
+  return;
+}
