@@ -13,7 +13,16 @@ function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, h
         <input id="search" name={"search"} value={searchKeyword} onChange={(e: ChangeEvent<HTMLInputElement>): void => setSearchKeyword(e.target.value)} className="form-control input--mod" type="text"
                placeholder="Search..."
                aria-label="Search"/>
-        <a onClick={clearSearch} className="btn btn-primary btn--search" role="button"><i className="bi bi-x-lg search__div__form__icon"></i></a>
+        {
+          searchKeyword !== "" ?
+            <a onClick={clearSearch} className="btn btn-primary btn--cancel" role="button">
+              <i className="bi bi-x-lg search__div__form__icon"></i>
+            </a> :
+            <a className="btn btn-primary btn--search" role="button">
+              <i className="bi bi-search search__div__form__icon"></i>
+            </a>
+
+        }
       </form>
     </div>
   )

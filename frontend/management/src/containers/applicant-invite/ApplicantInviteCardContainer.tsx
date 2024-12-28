@@ -7,10 +7,9 @@ import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInvi
 import LoadingPage from "../../components/LoadingPage.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
-
-  const [inviteData, setInviteData] = useState<InviteInterface>({applicantId: "0", assessmentId: "0"});
+  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: "", id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
-  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
+  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
 
   const [editingEmail, setEditingEmail] = useState<boolean>(false);
@@ -20,7 +19,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
-  const { id } = useParams();
+  const {id} = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   useEffect((): void => {
@@ -39,10 +38,10 @@ function ApplicantInviteCardContainer(): ReactNode {
         setApplicantName(data.name);
         setPrevApplicantEmail(data.email);
         setInviteData((prev: InviteInterface): InviteInterface => ({
-          ...prev,
-          applicantId: `${data.id}`,
-        })
-      );
+            ...prev,
+            applicantId: `${data.id}`,
+          })
+        );
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
@@ -61,8 +60,8 @@ function ApplicantInviteCardContainer(): ReactNode {
   async function getAssessmentsData(): Promise<void> {
     setLoading(true);
     try {
-      const data: { data: AssessmentInterface[]; totalItems: number } =
-        await getAssessments();
+      const data: { data: AssessmentInterface[], totalItems: number } =
+        await getAssessments(0, -1, "", "tag,desc");
       setAssessmentsData(data.data);
     } catch (error) {
       if (error instanceof Error) {
@@ -133,13 +132,22 @@ function ApplicantInviteCardContainer(): ReactNode {
     // }));
   }
 
-  function getExpirationDate(): string {
-    const today = new Date();
-    const dd: string = String(today.getDate() + Number(import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS)).padStart(2, '0');
-    const mm: string = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy: number = today.getFullYear();
+  function getExpirationDateFormatted(inputDate?: string): string {
+    const DEFAULT_EXPIRATION_DAYS: number = Number(import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS) || 0;
 
-    return yyyy + '-' + mm + '-' + dd;
+    const date: Date = inputDate ? new Date(inputDate) : new Date();
+
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid input date format");
+    }
+
+    date.setDate(date.getDate() + DEFAULT_EXPIRATION_DAYS);
+
+    const yyyy: number = date.getFullYear();
+    const mm: string = String(date.getMonth() + 1).padStart(2, '0');
+    const dd: string = String(date.getDate()).padStart(2, '0');
+
+    return `${yyyy}-${mm}-${dd}`;
   }
 
   function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>): void {
@@ -152,7 +160,7 @@ function ApplicantInviteCardContainer(): ReactNode {
     setExpirationDate(e.target.value); //TODO temporary expiration date state
     // setInviteData((prev: InviteInterface): InviteInterface => ({
     //   ...prev,
-    //   expirationDate: `${e.target.value}`,
+    //   expiresAt: `${e.target.value}`,
     // }));
   }
 
@@ -201,7 +209,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   if (loading) {
-    return <LoadingPage additionalClasses={"page--mod"} />;
+    return <LoadingPage additionalClasses={"page--mod"}/>;
   } else {
     return (
       <ApplicantInviteCard
