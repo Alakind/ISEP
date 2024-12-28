@@ -9,6 +9,8 @@ function SolvedAssignment({assignment, index, handleScoreChange, children}: Prop
         <span className={"assignment__header__score"}>
           <input
             className={"assignment__header__score__scored-points"}
+            name={`input__score-${assignment.id}`}
+            id={`input__score-${assignment.id}`}
             type={"number"}
             defaultValue={assignment.scoredPoints ?? 0}
             min={0}
