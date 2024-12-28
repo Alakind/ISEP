@@ -107,17 +107,6 @@ const router = createBrowserRouter(
                   path: "invite",
                   children: [
                     {
-                      path: "show",
-                      element: (
-                        <Suspense fallback={<LoadingPage/>}>
-                          <>/applicants/:id/invite/show</>
-                        </Suspense>
-                      ),
-                      errorElement: (
-                        <ErrorBoundary error={new Error("Page not found")}/>
-                      ),
-                    },
-                    {
                       path: "add",
                       element: (
                         <Suspense fallback={<LoadingPage/>}>
