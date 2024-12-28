@@ -16,6 +16,7 @@
 .invites-overview__body__item__label {
     margin-right: 10px;
     text-decoration: underline;
+    width: 100px;
 }
 
 @media (max-width: 650px) {
@@ -28,4 +29,8 @@
         margin-left: 10px;
         width: fit-content;
     }
+}
+
+div.invites-overview__body__item__expiration-date form input[type="date"] {
+    width: fit-content;
 }

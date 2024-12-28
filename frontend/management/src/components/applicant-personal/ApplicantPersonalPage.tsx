@@ -5,8 +5,8 @@ import ApplicantPersonalCardContainer from "../../containers/applicant-personal/
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import CardHeaderContainer from "../../containers/card/CardHeaderContainer.tsx";
 import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
-import InvitesOverview from "./InvitesOverview.tsx";
 import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
+import InvitesOverviewContainer from "../../containers/applicant-personal/InvitesOverviewContainer.tsx";
 
 
 function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Props): ReactNode {
@@ -22,7 +22,7 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, inv
       </CardHeaderContainer>
       <CardBodyContainer>
         <ApplicantPersonalCardContainer applicant={applicant} setApplicant={setApplicant}/>
-        <InvitesOverview invitesData={invitesData} assessmentsData={assessmentsData}/>
+        <InvitesOverviewContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
       </CardBodyContainer>
       {
         applicant.invites && invitesData && assessmentsData ?

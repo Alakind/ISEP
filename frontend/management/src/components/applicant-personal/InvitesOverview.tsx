@@ -2,29 +2,44 @@ import StatusItem from "../StatusItem.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
 import {AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import "../../styles/invites-overview.css";
-import {ReactNode} from "react";
+import "../../styles/form.css";
+import {ChangeEvent, ReactNode} from "react";
 
-function InvitesOverview({invitesData, assessmentsData}: Props) {
+function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates}: Props) {
   return (
     <span className="invites-overview card-page__body--col2">
       <h4>Invites overview</h4>
       <div className="invites-overview__body">
         {
-          invitesData.length > 0 ?
+          invitesData.length > 0 || expirationDates.length > 0 ?
             invitesData.map((invite: InviteInterface, index: number): ReactNode => {
-              const expirationDate = new Date(invite.expiresAt)
               return (
                 <div key={index} className={"invites-overview__body__item"}>
                   <div>
-                    <span className={"invites-overview__body__item__label"}>Assessment:</span><span>{assessmentsData[index]?.tag}</span>
+                    <b>{assessmentsData[index]?.tag}:</b>
                   </div>
                   <div>
-                    {/*TODO make this a form to edit the expiration date*/}
-                    <span className={"invites-overview__body__item__label"}>Available till:</span><span>{expirationDate.toDateString()}</span>
+                    <span className={"invites-overview__body__item__label"}>Status:</span>
+                    <StatusItem status={mapStatus(invite.status)} additionalClass={"status-item--invite"}/>
                   </div>
-                  <div>
-                    <span className={"invites-overview__body__item__label"}>Status:</span><StatusItem status={mapStatus(invite.status)} additionalClass={"status-item--invite"}/>
+                  <div className={"invites-overview__body__item__expiration-date"}>
+                    <form>
+                      <div>
+                        <label className={"invites-overview__body__item__label"} htmlFor="name">Available till: </label>
+                        <input
+                          type="date"
+                          id="name"
+                          name="name"
+                          onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)} //TODO implement expiration date
+                          value={expirationDates[index]}
+                          autoComplete="off"
+                          min={invitesData[index].expiresAt}
+                          required
+                        />
+                      </div>
+                    </form>
                   </div>
+
                 </div>
               )
             }) :
@@ -38,6 +53,8 @@ function InvitesOverview({invitesData, assessmentsData}: Props) {
 interface Props {
   invitesData: InviteInterface[];
   assessmentsData: AssessmentInterface[];
+  handleChangeExpirationDate: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
+  expirationDates: string[];
 }
 
 export default InvitesOverview

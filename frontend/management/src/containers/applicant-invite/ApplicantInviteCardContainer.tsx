@@ -9,7 +9,7 @@ import LoadingPage from "../../components/LoadingPage.tsx";
 function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: "", id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
-  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDate()); //TODO remove this when inviteData excepts expirationDate
+  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
 
   const [editingEmail, setEditingEmail] = useState<boolean>(false);
@@ -132,13 +132,22 @@ function ApplicantInviteCardContainer(): ReactNode {
     // }));
   }
 
-  function getExpirationDate(): string {
-    const today = new Date();
-    const dd: string = String(today.getDate() + Number(import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS)).padStart(2, '0');
-    const mm: string = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy: number = today.getFullYear();
+  function getExpirationDateFormatted(inputDate?: string): string {
+    const DEFAULT_EXPIRATION_DAYS: number = Number(import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS) || 0;
 
-    return yyyy + '-' + mm + '-' + dd;
+    const date: Date = inputDate ? new Date(inputDate) : new Date();
+
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid input date format");
+    }
+
+    date.setDate(date.getDate() + DEFAULT_EXPIRATION_DAYS);
+
+    const yyyy: number = date.getFullYear();
+    const mm: string = String(date.getMonth() + 1).padStart(2, '0');
+    const dd: string = String(date.getDate()).padStart(2, '0');
+
+    return `${yyyy}-${mm}-${dd}`;
   }
 
   function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>): void {
