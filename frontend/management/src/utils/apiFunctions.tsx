@@ -398,7 +398,6 @@ export async function getBarChartStats(inviteId: string): Promise<BarChartInterf
 }
 
 export async function getSkillsStats(assessmentId: string, inviteId: string): Promise<SkillsInterface[]> {
-  //TODO uncomment next part when implemented
   const response: Response = await fetch(`${baseUrl}/assessment/${assessmentId}/result/${inviteId}`, {
     method: "GET",
     headers: {
