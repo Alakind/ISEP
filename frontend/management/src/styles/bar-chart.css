@@ -6,6 +6,7 @@
 .bar-chart__container {
     margin-bottom: 10px;
     height: 100%;
+    margin-top: -25px;
 }
 
 .bar-chart__text {

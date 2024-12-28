@@ -1,33 +1,28 @@
-import {ReactNode} from "react";
-import {AssessmentInterface} from "../../../utils/types.tsx";
+import {Dispatch, ReactNode, SetStateAction} from "react";
+import {AssessmentInterface, ScoredAssessmentInterface} from "../../../utils/types.tsx";
 import "../../../styles/results-overview.css";
 import BarChartContainer from "../../../containers/applicant-personal/results/bar-chart/BarChartContainer.tsx";
 import SkillsBlockContainer from "../../../containers/applicant-personal/results/skills/SkillsBlockContainer.tsx";
 
-function AssessmentResultsOverview({assessmentData, inviteUuid}: Props): ReactNode {
-  //TODO retrieve this data from back-end
-  const scoredPoints: number = 27;
-  const totalPoints: number = 60;
-  const percentage: number = scoredPoints / totalPoints * 100;
-
+function AssessmentResultsOverview({assessmentData, inviteId, assessmentScore, setAssessmentScore}: Props): ReactNode {
   return (
     <div className={"results-overview"}>
       <div className={"results-overview__score"}>
         <h5>Score</h5>
-        <div className={"results-overview__score__percentage"}>{percentage}%</div>
-        <div className={"results-overview__score__points"}><span>{scoredPoints}</span> of <span>{totalPoints}</span> points
+        <div className={"results-overview__score__percentage"}>{(assessmentScore.scoredPoints ?? 0) / assessmentScore.availablePoints * 100}%</div>
+        <div className={"results-overview__score__points"}><span>{assessmentScore.scoredPoints}</span> of <span>{assessmentScore.availablePoints}</span> points
         </div>
       </div>
       <div className={"results-overview__comparison"}>
         <h5>Comparison</h5>
         <div className={"results-overview__comparison__bar-chart"}>
-          <BarChartContainer inviteUuid={inviteUuid}/>
+          <BarChartContainer inviteId={inviteId}/>
         </div>
       </div>
       <div className={"results-overview__skills"}>
         <h5>Skills</h5>
         <div className={"results-overview__skills__progress"}>
-          <SkillsBlockContainer inviteUuid={inviteUuid}/>
+          <SkillsBlockContainer assessmentId={assessmentData.id} inviteId={inviteId} setAssessmentScore={setAssessmentScore}/>
         </div>
       </div>
     </div>
@@ -36,7 +31,9 @@ function AssessmentResultsOverview({assessmentData, inviteUuid}: Props): ReactNo
 
 interface Props {
   assessmentData: AssessmentInterface;
-  inviteUuid: string;
+  inviteId: string;
+  assessmentScore: ScoredAssessmentInterface;
+  setAssessmentScore: Dispatch<SetStateAction<ScoredAssessmentInterface>>;
 }
 
 export default AssessmentResultsOverview

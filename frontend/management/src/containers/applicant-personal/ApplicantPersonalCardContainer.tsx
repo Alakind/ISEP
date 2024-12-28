@@ -31,8 +31,8 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
         toast.error("Unknown error occurred.");
       }
     } finally {
-      setPrevApplicantData({score: 0, status: "", id: "", name: "", email: "", preferredLanguage: "", invite: ""});
-      setApplicant({score: 0, status: "", id: "", name: "", email: "", preferredLanguage: "", invite: ""});
+      setPrevApplicantData({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
+      setApplicant({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
       navigate(`/applicants`);
     }
   }

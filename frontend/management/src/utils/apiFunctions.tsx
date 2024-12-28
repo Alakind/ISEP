@@ -7,11 +7,11 @@ const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
+    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
+    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else {
-    url = `${baseUrl}/applicant${query ? `?${query}` : ""}`
+    url = `${baseUrl}/applicant?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? `&${query}` : ""}`;
   }
   const response: Response = await fetch(url, {
     method: "GET",
@@ -166,11 +166,11 @@ export async function getInvite(id: string): Promise<InviteInterface> {
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: UserInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
+    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
+    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else {
-    url = `${baseUrl}/user${query ? `?${query}` : ""}`
+    url = `${baseUrl}/user?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? `&${query}` : ""}`;
   }
 
   const response: Response = await fetch(url, {
@@ -242,16 +242,16 @@ export async function deleteUser(id: string): Promise<string> {
 
 // --------------------------------- ASSESSMENT -----------------------------------//
 
-export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", keyword: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
+export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", query: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/assessment?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/assessment?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/assessment${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/assessment${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else {
-    url = `${baseUrl}/assessment${keyword != "" ? "?search=" + keyword : ""}`
+    url = `${baseUrl}/assessment?sort=${orderBy != "" ? orderBy : "tag,asc"}${query ? `&${query}` : ""}`;
   }
-
+  console.log(url)
   const response: Response = await fetch(url, {
     method: "GET",
     headers: {
@@ -300,8 +300,8 @@ export async function getSection(id: string): Promise<SectionInterface> {
   return await response.json();
 }
 
-export async function getSectionSolution(id: string, inviteUuid: string): Promise<SectionSolvedInterface> {
-  const response: Response = await fetch(`${baseUrl}/section/${id}/solution/${inviteUuid}`, {
+export async function getSectionResult(id: string, inviteId: string): Promise<SectionSolvedInterface> {
+  const response: Response = await fetch(`${baseUrl}/section/${id}/result/${inviteId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -310,7 +310,7 @@ export async function getSectionSolution(id: string, inviteUuid: string): Promis
 
 
   if (!response.ok) {
-    throw new Error(`Failed to retrieve solutions of section`);
+    throw new Error(`Failed to retrieve result of section`);
   }
 
   return await response.json();
@@ -397,16 +397,12 @@ export async function getBarChartStats(inviteId: string): Promise<BarChartInterf
   };
 }
 
-export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[]> {
-  //TODO uncomment next part when implemented
-  /*const response: Response = await fetch(`${baseUrl}/skills`, {
+export async function getSkillsStats(assessmentId: string, inviteId: string): Promise<SkillsInterface[]> {
+  const response: Response = await fetch(`${baseUrl}/assessment/${assessmentId}/result/${inviteId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      inviteId: inviteId,
-    }),
   });
 
 
@@ -414,52 +410,22 @@ export async function getSkillsStats(inviteId: string): Promise<SkillsInterface[
     throw new Error(`Failed to retrieve skills`);
   }
 
-  return await response.json();*/
-  return [
-    {
-      name: "C#",
-      scoredPoints: 11,
-      totalPoints: 26
+  return await response.json();
+}
+
+export async function updateScoredPointsAssignment(id: string, value: number): Promise<void> {
+  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
     },
-    {
-      name: "SQL",
-      scoredPoints: 7,
-      totalPoints: 19
-    },
-    {
-      name: "LINQ",
-      scoredPoints: 0,
-      totalPoints: 5
-    },
-    {
-      name: "Threading",
-      scoredPoints: 2,
-      totalPoints: 5
-    },
-    {
-      name: "Database",
-      scoredPoints: 2,
-      totalPoints: 5
-    },
-    {
-      name: "Design",
-      scoredPoints: 3,
-      totalPoints: 3
-    },
-    {
-      name: "Scrum",
-      scoredPoints: 2,
-      totalPoints: 3
-    },
-    {
-      name: "Cross language",
-      scoredPoints: 2,
-      totalPoints: 3
-    },
-    {
-      name: "Artificial Intelligence",
-      scoredPoints: 2,
-      totalPoints: 2
-    }
-  ]
+    body: JSON.stringify(value),
+  });
+
+
+  if (!response.ok) {
+    throw new Error(`Failed to update scored points for assignment ${id}`);
+  }
+
+  return;
 }

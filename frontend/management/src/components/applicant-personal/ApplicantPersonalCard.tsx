@@ -5,7 +5,8 @@ import "../../styles/form.css";
 
 function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
   return (
-    <div>
+    <div className={"card-page__body--col2"}>
+      <h4>Applicant details</h4>
       <form id={`form_${applicant.id}`}>
         <div>
           <label htmlFor={"name"}>Name:</label>
@@ -39,18 +40,6 @@ function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleE
             name="preferredLanguage"
             disabled={!isEditing}
             value={applicant.preferredLanguage.toString()}
-            onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor={"invite"}>Invite link:</label>
-          <input
-            type="text"
-            id={"invite"}
-            name="invite"
-            disabled={true}
-            value={applicant.invite ?? '-'}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
             autoComplete="off"
           />

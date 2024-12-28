@@ -10,12 +10,16 @@
     margin-bottom: 20px;
 }
 
-.btn--search {
+.btn--search, .btn--cancel {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     background-color: var(--tertiary-color) !important;
     border-color: var(--transparent) !important;
     color: var(--text-white) !important;
+}
+
+.btn--search {
+    cursor: default;
 }
 
 .input--mod {

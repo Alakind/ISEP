@@ -1,8 +1,0 @@
-.status-overview {
-    background-color: var(--card-body-inner);
-    border-radius: 5px;
-    padding: 10px 10px 15px;
-    height: fit-content;
-    width: 250px;
-    min-width: 220px;
-}

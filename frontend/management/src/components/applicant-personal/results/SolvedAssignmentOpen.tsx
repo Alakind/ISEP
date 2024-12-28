@@ -11,6 +11,15 @@ function SolvedAssignmentOpen({assignment}: Props) {
         contentEditable={false}
         readOnly={true}
       />
+      <b>Reference answer:</b>
+      <textarea
+        className="assignment__textarea"
+        placeholder="No reference answer available"
+        name={assignment.id + "-reference"}
+        value={assignment.referenceAnswer?.answer}
+        contentEditable={false}
+        readOnly={true}
+      />
     </>
   );
 }
