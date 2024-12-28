@@ -19,7 +19,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate: NavigateFunction = useNavigate();
-  const { id } = useParams();
+  const {id} = useParams();
   const [selectedOption, setSelectedOption] = useState<number>(0);
 
   useEffect((): void => {
@@ -38,10 +38,10 @@ function ApplicantInviteCardContainer(): ReactNode {
         setApplicantName(data.name);
         setPrevApplicantEmail(data.email);
         setInviteData((prev: InviteInterface): InviteInterface => ({
-          ...prev,
-          applicantId: `${data.id}`,
-        })
-      );
+            ...prev,
+            applicantId: `${data.id}`,
+          })
+        );
       } else {
         toast.error("Couldn't retrieve applicant.");
       }
@@ -61,7 +61,7 @@ function ApplicantInviteCardContainer(): ReactNode {
     setLoading(true);
     try {
       const data: { data: AssessmentInterface[], totalItems: number } =
-        await getAssessments();
+        await getAssessments(0, -1, "", "tag,desc");
       setAssessmentsData(data.data);
     } catch (error) {
       if (error instanceof Error) {
@@ -151,7 +151,7 @@ function ApplicantInviteCardContainer(): ReactNode {
     setExpirationDate(e.target.value); //TODO temporary expiration date state
     // setInviteData((prev: InviteInterface): InviteInterface => ({
     //   ...prev,
-    //   expirationDate: `${e.target.value}`,
+    //   expiresAt: `${e.target.value}`,
     // }));
   }
 
@@ -200,7 +200,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   if (loading) {
-    return <LoadingPage additionalClasses={"page--mod"} />;
+    return <LoadingPage additionalClasses={"page--mod"}/>;
   } else {
     return (
       <ApplicantInviteCard

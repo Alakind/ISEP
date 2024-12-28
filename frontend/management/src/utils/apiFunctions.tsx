@@ -7,11 +7,11 @@ const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
+    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
+    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`
   } else {
-    url = `${baseUrl}/applicant${query ? `?${query}` : ""}`
+    url = `${baseUrl}/applicant?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? `&${query}` : ""}`
   }
   const response: Response = await fetch(url, {
     method: "GET",
@@ -166,11 +166,11 @@ export async function getInvite(id: string): Promise<InviteInterface> {
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: UserInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query ? `&${query}` : ""}`;
+    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query ? `&${query}` : ""}`
+    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`
   } else {
-    url = `${baseUrl}/user${query ? `?${query}` : ""}`
+    url = `${baseUrl}/user?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? `&${query}` : ""}`
   }
 
   const response: Response = await fetch(url, {
@@ -242,16 +242,16 @@ export async function deleteUser(id: string): Promise<string> {
 
 // --------------------------------- ASSESSMENT -----------------------------------//
 
-export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", keyword: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
+export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", query: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
   let url;
   if (itemsPerPage != -1) {
-    url = `${baseUrl}/assessment?page=${currentPage}&limit=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`;
+    url = `${baseUrl}/assessment?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`;
   } else if (orderBy != "") {
-    url = `${baseUrl}/assessment${orderBy != "" ? "?sort=" + orderBy : ""}${keyword != "" ? "&search=" + keyword : ""}`
+    url = `${baseUrl}/assessment${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? `&${query}` : ""}`
   } else {
-    url = `${baseUrl}/assessment${keyword != "" ? "?search=" + keyword : ""}`
+    url = `${baseUrl}/assessment?sort=${orderBy != "" ? orderBy : "tag,asc"}${query ? `&${query}` : ""}`
   }
-
+  console.log(url)
   const response: Response = await fetch(url, {
     method: "GET",
     headers: {
