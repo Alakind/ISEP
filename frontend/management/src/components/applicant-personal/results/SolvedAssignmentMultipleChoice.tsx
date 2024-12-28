@@ -20,6 +20,7 @@ function SolvedAssignmentMultipleChoice({assignment}: Props) {
                    htmlFor={`${assignment.id}_${index}`}>
               {option}
             </label>
+            {inSolution && (<span className={"assignment__option-wrapper__correct"}>(solution)</span>)}
           </span>
         )
       })}
