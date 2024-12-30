@@ -1,0 +1,15 @@
+.bulk-action-select > .form-select {
+    width: 175px;
+    height: inherit;
+}
+
+.bulk-action-select {
+    display: flex;
+    align-items: center;
+    height: 38px;
+    margin-right: 50px;
+}
+
+.bulk-action-select > label {
+    margin-right: 10px;
+}

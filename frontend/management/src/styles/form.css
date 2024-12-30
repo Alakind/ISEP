@@ -1,0 +1,70 @@
+form {
+    width: 100%;
+}
+
+form label {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+form > div:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+form input, form select {
+    width: 100%;
+    background-color: transparent;
+    color: var(--text-primary);
+    border-color: var(--transparent);
+    border-bottom-color: var(--text-primary);
+}
+
+form select {
+    border-bottom: solid 2px !important;
+}
+
+[data-theme="dark"] form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+form input:disabled {
+    color: var(--text-primary-disabled);
+    border-bottom-color: var(--text-primary-disabled);
+}
+
+form textarea {
+    width: 100%;
+    background-color: var(--question-block);
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    padding: 5px;
+    min-height: 147px;
+}
+
+form textarea:disabled {
+    color: var(--text-primary-disabled);
+}
+
+h4 {
+    margin-bottom: 15px;
+}
+
+form input.input-email {
+    width: 80%;
+}
+
+form i {
+    margin-left: 10px;
+}
+
+.input-email--edit {
+    color: var(--text-primary);
+}
+
+.input-email--disabled {
+    cursor: default;
+}
+
+.i--disabled {
+    color: var(--text-primary-disabled);
+}

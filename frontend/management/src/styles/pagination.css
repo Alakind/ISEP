@@ -1,0 +1,10 @@
+.active > .page-link, .page-link.active {
+    color: var(--text-secondary);
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+}
+
+.page-item--mod {
+    width: 45px;
+    text-align: center;
+}
