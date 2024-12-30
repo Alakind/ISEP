@@ -2,7 +2,7 @@ import {render} from "@testing-library/react";
 import InfoSupportLogo from "../../src/components/InfoSupportLogo.tsx";
 
 describe("InfoSupportLogo", () => {
-  it("Should be able to show a status", () => {
+  it("should be able to show a info support logo", () => {
     render(<InfoSupportLogo/>);
 
     const svg = document.getElementsByTagName("svg");
