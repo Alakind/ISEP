@@ -1,6 +1,6 @@
 import {AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
-import {ChangeEvent, ReactNode} from "react";
+import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import "../../styles/form.css";
 import "../../styles/dropdown.css";
 import ToggleContainer from "../../containers/ToggleContainer.tsx";
@@ -23,7 +23,7 @@ function ApplicantInviteCard({
                                editingEmail,
                                handleEditingEmail,
                                handleCancelEditingEmail
-                             }: Props): ReactNode {
+                             }: Readonly<Props>): ReactNode {
   return (
     <>
       <div className={"card-page__body--col2"}>
@@ -47,7 +47,7 @@ function ApplicantInviteCard({
           </div>
           <div>
             <label htmlFor={"mailToggle"}>Send invitation mail:</label>
-            <span>OFF<ToggleContainer id={"mailToggle"} disabled={false} handleChange={handleToggleMail} toggleValue={toggleValue}/>ON</span>
+            <span><ToggleContainer id={"mailToggle"} disabled={false} handleChange={handleToggleMail} toggleValue={toggleValue} text={["OFF", "ON"]}/></span>
           </div>
           <div>
             <label htmlFor="name">Invitation will be valid for <b>{import.meta.env.VITE_DEFAULT_EXPIRATION_DAYS} days</b> and will expire on:</label>
@@ -85,20 +85,22 @@ function ApplicantInviteCard({
                 disabled={!editingEmail}
                 required
               />
-              {
-                editingEmail ?
-                  <a onClick={(): void => handleCancelEditingEmail()} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
-                    <i className={"bi bi-x-lg"}></i>
-                  </a> :
-                  <></>
-              }
-              <a onClick={(): void => handleEditingEmail()} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
+              <span>
                 {
                   editingEmail ?
-                    <i className="bi bi-floppy"></i> :
-                    <i className={`bi bi-pencil ${!toggleValue ? "i--disabled" : ""}`}></i>
+                    <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleCancelEditingEmail(e)} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
+                      <i className={"bi bi-x-lg"}></i>
+                    </button> :
+                    <></>
                 }
-              </a>
+                <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleEditingEmail(e)} className={`input-email--edit ${!toggleValue ? "input-email--disabled" : ""}`}>
+                  {
+                    editingEmail ?
+                      <i className="bi bi-floppy"></i> :
+                      <i className={`bi bi-pencil ${!toggleValue ? "i--disabled" : ""}`}></i>
+                  }
+                </button>
+              </span>
             </span>
           </div>
           <div>
@@ -107,7 +109,7 @@ function ApplicantInviteCard({
               id="message"
               name="message"
               onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => console.log(e.target.value)} //TODO implement mail sending
-              value={import.meta.env.VITE_STANDARD_MAIL ?? `${applicantName ? `Dear ${applicantName}` : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`}
+              value={import.meta.env.VITE_STANDARD_MAIL ?? `${applicantName ? "Dear " + applicantName : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`}
               disabled={!toggleValue}
               required
             />
@@ -133,8 +135,8 @@ interface Props {
   toggleValue: boolean;
   handleChangeEmail: (e: ChangeEvent<HTMLInputElement>) => void;
   editingEmail: boolean;
-  handleEditingEmail: () => void;
-  handleCancelEditingEmail: () => void;
+  handleEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleCancelEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export default ApplicantInviteCard

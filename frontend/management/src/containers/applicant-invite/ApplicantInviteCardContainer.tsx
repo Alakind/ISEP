@@ -1,4 +1,4 @@
-import {ChangeEvent, ReactNode, useEffect, useState} from "react";
+import {ChangeEvent, MouseEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
@@ -165,10 +165,12 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
+    e.preventDefault();
     setApplicantEmail(e.target.value);
   }
 
-  function handleEditingEmail(): void {
+  function handleEditingEmail(e: MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
     if (sendMailToggle) {
       if (editingEmail && prevApplicantEmail != applicantEmail) {
         handleSaveEmail().then();
@@ -197,7 +199,8 @@ function ApplicantInviteCardContainer(): ReactNode {
     }
   }
 
-  function handleCancelEditingEmail(): void {
+  function handleCancelEditingEmail(e: MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
     if (sendMailToggle && editingEmail) {
       setEditingEmail(false);
       if (prevApplicantEmail) {
