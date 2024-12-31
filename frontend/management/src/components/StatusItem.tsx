@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 
 function StatusItem({status, additionalClass}: Readonly<Props>): ReactNode {
   return (
-    <span className={`status-item ${status == InviteStatuses.EXPIRED ? "status-item--error" : "status-item--info"} ${additionalClass ?? ""}`}>{status}</span>
+    <span data-testid={"status-item"} className={`status-item ${status == InviteStatuses.EXPIRED ? "status-item--error" : "status-item--info"} ${additionalClass ?? ""}`}>{status}</span>
   )
 }
 
