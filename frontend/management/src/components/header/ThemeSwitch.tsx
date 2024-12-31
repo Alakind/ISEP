@@ -1,11 +1,11 @@
 import {Themes} from "../../utils/constants.tsx";
 import {ReactNode} from "react";
 
-function ThemeSwitchContainer({switchTheme, theme}: Props): ReactNode {
+function ThemeSwitch({switchTheme, theme}: Readonly<Props>): ReactNode {
   return (
-    <span onClick={switchTheme}>
+    <button className={"btn--transparent"} onClick={switchTheme}>
       <i className={`bi bi-${theme == Themes.DARK ? "sun" : "moon"}`}></i>
-    </span>
+    </button>
   )
 }
 
@@ -14,4 +14,4 @@ interface Props {
   theme: (typeof Themes)[keyof typeof Themes];
 }
 
-export default ThemeSwitchContainer;
+export default ThemeSwitch;
