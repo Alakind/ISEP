@@ -1,6 +1,6 @@
 import {AssignmentOpenSolvedInterface} from "../../../utils/types.tsx";
 
-function SolvedAssignmentOpen({assignment}: Props) {
+function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
   return (
     <>
       <textarea
