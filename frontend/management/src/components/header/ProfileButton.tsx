@@ -1,11 +1,14 @@
 import "../../styles/profile-button.css";
 import {ReactNode} from "react";
 
-function ProfileButton({urlPrefix, currentUser}: Props): ReactNode {
+function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
   return (
     <span className="profile-button">
       <li className="navbar-nav dropdown">
-        <a className={`nav-link`} href="#" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-person-circle"></i><span className="profile-button__name">{currentUser}</span></a>
+        <button className={`nav-link btn--transparent`} data-bs-toggle="dropdown" aria-expanded="false">
+          <i className="bi bi-person-circle"></i>
+          <span className="profile-button__name">{currentUser}</span>
+        </button>
         <ul className="dropdown-menu">
           <li><a className="dropdown-item" href={`${urlPrefix}/profile`}>My profile</a></li>
           <li><a className="dropdown-item" href={`${urlPrefix}/settings`}>Settings</a></li>
