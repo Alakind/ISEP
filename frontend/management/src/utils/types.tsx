@@ -55,7 +55,7 @@ export interface SectionSolvedInterface {
   title: string;
   measuredTime: string;
   suggestedTime: string;
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
 
@@ -63,7 +63,7 @@ export interface AssignmentSolvedInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   description: string;
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
 
@@ -117,7 +117,7 @@ export interface BarGroupInterface {
 
 export interface SkillsInterface {
   title: string;
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
 
