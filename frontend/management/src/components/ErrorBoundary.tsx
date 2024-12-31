@@ -1,6 +1,6 @@
 import {ReactNode} from "react";
 
-function ErrorBoundary({error}: Props): ReactNode {
+function ErrorBoundary({error}: Readonly<Props>): ReactNode {
   return (
     <div>
       <h1>Something went wrong!</h1>
