@@ -50,7 +50,7 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
     }
   }
 
-  function handleReInvite(): void {
+  function handleInvite(): void {
     //TODO implement mail resend invite
     navigate(`/applicants/${applicant.id}/invite/add`);
   }
@@ -96,7 +96,7 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
       isEditing={isEditing}
       applicant={applicant}
       handleEdit={handleEdit}
-      handleReInvite={handleReInvite}
+      handleInvite={handleInvite}
       handleDelete={handleDelete}
       handleCancel={handleCancel}
       handleSave={handleSave}
