@@ -9,7 +9,7 @@ import AssessmentResultsViewerContainer from "../../containers/applicant-persona
 import InvitesOverviewContainer from "../../containers/applicant-personal/InvitesOverviewContainer.tsx";
 
 
-function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Props): ReactNode {
+function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   return (
     <>
       <CardHeaderContainer>
@@ -25,8 +25,10 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, inv
         <InvitesOverviewContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
       </CardBodyContainer>
       {
-        applicant.invites && invitesData && assessmentsData ?
-          <AssessmentResultsViewerContainer invitesData={invitesData} assessmentsData={assessmentsData}/> :
+        applicant.invites?.length !== 0 && invitesData && assessmentsData ?
+          <div data-testid={"assessment-results-viewer"}>
+            <AssessmentResultsViewerContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
+          </div> :
           <></>
       }
     </>

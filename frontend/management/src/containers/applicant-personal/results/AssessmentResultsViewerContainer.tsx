@@ -4,7 +4,7 @@ import {AssessmentInterface, InviteInterface, SectionSolvedInterface} from "../.
 import {getSectionResult} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
-function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Props): ReactNode {
+function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   const [sectionsData, setSectionsData] = useState<SectionSolvedInterface[][]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<number>(0);
