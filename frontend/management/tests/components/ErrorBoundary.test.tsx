@@ -16,16 +16,13 @@ describe('ErrorBoundary', () => {
   });
 
   it('renders a default message if no error is provided', () => {
-    const error = new Error();
-
-    render(<ErrorBoundary error={error}/>);
+    render(<ErrorBoundary/>);
 
     const heading = screen.getByRole('heading');
-    const message = document.querySelector('p');
+    const message = screen.getByText(/page not found/i);
 
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent(/something went wrong!/i);
     expect(message).toBeInTheDocument();
-    expect(message).toHaveTextContent('')
   });
 })

@@ -27,7 +27,7 @@ const router = createBrowserRouter(
         //       <>/login</>
         //     </Suspense>
         //   ),
-        //   errorElement: <ErrorBoundary error={new Error("Page not found")} />,
+        //   errorElement: <ErrorBoundary />,
         // },
         {
           path: "settings",
@@ -37,7 +37,7 @@ const router = createBrowserRouter(
               {/*TODO show the welcome message of applicant and make it able to change it and show the standard invite email and make it able to change it.*/}
             </Suspense>
           ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+          errorElement: <ErrorBoundary/>,
         },
         {
           path: "profile",
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
               <>/profile</>
             </Suspense>
           ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+          errorElement: <ErrorBoundary/>,
         },
         {
           path: "assessments",
@@ -55,7 +55,7 @@ const router = createBrowserRouter(
               <>/assessments</>
             </Suspense>
           ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+          errorElement: <ErrorBoundary/>,
         },
         {
           path: "users",
@@ -64,7 +64,7 @@ const router = createBrowserRouter(
               <UsersListContainer/>
             </Suspense>
           ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+          errorElement: <ErrorBoundary/>,
         },
         {
           path: "applicants",
@@ -73,10 +73,6 @@ const router = createBrowserRouter(
               <ApplicantsListContainer/>
             </Suspense>
           ),
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
-        },
-        {
-          path: "applicants",
           children: [
             {
               path: "add",
@@ -86,7 +82,7 @@ const router = createBrowserRouter(
                 </Suspense>
               ),
               errorElement: (
-                <ErrorBoundary error={new Error("Page not found")}/>
+                <ErrorBoundary/>
               ),
             },
             {
@@ -100,7 +96,7 @@ const router = createBrowserRouter(
                     </Suspense>
                   ),
                   errorElement: (
-                    <ErrorBoundary error={new Error("Page not found")}/>
+                    <ErrorBoundary/>
                   ),
                 },
                 {
@@ -114,24 +110,24 @@ const router = createBrowserRouter(
                         </Suspense>
                       ),
                       errorElement: (
-                        <ErrorBoundary error={new Error("Page not found")}/>
+                        <ErrorBoundary/>
                       ),
                     },
                   ],
                   errorElement: (
-                    <ErrorBoundary error={new Error("Page not found")}/>
+                    <ErrorBoundary/>
                   ),
                 },
               ],
               errorElement: (
-                <ErrorBoundary error={new Error("Page not found")}/>
+                <ErrorBoundary/>
               ),
             },
           ],
-          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+          errorElement: <ErrorBoundary/>,
         },
       ],
-      errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+      errorElement: <ErrorBoundary/>,
     },
     {
       path: "*",
