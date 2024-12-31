@@ -73,6 +73,10 @@ const router = createBrowserRouter(
               <ApplicantsListContainer/>
             </Suspense>
           ),
+          errorElement: <ErrorBoundary/>,
+        },
+        {
+          path: "applicants",
           children: [
             {
               path: "add",
