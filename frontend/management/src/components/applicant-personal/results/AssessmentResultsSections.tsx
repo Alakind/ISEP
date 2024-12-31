@@ -3,7 +3,7 @@ import {Dispatch, ReactNode, SetStateAction} from "react";
 import {AssignmentTypes} from "../../../utils/constants.tsx";
 import SolvedAssignmentMultipleChoice from "./SolvedAssignmentMultipleChoice.tsx";
 import SolvedAssignmentOpen from "./SolvedAssignmentOpen.tsx";
-import SolvedAssignmentCoding from "../SolvedAssignmentCoding.tsx";
+import SolvedAssignmentCoding from "./SolvedAssignmentCoding.tsx";
 import SolvedAssignmentContainer from "../../../containers/applicant-personal/results/SolvedAssignmentContainer.tsx";
 
 function AssessmentResultsSections({inviteUuid, sections, activeSection, setActiveSection}: Props): ReactNode {

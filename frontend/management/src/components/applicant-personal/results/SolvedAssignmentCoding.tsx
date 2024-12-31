@@ -1,4 +1,4 @@
-import {AssignmentCodingSolvedInterface} from "../../utils/types.tsx";
+import {AssignmentCodingSolvedInterface} from "../../../utils/types.tsx";
 
 function SolvedAssignmentCoding({assignment}: Props) {
   return (
