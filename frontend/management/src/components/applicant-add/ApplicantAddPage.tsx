@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 import CardHeaderContainer from "../../containers/card/CardHeaderContainer.tsx";
 import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
 
-function ApplicantAddPage({goToApplicantsPage}: Props): ReactNode {
+function ApplicantAddPage({goToApplicantsPage}: Readonly<Props>): ReactNode {
   return (
     <>
       <CardHeaderContainer>
