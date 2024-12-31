@@ -3,7 +3,7 @@ import {ReactNode} from "react";
 
 function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
   return (
-    <span className="profile-button">
+    <span className="profile-button" data-testid={"profile-button"}>
       <li className="navbar-nav dropdown">
         <button className={`nav-link btn--transparent`} data-bs-toggle="dropdown" aria-expanded="false">
           <i className="bi bi-person-circle"></i>
