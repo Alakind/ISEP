@@ -3,7 +3,7 @@ import RoleSelectContainer from "../../containers/RoleSelectContainer.tsx";
 import CheckboxContainer from "../../containers/CheckboxContainer.tsx";
 import {ReactNode} from "react";
 
-function TableRowUsers({data, columns, handleSelect, isSelected}: Props): ReactNode {
+function TableRowUsers({data, columns, handleSelect, isSelected}: Readonly<Props>): ReactNode {
   return (
     <tr>
       {columns.map(({accessor}: Column): ReactNode => {
@@ -21,7 +21,7 @@ function TableRowUsers({data, columns, handleSelect, isSelected}: Props): ReactN
         } else if (accessor == "select") {
           return <th key={accessor}><CheckboxContainer id={data.id} additionalAction={handleSelect} isSelected={isSelected}/></th>
         } else {
-          const value: string = accessor in data ? (data as UserInterface)[accessor as keyof UserInterface] : "——";
+          const value: string = accessor in data ? (data)[accessor as keyof UserInterface] : "——";
           return <td key={accessor}>{value}</td>;
         }
       })}

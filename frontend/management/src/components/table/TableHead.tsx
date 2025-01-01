@@ -2,7 +2,27 @@ import {Column} from "../../utils/types.tsx";
 import CheckboxContainer from "../../containers/CheckboxContainer.tsx";
 import {ReactNode} from "react";
 
-function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: Props): ReactNode {
+function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: Readonly<Props>): ReactNode {
+  function notDown(accessor: string): "up" | "default" {
+    return sortField === accessor && order === "desc"
+      ? (
+        "up"
+      ) : (
+        "default"
+      );
+  }
+
+  function notEmpty(accessor: string): "up" | "default" | "down" {
+    return (
+      sortField === accessor && order === "asc"
+        ? (
+          "down"
+        ) : (
+          notDown(accessor)
+        )
+    )
+  }
+
   return (
     <thead className="table__head">
     <tr>
@@ -11,12 +31,11 @@ function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: 
             return <th className="sort" scope="col" key={accessor}><CheckboxContainer id={"checkbox-all"} additionalAction={handleSelectAll}/></th>
           } else {
             const cl: "down" | "up" | "default" | "" = sortable
-              ? sortField === accessor && order === "asc"
-                ? "down"
-                : sortField === accessor && order === "desc"
-                  ? "up"
-                  : "default"
-              : "";
+              ? (
+                notEmpty(accessor)
+              ) : (
+                ""
+              );
             return <th className={"sort " + cl} scope="col" key={accessor} onClick={(): void => handleSorting(accessor)}>{label}</th>
           }
         }
