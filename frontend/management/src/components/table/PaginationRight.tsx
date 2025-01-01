@@ -11,7 +11,7 @@ function PaginationRight({pageNumbers, lastPage, currentPage, handleClick}: Read
         </button>
       </li>
       <li className={`page-item page-item--mod disabled`}>
-        <button className="page-link page-link--mod">
+        <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
