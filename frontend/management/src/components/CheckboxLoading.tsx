@@ -7,6 +7,7 @@ function CheckboxLoading({id}: Readonly<Props>): ReactNode {
       id={id}
       type={"checkbox"}
       disabled={true}
+      data-testid={"checkbox-loading"}
     />
   )
 }
