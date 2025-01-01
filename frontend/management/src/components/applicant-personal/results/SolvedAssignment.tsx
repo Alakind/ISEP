@@ -1,10 +1,10 @@
 import {AssignmentSolvedInterface} from "../../../utils/types.tsx";
-import {ChangeEvent, Children, JSXElementConstructor, ReactElement, ReactNode, ReactPortal} from "react";
+import {ChangeEvent, Children, ReactNode} from "react";
 
-function SolvedAssignment({assignment, index, handleScoreChange, children}: Props): ReactNode {
+function SolvedAssignment({assignment, index, handleScoreChange, children}: Readonly<Props>): ReactNode {
   return (
     <>
-      <div className="assignment__header">
+      <div className="assignment__header" data-testid={"assignment-header"}>
         <span className={"assignment__header__question"}>{index + 1}. {assignment.description}</span>
         <span className={"assignment__header__score"}>
           <input
@@ -19,8 +19,8 @@ function SolvedAssignment({assignment, index, handleScoreChange, children}: Prop
           /> / {assignment.availablePoints ?? 0}
         </span>
       </div>
-      <div className="assignment__block">
-        {Children.map(children, (child: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined): ReactNode =>
+      <div className="assignment__block" data-testid={"assignment-block"}>
+        {Children.map(children, (child: ReactNode): ReactNode =>
           <>
             {child}
           </>
