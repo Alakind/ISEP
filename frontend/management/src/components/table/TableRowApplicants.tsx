@@ -27,17 +27,20 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
 
   function unknownStatuses() {
     return (
-      data.invites && data.invites.length != 0 ? data.invites.map((invite: string, index: number): ReactNode => (
-          <StatusItem key={`${invite}_${index}`} status={"Invited"}/>
+      data.invites && data.invites.length != 0
+        ? (
+          data.invites.map((invite: string, index: number): ReactNode => (
+              <StatusItem key={`${invite}_${index}`} status={"Invited"}/>
+            )
+          )
+        ) : (
+          <StatusItem status={"Created"}/>
         )
-      ) : (
-        <StatusItem status={"Created"}/>
-      )
     )
   }
 
   return (
-    <tr>
+    <tr data-testid={"table-row-applicants"}>
       {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "name") {
           return (
@@ -47,8 +50,11 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
           );
         } else if (accessor == "score") {
           return (
-            <td key={accessor}><span className="table-row__score">
-              {data.score ? data.score : 0}/100</span><Progressbar applicant={data}/>
+            <td key={accessor}>
+              <span className="table-row__score">
+              {data.score ? data.score : 0}/100
+              </span>
+              <Progressbar applicant={data}/>
             </td>
           );
         } else if (accessor == "statuses") {
@@ -60,8 +66,15 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
         } else {
           const value: string | number | string[] | undefined = accessor in data ? (data)[accessor as keyof ApplicantInterface] : "——";
           return (
-            <td key={accessor}>
-              {typeof value === "string" || typeof value === "number" ? value : "——"}
+            <td key={accessor} data-testid={`${accessor}-cell`}>
+              {
+                value
+                  ? (
+                    String(value)
+                  ) : (
+                    "——"
+                  )
+              }
             </td>
           );
         }

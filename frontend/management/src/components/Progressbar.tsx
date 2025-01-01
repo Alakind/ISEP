@@ -8,6 +8,7 @@ function Progressbar({applicant}: Readonly<Props>): ReactNode {
       id={`progressbar${applicant.id}`}
       max="100"
       value={applicant.score ? applicant.score : 0}
+      data-testid={"progressbar"}
     >
       ({applicant.score ? applicant.score : 0}%)
     </progress>
