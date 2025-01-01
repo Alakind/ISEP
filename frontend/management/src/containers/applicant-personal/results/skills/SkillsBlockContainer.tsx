@@ -25,6 +25,9 @@ function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Read
 
       const scoredAssessment: ScoredAssessmentInterface = {availablePoints: 0, scoredPoints: 0};
       for (const element of data) {
+        if (!scoredAssessment.scoredPoints) {
+          scoredAssessment.scoredPoints = 0;
+        }
         scoredAssessment.scoredPoints += (element.scoredPoints ?? 0);
         scoredAssessment.availablePoints += element.availablePoints;
       }

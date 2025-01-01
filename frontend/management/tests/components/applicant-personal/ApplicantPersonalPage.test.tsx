@@ -125,10 +125,6 @@ describe('ApplicantPersonalPage Component', () => {
         />
       </MemoryRouter>
     );
-    screen.debug()
-    console.log(mockApplicant.invites)
-    console.log(mockInvitesData)
-    console.log(mockAssessmentsData)
     const assessmentResults = screen.getByTestId('assessment-results-viewer');
     expect(assessmentResults).toBeInTheDocument();
   });
