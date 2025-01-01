@@ -122,6 +122,6 @@ export interface SkillsInterface {
 }
 
 export interface ScoredAssessmentInterface {
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
