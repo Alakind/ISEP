@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 
 function TableRowLoading({columns, id}: Readonly<Props>): ReactNode {
   return (
-    <tr className="table-loading__row">
+    <tr className="table-loading__row" data-testid={`table-row-loading-${id}`}>
       {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "select") {
           return <td key={accessor}><CheckboxLoadingContainer id={id}/></td>;
