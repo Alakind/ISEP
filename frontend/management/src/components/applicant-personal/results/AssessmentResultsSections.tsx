@@ -11,12 +11,12 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
     <div id={`invite_accordion_${inviteUuid}`} data-testid={"assessment-results-sections"}>
       {sections.map((section: SectionSolvedInterface, sectionIndex: number): ReactNode => (
         <div key={`section-${section.id}`} className="card">
-          <div className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex)}>
+          <button className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex)} data-testid={"section-header"}>
             <span>{section.title}</span>
             <span>{section.measuredTime ?? "No measured time"}<br></br><span className={"section__header__sug-time"}>Suggested: {section.suggestedTime ?? "-"} min.</span></span>
-            <span>{section.scoredPoints ?? 0} / {section.availablePoints ?? 0}</span>
+            <span>{section.scoredPoints ?? 0} / {section.availablePoints}</span>
             <span>{section.availablePoints && section.scoredPoints ? (section.scoredPoints / section.availablePoints * 100).toFixed(2) : (0.00).toFixed(2)} %</span>
-          </div>
+          </button>
           <div id={`collapse${section.id}`} className={`collapse ${activeSection == sectionIndex ? "show" : ""}`} aria-labelledby={`heading${section.id}`}
                data-parent={`#invite_accordion_${inviteUuid}`}>
             <div className="card-body">

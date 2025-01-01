@@ -10,6 +10,7 @@ function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
         value={assignment.answer?.answer}
         contentEditable={false}
         readOnly={true}
+        data-testid={"open-answer"}
       />
       <b>Reference answer:</b>
       <textarea
@@ -19,6 +20,7 @@ function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
         value={assignment.referenceAnswer?.answer}
         contentEditable={false}
         readOnly={true}
+        data-testid={"open-reference-answer"}
       />
     </>
   );

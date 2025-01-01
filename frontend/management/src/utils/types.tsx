@@ -53,8 +53,8 @@ export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
   title: string;
-  measuredTime: string;
-  suggestedTime: string;
+  measuredTime?: string;
+  suggestedTime?: string;
   scoredPoints: number | null;
   availablePoints: number;
   size: number;
