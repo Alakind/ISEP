@@ -6,7 +6,7 @@ import {ReactNode} from "react";
 
 function Header({currentPage, urlPrefix}: Readonly<Props>): ReactNode {
   return (
-    <header className="header">
+    <header className="header" data-testid={"header"}>
       <span className="header__left">
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">

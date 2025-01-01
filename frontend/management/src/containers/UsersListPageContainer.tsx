@@ -16,8 +16,8 @@ function UsersListContainer(): ReactNode {
 
   function handleIsSelectedChange(data: UserInterface[]): void {
     const changedState: Selection[] = [];
-    for (let i: number = 0; i < data.length; i++) {
-      changedState.push({id: data[i].id, checked: false});
+    for (const element of data) {
+      changedState.push({id: element.id, checked: false});
     }
     setIsSelected(changedState);
   }

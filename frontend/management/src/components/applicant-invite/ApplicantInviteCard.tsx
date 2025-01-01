@@ -27,7 +27,7 @@ function ApplicantInviteCard({
                              }: Readonly<Props>): ReactNode {
   return (
     <>
-      <div className={"card-page__body--col2"}>
+      <div className={"card-page__body--col2"} data-testid={"applicant-invite-card"}>
         <h4>Invitation settings</h4>
         <form data-testid={"invitation-settings"}>
           <div className={"dropdown"}>
