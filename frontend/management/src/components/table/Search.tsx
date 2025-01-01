@@ -1,7 +1,7 @@
 import "../../styles/search.css"
 import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 
-function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, handleSelect}: Props): ReactNode {
+function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, handleSelect}: Readonly<Props>): ReactNode {
   return (
     <div className="search__div">
       <form className="form-inline search__div__form">
@@ -14,14 +14,16 @@ function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, h
                placeholder="Search..."
                aria-label="Search"/>
         {
-          searchKeyword !== "" ?
-            <a onClick={clearSearch} className="btn btn-primary btn--cancel" role="button">
-              <i className="bi bi-x-lg search__div__form__icon"></i>
-            </a> :
-            <a className="btn btn-primary btn--search" role="button">
-              <i className="bi bi-search search__div__form__icon"></i>
-            </a>
-
+          searchKeyword !== ""
+            ? (
+              <button onClick={clearSearch} className="btn btn-primary btn--cancel" data-testid={"search-clear-button"}>
+                <i className="bi bi-x-lg search__div__form__icon"></i>
+              </button>
+            ) : (
+              <button className="btn btn-primary btn--search" data-testid={"search-button"}>
+                <i className="bi bi-search search__div__form__icon"></i>
+              </button>
+            )
         }
       </form>
     </div>
