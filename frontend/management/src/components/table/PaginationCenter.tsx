@@ -11,7 +11,7 @@ function PaginationCenter({pageNumbers, lastPage, currentPage, handleClick}: Rea
         </button>
       </li>
       <li className={`page-item page-item--mod disabled`}>
-        <button className="page-link page-link--mod">
+        <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
@@ -24,7 +24,7 @@ function PaginationCenter({pageNumbers, lastPage, currentPage, handleClick}: Rea
           </li>)
       ))}
       <li className={`page-item page-item--mod disabled`}>
-        <button className="page-link page-link--mod">
+        <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>

@@ -15,11 +15,11 @@ describe("PaginationLeft Component", () => {
   it("renders the last page button and ellipsis", () => {
     render(<PaginationLeft {...defaultProps} />);
 
-    const firstPageButton = screen.getByRole("button", {name: "10"});
+    const lastPageButton = screen.getByRole("button", {name: "10"});
     const ellipsis = screen.getByText("...");
 
-    expect(firstPageButton).toBeInTheDocument();
-    expect(firstPageButton).toHaveClass("page-link--mod");
+    expect(lastPageButton).toBeInTheDocument();
+    expect(lastPageButton).toHaveClass("page-link--mod");
     expect(ellipsis).toBeInTheDocument();
     expect(ellipsis.parentElement).toHaveClass("disabled");
   });

@@ -8,7 +8,7 @@ describe("PaginationRight Component", () => {
   const defaultProps = {
     pageNumbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     lastPage: 9,
-    currentPage: 0,
+    currentPage: 8,
     handleClick: mockHandleClick,
   };
 
