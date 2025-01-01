@@ -2,14 +2,14 @@ import "../../styles/pagination.css"
 import {MouseEvent, ReactNode} from "react";
 
 // In case the total pages amount are 7 or less.
-function PaginationAll({pageNumbers, currentPage, handleClick}: Props): ReactNode {
+function PaginationAll({pageNumbers, currentPage, handleClick}: Readonly<Props>): ReactNode {
   return (
     <>
       {pageNumbers.map((number: number): ReactNode => (
         <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
-          <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, number)} href="#" className="page-link">
+          <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
             {number + 1}
-          </a>
+          </button>
         </li>
       ))}
     </>
@@ -19,7 +19,7 @@ function PaginationAll({pageNumbers, currentPage, handleClick}: Props): ReactNod
 interface Props {
   pageNumbers: number[];
   currentPage: number;
-  handleClick: (e: MouseEvent<HTMLAnchorElement>, number: number) => void;
+  handleClick: (e: MouseEvent<HTMLButtonElement>, number: number) => void;
 }
 
 export default PaginationAll
