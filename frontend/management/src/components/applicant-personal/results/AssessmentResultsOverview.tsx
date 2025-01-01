@@ -4,9 +4,9 @@ import "../../../styles/results-overview.css";
 import BarChartContainer from "../../../containers/applicant-personal/results/bar-chart/BarChartContainer.tsx";
 import SkillsBlockContainer from "../../../containers/applicant-personal/results/skills/SkillsBlockContainer.tsx";
 
-function AssessmentResultsOverview({assessmentData, inviteId, assessmentScore, setAssessmentScore}: Props): ReactNode {
+function AssessmentResultsOverview({assessmentData, inviteId, assessmentScore, setAssessmentScore}: Readonly<Props>): ReactNode {
   return (
-    <div className={"results-overview"}>
+    <div className={"results-overview"} data-testid={"assessment-results-overview"}>
       <div className={"results-overview__score"}>
         <h5>Score</h5>
         <div className={"results-overview__score__percentage"}>{(assessmentScore.scoredPoints ?? 0) / assessmentScore.availablePoints * 100}%</div>

@@ -8,7 +8,7 @@ import SolvedAssignmentContainer from "../../../containers/applicant-personal/re
 
 function AssessmentResultsSections({inviteUuid, sections, activeSection, setActiveSection}: Readonly<Props>): ReactNode {
   return (
-    <div id={`invite_accordion_${inviteUuid}`}>
+    <div id={`invite_accordion_${inviteUuid}`} data-testid={"assessment-results-sections"}>
       {sections.map((section: SectionSolvedInterface, sectionIndex: number): ReactNode => (
         <div key={`section-${section.id}`} className="card">
           <div className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex)}>

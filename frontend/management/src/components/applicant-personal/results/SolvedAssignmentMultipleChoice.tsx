@@ -7,7 +7,7 @@ function SolvedAssignmentMultipleChoice({assignment}: Readonly<Props>) {
         const inAnswer: boolean = assignment.answer.answer.includes(index);
         const inSolution: boolean = assignment.referenceAnswer?.answer?.includes(index)
         return (
-          <span key={assignment.id} className={`assignment__option-wrapper ${inSolution ? "assignment__option-wrapper--correct" : ""}`}>
+          <span key={"mc-" + assignment.id + "-" + index} className={`assignment__option-wrapper ${inSolution ? "assignment__option-wrapper--correct" : ""}`}>
             <input
               className={`assignment__input ${inAnswer && !inSolution ? "assignment__input--wrong" : ""} ${inAnswer && inSolution ? "assignment__input--correct" : ""}`}
               type={assignment.isMultipleAnswers ? "checkbox" : "radio"}

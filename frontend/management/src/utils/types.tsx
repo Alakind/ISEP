@@ -57,6 +57,7 @@ export interface SectionSolvedInterface {
   suggestedTime: string;
   scoredPoints: number | null;
   availablePoints: number;
+  size: number;
 }
 
 export interface AssignmentSolvedInterface {

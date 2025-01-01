@@ -15,10 +15,10 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
           {
             assessmentsData.map((assessmentData: AssessmentInterface, index: number): ReactNode => {
               return (
-                <a key={assessmentData.id} onClick={(): void => setActiveAssessment(index)}
-                   className={`${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
+                <button data-testid={"select-button"} key={assessmentData.id} onClick={(): void => setActiveAssessment(index)}
+                        className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
                   <StatusItem status={assessmentData.tag}/>
-                </a>
+                </button>
               )
             })
           }
