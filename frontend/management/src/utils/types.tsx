@@ -80,12 +80,11 @@ export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolve
 }
 
 export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
-  image: string;
-  files: File[];
+  image?: string;
   codeUri: string;
   language: string;
-  answer: { type: string; answer: File[] };
-  referenceAnswer: { type: string; answer: File[] };
+  answer: { type: string; answer: string };
+  referenceAnswer: { type: string; answer: string };
 }
 
 export interface AssignmentInterface {
