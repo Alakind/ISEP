@@ -9,6 +9,7 @@ function Checkbox({id, handleOptionChange, isChecked}: Readonly<Props>): ReactNo
       type={"checkbox"}
       checked={isChecked}
       onChange={(): void => handleOptionChange(id)}
+      data-testid={"checkbox"}
     />
   )
 }

@@ -4,7 +4,7 @@ import {ChangeEvent, ReactNode} from "react";
 
 function RoleSelect({id, selectedOption, handleSelect, disabled}: Readonly<Props>): ReactNode {
   return (
-    <span className="dropdown">
+    <span className="dropdown" data-testid={"role-select"}>
       {
         disabled ?
           <span className="dropdown__select dropdown__select--disabled">{selectedOption ? selectedOption.toString() : "-"}</span> :

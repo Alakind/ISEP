@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 
 function TableRowUsers({data, columns, handleSelect, isSelected}: Readonly<Props>): ReactNode {
   return (
-    <tr>
+    <tr data-testid={"table-row-users"}>
       {columns.map(({accessor}: Column): ReactNode => {
         if (accessor == "role") {
           let disabled: boolean = false;
