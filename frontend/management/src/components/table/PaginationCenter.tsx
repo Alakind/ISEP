@@ -5,30 +5,30 @@ import {MouseEvent, ReactNode} from "react";
 function PaginationCenter({pageNumbers, lastPage, currentPage, handleClick}: Readonly<Props>): ReactNode {
   return (
     <>
-      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
+      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`} data-testid={"pagination-center-item"}>
         <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, 0)} className="page-link page-link--mod">
           1
         </button>
       </li>
-      <li className={`page-item page-item--mod disabled`}>
+      <li className={`page-item page-item--mod disabled`} data-testid={"pagination-center-item"}>
         <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
       {pageNumbers.map((number: number, index: number): false | ReactNode => (
         index >= currentPage - 1 && index <= currentPage + 1 && (
-          <li key={"center_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"center_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`} data-testid={"pagination-center-item"}>
             <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
               {number + 1}
             </button>
           </li>)
       ))}
-      <li className={`page-item page-item--mod disabled`}>
+      <li className={`page-item page-item--mod disabled`} data-testid={"pagination-center-item"}>
         <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
-      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
+      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`} data-testid={"pagination-center-item"}>
         <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, lastPage)} className="page-link page-link--mod">
           {lastPage + 1}
         </button>

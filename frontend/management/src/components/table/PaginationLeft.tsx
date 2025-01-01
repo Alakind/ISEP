@@ -7,18 +7,18 @@ function PaginationLeft({pageNumbers, lastPage, currentPage, handleClick}: Reado
     <>
       {pageNumbers.map((number: number, index: number): false | ReactNode => (
         index + 1 <= 5 && (
-          <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`} data-testid={"pagination-left-item"}>
             <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
               {number + 1}
             </button>
           </li>)
       ))}
-      <li className={`page-item page-item--mod disabled`}>
+      <li className={`page-item page-item--mod disabled`} data-testid={"pagination-left-item"}>
         <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
-      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
+      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`} data-testid={"pagination-left-item"}>
         <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, lastPage)} className="page-link page-link--mod">
           {lastPage + 1}
         </button>

@@ -5,19 +5,19 @@ import {MouseEvent, ReactNode} from "react";
 function PaginationRight({pageNumbers, lastPage, currentPage, handleClick}: Readonly<Props>): ReactNode {
   return (
     <>
-      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`}>
+      <li className={`page-item page-item--mod ${currentPage === 0 ? "active" : ""}`} data-testid={"pagination-right-item"}>
         <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, 0)} className="page-link page-link--mod">
           1
         </button>
       </li>
-      <li className={`page-item page-item--mod disabled`}>
+      <li className={`page-item page-item--mod disabled`} data-testid={"pagination-right-item"}>
         <button className="page-link page-link--mod" disabled={true}>
           ...
         </button>
       </li>
       {pageNumbers.map((number: number, index: number): false | ReactNode => (
         index >= lastPage - 4 && (
-          <li key={"right_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+          <li key={"right_" + number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`} data-testid={"pagination-right-item"}>
             <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
               {number + 1}
             </button>

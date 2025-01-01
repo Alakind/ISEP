@@ -6,7 +6,7 @@ function PaginationAll({pageNumbers, currentPage, handleClick}: Readonly<Props>)
   return (
     <>
       {pageNumbers.map((number: number): ReactNode => (
-        <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
+        <li key={number} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`} data-testid={"pagination-all-item"}>
           <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
             {number + 1}
           </button>
