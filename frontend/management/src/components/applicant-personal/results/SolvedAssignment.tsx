@@ -14,9 +14,9 @@ function SolvedAssignment({assignment, index, handleScoreChange, children}: Read
             type={"number"}
             defaultValue={assignment.scoredPoints ?? 0}
             min={0}
-            max={assignment.availablePoints ?? 0}
+            max={assignment.availablePoints}
             onChange={(e: ChangeEvent<HTMLInputElement>): void => handleScoreChange(e, assignment.id, assignment.availablePoints)}
-          /> / {assignment.availablePoints ?? 0}
+          /> / {assignment.availablePoints}
         </span>
       </div>
       <div className="assignment__block" data-testid={"assignment-block"}>
