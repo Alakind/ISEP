@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 
 function TableHeadLoading({columns}: Readonly<Props>): ReactNode {
   return (
-    <thead className="table__head">
+    <thead className="table__head" data-testid={"table-head-loading"}>
     <tr>
       {columns.map(({label, accessor}: Column): ReactNode => {
           if (accessor == "select") {
