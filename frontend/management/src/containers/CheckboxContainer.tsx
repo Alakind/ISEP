@@ -3,7 +3,7 @@ import {Selection} from "../utils/types.tsx";
 import {ReactNode, useState} from "react";
 
 
-function CheckboxContainer<T extends string | boolean>({id, additionalAction, isSelected}: Props<T>): ReactNode {
+function CheckboxContainer<T extends string | boolean>({id, additionalAction, isSelected}: Readonly<Props<T>>): ReactNode {
   const [isChecked, setIsChecked] = useState(false);
 
   function handleOptionChange(id: string): void {

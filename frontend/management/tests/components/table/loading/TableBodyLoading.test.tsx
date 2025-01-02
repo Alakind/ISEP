@@ -13,7 +13,11 @@ describe("TableBodyLoading Component", () => {
   it("renders the correct number of rows based on itemsPerPage", () => {
     const itemsPerPage = 5;
 
-    render(<TableBodyLoading columns={mockColumns} itemsPerPage={itemsPerPage}/>);
+    render(
+      <table>
+        <TableBodyLoading columns={mockColumns} itemsPerPage={itemsPerPage}/>
+      </table>
+    );
 
     const rows = screen.getAllByTestId(/table-row-loading-/);
     expect(rows).toHaveLength(itemsPerPage);
@@ -22,7 +26,11 @@ describe("TableBodyLoading Component", () => {
   it("passes the correct id to each TableRowLoading component", () => {
     const itemsPerPage = 3;
 
-    render(<TableBodyLoading columns={mockColumns} itemsPerPage={itemsPerPage}/>);
+    render(
+      <table>
+        <TableBodyLoading columns={mockColumns} itemsPerPage={itemsPerPage}/>
+      </table>
+    );
 
     for (let i = 0; i < itemsPerPage; i++) {
       const row = screen.getByTestId(`table-row-loading-${i}`);

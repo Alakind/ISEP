@@ -28,7 +28,11 @@ function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: 
     <tr>
       {columns.map(({label, accessor, sortable}: Column): ReactNode => {
           if (accessor == "select") {
-            return <th className="sort" scope="col" key={accessor}><CheckboxContainer id={"checkbox-all"} additionalAction={handleSelectAll}/></th>
+            return (
+              <th scope="col" key={accessor} data-testid={"checkbox-all"}>
+                <CheckboxContainer id={"checkbox-all"} additionalAction={handleSelectAll}/>
+              </th>
+            )
           } else {
             const cl: "down" | "up" | "default" | "" = sortable
               ? (
@@ -36,7 +40,20 @@ function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: 
               ) : (
                 ""
               );
-            return <th className={"sort " + cl} scope="col" key={accessor} onClick={(): void => handleSorting(accessor)}>{label}</th>
+
+            if (cl === "") {
+              return (
+                <th scope="col" key={accessor}>
+                  {label}
+                </th>
+              )
+            } else {
+              return (
+                <th className={"sort " + cl} scope="col" key={accessor} onClick={(): void => handleSorting(accessor)}>
+                  {label}
+                </th>
+              )
+            }
           }
         }
       )}

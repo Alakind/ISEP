@@ -11,7 +11,11 @@ describe('BarGroup Component', () => {
   };
 
   it('renders a rect with correct attributes', () => {
-    render(<BarGroup {...mockProps} />);
+    render(
+      <svg>
+        <BarGroup {...mockProps} />
+      </svg>
+    );
 
     const rect = screen.getByTestId('bar-group');
     expect(rect).toBeInTheDocument();

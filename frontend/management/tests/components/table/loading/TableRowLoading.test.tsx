@@ -11,7 +11,13 @@ describe("TableRowLoading Component", () => {
   ]
 
   it("renders a row with the correct number of cells", () => {
-    render(<TableRowLoading columns={mockColumns} id="test-id"/>);
+    render(
+      <table>
+        <tbody>
+        <TableRowLoading columns={mockColumns} id="test-id"/>
+        </tbody>
+      </table>
+    );
 
     const row = screen.getByRole("row");
     expect(row).toBeInTheDocument();
@@ -21,7 +27,13 @@ describe("TableRowLoading Component", () => {
   });
 
   it("renders CheckboxLoadingContainer for 'select' column", () => {
-    render(<TableRowLoading columns={mockColumns} id="test-id"/>);
+    render(
+      <table>
+        <tbody>
+        <TableRowLoading columns={mockColumns} id="test-id"/>
+        </tbody>
+      </table>
+    );
 
     const checkboxLoading = screen.getByTestId("checkbox-loading");
     expect(checkboxLoading).toBeInTheDocument();
@@ -30,7 +42,13 @@ describe("TableRowLoading Component", () => {
   });
 
   it("renders empty span for non-'select' columns", () => {
-    render(<TableRowLoading columns={mockColumns} id="test-id"/>);
+    render(
+      <table>
+        <tbody>
+        <TableRowLoading columns={mockColumns} id="test-id"/>
+        </tbody>
+      </table>
+    );
 
     const emptyCells = screen.getAllByTestId("empty-cell");
     expect(emptyCells).toHaveLength(mockColumns.length - (mockColumns.some((column) => column.accessor === "select") ? 1 : 0));

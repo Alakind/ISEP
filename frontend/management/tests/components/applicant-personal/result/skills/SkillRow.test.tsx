@@ -10,28 +10,52 @@ describe('SkillRow component', () => {
   };
 
   it('renders skill title', () => {
-    render(<SkillRow skillData={mockSkillData}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={mockSkillData}/>
+        </tbody>
+      </table>
+    );
 
     const titleCell = screen.getByText(/javascript/i);
     expect(titleCell).toBeInTheDocument();
   });
 
   it('renders correct percentage', () => {
-    render(<SkillRow skillData={mockSkillData}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={mockSkillData}/>
+        </tbody>
+      </table>
+    );
 
     const percentageCell = screen.getByText(/75 %/i);
     expect(percentageCell).toBeInTheDocument();
   });
 
   it('renders correct points display', () => {
-    render(<SkillRow skillData={mockSkillData}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={mockSkillData}/>
+        </tbody>
+      </table>
+    );
 
     const pointsCell = screen.getByText(/75 \/ 100/i);
     expect(pointsCell).toBeInTheDocument();
   });
 
   it('renders progress bar with correct values', () => {
-    render(<SkillRow skillData={mockSkillData}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={mockSkillData}/>
+        </tbody>
+      </table>
+    );
 
     const progressBar = screen.getByRole('progressbar');
     expect(progressBar).toBeInTheDocument();
@@ -46,7 +70,13 @@ describe('SkillRow component', () => {
       availablePoints: 100,
     };
 
-    render(<SkillRow skillData={skillDataWithZeroPoints}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={skillDataWithZeroPoints}/>
+        </tbody>
+      </table>
+    );
 
     const percentageCell = screen.getByText(/0 %/i);
     expect(percentageCell).toBeInTheDocument();
@@ -66,7 +96,13 @@ describe('SkillRow component', () => {
       availablePoints: 100,
     };
 
-    render(<SkillRow skillData={skillDataWithNullPoints}/>);
+    render(
+      <table>
+        <tbody>
+        <SkillRow skillData={skillDataWithNullPoints}/>
+        </tbody>
+      </table>
+    );
 
     const percentageCell = screen.getByText(/0 %/i);
     expect(percentageCell).toBeInTheDocument();

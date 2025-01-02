@@ -12,22 +12,34 @@ describe("TableHeadLoading Component", () => {
   ]
 
   it("renders a table header row", () => {
-    render(<TableHeadLoading columns={mockColumns}/>);
+    render(
+      <table>
+        <TableHeadLoading columns={mockColumns}/>
+      </table>
+    );
 
     const headerRow = screen.getByRole("row");
     expect(headerRow).toBeInTheDocument();
   });
 
   it("renders the correct number of header cells", () => {
-    render(<TableHeadLoading columns={mockColumns}/>);
+    render(
+      <table>
+        <TableHeadLoading columns={mockColumns}/>
+      </table>
+    );
 
     const headerCells = screen.getAllByRole("columnheader");
     expect(headerCells).toHaveLength(mockColumns.length);
   });
 
   it("renders CheckboxLoadingContainer for the 'select' column", () => {
-    render(<TableHeadLoading columns={mockColumns}/>);
-    screen.debug()
+    render(
+      <table>
+        <TableHeadLoading columns={mockColumns}/>
+      </table>
+    );
+
     const checkbox = screen.getByTestId("checkbox-loading-checkbox-all");
     expect(checkbox.firstChild).toBeInTheDocument();
     expect(checkbox.firstChild).toBeDisabled();
@@ -35,7 +47,11 @@ describe("TableHeadLoading Component", () => {
   });
 
   it("renders labels for non-'select' columns", () => {
-    render(<TableHeadLoading columns={mockColumns}/>);
+    render(
+      <table>
+        <TableHeadLoading columns={mockColumns}/>
+      </table>
+    );
 
     const nameHeader = screen.getByText("Name");
     const emailHeader = screen.getByText("Email");
