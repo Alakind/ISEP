@@ -24,7 +24,7 @@ function TableHead({columns, sortField, order, handleSorting, handleSelectAll}: 
   }
 
   return (
-    <thead className="table__head">
+    <thead className="table__head" data-testid={"table-head"}>
     <tr>
       {columns.map(({label, accessor, sortable}: Column): ReactNode => {
           if (accessor == "select") {
