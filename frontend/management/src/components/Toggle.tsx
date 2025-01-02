@@ -3,7 +3,7 @@ import {ReactNode} from "react";
 
 function Toggle({id, toggleValue, handleChange, disabled, text}: Readonly<Props>): ReactNode {
   return (
-    <label className="switch">
+    <label className="switch" data-testid={"toggle"}>
       <span className="text-left">{text[0]}</span>
       <div className="switch-container">
         <input
