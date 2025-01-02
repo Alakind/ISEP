@@ -7,6 +7,7 @@ function Button({isDisabled = false, activeTooltip = false, handleClick, btnClas
       data-toggle={activeTooltip ? "tooltip" : null}
       data-placement={activeTooltip ? "bottom" : null}
       title={activeTooltip ? text : undefined}
+      data-testid={text}
     >
       {iconClass ? <i className={`bi ${iconClass}`}></i> : <></>}
       <span className={spanTextClass}>{text}</span>
