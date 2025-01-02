@@ -5,14 +5,17 @@ function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, h
   return (
     <div className="search__div" data-testid={"search"}>
       <form className="form-inline search__div__form">
-        <select className="form-select search__div__form__select" id="searchSelect" onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} defaultValue={selectedOption}>
+        <select className="form-select search__div__form__select" id="searchSelect" onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} defaultValue={selectedOption}
+                data-testid={"search-select"}>
           <option value={"name"}>Name</option>
           <option value={"email"}>Email</option>
           <option value={"both"}>Both</option>
         </select>
         <input id="search" name={"search"} value={searchKeyword} onChange={(e: ChangeEvent<HTMLInputElement>): void => setSearchKeyword(e.target.value)} className="form-control input--mod" type="text"
                placeholder="Search..."
-               aria-label="Search"/>
+               aria-label="Search"
+               data-testid={"search-input"}
+        />
         {
           searchKeyword !== ""
             ? (

@@ -2,7 +2,7 @@ import "../../styles/search.css"
 import {ChangeEvent, Dispatch, ReactNode, SetStateAction, useEffect, useState} from "react";
 import Search from "../../components/table/Search.tsx";
 
-function SearchContainer({setQuery}: Props): ReactNode {
+function SearchContainer({setQuery}: Readonly<Props>): ReactNode {
   const [selectedOption, setSelectedOption] = useState<string>("name");
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
