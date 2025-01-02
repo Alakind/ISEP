@@ -3,7 +3,7 @@ import {Selection} from "../utils/types.tsx";
 import {ReactNode, useState} from "react";
 
 
-function CheckboxContainer<T extends string | boolean>({id, additionalAction, isSelected}: Readonly<Props<T>>): ReactNode {
+function CheckboxContainer<T extends string | boolean>({id, additionalAction, isSelected = []}: Readonly<Props<T>>): ReactNode {
   const [isChecked, setIsChecked] = useState(false);
 
   function handleOptionChange(id: string): void {
@@ -18,7 +18,7 @@ function CheckboxContainer<T extends string | boolean>({id, additionalAction, is
   }
 
   if (id != "checkbox-all") {
-    const selectedItem: Selection | undefined = (isSelected as Selection[]).find((item: Selection): boolean => item.id === id);
+    const selectedItem: Selection | undefined = isSelected.find((item: Selection): boolean => item.id === id);
     return (
       <Checkbox id={id} handleOptionChange={handleOptionChange} isChecked={selectedItem ? selectedItem.checked : false}/>
     )
