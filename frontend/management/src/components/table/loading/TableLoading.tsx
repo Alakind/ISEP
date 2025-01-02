@@ -6,7 +6,7 @@ import {ReactNode} from "react";
 
 function TableLoading({columns, itemsPerPage}: Readonly<Props>): ReactNode {
   return (
-    <table className="table table-striped">
+    <table className="table table-striped" data-testid={"table-loading"}>
       <TableHeadLoadingContainer columns={columns}/>
       <TableBodyLoadingContainer columns={columns} itemsPerPage={itemsPerPage}/>
     </table>

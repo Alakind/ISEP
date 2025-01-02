@@ -3,7 +3,7 @@ import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 
 function Search({searchKeyword, setSearchKeyword, clearSearch, selectedOption, handleSelect}: Readonly<Props>): ReactNode {
   return (
-    <div className="search__div">
+    <div className="search__div" data-testid={"search"}>
       <form className="form-inline search__div__form">
         <select className="form-select search__div__form__select" id="searchSelect" onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} defaultValue={selectedOption}>
           <option value={"name"}>Name</option>

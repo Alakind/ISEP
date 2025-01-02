@@ -107,7 +107,7 @@ describe('TableBody Component', () => {
         />
       </table>
     );
-    screen.debug()
+
     expect(screen.queryByText('User 1')).not.toBeInTheDocument();
     expect(screen.queryByText('Applicant 1')).not.toBeInTheDocument();
   });

@@ -3,7 +3,7 @@ import {ChangeEvent, Dispatch, ReactNode, SetStateAction} from "react";
 
 function BulkActionSelect({loading, options, handleSelect, selectedOption, setSelectedOption}: Readonly<Props>): ReactNode {
   return (
-    <span className="bulk-action-select">
+    <span className="bulk-action-select" data-testid={"bulk-action-select"}>
       <label htmlFor="bulkActionSelect">Actions:</label>
       <select disabled={loading} onChange={(e: ChangeEvent<HTMLSelectElement>): void => handleSelect(e)} className="form-select" id="bulkActionSelect" defaultValue={selectedOption}>
         {options.map((option: string, index: number): ReactNode => (

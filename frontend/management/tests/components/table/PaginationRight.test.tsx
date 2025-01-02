@@ -32,6 +32,13 @@ describe("PaginationRight Component", () => {
     expect(lastFiveButtons.map((button) => button.textContent)).toEqual(["6", "7", "8", "9", "10"]);
   });
 
+  it("sets the active class on the first page", () => {
+    render(<PaginationRight {...defaultProps} currentPage={0}/>);
+
+    const activeButton = screen.getByRole("button", {name: "1"});
+    expect(activeButton.parentElement).toHaveClass("active");
+  });
+
   it("sets the active class on the current page", () => {
     render(<PaginationRight {...defaultProps} currentPage={9}/>);
 
