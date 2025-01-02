@@ -15,8 +15,6 @@ function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelec
         return (
           <TableRowApplicants key={"applicant_" + data.id} data={data} columns={columns} goToApplicantPage={goToApplicantPage}/>
         );
-      } else {
-        return null;
       }
     })}
     </tbody>
