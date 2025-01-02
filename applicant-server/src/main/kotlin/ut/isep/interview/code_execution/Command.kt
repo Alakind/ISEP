@@ -14,11 +14,11 @@ class Command (
         private val command: String,
         private val timeoutAmount: Long = 60,
         private val timeoutUnit: TimeUnit = TimeUnit.SECONDS,
-        private val workingDir: File = File(".")
+        private val workingDir: File = File(".").absoluteFile
     ) {
 
         fun execute(): Command {
-            val process: Process = ProcessBuilder(command)
+            val process: Process = ProcessBuilder("/bin/bash", "-l", "-c", command)
                 .directory(workingDir)
                 .redirectOutput(ProcessBuilder.Redirect.PIPE)
                 .redirectError(ProcessBuilder.Redirect.PIPE)
