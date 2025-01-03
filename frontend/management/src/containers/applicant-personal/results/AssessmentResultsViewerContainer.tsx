@@ -43,10 +43,21 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
   return (
     <>
       {
-        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0 ?
-          <></> :
-          <AssessmentResultsViewer assessmentsData={assessmentsData} loading={loading} sectionsData={sectionsData} activeSection={activeSection} setActiveSection={setActiveSection}
-                                   activeAssessment={activeAssessment} setActiveAssessment={setActiveAssessment} invitesData={invitesData}/>
+        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0
+          ? (
+            <></>
+          ) : (
+            <AssessmentResultsViewer
+              assessmentsData={assessmentsData}
+              loading={loading}
+              sectionsData={sectionsData}
+              activeSection={activeSection}
+              setActiveSection={setActiveSection}
+              activeAssessment={activeAssessment}
+              setActiveAssessment={setActiveAssessment}
+              invitesData={invitesData}
+            />
+          )
       }
     </>
   )
