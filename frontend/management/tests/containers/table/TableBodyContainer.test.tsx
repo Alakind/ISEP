@@ -159,9 +159,8 @@ describe("TableBodyContainer", () => {
     ];
 
     const mockSetIsSelected = vi.fn((updateFn) => {
-      // Mock how setState updates the state
       const newState = updateFn(mockIsSelected);
-      mockIsSelected.splice(0, mockIsSelected.length, ...newState); // Mutate the array to simulate React state
+      mockIsSelected.splice(0, mockIsSelected.length, ...newState);
     });
 
     const {rerender} = render(
@@ -175,13 +174,12 @@ describe("TableBodyContainer", () => {
       </MemoryRouter>
     );
 
-    // Test with a valid id
     const firstRowSelectButton = screen.getAllByText("Select", {selector: "button"})[0];
     fireEvent.click(firstRowSelectButton);
 
     expect(mockSetIsSelected).toHaveBeenCalledTimes(1);
     expect(mockIsSelected).toEqual([
-      {id: "1", checked: true}, // Updated
+      {id: "1", checked: true},
       {id: "2", checked: true},
       {id: "4", checked: true},
     ]);
@@ -198,12 +196,12 @@ describe("TableBodyContainer", () => {
     );
 
     // Test with an invalid id
-    const mockUpdateFn = vi.fn((prevState) => prevState); // Mock state update for invalid id
+    const mockUpdateFn = vi.fn((prevState) => prevState);
     mockSetIsSelected.mockImplementationOnce(mockUpdateFn);
 
     const invalidRowSelectButton = screen.getAllByText("Select", {selector: "button"})[2];
-    fireEvent.click(invalidRowSelectButton); // Pass an invalid id through your component's simulated logic
-    expect(mockUpdateFn).toHaveBeenCalledWith(expect.any(Function)); // No changes should occur
+    fireEvent.click(invalidRowSelectButton);
+    expect(mockUpdateFn).toHaveBeenCalledWith(expect.any(Function));
     expect(mockIsSelected).toEqual([
       {id: "1", checked: true},
       {id: "2", checked: true},
