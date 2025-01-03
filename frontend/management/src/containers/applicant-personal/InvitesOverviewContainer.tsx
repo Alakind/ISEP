@@ -12,11 +12,10 @@ function InvitesOverviewContainer({invitesData, assessmentsData}: Readonly<Props
 
   function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>, index: number): void {
     const selectedDate: number = new Date(e.target.value).setHours(0, 0, 0, 0);
-    const currentDate: number = new Date(invitesData[index].expiresAt).setHours(0, 0, 0, 0); //TODO make more robust because this will break by setting a new date the date can't be set to a
-    // earlier date with the input min value.
+    const todayDate: number = new Date().setHours(0, 0, 0, 0);
 
-    if (currentDate > selectedDate) {
-      toast.error("Select current expiration date or a date in the future.");
+    if (todayDate > selectedDate) {
+      toast.error("You can't select a date in the past!");
       return;
     }
 
