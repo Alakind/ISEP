@@ -112,7 +112,7 @@ describe('ApplicantPersonalCardContainer', () => {
     );
 
 
-    fireEvent.click(screen.getByText('Delete')); // Assuming "Delete" button exists
+    fireEvent.click(screen.getByText('Delete'));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const proceedAction = vi.mocked(toast.warn).mock.lastCall[0].props.proceedAction;

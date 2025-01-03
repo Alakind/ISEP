@@ -3,8 +3,8 @@ import App from "./App.tsx";
 import {Suspense} from "react";
 import LoadingPage from "./components/LoadingPage.tsx";
 import ErrorBoundary from "./components/ErrorBoundary.tsx";
-import UsersListContainer from "./containers/UsersListPageContainer.tsx";
-import ApplicantsListContainer from "./containers/ApplicantsListPageContainer.tsx";
+import UsersListPageContainer from "./containers/UsersListPageContainer.tsx";
+import ApplicantsListPageContainer from "./containers/ApplicantsListPageContainer.tsx";
 import ApplicantAddPageContainer from "./containers/applicant-add/ApplicantAddPageContainer.tsx";
 import ApplicantPersonalPageContainer from "./containers/applicant-personal/ApplicantPersonalPageContainer.tsx";
 import ApplicantInvitePageContainer from "./containers/applicant-invite/ApplicantInvitePageContainer.tsx";
@@ -57,7 +57,7 @@ export const router = createBrowserRouter(
           path: "users",
           element: (
             <Suspense fallback={<LoadingPage/>}>
-              <UsersListContainer/>
+              <UsersListPageContainer/>
             </Suspense>
           ),
           errorElement: <ErrorBoundary/>,
@@ -66,7 +66,7 @@ export const router = createBrowserRouter(
           path: "applicants",
           element: (
             <Suspense fallback={<LoadingPage/>}>
-              <ApplicantsListContainer/>
+              <ApplicantsListPageContainer/>
             </Suspense>
           ),
           errorElement: <ErrorBoundary/>,

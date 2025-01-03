@@ -3,7 +3,7 @@ import InvitesOverview from "../../components/applicant-personal/InvitesOverview
 import {ChangeEvent, ReactNode, useState} from "react";
 import {toast} from "react-toastify";
 
-function InvitesOverviewContainer({invitesData, assessmentsData}: Props): ReactNode {
+function InvitesOverviewContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   const [expirationDates, setExpirationDates] = useState<string[]>(
     invitesData.map((invite: InviteInterface): string => getDateFormatted(invite.expiresAt))
   );
