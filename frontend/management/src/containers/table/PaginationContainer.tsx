@@ -4,7 +4,7 @@ import Pagination from "../../components/table/Pagination.tsx";
 function PaginationContainer({itemsPerPage, totalItems, setCurrentPage, currentPage}: Readonly<Props>): ReactNode {
   const pageNumbers: number[] = [];
 
-  if (itemsPerPage != -1) {
+  if (itemsPerPage != -1 && totalItems > 0) {
     for (let i: number = 0; i < Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
