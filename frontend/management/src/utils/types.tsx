@@ -53,17 +53,18 @@ export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
   title: string;
-  measuredTime: string;
-  suggestedTime: string;
-  scoredPoints: number;
+  measuredTime?: string;
+  suggestedTime?: string;
+  scoredPoints: number | null;
   availablePoints: number;
+  size: number;
 }
 
 export interface AssignmentSolvedInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   description: string;
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
 
@@ -80,12 +81,11 @@ export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolve
 }
 
 export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
-  image: string;
-  files: File[];
+  image?: string;
   codeUri: string;
   language: string;
-  answer: { type: string; answer: File[] };
-  referenceAnswer: { type: string; answer: File[] };
+  answer: { type: string; answer: string };
+  referenceAnswer: { type: string; answer: string };
 }
 
 export interface AssignmentInterface {
@@ -117,11 +117,11 @@ export interface BarGroupInterface {
 
 export interface SkillsInterface {
   title: string;
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }
 
 export interface ScoredAssessmentInterface {
-  scoredPoints: number;
+  scoredPoints: number | null;
   availablePoints: number;
 }

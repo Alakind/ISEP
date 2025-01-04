@@ -3,7 +3,7 @@ import {ApplicantInterface, Column, Selection, UserInterface} from "../../utils/
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 
-function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Props): ReactNode {
+function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Readonly<Props>): ReactNode {
   const navigate: NavigateFunction = useNavigate();
 
   function goToApplicantPage(applicantId: string): void {
@@ -11,13 +11,16 @@ function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Pro
   }
 
   function handleSelect(id: string): void {
-    if (setIsSelected) {
-      setIsSelected((prevState: Selection[]): Selection[] => {
-        return prevState.map((item: Selection): Selection =>
-          item.id === id ? {...item, checked: !item.checked} : item
-        );
-      });
-    }
+    setIsSelected?.((prevState: Selection[]): Selection[] => {
+      const item: Selection | undefined = prevState.find((item: Selection): boolean => item.id === id);
+
+      if (!item) return prevState;
+
+      const updatedItem = {...item, checked: !item.checked};
+      if (updatedItem.checked === item.checked) return prevState;
+
+      return prevState.map((item: Selection): Selection => (item.id === id ? updatedItem : item));
+    });
   }
 
   return (

@@ -121,6 +121,11 @@ html {
     width: 100%;
 }
 
+.btn--transparent {
+    background-color: var(--transparent);
+    border: none;
+}
+
 .btn--mod {
     background-color: var(--transparent);
     border-color: var(--text-primary);

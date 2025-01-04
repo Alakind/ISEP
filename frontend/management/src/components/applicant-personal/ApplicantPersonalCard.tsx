@@ -3,9 +3,9 @@ import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css";
 
-function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Props): ReactNode {
+function ApplicantPersonalCard({applicant, handleChange, handleInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Readonly<Props>): ReactNode {
   return (
-    <div className={"card-page__body--col2"}>
+    <div className={"card-page__body--col2"} data-testid={"applicant-personal-card"}>
       <h4>Applicant details</h4>
       <form id={`form_${applicant.id}`}>
         <div>
@@ -40,7 +40,7 @@ function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleE
             name="preferredLanguage"
             disabled={!isEditing}
             value={applicant.preferredLanguage.toString()}
-            onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChange(e)}
+            onChange={handleChange}
             autoComplete="off"
           />
         </div>
@@ -55,7 +55,7 @@ function ApplicantPersonalCard({applicant, handleChange, handleReInvite, handleE
           <>
             <Button handleClick={handleEdit} iconClass={"bi-pencil"} spanTextClass={"card-page__body__btn__text"} text={"Edit"} activeTooltip={true}/>
             <Button handleClick={handleDelete} iconClass={"bi-trash"} spanTextClass={"card-page__body__btn__text"} text={"Delete"} activeTooltip={true}/>
-            <Button handleClick={handleReInvite} iconClass={"bi-envelope"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
+            <Button handleClick={handleInvite} iconClass={"bi-envelope"} spanTextClass={"card-page__body__btn__text"} text={"Invite"} activeTooltip={true}/>
           </>
         }
       </div>
@@ -68,7 +68,7 @@ interface Props {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEdit: () => void;
   handleDelete: () => void;
-  handleReInvite: () => void;
+  handleInvite: () => void;
   isEditing: boolean;
   handleSave: () => void;
   handleCancel: () => void;

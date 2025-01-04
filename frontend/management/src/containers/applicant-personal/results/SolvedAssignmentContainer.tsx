@@ -4,7 +4,7 @@ import SolvedAssignment from "../../../components/applicant-personal/results/Sol
 import {toast} from "react-toastify";
 import {updateScoredPointsAssignment} from "../../../utils/apiFunctions.tsx";
 
-function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, children}: Props): ReactNode {
+function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, children}: Readonly<Props>): ReactNode {
   function handleScoreChange(e: ChangeEvent<HTMLInputElement>, id: string, max: number): void {
     const value = Number(e.target.value);
 

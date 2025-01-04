@@ -4,16 +4,16 @@ import BarGroupContainer from "../../../../containers/applicant-personal/results
 import "../../../../styles/bar-chart.css";
 
 
-function BarChart({barChartData, barWidth}: Props): ReactNode {
+function BarChart({barChartData, barWidth}: Readonly<Props>): ReactNode {
   return (
     <>
-      <div className={"bar-chart__container"}>
+      <div className={"bar-chart__container"} data-testid={"bar-chart-container"}>
         <svg width="200" height="100%">
           <g>
             {
               barChartData.barGroups.map((barGroupData: BarGroupInterface, index: number): ReactNode => {
                 return (
-                  <g key={index} transform={`translate(${index * barWidth}, 0)`}>
+                  <g key={index + "_" + barGroupData.value} transform={`translate(${index * barWidth}, 0)`}>
                     <BarGroupContainer barGroupData={barGroupData} barWidth={barWidth}/>
                   </g>
                 )
@@ -22,7 +22,7 @@ function BarChart({barChartData, barWidth}: Props): ReactNode {
           </g>
         </svg>
       </div>
-      <div className={"bar-chart__text"}>Better than <span>{barChartData.percentage}</span>% of other applicants</div>
+      <div className={"bar-chart__text"} data-testid={"bar-chart-text"}>Better than <span>{barChartData.percentage}</span>% of other applicants</div>
     </>
   )
 }

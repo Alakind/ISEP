@@ -5,16 +5,16 @@ import "../../styles/invites-overview.css";
 import "../../styles/form.css";
 import {ChangeEvent, ReactNode} from "react";
 
-function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates}: Props) {
+function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates}: Readonly<Props>) {
   return (
-    <span className="invites-overview card-page__body--col2">
+    <span className="invites-overview card-page__body--col2" data-testid={"invites-overview"}>
       <h4>Invites overview</h4>
       <div className="invites-overview__body">
         {
           invitesData.length > 0 || expirationDates.length > 0 ?
             invitesData.map((invite: InviteInterface, index: number): ReactNode => {
               return (
-                <div key={index} className={"invites-overview__body__item"}>
+                <div key={invite.id} className={"invites-overview__body__item"}>
                   <div>
                     <b>{assessmentsData[index]?.tag}:</b>
                   </div>
@@ -25,11 +25,11 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                   <div className={"invites-overview__body__item__expiration-date"}>
                     <form>
                       <div>
-                        <label className={"invites-overview__body__item__label"} htmlFor="name">Available till: </label>
+                        <label className={"invites-overview__body__item__label"} htmlFor={`expirationDate_${invite.id}`}>Available till: </label>
                         <input
                           type="date"
-                          id="name"
-                          name="name"
+                          id={`expirationDate_${invite.id}`}
+                          name="expirationDate"
                           onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)} //TODO implement expiration date
                           value={expirationDates[index]}
                           autoComplete="off"

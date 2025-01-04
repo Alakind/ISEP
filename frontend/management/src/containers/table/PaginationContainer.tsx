@@ -1,10 +1,10 @@
 import {Dispatch, MouseEvent, ReactNode, SetStateAction} from 'react'
 import Pagination from "../../components/table/Pagination.tsx";
 
-function PaginationContainer({itemsPerPage, totalItems, setCurrentPage, currentPage}: Props): ReactNode {
+function PaginationContainer({itemsPerPage, totalItems, setCurrentPage, currentPage}: Readonly<Props>): ReactNode {
   const pageNumbers: number[] = [];
 
-  if (itemsPerPage != -1) {
+  if (itemsPerPage != -1 && totalItems > 0) {
     for (let i: number = 0; i < Math.ceil(totalItems / itemsPerPage); i++) {
       pageNumbers.push(i);
     }
@@ -13,7 +13,7 @@ function PaginationContainer({itemsPerPage, totalItems, setCurrentPage, currentP
   }
   const lastPage: number = pageNumbers[pageNumbers.length - 1];
 
-  function handleClick(e: MouseEvent<HTMLAnchorElement>, number: SetStateAction<number>): void {
+  function handleClick(e: MouseEvent<HTMLButtonElement>, number: SetStateAction<number>): void {
     e.preventDefault();
     setCurrentPage(number);
   }

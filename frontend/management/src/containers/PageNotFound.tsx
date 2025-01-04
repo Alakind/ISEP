@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 
 function PageNotFound(): ReactNode {
   return (
-    <div className="page page--center">
+    <div className="page page--center" data-testid={"page-not-found"}>
       <h1>404</h1>
       <h2>Page Not Found</h2>
       <p>

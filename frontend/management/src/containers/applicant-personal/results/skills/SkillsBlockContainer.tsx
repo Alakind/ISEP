@@ -6,7 +6,7 @@ import {getSkillsStats} from "../../../../utils/apiFunctions.tsx";
 import SkillRow from "../../../../components/applicant-personal/results/skills/SkillRow.tsx";
 import "../../../../styles/skills-block.css";
 
-function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Props) {
+function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Readonly<Props>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [skillsData, setSkillsData] = useState<SkillsInterface[]>([]);
 
@@ -24,9 +24,12 @@ function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Prop
       setSkillsData(data);
 
       const scoredAssessment: ScoredAssessmentInterface = {availablePoints: 0, scoredPoints: 0};
-      for (let i: number = 0; i < data.length; i++) {
-        scoredAssessment.scoredPoints += data[i].scoredPoints;
-        scoredAssessment.availablePoints += data[i].availablePoints;
+      for (const element of data) {
+        if (!scoredAssessment.scoredPoints) {
+          scoredAssessment.scoredPoints = 0;
+        }
+        scoredAssessment.scoredPoints += (element.scoredPoints ?? 0);
+        scoredAssessment.availablePoints += element.availablePoints;
       }
       setAssessmentScore(scoredAssessment)
     } catch (error) {
@@ -47,11 +50,11 @@ function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Prop
 
   } else {
     return (
-      <table>
+      <table data-testid={"skills-container"}>
         <tbody>
         {
           skillsData.map((skillData, index) => (
-            <SkillRow key={index} skillData={skillData}/>
+            <SkillRow key={"skill-row-" + index} skillData={skillData}/>
           ))
         }
         </tbody>

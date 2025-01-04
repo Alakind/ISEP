@@ -21,9 +21,9 @@ function ApplicantsListPage({
                               orderBy,
                               setOrderBy,
                               setQuery
-                            }: Props): ReactNode {
+                            }: Readonly<Props>): ReactNode {
   return (
-    <div className="applicant-list-page">
+    <div className="applicant-list-page" data-testid={"applicants-list-page"}>
       <span>
         <Button
           handleClick={handleAddApplicant}

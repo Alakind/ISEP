@@ -1,6 +1,6 @@
 import {AssignmentOpenSolvedInterface} from "../../../utils/types.tsx";
 
-function SolvedAssignmentOpen({assignment}: Props) {
+function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
   return (
     <>
       <textarea
@@ -10,6 +10,17 @@ function SolvedAssignmentOpen({assignment}: Props) {
         value={assignment.answer?.answer}
         contentEditable={false}
         readOnly={true}
+        data-testid={"open-answer"}
+      />
+      <b>Reference answer:</b>
+      <textarea
+        className="assignment__textarea"
+        placeholder="No reference answer available"
+        name={assignment.id + "-reference"}
+        value={assignment.referenceAnswer?.answer}
+        contentEditable={false}
+        readOnly={true}
+        data-testid={"open-reference-answer"}
       />
       <b>Reference answer:</b>
       <textarea

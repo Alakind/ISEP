@@ -23,11 +23,11 @@ function UsersListPage({
                          setIsSelected,
                          removeUser,
                          setQuery,
-                       }: Props): ReactNode {
+                       }: Readonly<Props>): ReactNode {
 
 
   return (
-    <div className="user-list-page">
+    <div className="user-list-page" data-testid={"users-list-page"}>
       <SearchContainer setQuery={setQuery}/>
       {
         (totalItems == 0 || loading) ?

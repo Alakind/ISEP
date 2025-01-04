@@ -5,7 +5,7 @@ import {getApplicants, getInvites} from "../utils/apiFunctions.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
-function ApplicantsListContainer(): ReactNode {
+function ApplicantsListPageContainer(): ReactNode {
   const [data, setData] = useState<ApplicantInterface[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -59,4 +59,4 @@ function ApplicantsListContainer(): ReactNode {
   );
 }
 
-export default ApplicantsListContainer;
+export default ApplicantsListPageContainer;

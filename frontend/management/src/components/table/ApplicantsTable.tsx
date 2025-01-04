@@ -5,14 +5,12 @@ import TableBodyContainer from "../../containers/table/TableBodyContainer.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import "../../styles/table.css";
 
-function ApplicantsTable({data, orderBy, setOrderBy}: Props): ReactNode {
+function ApplicantsTable({data, orderBy, setOrderBy}: Readonly<Props>): ReactNode {
   return (
-    <>
-      <table className="table table-striped">
-        <TableHeadContainer columns={applicantColumns} orderBy={orderBy} setOrderBy={setOrderBy}/>
-        <TableBodyContainer columns={applicantColumns} tableData={data}/>
-      </table>
-    </>
+    <table className="table table-striped" data-testid={"applicants-table"}>
+      <TableHeadContainer columns={applicantColumns} orderBy={orderBy} setOrderBy={setOrderBy}/>
+      <TableBodyContainer columns={applicantColumns} tableData={data}/>
+    </table>
   );
 }
 

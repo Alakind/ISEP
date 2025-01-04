@@ -1,4 +1,4 @@
-import {ChangeEvent, ReactNode, useEffect, useState} from "react";
+import {ChangeEvent, MouseEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
@@ -11,10 +11,10 @@ function ApplicantInviteCardContainer(): ReactNode {
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const [editingEmail, setEditingEmail] = useState<boolean>(false);
   const [applicantEmail, setApplicantEmail] = useState<string>("");
-  const [applicantName, setApplicantName] = useState<string>("");
   const [prevApplicantEmail, setPrevApplicantEmail] = useState<string>("");
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([{id: "0", tag: "", sections: []}]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,15 +35,13 @@ function ApplicantInviteCardContainer(): ReactNode {
       if (id !== undefined) {
         const data: ApplicantInterface = await getApplicant(id);
         setApplicantEmail(data.email);
-        setApplicantName(data.name);
         setPrevApplicantEmail(data.email);
         setInviteData((prev: InviteInterface): InviteInterface => ({
             ...prev,
             applicantId: `${data.id}`,
           })
         );
-      } else {
-        toast.error("Couldn't retrieve applicant.");
+        setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -165,10 +163,12 @@ function ApplicantInviteCardContainer(): ReactNode {
   }
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
+    e.preventDefault();
     setApplicantEmail(e.target.value);
   }
 
-  function handleEditingEmail(): void {
+  function handleEditingEmail(e: MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
     if (sendMailToggle) {
       if (editingEmail && prevApplicantEmail != applicantEmail) {
         handleSaveEmail().then();
@@ -197,7 +197,8 @@ function ApplicantInviteCardContainer(): ReactNode {
     }
   }
 
-  function handleCancelEditingEmail(): void {
+  function handleCancelEditingEmail(e: MouseEvent<HTMLButtonElement>): void {
+    e.preventDefault();
     if (sendMailToggle && editingEmail) {
       setEditingEmail(false);
       if (prevApplicantEmail) {
@@ -208,13 +209,17 @@ function ApplicantInviteCardContainer(): ReactNode {
     }
   }
 
+  function handleMessageChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    e.preventDefault();
+    setMessage(e.currentTarget.value);
+  }
+
   if (loading) {
     return <LoadingPage additionalClasses={"page--mod"}/>;
   } else {
     return (
       <ApplicantInviteCard
         applicantEmail={applicantEmail}
-        applicantName={applicantName}
         handleInvite={handleInvite}
         handleCancel={handleCancel}
         assessmentsData={assessmentsData}
@@ -229,6 +234,8 @@ function ApplicantInviteCardContainer(): ReactNode {
         editingEmail={editingEmail}
         handleEditingEmail={handleEditingEmail}
         handleCancelEditingEmail={handleCancelEditingEmail}
+        handleMessageChange={handleMessageChange}
+        message={message}
       />
     );
   }

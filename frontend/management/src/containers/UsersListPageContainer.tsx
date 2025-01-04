@@ -4,7 +4,7 @@ import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {ReactNode, useEffect, useState} from "react";
 
-function UsersListContainer(): ReactNode {
+function UsersListPageContainer(): ReactNode {
   const [data, setData] = useState<UserInterface[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
@@ -16,8 +16,8 @@ function UsersListContainer(): ReactNode {
 
   function handleIsSelectedChange(data: UserInterface[]): void {
     const changedState: Selection[] = [];
-    for (let i: number = 0; i < data.length; i++) {
-      changedState.push({id: data[i].id, checked: false});
+    for (const element of data) {
+      changedState.push({id: element.id, checked: false});
     }
     setIsSelected(changedState);
   }
@@ -53,4 +53,4 @@ function UsersListContainer(): ReactNode {
                         orderBy={orderBy} setOrderBy={setOrderBy} isSelected={isSelected} setIsSelected={setIsSelected} removeUser={removeUser} setQuery={setQuery}/>;
 }
 
-export default UsersListContainer;
+export default UsersListPageContainer;

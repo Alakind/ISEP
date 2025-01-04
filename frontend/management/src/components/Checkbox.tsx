@@ -1,7 +1,7 @@
 import "../styles/checkbox.css";
 import {ReactNode} from "react";
 
-function Checkbox({id, handleOptionChange, isChecked}: Props): ReactNode {
+function Checkbox({id, handleOptionChange, isChecked}: Readonly<Props>): ReactNode {
   return (
     <input
       className={`checkbox__input ${isChecked ? "checkbox__input--checked" : ""}`}
@@ -9,6 +9,7 @@ function Checkbox({id, handleOptionChange, isChecked}: Props): ReactNode {
       type={"checkbox"}
       checked={isChecked}
       onChange={(): void => handleOptionChange(id)}
+      data-testid={"checkbox"}
     />
   )
 }

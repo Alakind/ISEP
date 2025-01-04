@@ -27,6 +27,10 @@
     }
 }
 
+.bi-floppy {
+    margin: 0 !important;
+}
+
 .card-page__header {
     width: 100%;
     display: flex;

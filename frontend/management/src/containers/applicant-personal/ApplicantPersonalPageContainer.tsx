@@ -48,8 +48,8 @@ function ApplicantPersonalPageContainer(): ReactNode {
           setInvitesData(invites);
 
           const assessments: AssessmentInterface[] = []
-          for (let i: number = 0; i < invites.length; i++) {
-            const data: AssessmentInterface = await getAssessment(invites[i].assessmentId);
+          for (const element of invites) {
+            const data: AssessmentInterface = await getAssessment(element.assessmentId);
             assessments.push(data);
           }
 
@@ -72,7 +72,7 @@ function ApplicantPersonalPageContainer(): ReactNode {
     navigate(`/applicants`);
   }
 
-  return loading || applicantData.id === "0" || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
+  return loading || applicantData.id === "0" || (invitesData.length !== applicantData.invites?.length) || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
     <LoadingPage/>
   ) : (
     <CardPageContainer>

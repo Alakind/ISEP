@@ -2,7 +2,7 @@ import {ApplicantInterface} from "../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import ApplicantsTable from "../../components/table/ApplicantsTable.tsx";
 
-function ApplicantsTableContainer({data, orderBy, setOrderBy}: Props): ReactNode {
+function ApplicantsTableContainer({data, orderBy, setOrderBy}: Readonly<Props>): ReactNode {
   return (
     <ApplicantsTable data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
   )

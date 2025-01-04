@@ -10,7 +10,6 @@ function ApplicantAddCardContainer(): ReactNode {
     id: "0",
     name: "",
     email: "",
-    status: "",
     preferredLanguage: ""
   };
   const [newApplicant, setNewApplicant] = useState<ApplicantInterface>(emptyApplicantData);

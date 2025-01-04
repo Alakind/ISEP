@@ -1,10 +1,22 @@
+.switch-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 40px;
+}
+
+.text-left,
+.text-right {
+    margin: 0 10px;
+}
+
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
     height: 20px;
-    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 /* Hide default HTML checkbox */
@@ -18,10 +30,8 @@
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 40px;
+    height: 20px;
     background-color: #ccc;
     -webkit-transition: .4s;
     transition: .4s;
