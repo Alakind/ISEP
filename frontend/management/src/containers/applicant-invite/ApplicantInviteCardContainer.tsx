@@ -41,7 +41,7 @@ function ApplicantInviteCardContainer(): ReactNode {
             applicantId: `${data.id}`,
           })
         );
-        setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`)
+        setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`);
       }
     } catch (error) {
       if (error instanceof Error) {

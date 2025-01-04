@@ -5,6 +5,7 @@ import BarChartContainer from "../../../containers/applicant-personal/results/ba
 import SkillsBlockContainer from "../../../containers/applicant-personal/results/skills/SkillsBlockContainer.tsx";
 
 function AssessmentResultsOverview({assessmentData, inviteId, assessmentScore, setAssessmentScore}: Readonly<Props>): ReactNode {
+
   return (
     <div className={"results-overview"} data-testid={"assessment-results-overview"}>
       <div className={"results-overview__score"}>

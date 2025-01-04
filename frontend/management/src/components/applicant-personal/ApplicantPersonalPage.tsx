@@ -8,7 +8,6 @@ import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
 import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
 import InvitesOverviewContainer from "../../containers/applicant-personal/InvitesOverviewContainer.tsx";
 
-
 function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   return (
     <>
