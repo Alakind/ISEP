@@ -42,8 +42,6 @@ function ApplicantInviteCardContainer(): ReactNode {
           })
         );
         setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`)
-      } else {
-        toast.error("Couldn't retrieve applicant.");
       }
     } catch (error) {
       if (error instanceof Error) {
