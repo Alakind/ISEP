@@ -70,9 +70,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getAssessment).mockResolvedValueOnce(mockAssessments[1]);
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
@@ -98,9 +98,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getApplicant).mockRejectedValueOnce(new Error('Failed to fetch applicant data'));
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
@@ -120,9 +120,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getInvite).mockRejectedValueOnce(new Error('Failed to fetch invite'));
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
@@ -145,9 +145,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getAssessment).mockRejectedValueOnce(new Error('Failed to fetch assessment'));
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
@@ -171,9 +171,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getAssessment).mockRejectedValueOnce(null);
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
@@ -198,9 +198,9 @@ describe('ApplicantPersonalPageContainer', () => {
     vi.mocked(getAssessment).mockResolvedValueOnce(mockAssessments[1]);
 
     render(
-      <MemoryRouter initialEntries={['/applicant/1']}>
+      <MemoryRouter initialEntries={['/applicants/1']}>
         <Routes>
-          <Route path="/applicant/:id" element={<ApplicantPersonalPageContainer/>}/>
+          <Route path="/applicants/:id" element={<ApplicantPersonalPageContainer/>}/>
         </Routes>
       </MemoryRouter>
     );
