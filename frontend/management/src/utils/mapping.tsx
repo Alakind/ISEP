@@ -29,8 +29,6 @@ export function mapRole(role: string): string {
       return Roles.INTERVIEWER
     case "recruiter":
       return Roles.RECRUITER
-    case undefined:
-      return Roles.NO_ACCESS
     default:
       return Roles.NO_ACCESS
   }

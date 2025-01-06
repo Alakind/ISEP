@@ -1,10 +1,10 @@
-import {Children, JSXElementConstructor, ReactElement, ReactNode, ReactPortal} from "react";
+import {Children, ReactNode} from "react";
 import "../../styles/card-page.css";
 
-function CardPageContainer({children}: Props): ReactNode {
+function CardPageContainer({children}: Readonly<Props>): ReactNode {
   return (
-    <div className={"card-page"}>
-      {Children.map(children, (child: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined): ReactNode =>
+    <div className={"card-page"} data-testid={"card-page-container"}>
+      {Children.map(children, (child: ReactNode): ReactNode =>
         <>
           {child}
         </>

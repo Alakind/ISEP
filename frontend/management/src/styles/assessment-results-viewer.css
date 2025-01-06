@@ -42,7 +42,7 @@
     overflow-x: scroll;
 }
 
-.results__container__assessment-select > a {
+.results__container__assessment-select > button {
     min-width: max-content;
     margin: 15px;
 }

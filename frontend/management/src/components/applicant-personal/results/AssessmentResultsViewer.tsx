@@ -6,24 +6,25 @@ import LoadingPage from "../../LoadingPage.tsx";
 import StatusItem from "../../StatusItem.tsx";
 import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
 
-function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment, invitesData}: Props): ReactNode {
+function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment, invitesData}: Readonly<Props>): ReactNode {
   return (
     <>
-      <div className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
+      <div data-testid={"assessment-results-viewer-select"} className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
         <span className={"results__container__span"}>Select:</span>
         <div className={"results__container__assessment-select"}>
           {
             assessmentsData.map((assessmentData: AssessmentInterface, index: number): ReactNode => {
               return (
-                <a key={index} onClick={(): void => setActiveAssessment(index)} className={`${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
+                <button data-testid={"select-button"} key={assessmentData.id} onClick={(): void => setActiveAssessment(index)}
+                        className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
                   <StatusItem status={assessmentData.tag}/>
-                </a>
+                </button>
               )
             })
           }
         </div>
       </div>
-      <div className={`results__container ${assessmentsData.length === 1 ? "results__container--single" : ""}`}>
+      <div data-testid={"assessment-results-viewer-results"} className={`results__container ${assessmentsData.length === 1 ? "results__container--single" : ""}`}>
         <h4>Results Overview</h4>
         <div className="results__body">
           {
