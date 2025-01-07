@@ -1,8 +1,10 @@
 import Dashboard from "../../components/dashboard/Dashboard.tsx";
+import {useState} from "react";
 
 function DashboardContainer() {
+  const [totalItems, setTotalItems] = useState<number>(0);
   return (
-    <Dashboard/>
+    <Dashboard totalItems={totalItems} setTotalItems={setTotalItems}/>
   )
 }
 

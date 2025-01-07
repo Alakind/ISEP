@@ -3,9 +3,10 @@ import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
 import DashboardListContainer from "../../containers/dashboard/DashboardListContainer.tsx";
 import "../../styles/card-page.css";
 import DashboardStatisticsContainer from "../../containers/dashboard/DashboardStatisticsContainer.tsx";
-import DashboardQuicklinksContainer from "../../containers/dashboard/DashboardQuicklinksContainer.tsx";
+import DashboardQuickLinksContainer from "../../containers/dashboard/DashboardQuickLinksContainer.tsx";
+import {Dispatch, SetStateAction} from "react";
 
-function Dashboard({}: Readonly<Props>) {
+function Dashboard({totalItems, setTotalItems}: Readonly<Props>) {
   return (
     <div className={"dashboard-page"}>
       <h1> Welcome Jurre</h1>
@@ -14,19 +15,19 @@ function Dashboard({}: Readonly<Props>) {
       <div>
         <div className={"dashboard-page__flex"}>
           <div className={"dashboard-page__flex__left"}>
-            <CardBodyContainer>
-              <DashboardStatisticsContainer/>
+            <CardBodyContainer additionalClass={"card-page__body--mod"}>
+              <DashboardStatisticsContainer totalItems={totalItems}/>
             </CardBodyContainer>
           </div>
 
           <div className={"dashboard-page__flex__right"}>
             <CardBodyContainer>
-              <DashboardQuicklinksContainer/>
+              <DashboardQuickLinksContainer/>
             </CardBodyContainer>
           </div>
         </div>
         <div>
-          <DashboardListContainer/>
+          <DashboardListContainer totalItems={totalItems} setTotalItems={setTotalItems}/>
         </div>
       </div>
 
@@ -35,6 +36,8 @@ function Dashboard({}: Readonly<Props>) {
 }
 
 interface Props {
+  totalItems: number;
+  setTotalItems: Dispatch<SetStateAction<number>>
 }
 
 export default Dashboard

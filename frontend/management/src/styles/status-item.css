@@ -4,6 +4,7 @@
     border-radius: 15px;
     font-size: 12px;
     display: inline-flex;
+    margin-right: 10px;
 }
 
 .status-item:not(:first-child):not(.status-item--invite) {

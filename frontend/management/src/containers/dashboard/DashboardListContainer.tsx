@@ -1,17 +1,16 @@
 import "../../styles/dashboard.css";
 import DashboardList from "../../components/dashboard/DashboardList.tsx";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {ApplicantInterface} from "../../utils/types.tsx";
 import {getApplicants} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
-function DashboardListContainer() {
+function DashboardListContainer({totalItems, setTotalItems}: Readonly<Props>) {
   const [data, setData] = useState<ApplicantInterface[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [totalItems, setTotalItems] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>("name:asc"); //TODO reorder based on newest finished (So date (desc) and status (complete))
+  const [orderBy, setOrderBy] = useState<string>("name,asc"); //TODO reorder based on newest finished (So date (desc) and status (complete))
 
   useEffect((): void => {
     async function fetchData(): Promise<void> {
@@ -43,6 +42,11 @@ function DashboardListContainer() {
                    setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}
                    orderBy={orderBy} setOrderBy={setOrderBy}/>
   )
+}
+
+interface Props {
+  totalItems: number;
+  setTotalItems: Dispatch<SetStateAction<number>>
 }
 
 export default DashboardListContainer
