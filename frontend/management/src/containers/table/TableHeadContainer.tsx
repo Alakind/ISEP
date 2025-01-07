@@ -2,15 +2,15 @@ import {Column, Selection} from "../../utils/types.tsx";
 import {Dispatch, ReactNode, SetStateAction, useState} from "react";
 import TableHead from "../../components/table/TableHead.tsx";
 
-function TableHeadContainer({columns, orderBy, setOrderBy, setIsSelected}: Props): ReactNode {
-  const [sortField, setSortField] = useState<string>(orderBy.split(":")[0]);
-  const [order, setOrder] = useState<string>(orderBy.split(":")[1]);
+function TableHeadContainer({columns, orderBy, setOrderBy, setIsSelected}: Readonly<Props>): ReactNode {
+  const [sortField, setSortField] = useState<string>(orderBy.split(",")[0]);
+  const [order, setOrder] = useState<string>(orderBy.split(",")[1]);
 
   function handleSorting(accessor: string): void {
     const sortOrder: "asc" | "desc" = accessor === sortField && order === "asc" ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
-    setOrderBy(`${accessor}:${sortOrder}`)
+    setOrderBy(`${accessor},${sortOrder}`)
   }
 
   function handleSelectAll(value: boolean): void {

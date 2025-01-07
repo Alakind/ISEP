@@ -1,13 +1,12 @@
 package dto.assignment
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped
 import dto.solution.AnswerCreateReadDTO
 import io.swagger.v3.oas.annotations.media.Schema
 
-
 @Schema(description = "Solved open assignment")
 data class SolvedAssignmentOpenReadDTO(
-    override val id: Long,
-    override val type: AssignmentReadDTO.AssignmentType = AssignmentReadDTO.AssignmentType.Open,
-    override val description: String,
+    @field: JsonUnwrapped
+    override val unsolvedAssignment: AssignmentOpenReadDTO,
     override val answer: AnswerCreateReadDTO.Open
-) : SolvedAssignmentReadDTO()
+) : SolvedAssignmentReadDTO

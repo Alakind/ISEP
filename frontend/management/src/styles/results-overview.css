@@ -1,3 +1,7 @@
+.results__body:has(.results-overview) {
+    height: 100%;
+}
+
 .results-overview {
     display: flex;
     justify-content: space-between;
@@ -19,9 +23,4 @@
 .results-overview__comparison {
     width: 20%;
     min-width: 200px;
-}
-
-.results-overview__comparison__bar-chart {
-    max-height: 100px;
-    height: 100%;
 }

@@ -1,18 +1,22 @@
-import {ApplicantStatuses, AssignmentTypes, PreferredLanguages, Roles} from "./constants";
+import {AssignmentTypes, InviteStatuses, PreferredLanguages, Roles} from "./constants";
 
 export interface ApplicantInterface {
   id: string;
   name: string;
   email: string;
-  status: (typeof ApplicantStatuses)[keyof typeof ApplicantStatuses];
+  statuses?: (typeof InviteStatuses)[keyof typeof InviteStatuses][];
   score?: number;
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
-  invite?: string
+  invites?: string[];
 }
 
 export interface InviteInterface {
+  id: string;
   applicantId: string;
   assessmentId: string;
+  status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
+  invitedAt: string;
+  expiresAt: string;
 }
 
 export interface UserInterface {
@@ -49,40 +53,39 @@ export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
   title: string;
-  measuredTime: string;
-  suggestedTime: string;
-  scoredPoints: number;
-  totalPoints: number;
+  measuredTime?: string;
+  suggestedTime?: string;
+  scoredPoints: number | null;
+  availablePoints: number;
+  size: number;
 }
 
 export interface AssignmentSolvedInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   description: string;
-  scoredPoints: number;
-  totalPoints: number;
-  // isChecked: boolean; //TODO uncomment when implemented that you can check assignments
+  scoredPoints: number | null;
+  availablePoints: number;
 }
 
 export interface AssignmentOpenSolvedInterface extends AssignmentSolvedInterface {
   answer: { type: string; answer: string };
-  solution: { type: string; correctAnswer: string };
+  referenceAnswer: { type: string; answer: string };
 }
 
 export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolvedInterface {
   options: string[];
   isMultipleAnswers: boolean;
   answer: { type: string; answer: number[] };
-  solution: { type: string; correctAnswer: number[] };
+  referenceAnswer: { type: string; answer: number[] };
 }
 
 export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
-  image: string;
-  files: File[];
+  image?: string;
   codeUri: string;
   language: string;
-  answer: { type: string; answer: File[] };
-  solution: { type: string; correctAnswer: File[] };
+  answer: { type: string; answer: string };
+  referenceAnswer: { type: string; answer: string };
 }
 
 export interface AssignmentInterface {
@@ -113,7 +116,12 @@ export interface BarGroupInterface {
 }
 
 export interface SkillsInterface {
-  name: string;
-  scoredPoints: number;
-  totalPoints: number;
+  title: string;
+  scoredPoints: number | null;
+  availablePoints: number;
+}
+
+export interface ScoredAssessmentInterface {
+  scoredPoints: number | null;
+  availablePoints: number;
 }

@@ -1,8 +1,13 @@
 .status-item {
     background-color: var(--status-item);
-    padding: 5px 10px;
+    padding: 1px 10px;
     border-radius: 15px;
     font-size: 12px;
+    display: inline-flex;
+}
+
+.status-item:not(:first-child):not(.status-item--invite) {
+    margin-top: 3px;
 }
 
 .status-item--info {
@@ -11,4 +16,13 @@
 
 .status-item--error {
     color: var(--status-item--error);
+}
+
+.block__status-item {
+    max-width: 200px;
+}
+
+.status-item--invite {
+    padding: 5px 10px;
+    display: inline;
 }

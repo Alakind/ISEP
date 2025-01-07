@@ -1,27 +1,37 @@
-import {useEffect, useState} from "react";
-import {SkillsInterface} from "../../../../utils/types.tsx";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {ScoredAssessmentInterface, SkillsInterface} from "../../../../utils/types.tsx";
 import {toast} from "react-toastify";
 import LoadingPage from "../../../../components/LoadingPage.tsx";
 import {getSkillsStats} from "../../../../utils/apiFunctions.tsx";
 import SkillRow from "../../../../components/applicant-personal/results/skills/SkillRow.tsx";
 import "../../../../styles/skills-block.css";
 
-function SkillsBlockContainer({inviteUuid}: Props) {
+function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Readonly<Props>) {
   const [loading, setLoading] = useState<boolean>(false);
   const [skillsData, setSkillsData] = useState<SkillsInterface[]>([]);
 
   useEffect((): void => {
-    if (inviteUuid != "") {
+    if (inviteId != "") {
       getData().then();
     }
-  }, [inviteUuid])
+  }, [inviteId])
 
 
   async function getData(): Promise<void> {
     setLoading(true);
     try {
-      const data: SkillsInterface[] = await getSkillsStats(inviteUuid);
+      const data: SkillsInterface[] = await getSkillsStats(assessmentId, inviteId);
       setSkillsData(data);
+
+      const scoredAssessment: ScoredAssessmentInterface = {availablePoints: 0, scoredPoints: 0};
+      for (const element of data) {
+        if (!scoredAssessment.scoredPoints) {
+          scoredAssessment.scoredPoints = 0;
+        }
+        scoredAssessment.scoredPoints += (element.scoredPoints ?? 0);
+        scoredAssessment.availablePoints += element.availablePoints;
+      }
+      setAssessmentScore(scoredAssessment)
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -40,11 +50,11 @@ function SkillsBlockContainer({inviteUuid}: Props) {
 
   } else {
     return (
-      <table>
+      <table data-testid={"skills-container"}>
         <tbody>
         {
           skillsData.map((skillData, index) => (
-            <SkillRow key={index} skillData={skillData}/>
+            <SkillRow key={"skill-row-" + index} skillData={skillData}/>
           ))
         }
         </tbody>
@@ -54,7 +64,9 @@ function SkillsBlockContainer({inviteUuid}: Props) {
 }
 
 interface Props {
-  inviteUuid: string;
+  assessmentId: string;
+  inviteId: string;
+  setAssessmentScore: Dispatch<SetStateAction<ScoredAssessmentInterface>>;
 }
 
 export default SkillsBlockContainer

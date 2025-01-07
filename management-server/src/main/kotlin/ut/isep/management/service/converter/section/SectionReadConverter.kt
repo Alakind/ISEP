@@ -1,6 +1,7 @@
 package ut.isep.management.service.converter.section
 
 
+import dto.section.SectionInfo
 import dto.section.SectionReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.Section
@@ -11,8 +12,11 @@ import ut.isep.management.service.converter.assignment.AssignmentReadConverter
 class SectionReadConverter(val assignmentReadConverter: AssignmentReadConverter) : ReadConverter<Section, SectionReadDTO> {
     override fun toDTO(entity: Section): SectionReadDTO {
         return SectionReadDTO(
-            id = entity.id,
-            title = entity.title,
+            SectionInfo(
+                id = entity.id,
+                title = entity.title!!,
+                availablePoints = entity.availablePoints!!
+            ),
             assignments = entity.assignments.map { assignmentReadConverter.toDTO(it) }
         )
     }

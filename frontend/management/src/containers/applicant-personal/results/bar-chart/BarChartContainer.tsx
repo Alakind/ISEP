@@ -5,21 +5,21 @@ import LoadingPage from "../../../../components/LoadingPage.tsx";
 import {BarChartInterface} from "../../../../utils/types.tsx";
 import {getBarChartStats} from "../../../../utils/apiFunctions.tsx";
 
-function BarChartContainer({inviteUuid}: Props): ReactNode {
+function BarChartContainer({inviteId}: Readonly<Props>): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [barChartData, setBarChartData] = useState<BarChartInterface>({percentage: "-", barGroups: []});
 
   useEffect((): void => {
-    if (inviteUuid != "") {
+    if (inviteId != "") {
       getData().then();
     }
-  }, [inviteUuid])
+  }, [inviteId])
 
 
   async function getData(): Promise<void> {
     setLoading(true);
     try {
-      const data: BarChartInterface = await getBarChartStats(inviteUuid);
+      const data: BarChartInterface = await getBarChartStats(inviteId);
       setBarChartData(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -45,7 +45,7 @@ function BarChartContainer({inviteUuid}: Props): ReactNode {
 }
 
 interface Props {
-  inviteUuid: string;
+  inviteId: string;
 }
 
 export default BarChartContainer

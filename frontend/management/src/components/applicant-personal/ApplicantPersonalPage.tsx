@@ -1,17 +1,14 @@
-import {ApplicantInterface} from "../../utils/types.tsx";
-import "../../styles/applicant-personal-page.css"
-import {ApplicantStatuses} from "../../utils/constants.tsx";
-import {mapStatus} from "../../utils/mapping.tsx";
-import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
+import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
+import "../../styles/applicant-personal-page.css";
 import Button from "../Button.tsx";
 import ApplicantPersonalCardContainer from "../../containers/applicant-personal/ApplicantPersonalCardContainer.tsx";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 import CardHeaderContainer from "../../containers/card/CardHeaderContainer.tsx";
 import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
-import StatusOverview from "./StatusOverview.tsx";
+import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
+import InvitesOverviewContainer from "../../containers/applicant-personal/InvitesOverviewContainer.tsx";
 
-
-function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, assessmentId}: Props): ReactNode {
+function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   return (
     <>
       <CardHeaderContainer>
@@ -24,11 +21,14 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, ass
       </CardHeaderContainer>
       <CardBodyContainer>
         <ApplicantPersonalCardContainer applicant={applicant} setApplicant={setApplicant}/>
-        <StatusOverview applicant={applicant}/>
+        <InvitesOverviewContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
       </CardBodyContainer>
-      {mapStatus(applicant.status) == (ApplicantStatuses.APP_FINISHED || ApplicantStatuses.INTERVIEW_FINISHED || ApplicantStatuses.INTERVIEW_INVITED) && applicant.invite ?
-        <AssessmentResultsViewerContainer assessmentId={assessmentId} inviteUuid={applicant.invite}/> :
-        <></>
+      {
+        applicant.invites?.length !== 0 && invitesData && assessmentsData ?
+          <div data-testid={"assessment-results-viewer"}>
+            <AssessmentResultsViewerContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
+          </div> :
+          <></>
       }
     </>
   );
@@ -37,8 +37,9 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, ass
 interface Props {
   applicant: ApplicantInterface;
   setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
-  goToApplicantsPage: () => void
-  assessmentId: string;
+  goToApplicantsPage: () => void;
+  invitesData: InviteInterface[];
+  assessmentsData: AssessmentInterface[];
 }
 
 export default ApplicantPersonalPage;

@@ -1,13 +1,13 @@
-import {ReactNode, useState} from 'react'
+import {ChangeEvent, ReactNode, useState} from 'react'
 import BulkActionSelect from "../../components/table/BulkActionSelect.tsx";
 import {deleteUser} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Selection} from "../../utils/types.tsx";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function BulkActionSelectContainer({isSelected, removeUser}: Props): ReactNode {
+function BulkActionSelectContainer({isSelected, removeUser}: Readonly<Props>): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>("-")
+  const [selectedOption, setSelectedOption] = useState<string>("-");
   const options: string[] = ["-", "Delete selected"];
 
   function proceedAction(): void {
@@ -20,10 +20,10 @@ function BulkActionSelectContainer({isSelected, removeUser}: Props): ReactNode {
 
   async function deleteUsers(): Promise<void> {
     try {
-      for (let i: number = 0; i < isSelected.length; i++) {
-        if (isSelected[i].checked) {
-          await deleteUser(isSelected[i].id);
-          removeUser(isSelected[i].id);
+      for (const element of isSelected) {
+        if (element.checked) {
+          await deleteUser(element.id);
+          removeUser(element.id);
         }
       }
     } catch (error) {
@@ -37,7 +37,7 @@ function BulkActionSelectContainer({isSelected, removeUser}: Props): ReactNode {
     }
   }
 
-  async function handleSelect(e: { preventDefault: () => void; target: { value: string; }; }): Promise<void> {
+  async function handleSelect(e: ChangeEvent<HTMLSelectElement>): Promise<void> {
     e.preventDefault();
 
     if (e.target.value == "Delete selected") {

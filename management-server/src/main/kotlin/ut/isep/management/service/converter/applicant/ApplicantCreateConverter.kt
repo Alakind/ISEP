@@ -13,7 +13,6 @@ class ApplicantCreateConverter : CreateConverter<Applicant, ApplicantCreateDTO> 
             id = 0, // Or some default
             email = createDTO.email,
             name = createDTO.name,
-            status = createDTO.status,
             preferredLanguage = createDTO.preferredLanguage,
         )
     }

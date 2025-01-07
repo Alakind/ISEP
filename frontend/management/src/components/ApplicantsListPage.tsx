@@ -12,20 +12,18 @@ import Button from "./Button.tsx";
 function ApplicantsListPage({
                               handleAddApplicant,
                               data,
-                              updateData,
                               totalItems,
-                              setTotalItems,
                               loading,
-                              setLoading,
                               currentPage,
                               setCurrentPage,
                               itemsPerPage,
                               setItemsPerPage,
                               orderBy,
-                              setOrderBy
+                              setOrderBy,
+                              setQuery
                             }: Readonly<Props>): ReactNode {
   return (
-    <div className="applicant-list-page">
+    <div className="applicant-list-page" data-testid={"applicants-list-page"}>
       <span>
         <Button
           handleClick={handleAddApplicant}
@@ -33,8 +31,7 @@ function ApplicantsListPage({
           spanTextClass={"applicant-list-page__btn__text"}
           text={"Add applicant"}
         />
-        <SearchContainer setData={updateData} setTotalItems={setTotalItems} setLoading={setLoading}
-                         currentPage={currentPage} itemsPerPage={itemsPerPage} subUrl={"/applicant"} orderBy={orderBy}/>
+        <SearchContainer setQuery={setQuery}/>
       </span>
       {
         (totalItems == 0 || loading) ?
@@ -55,17 +52,15 @@ function ApplicantsListPage({
 interface Props {
   handleAddApplicant: () => void;
   data: ApplicantInterface[];
-  updateData: (data: ApplicantInterface[]) => void;
   totalItems: number;
-  setTotalItems: Dispatch<SetStateAction<number>>;
   loading: boolean;
-  setLoading: Dispatch<SetStateAction<boolean>>;
   currentPage: number;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   itemsPerPage: number;
   setItemsPerPage: Dispatch<SetStateAction<number>>;
   orderBy: string;
   setOrderBy: Dispatch<SetStateAction<string>>;
+  setQuery: Dispatch<SetStateAction<string>>;
 }
 
 export default ApplicantsListPage;

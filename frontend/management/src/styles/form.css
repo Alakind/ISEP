@@ -59,6 +59,8 @@ form i {
 
 .input-email--edit {
     color: var(--text-primary);
+    background-color: var(--transparent);
+    border: none;
 }
 
 .input-email--disabled {

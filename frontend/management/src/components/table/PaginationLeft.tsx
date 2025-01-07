@@ -2,26 +2,26 @@ import "../../styles/pagination.css"
 import {MouseEvent, ReactNode} from "react";
 
 // In case if the current page is either 1 till 4 the first 5 pages are shown
-function PaginationLeft({pageNumbers, lastPage, currentPage, handleClick}: Props): ReactNode {
+function PaginationLeft({pageNumbers, lastPage, currentPage, handleClick}: Readonly<Props>): ReactNode {
   return (
     <>
       {pageNumbers.map((number: number, index: number): false | ReactNode => (
         index + 1 <= 5 && (
-          <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`}>
-            <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, number)} href="#" className="page-link">
+          <li key={"left_" + index} className={`page-item page-item--mod ${currentPage === number ? "active" : ""}`} data-testid={"pagination-left-item"}>
+            <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, number)} className="page-link page-link--mod">
               {number + 1}
-            </a>
+            </button>
           </li>)
       ))}
-      <li className={`page-item page-item--mod disabled`}>
-        <a className="page-link">
+      <li className={`page-item page-item--mod disabled`} data-testid={"pagination-left-item"}>
+        <button className="page-link page-link--mod" disabled={true}>
           ...
-        </a>
+        </button>
       </li>
-      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`}>
-        <a onClick={(e: MouseEvent<HTMLAnchorElement>): void => handleClick(e, lastPage)} href="#" className="page-link">
+      <li className={`page-item page-item--mod ${currentPage === lastPage ? "active" : ""}`} data-testid={"pagination-left-item"}>
+        <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, lastPage)} className="page-link page-link--mod">
           {lastPage + 1}
-        </a>
+        </button>
       </li>
     </>
   );
@@ -31,7 +31,7 @@ interface Props {
   pageNumbers: number[];
   lastPage: number;
   currentPage: number;
-  handleClick: (e: MouseEvent<HTMLAnchorElement>, number: number) => void;
+  handleClick: (e: MouseEvent<HTMLButtonElement>, number: number) => void;
 }
 
 export default PaginationLeft

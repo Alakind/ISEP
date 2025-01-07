@@ -3,9 +3,9 @@ import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css"
 
-function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}: Props): ReactNode {
+function ApplicantAddCard({newApplicant, handleCancel, handleAdd, handleChange}: Readonly<Props>): ReactNode {
   return (
-    <div>
+    <div data-testid={"applicant-add-card"}>
       <form>
         <div>
           <label htmlFor={"name"}>Name:</label>

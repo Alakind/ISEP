@@ -1,7 +1,6 @@
 package ut.isep.management.controller
 
 import dto.section.SectionReadDTO
-import dto.section.SolvedSectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -26,7 +25,7 @@ class SectionController(val sectionReadService: SectionReadService) {
         description = "Returns a list of all section IDs",
     )
     fun getSectionIDs(): ResponseEntity<List<Long>> {
-       return ResponseEntity.ok(sectionReadService.getAll().map {it.id})
+       return ResponseEntity.ok(sectionReadService.getAll().map {it.sectionInfo.id})
     }
 
     @GetMapping
@@ -57,19 +56,6 @@ class SectionController(val sectionReadService: SectionReadService) {
     fun getSection(@PathVariable id: Long): ResponseEntity<SectionReadDTO> {
         return try {
             return ResponseEntity.ok(sectionReadService.getById(id))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
-    }
-
-
-    @GetMapping("/{sectionId}/solution/{inviteId}")
-    fun getSolvedAssignmentsBySection(
-        @PathVariable sectionId: Long,
-        @PathVariable inviteId: UUID
-        ): ResponseEntity<SolvedSectionReadDTO> {
-        return try {
-            ResponseEntity.ok(sectionReadService.getSolvedSection(inviteId, sectionId))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }

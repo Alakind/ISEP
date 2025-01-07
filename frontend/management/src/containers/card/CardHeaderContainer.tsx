@@ -1,9 +1,9 @@
-import {Children, JSXElementConstructor, ReactElement, ReactNode, ReactPortal} from 'react'
+import {Children, ReactNode} from 'react'
 
-function CardHeaderContainer({children}: Props): ReactNode {
+function CardHeaderContainer({children}: Readonly<Props>): ReactNode {
   return (
-    <div className={"card-page__header"}>
-      {Children.map(children, (child: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined): ReactNode =>
+    <div className={"card-page__header"} data-testid={"card-header-container"}>
+      {Children.map(children, (child: ReactNode): ReactNode =>
         <>
           {child}
         </>

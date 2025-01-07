@@ -1,15 +1,17 @@
+import {useState} from "react";
 import AssessmentResultsOverview from "../../../components/applicant-personal/results/AssessmentResultsOverview.tsx";
-import {AssessmentInterface} from "../../../utils/types.tsx";
+import {AssessmentInterface, ScoredAssessmentInterface} from "../../../utils/types.tsx";
 
-function AssessmentResultsOverviewContainer({assessmentData, inviteUuid}: Props) {
+function AssessmentResultsOverviewContainer({assessmentData, inviteId}: Readonly<Props>) {
+  const [assessmentScore, setAssessmentScore] = useState<ScoredAssessmentInterface>({scoredPoints: 0, availablePoints: 0});
   return (
-    <AssessmentResultsOverview assessmentData={assessmentData} inviteUuid={inviteUuid}/>
+    <AssessmentResultsOverview assessmentData={assessmentData} inviteId={inviteId} assessmentScore={assessmentScore} setAssessmentScore={setAssessmentScore}/>
   )
 }
 
 interface Props {
   assessmentData: AssessmentInterface;
-  inviteUuid: string;
+  inviteId: string;
 }
 
 export default AssessmentResultsOverviewContainer

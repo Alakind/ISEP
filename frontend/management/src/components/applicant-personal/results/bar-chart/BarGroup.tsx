@@ -1,8 +1,8 @@
 import {ReactNode} from "react";
 
-function BarGroup({barWidth, barPadding, barColour, height}: Props): ReactNode {
+function BarGroup({barWidth, barPadding, barColour, height}: Readonly<Props>): ReactNode {
   return (
-    <rect y={`${100 - height}%`} height={`${height}%`} width={barWidth - barPadding} fill={barColour}/>
+    <rect data-testid={"bar-group"} y={`${100 - height}%`} height={`${height}%`} width={barWidth - barPadding} fill={barColour}/>
   )
 }
 
