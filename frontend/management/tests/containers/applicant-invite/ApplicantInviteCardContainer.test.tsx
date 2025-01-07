@@ -1,6 +1,6 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import ApplicantInviteCardContainer from '../../../src/containers/applicant-invite/ApplicantInviteCardContainer';
-import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from '../../../src/utils/apiFunctions';
+import {addInvite, getApplicant, getAssessments, updateApplicant} from '../../../src/utils/apiFunctions';
 import {MemoryRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import {ApplicantInterface, AssessmentInterface} from "../../../src/utils/types.tsx";
 import {vi} from "vitest";
@@ -118,7 +118,7 @@ describe('ApplicantInviteCardContainer', () => {
 
   it('should handle invite action successfully', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
-    vi.mocked(inviteApplicant).mockResolvedValueOnce("Successfully invited applicant");
+    vi.mocked(addInvite).mockResolvedValueOnce("Successfully invited applicant");
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
 
     render(
@@ -141,7 +141,7 @@ describe('ApplicantInviteCardContainer', () => {
     });
 
     await waitFor(() => {
-      expect(inviteApplicant).toHaveBeenCalledWith('1', '1');
+      expect(addInvite).toHaveBeenCalledWith('1', '1');
       expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
     });
   });
@@ -149,7 +149,7 @@ describe('ApplicantInviteCardContainer', () => {
   it('should show an error toast if inviting applicant fails', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
-    vi.mocked(inviteApplicant).mockRejectedValueOnce(new Error('Failed to add invite'));
+    vi.mocked(addInvite).mockRejectedValueOnce(new Error('Failed to add invite'));
 
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
@@ -178,7 +178,7 @@ describe('ApplicantInviteCardContainer', () => {
   it('should show an error toast if inviting applicant fails (unknown error)', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
-    vi.mocked(inviteApplicant).mockRejectedValueOnce(null);
+    vi.mocked(addInvite).mockRejectedValueOnce(null);
 
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>

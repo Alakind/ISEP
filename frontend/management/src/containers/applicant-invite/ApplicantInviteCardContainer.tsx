@@ -1,7 +1,7 @@
 import {ChangeEvent, MouseEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
+import {addInvite, getApplicant, getAssessments, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
@@ -79,7 +79,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   async function handleInvite(): Promise<void> {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
       try {
-        await inviteApplicant(inviteData.applicantId, inviteData.assessmentId);
+        await addInvite(inviteData.applicantId, inviteData.assessmentId);
         goToApplicantPage();
         toast.success("Applicant successfully invited.");
       } catch (error) {

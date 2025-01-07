@@ -111,25 +111,6 @@ export async function deleteApplicant(id: string): Promise<string> {
 
 // --------------------------------- INVITES -----------------------------------//
 
-export async function inviteApplicant(applicantId: string, assessmentId: string): Promise<string> {
-  const response: Response = await fetch(`${baseUrl}/invite`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      applicantId: applicantId,
-      assessmentId: assessmentId,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to invite applicant: ${response.statusText}`);
-  }
-
-  return "Successfully invited applicant";
-}
-
 export async function getInvites(): Promise<InviteInterface[]> {
   const response: Response = await fetch(`${baseUrl}/invite`, {
     method: "GET",
@@ -159,6 +140,26 @@ export async function getInvite(id: string): Promise<InviteInterface> {
 
   return await response.json();
 }
+
+export async function addInvite(applicantId: string, assessmentId: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applicantId: applicantId,
+      assessmentId: assessmentId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to invite applicant: ${response.statusText}`);
+  }
+
+  return "Successfully invited applicant";
+}
+
 
 // --------------------------------- USER -----------------------------------//
 
