@@ -160,6 +160,45 @@ export async function addInvite(applicantId: string, assessmentId: string): Prom
   return "Successfully invited applicant";
 }
 
+export async function updateInvite(id: string, data: Partial<InviteInterface>): Promise<{ data: Partial<InviteInterface> }> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update invite: ${response.statusText}`);
+  }
+
+  return {
+    data: {
+      id: id,
+      ...data
+    }
+  };
+}
+
+export async function deleteInvite(id: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/invite/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete invite: ${response.statusText}`);
+  }
+
+  return `Successfully deleted invite`;
+}
+
 
 // --------------------------------- USER -----------------------------------//
 

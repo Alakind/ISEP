@@ -4,6 +4,7 @@ import {
   addApplicant,
   addInvite,
   deleteApplicant,
+  deleteInvite,
   deleteUser,
   getApplicant,
   getApplicants,
@@ -18,6 +19,7 @@ import {
   getSkillsStats,
   getUsers,
   updateApplicant,
+  updateInvite,
   updateScoredPointsAssignment,
   updateUser,
 } from "../../src/utils/apiFunctions";
@@ -455,6 +457,79 @@ describe('API Functions (invites)', (): void => {
     await expect(
       getInvite("be05fc98-06d3-4763-9445-417ac149f90d")
     ).rejects.toThrow("Failed to retrieve invite");
+  });
+
+  it("should update an existing invite", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+    });
+
+    const existingInvite = {
+      status: "app_finished",
+      expiresAt: "2025-01-06T00:28:25.485638Z"
+    };
+    const result = await updateInvite("be05fc98-06d3-4763-9445-417ac149f90d", existingInvite);
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite`,
+      expect.objectContaining({
+        method: "PUT",
+        body: JSON.stringify({id: "be05fc98-06d3-4763-9445-417ac149f90d", ...existingInvite}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    );
+
+    expect(result).toEqual(
+      {
+        data: {
+          id: "be05fc98-06d3-4763-9445-417ac149f90d",
+          ...existingInvite
+        }
+      });
+  });
+
+  it("should throw error when updating an existing invite fails", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Internal Server Error",
+    });
+
+    const existingInvite = {
+      status: "app_finished",
+      expiresAt: "2025-01-06T00:28:25.485638Z"
+    };
+
+    await expect(
+      updateInvite("be05fc98-06d3-4763-9445-417ac149f90d", existingInvite)
+    ).rejects.toThrow(`Failed to update invite`);
+  });
+
+  it("should delete an invite", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+    });
+
+    const result = await deleteInvite("be05fc98-06d3-4763-9445-417ac149f90d");
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite/be05fc98-06d3-4763-9445-417ac149f90d`,
+      expect.objectContaining({method: "DELETE"})
+    );
+
+    expect(result).toBe("Successfully deleted invite");
+  });
+
+  it("should throw error when deleting an existing invite fails", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Internal Server Error",
+    });
+
+    await expect(
+      deleteInvite("be05fc98-06d3-4763-9445-417ac149f90d")
+    ).rejects.toThrow(`Failed to delete invite`);
   });
 })
 
