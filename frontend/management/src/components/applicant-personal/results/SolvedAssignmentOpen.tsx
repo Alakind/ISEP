@@ -22,15 +22,6 @@ function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
         readOnly={true}
         data-testid={"open-reference-answer"}
       />
-      <b>Reference answer:</b>
-      <textarea
-        className="assignment__textarea"
-        placeholder="No reference answer available"
-        name={assignment.id + "-reference"}
-        value={assignment.referenceAnswer?.answer}
-        contentEditable={false}
-        readOnly={true}
-      />
     </>
   );
 }

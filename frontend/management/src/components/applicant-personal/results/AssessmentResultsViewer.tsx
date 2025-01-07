@@ -33,7 +33,6 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
               <AssessmentResultsOverviewContainer inviteId={invitesData[activeAssessment].id} assessmentData={assessmentsData[activeAssessment]}/>
           }
         </div>
-        <br/>
         <h4>Summary Assessment</h4>
         <div className="results__body">
           {

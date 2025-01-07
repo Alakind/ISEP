@@ -92,6 +92,10 @@ input[type=number].assignment__header__score__scored-points::-webkit-outer-spin-
     -webkit-appearance: none;
 }
 
+input[type=number].assignment__header__score__scored-points {
+    -moz-appearance: textfield;
+}
+
 .assignment__block {
     display: flex;
     flex-direction: column;
