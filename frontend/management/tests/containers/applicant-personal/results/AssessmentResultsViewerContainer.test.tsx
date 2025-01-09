@@ -3,6 +3,7 @@ import AssessmentResultsViewerContainer from '../../../../src/containers/applica
 import {getSectionResult} from '../../../../src/utils/apiFunctions';
 import {toast} from 'react-toastify';
 import {AssessmentInterface, InviteInterface, SectionSolvedInterface} from '../../../../src/utils/types';
+import {scrollToAssignment} from "../../../../src/utils/general.tsx";
 
 vi.mock('../../../../src/utils/apiFunctions', () => ({
   getSectionResult: vi.fn(),
@@ -13,6 +14,10 @@ vi.mock('react-toastify', () => ({
     error: vi.fn(),
   },
 }));
+
+vi.mock('../../../../src/utils/general.tsx', () => ({
+  scrollToAssignment: vi.fn(),
+}))
 
 describe('AssessmentResultsViewerContainer', () => {
   const mockInvitesData: InviteInterface[] = [
@@ -100,11 +105,44 @@ describe('AssessmentResultsViewerContainer', () => {
 
     // Wait for data to load
     await waitFor(() => {
+      expect(scrollToAssignment).toHaveBeenCalledTimes(1);
       expect(getSectionResult).toHaveBeenCalledTimes(4);
       expect(screen.getByText('Assessment 1')).toBeInTheDocument();
       expect(screen.getByText('Assessment 2')).toBeInTheDocument();
-      expect(screen.getByText('Section 1')).toBeInTheDocument();
-      expect(screen.getByText('Section 2')).toBeInTheDocument();
+      expect(screen.getByText('Section 3')).toBeInTheDocument();
+      expect(screen.getByText('Section 4')).toBeInTheDocument();
+    });
+    vi.mocked(scrollToAssignment).mockClear()
+  });
+
+  it('should scroll to active assessment and show active assessments (finished invite status)', async () => {
+    vi.mocked(getSectionResult).mockResolvedValueOnce(mockSectionsData[0][0])
+    vi.mocked(getSectionResult).mockResolvedValueOnce(mockSectionsData[0][1])
+    vi.mocked(getSectionResult).mockResolvedValueOnce(mockSectionsData[1][0])
+    vi.mocked(getSectionResult).mockResolvedValueOnce(mockSectionsData[1][1])
+    vi.mocked(scrollToAssignment).mockClear()
+
+    render(
+      <AssessmentResultsViewerContainer
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+      />
+    );
+
+    // Ensure loading state is displayed initially
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
+
+    // Wait for data to load
+    await waitFor(() => {
+      expect(scrollToAssignment).toHaveBeenCalledTimes(1);
+
+      const activeButton = screen.getByRole('button', {name: `Assessment 2`});
+      expect(activeButton).toBeInTheDocument();
+      expect(activeButton).toHaveClass("results__container__assessment-select--active");
+
+      const nonActiveButton = screen.getByRole('button', {name: `Assessment 1`});
+      expect(nonActiveButton).toBeInTheDocument();
+      expect(nonActiveButton).toHaveClass("results__container__assessment-select--disabled")
     });
   });
 

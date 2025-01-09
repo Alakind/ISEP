@@ -20,9 +20,11 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
   }, [invitesData, assessmentsData]);
 
   useEffect(() => {
-    scrollToAssignment(
-      "assessment-select__" + assessmentsData[activeAssessment].id
-    );
+    if (assessmentsData.length != 0) {
+      scrollToAssignment(
+        "assessment-select__" + assessmentsData[activeAssessment].id
+      );
+    }
   }, [activeAssessment]);
 
   async function getData(): Promise<void> {
