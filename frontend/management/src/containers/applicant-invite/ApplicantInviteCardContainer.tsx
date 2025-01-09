@@ -11,7 +11,7 @@ function ApplicantInviteCardContainer(): ReactNode {
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>();
 
   const [editingEmail, setEditingEmail] = useState<boolean>(false);
   const [applicantEmail, setApplicantEmail] = useState<string>("");
@@ -41,7 +41,6 @@ function ApplicantInviteCardContainer(): ReactNode {
             applicantId: `${data.id}`,
           })
         );
-        setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`);
       }
     } catch (error) {
       if (error instanceof Error) {

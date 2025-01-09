@@ -105,11 +105,12 @@ function ApplicantInviteCard({
             </span>
           </div>
           <div>
-            <label htmlFor="message">Message:</label>
+            <label htmlFor="message">Additional message:</label>
             <textarea
               id="message"
               name="message"
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => handleMessageChange(e)} //TODO implement mail sending
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => handleMessageChange(e)}
+              placeholder={"No additional message provided"}
               value={message}
               disabled={!toggleValue}
               required
@@ -138,7 +139,7 @@ interface Props {
   handleEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
   handleCancelEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
   handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  message: string;
+  message: string | undefined;
 }
 
 export default ApplicantInviteCard
