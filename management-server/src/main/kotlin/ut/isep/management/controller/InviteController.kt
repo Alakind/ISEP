@@ -128,7 +128,8 @@ class InviteController(
     @DeleteMapping("{id}")
     @Operation(
         summary = "Delete an invite",
-        description = "Delete an invite from the PostGreSQL Management database")
+        description = "Delete an invite from the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(

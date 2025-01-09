@@ -4,7 +4,7 @@ import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import ut.isep.management.model.entity.*
+import ut.isep.management.model.entity.Invite
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.assessment.AssessmentReadConverter
