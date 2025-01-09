@@ -1,9 +1,14 @@
-import {AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
+import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import InvitesOverview from "../../components/applicant-personal/InvitesOverview.tsx";
-import {ChangeEvent, ReactNode, useState} from "react";
+import {ChangeEvent, Dispatch, MouseEvent, ReactNode, SetStateAction, useState} from "react";
 import {toast} from "react-toastify";
+import CustomWarnToast from "../../components/CustomWarnToast.tsx";
+import {EmailTypes, InviteStatuses} from "../../utils/constants.tsx";
+import {deleteInvite, sendMail} from "../../utils/apiFunctions.tsx";
+import {mapStatus} from "../../utils/mapping.tsx";
+import {canCancelInvite} from "../../utils/general.tsx";
 
-function InvitesOverviewContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
+function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData, applicant}: Readonly<Props>): ReactNode {
   const [expirationDates, setExpirationDates] = useState<string[]>(
     invitesData.map((invite: InviteInterface): string => getDateFormatted(invite.expiresAt))
   );
@@ -43,14 +48,114 @@ function InvitesOverviewContainer({invitesData, assessmentsData}: Readonly<Props
     return `${yyyy}-${mm}-${dd}`;
   }
 
+  function findInvite(id: string): InviteInterface {
+    const invite = invitesData.find(invite => invite.id === id);
+    if (invite === undefined) {
+      toast.error("Invite not found.");
+      throw new Error("Invite not found.");
+    }
+    return invite;
+  }
+
+  async function handleCancel(e: MouseEvent<HTMLButtonElement>, id: string): Promise<void> {
+    e.preventDefault();
+
+    const invite: InviteInterface = findInvite(id);
+
+    if (canCancelInvite(mapStatus(invite.status))) {
+      await changeStatus(id, InviteStatuses.CANCELLED);
+      toast.success("Successfully cancelled invite");
+    } else {
+      toast.warn("Invite can't be cancelled.");
+    }
+  }
+
+  async function handleDelete(e: MouseEvent<HTMLButtonElement>, id: string): Promise<void> {
+    e.preventDefault();
+
+    const invite: InviteInterface = findInvite(id);
+
+    if (mapStatus(invite.status) === (InviteStatuses.APP_STARTED || InviteStatuses.APP_FINISHED)) {
+      toast.error("Invite couldn't be deleted because the assessment has been started or finished.");
+    }
+
+    toast.warn(
+      <CustomWarnToast
+        proceedAction={async (): Promise<void> => await proceedHandleDelete(id)}
+        cancelAction={cancelHandleDelete}
+        message={"Are you sure you want to delete this invite? The invite can't be restored!"}
+      />,
+      {hideProgressBar: true, autoClose: false,}
+    );
+  }
+
+  async function handleRemind(e: MouseEvent<HTMLButtonElement>, id: string): Promise<void> {
+    e.preventDefault();
+
+    const invite: InviteInterface = findInvite(id);
+
+    try {
+      if (mapStatus(invite.status) !== (InviteStatuses.APP_REMINDED_ONCE)) {
+        await changeStatus(id, InviteStatuses.APP_REMINDED_ONCE);
+        await sendMail(applicant.id, invite.id, EmailTypes.REMINDER);
+      } else if (mapStatus(invite.status) === (InviteStatuses.APP_REMINDED_ONCE)) {
+        await changeStatus(id, InviteStatuses.APP_REMINDED_TWICE);
+        await sendMail(applicant.id, invite.id, EmailTypes.REMINDER);
+      } else {
+        toast.error("Limit of reminders has been reached!");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    } finally {
+      toast.success("Successfully emailed reminder.");
+    }
+  }
+
+
+  async function changeStatus(id: string, newStatus: (typeof InviteStatuses)[keyof typeof InviteStatuses]): Promise<void> {
+    console.log("Change", id, newStatus);
+  }
+
+  async function proceedHandleDelete(id: string): Promise<void> {
+    try {
+      const res: string = await deleteInvite(id);
+      setInvitesData(invitesData.filter(invite => invite.id !== id));
+      toast.success(res);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    }
+  }
+
+  function cancelHandleDelete(): void {
+    toast.info("Invite hasn't been deleted!")
+  }
+
   return (
-    <InvitesOverview invitesData={invitesData} assessmentsData={assessmentsData} handleChangeExpirationDate={handleChangeExpirationDate} expirationDates={expirationDates}/>
+    <InvitesOverview
+      invitesData={invitesData}
+      assessmentsData={assessmentsData}
+      handleChangeExpirationDate={handleChangeExpirationDate}
+      expirationDates={expirationDates}
+      handleCancel={handleCancel}
+      handleDelete={handleDelete}
+      handleRemind={handleRemind}
+    />
   )
 }
 
 interface Props {
   invitesData: InviteInterface[];
+  setInvitesData: Dispatch<SetStateAction<InviteInterface[]>>;
   assessmentsData: AssessmentInterface[];
+  applicant: ApplicantInterface;
 }
 
 export default InvitesOverviewContainer

@@ -8,7 +8,7 @@ import CardBodyContainer from "../../containers/card/CardBodyContainer.tsx";
 import AssessmentResultsViewerContainer from "../../containers/applicant-personal/results/AssessmentResultsViewerContainer.tsx";
 import InvitesOverviewContainer from "../../containers/applicant-personal/InvitesOverviewContainer.tsx";
 
-function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, assessmentsData}: Readonly<Props>): ReactNode {
+function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, invitesData, setInvitesData, assessmentsData}: Readonly<Props>): ReactNode {
   return (
     <>
       <CardHeaderContainer>
@@ -21,7 +21,7 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, inv
       </CardHeaderContainer>
       <CardBodyContainer>
         <ApplicantPersonalCardContainer applicant={applicant} setApplicant={setApplicant}/>
-        <InvitesOverviewContainer invitesData={invitesData} assessmentsData={assessmentsData}/>
+        <InvitesOverviewContainer invitesData={invitesData} setInvitesData={setInvitesData} assessmentsData={assessmentsData} applicant={applicant}/>
       </CardBodyContainer>
       {
         applicant.invites?.length !== 0 && invitesData && assessmentsData ?
@@ -39,6 +39,7 @@ interface Props {
   setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
   goToApplicantsPage: () => void;
   invitesData: InviteInterface[];
+  setInvitesData: Dispatch<SetStateAction<InviteInterface[]>>;
   assessmentsData: AssessmentInterface[];
 }
 
