@@ -68,7 +68,8 @@ class InviteController(
     @PostMapping
     @Operation(
         summary = "Invite an applicant",
-        description = "Link applicant to an assessment, and generate an invite URL")
+        description = "Link applicant to an assessment, and generate an invite URL"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
