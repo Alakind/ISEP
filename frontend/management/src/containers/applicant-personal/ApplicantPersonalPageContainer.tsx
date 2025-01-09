@@ -29,6 +29,21 @@ function ApplicantPersonalPageContainer(): ReactNode {
     }
   }, [id]);
 
+  useEffect((): void => {
+    setApplicantData((prev: ApplicantInterface): ApplicantInterface => (
+        {
+          ...prev,
+          invites: prev.invites?.filter(invite =>
+            invitesData.some(data => data.id === invite)
+          ),
+          statuses: prev.statuses?.filter(invite =>
+            invitesData.some(data => data.id === invite)
+          ),
+        }
+      )
+    )
+  }, [invitesData]);
+
   async function fetchApplicantData(): Promise<void> {
     setLoading(true);
     try {

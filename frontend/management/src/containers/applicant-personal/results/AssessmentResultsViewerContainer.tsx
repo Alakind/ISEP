@@ -30,9 +30,15 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
     try {
       const sections: SectionSolvedInterface[][] = []
       for (let i: number = 0; i < assessmentsData.length; i++) {
-        const retrievedSections: SectionSolvedInterface[] = await Promise.all(
-          assessmentsData[i].sections.map((sectionId: number): Promise<SectionSolvedInterface> => getSectionResult(`${sectionId}`, invitesData[i].id))
-        );
+        let retrievedSections: SectionSolvedInterface[] = []
+        if (i < invitesData.length) {
+          retrievedSections = await Promise.all(
+            assessmentsData[i].sections.map((sectionId: number): Promise<SectionSolvedInterface> => {
+                return getSectionResult(`${sectionId}`, invitesData[i].id)
+              }
+            )
+          );
+        }
         sections.push(retrievedSections);
       }
 
