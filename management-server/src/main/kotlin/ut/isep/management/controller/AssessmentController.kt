@@ -34,7 +34,7 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
     )
     fun getAssessments(
         @PageableDefault(
-            size = Int.MAX_VALUE, sort = ["name"],
+            size = Int.MAX_VALUE, sort = ["tag"],
             direction = Sort.Direction.ASC
         ) pageable: Pageable,
     ): PaginatedDTO<AssessmentReadDTO> {
