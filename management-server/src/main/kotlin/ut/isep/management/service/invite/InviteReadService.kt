@@ -9,8 +9,7 @@ import ut.isep.management.repository.InviteRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.assessment.AssessmentReadConverter
 import ut.isep.management.service.converter.invite.InviteReadConverter
-import java.util.UUID
-import kotlin.NoSuchElementException
+import java.util.*
 
 @Transactional
 @Service
@@ -18,11 +17,11 @@ class InviteReadService(
     repository: InviteRepository,
     converter: InviteReadConverter,
     private val assessmentReadConverter: AssessmentReadConverter,
-): ReadService<Invite, InviteReadDTO, UUID>(repository, converter) {
+) : ReadService<Invite, InviteReadDTO, UUID>(repository, converter) {
 
     fun getAssessmentByInviteId(id: UUID): AssessmentReadDTO {
         val invite = repository.findById(id)
-            .orElseThrow {NoSuchElementException("Invite not found")}
+            .orElseThrow { NoSuchElementException("Invite not found") }
         return assessmentReadConverter.toDTO(invite.assessment!!)
     }
 }
