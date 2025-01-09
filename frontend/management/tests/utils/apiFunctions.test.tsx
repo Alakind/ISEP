@@ -335,8 +335,13 @@ describe('API Functions (invites)', (): void => {
   });
 
   it('should invite an applicant to the given assessment', async () => {
+    const mockLocationHeader = "https://localhost:8081/invite/cce487c0-9ff7-47a8-9844-b406e046459b";
+
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      headers: {
+        get: () => mockLocationHeader,
+      },
     });
 
     const result = await addInvite("1", "1");
@@ -355,13 +360,17 @@ describe('API Functions (invites)', (): void => {
       })
     );
 
-    expect(result).toEqual("Successfully invited applicant");
+    expect(result).toEqual("cce487c0-9ff7-47a8-9844-b406e046459b");
   });
 
   it("should throw error when invite an applicant to the given assessment fails", async () => {
+    const mockLocationHeader = "https://localhost:8081/invite/undefined";
     mockFetch.mockResolvedValueOnce({
       ok: false,
       statusText: "Internal Server Error",
+      headers: {
+        get: () => mockLocationHeader,
+      },
     });
 
     await expect(
