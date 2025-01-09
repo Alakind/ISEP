@@ -1,4 +1,6 @@
 import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
+import {EmailTypes} from "./constants.tsx";
+import {testUuidValidity} from "./general.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -153,11 +155,16 @@ export async function addInvite(applicantId: string, assessmentId: string): Prom
     }),
   });
 
+  const id = response.headers.get("Location")?.split("/").pop();
+  if (id !== undefined && !testUuidValidity(id)) {
+    throw new Error(`Failed to invite applicant: ${response.statusText}`);
+  }
+
   if (!response.ok) {
     throw new Error(`Failed to invite applicant: ${response.statusText}`);
   }
 
-  return "Successfully invited applicant";
+  return `${id}`;
 }
 
 export async function updateInvite(id: string, data: Partial<InviteInterface>): Promise<{ data: Partial<InviteInterface> }> {
@@ -199,6 +206,28 @@ export async function deleteInvite(id: string): Promise<string> {
   return `Successfully deleted invite`;
 }
 
+// --------------------------------- EMAIL -----------------------------------//
+
+export async function sendMail(applicantId: string, inviteId: string, type: (typeof EmailTypes)[keyof typeof EmailTypes], additionalMessage?: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/send-email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applicantId: applicantId,
+      inviteId: inviteId,
+      type: type,
+      additionalMessage: additionalMessage
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to send email request: ${response.statusText}`);
+  }
+
+  return "Successfully send email request";
+}
 
 // --------------------------------- USER -----------------------------------//
 

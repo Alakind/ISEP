@@ -132,6 +132,8 @@ html {
     background-color: var(--transparent);
     border-color: var(--text-primary);
     color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
 }
 
 .btn--mod:hover {

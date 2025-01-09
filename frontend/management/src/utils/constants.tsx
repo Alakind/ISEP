@@ -6,6 +6,11 @@ export const AssignmentTypes = {
   OPEN: "Open",
 };
 
+export const EmailTypes = {
+  INVITATION: "invitation",
+  REMINDER: "reminder",
+};
+
 export const Themes = {
   DARK: "dark",
   LIGHT: "light",

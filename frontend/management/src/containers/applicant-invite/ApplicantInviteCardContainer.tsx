@@ -1,10 +1,11 @@
 import {ChangeEvent, MouseEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {addInvite, getApplicant, getAssessments, updateApplicant} from "../../utils/apiFunctions.tsx";
+import {addInvite, getApplicant, getAssessments, sendMail, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
+import {EmailTypes} from "../../utils/constants.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
   const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: "", id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
@@ -77,9 +78,10 @@ function ApplicantInviteCardContainer(): ReactNode {
 
   async function handleInvite(): Promise<void> {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
+      let inviteId;
       try {
-        await addInvite(inviteData.applicantId, inviteData.assessmentId);
-        goToApplicantPage();
+        inviteId = await addInvite(inviteData.applicantId, inviteData.assessmentId);
+
         toast.success("Applicant successfully invited.");
       } catch (error) {
         if (error instanceof Error) {
@@ -88,10 +90,29 @@ function ApplicantInviteCardContainer(): ReactNode {
           toast.error("Unknown error occurred.");
         }
       }
+      if (sendMailToggle && inviteId !== undefined) {
+        await handleMailing(inviteId)
+      }
     } else {
       toast.error(
         "Couldn't invite applicant, because the assessment could not be found."
       );
+    }
+    goToApplicantPage();
+  }
+
+  async function handleMailing(inviteId: string): Promise<void> {
+    try {
+      await sendMail(inviteData.applicantId, inviteId, EmailTypes.INVITATION, message);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    } finally {
+      toast.success("Successfully emailed invitation.");
     }
   }
 
