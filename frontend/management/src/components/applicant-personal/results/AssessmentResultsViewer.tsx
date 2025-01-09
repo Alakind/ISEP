@@ -19,15 +19,16 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
             invitesData.map((inviteData: InviteInterface, index: number): ReactNode => {
               if (mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED) {
                 return (
-                  <button data-testid={"select-button"} key={assessmentsData[index].id} onClick={(): void => setActiveAssessment(index)}
-                          className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
+                  <button data-testid={"select-button"} id={"assessment-select__" + assessmentsData[index].id} key={assessmentsData[index].id + "_" + inviteData.id}
+                          onClick={(): void => setActiveAssessment(index)}
+                          className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select--active" : ""}`}>
                     <StatusItem status={assessmentsData[index].tag}/>
                   </button>
                 )
               } else {
                 return (
-                  <button data-testid={"select-button-disabled"} key={assessmentsData[index].id}
-                          className={`btn--transparent results__container__assessment-select__disabled`} disabled={true}>
+                  <button data-testid={"select-button-disabled"} key={assessmentsData[index].id + "_" + inviteData.id}
+                          className={`btn--transparent results__container__assessment-select--disabled`} disabled={true}>
                     <StatusItem status={assessmentsData[index].tag}/>
                   </button>
                 )

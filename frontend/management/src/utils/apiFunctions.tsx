@@ -317,7 +317,7 @@ export async function getAssessments(currentPage: number = 0, itemsPerPage: numb
   } else {
     url = `${baseUrl}/assessment?sort=${orderBy != "" ? orderBy : "tag,asc"}${query ? "&" + query : ""}`
   }
-  console.log(url)
+
   const response: Response = await fetch(url, {
     method: "GET",
     headers: {
