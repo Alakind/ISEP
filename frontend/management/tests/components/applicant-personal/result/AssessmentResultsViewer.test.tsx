@@ -389,8 +389,9 @@ describe('AssessmentResultsViewer Component', () => {
     });
 
     const buttons = screen.getAllByTestId('select-button');
+    const disabledButtons = screen.getAllByTestId('select-button-disabled')
     await waitFor(() => {
-      expect(buttons).toHaveLength(mockAssessmentsData.length);
+      expect(buttons.length + disabledButtons.length).toBe(mockAssessmentsData.length);
     });
   });
 
@@ -478,10 +479,21 @@ describe('AssessmentResultsViewer Component', () => {
 
   it('renders the results with one assessment', async () => {
     const mockAssessmentsData: AssessmentInterface[] = [
-      {id: '3', tag: 'JAVA assessment', sections: [5, 6]},
+      {id: '4', tag: 'SQL assessment', sections: [7, 8]},
     ];
 
-    const mockSectionsData: SectionSolvedInterface[][] = [mockSectionsAssessment1]
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
+        applicantId: "90",
+        assessmentId: "4",
+        status: "app_finished",
+        invitedAt: "2024-12-30T00:28:25.485638Z",
+        expiresAt: "2025-01-06T00:28:25.485638Z"
+      }
+    ];
+
+    const mockSectionsData: SectionSolvedInterface[][] = [mockSectionsAssessment2]
 
     render(
       <AssessmentResultsViewer
