@@ -53,6 +53,12 @@
     cursor: default;
 }
 
+.results__container__assessment-select__disabled > span {
+    background-color: var(--status-item--disabled);
+    color: var(--text-primary-disabled);
+    cursor: auto;
+}
+
 .section__header {
     background-color: var(--card-body-inner);
     border-color: var(--card-body-inner);

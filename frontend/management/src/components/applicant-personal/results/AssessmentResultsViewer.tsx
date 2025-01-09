@@ -12,7 +12,7 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
   return (
     <>
       <div data-testid={"assessment-results-viewer-select"}
-           className={`results__container results__container--mod ${assessmentsData.length === 1 || invitesData.filter((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED).length === 1 ? "results__container--hidden" : ""}`}>
+           className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
         <span className={"results__container__span"}>Select:</span>
         <div className={"results__container__assessment-select"}>
           {
@@ -24,13 +24,20 @@ function AssessmentResultsViewer({assessmentsData, loading, sectionsData, active
                     <StatusItem status={assessmentsData[index].tag}/>
                   </button>
                 )
+              } else {
+                return (
+                  <button data-testid={"select-button-disabled"} key={assessmentsData[index].id}
+                          className={`btn--transparent results__container__assessment-select__disabled`} disabled={true}>
+                    <StatusItem status={assessmentsData[index].tag}/>
+                  </button>
+                )
               }
             })
           }
         </div>
       </div>
       <div data-testid={"assessment-results-viewer-results"}
-           className={`results__container ${assessmentsData.length === 1 || invitesData.filter((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED).length === 1 ? "results__container--single" : ""}`}>
+           className={`results__container ${assessmentsData.length === 1 ? "results__container--single" : ""}`}>
         <h4>Results Overview</h4>
         <div className="results__body">
           {
