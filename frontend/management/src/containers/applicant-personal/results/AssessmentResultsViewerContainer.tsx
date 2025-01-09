@@ -5,6 +5,7 @@ import {getSectionResult} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {mapStatus} from "../../../utils/mapping.tsx";
 import {InviteStatuses} from "../../../utils/constants.tsx";
+import {scrollToAssignment} from "../../../utils/general.tsx";
 
 function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   const [sectionsData, setSectionsData] = useState<SectionSolvedInterface[][]>([]);
@@ -18,6 +19,11 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
     }
   }, [invitesData, assessmentsData]);
 
+  useEffect(() => {
+    scrollToAssignment(
+      "assessment-select__" + assessmentsData[activeAssessment].id
+    );
+  }, [activeAssessment]);
 
   async function getData(): Promise<void> {
     setLoading(true);

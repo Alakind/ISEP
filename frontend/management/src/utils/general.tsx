@@ -67,3 +67,10 @@ export function testUuidValidity(id: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
   return uuidRegex.test(id);
 }
+
+export function scrollToAssignment(id: string) {
+  const assignmentElement: HTMLElement | null = document.getElementById(id);
+  if (assignmentElement) {
+    assignmentElement.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
+  }
+}

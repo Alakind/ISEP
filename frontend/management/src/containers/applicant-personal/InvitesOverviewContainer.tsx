@@ -4,7 +4,7 @@ import {ChangeEvent, Dispatch, MouseEvent, ReactNode, SetStateAction, useState} 
 import {toast} from "react-toastify";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 import {EmailTypes, InviteStatuses} from "../../utils/constants.tsx";
-import {deleteInvite, sendMail} from "../../utils/apiFunctions.tsx";
+import {deleteInvite, sendMail, updateInvite} from "../../utils/apiFunctions.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
 import {canCancelInvite} from "../../utils/general.tsx";
 
@@ -117,7 +117,23 @@ function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData,
 
 
   async function changeStatus(id: string, newStatus: (typeof InviteStatuses)[keyof typeof InviteStatuses]): Promise<void> {
-    console.log("Change", id, newStatus);
+    try {
+      const res: { data: Partial<InviteInterface> } = await updateInvite(id, {status: mapStatus(newStatus)});
+
+      setInvitesData((prev: InviteInterface[]): InviteInterface[] =>
+        prev.map((invite: InviteInterface): InviteInterface =>
+          invite.id === id && res.data.status !== undefined
+            ? {...invite, status: mapStatus(res.data.status)}
+            : invite
+        )
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    }
   }
 
   async function proceedHandleDelete(id: string): Promise<void> {
