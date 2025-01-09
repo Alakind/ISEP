@@ -3,6 +3,8 @@ import {ReactNode, useEffect, useState} from "react";
 import {AssessmentInterface, InviteInterface, SectionSolvedInterface} from "../../../utils/types.tsx";
 import {getSectionResult} from "../../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
+import {mapStatus} from "../../../utils/mapping.tsx";
+import {InviteStatuses} from "../../../utils/constants.tsx";
 
 function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   const [sectionsData, setSectionsData] = useState<SectionSolvedInterface[][]>([]);
@@ -29,6 +31,7 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
       }
 
       setSectionsData(sections);
+      setActiveAssessment(invitesData.findIndex((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED));
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

@@ -5,26 +5,32 @@ import {Dispatch, ReactNode, SetStateAction} from "react";
 import LoadingPage from "../../LoadingPage.tsx";
 import StatusItem from "../../StatusItem.tsx";
 import AssessmentResultsOverviewContainer from "../../../containers/applicant-personal/results/AssessmentResultsOverviewContainer.tsx";
+import {InviteStatuses} from "../../../utils/constants.tsx";
+import {mapStatus} from "../../../utils/mapping.tsx";
 
 function AssessmentResultsViewer({assessmentsData, loading, sectionsData, activeSection, setActiveSection, activeAssessment, setActiveAssessment, invitesData}: Readonly<Props>): ReactNode {
   return (
     <>
-      <div data-testid={"assessment-results-viewer-select"} className={`results__container results__container--mod ${assessmentsData.length === 1 ? "results__container--hidden" : ""}`}>
+      <div data-testid={"assessment-results-viewer-select"}
+           className={`results__container results__container--mod ${assessmentsData.length === 1 || invitesData.filter((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED).length === 1 ? "results__container--hidden" : ""}`}>
         <span className={"results__container__span"}>Select:</span>
         <div className={"results__container__assessment-select"}>
           {
-            assessmentsData.map((assessmentData: AssessmentInterface, index: number): ReactNode => {
-              return (
-                <button data-testid={"select-button"} key={assessmentData.id} onClick={(): void => setActiveAssessment(index)}
-                        className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
-                  <StatusItem status={assessmentData.tag}/>
-                </button>
-              )
+            invitesData.map((inviteData: InviteInterface, index: number): ReactNode => {
+              if (mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED) {
+                return (
+                  <button data-testid={"select-button"} key={assessmentsData[index].id} onClick={(): void => setActiveAssessment(index)}
+                          className={`btn--transparent ${activeAssessment === index ? "results__container__assessment-select__active" : ""}`}>
+                    <StatusItem status={assessmentsData[index].tag}/>
+                  </button>
+                )
+              }
             })
           }
         </div>
       </div>
-      <div data-testid={"assessment-results-viewer-results"} className={`results__container ${assessmentsData.length === 1 ? "results__container--single" : ""}`}>
+      <div data-testid={"assessment-results-viewer-results"}
+           className={`results__container ${assessmentsData.length === 1 || invitesData.filter((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED).length === 1 ? "results__container--single" : ""}`}>
         <h4>Results Overview</h4>
         <div className="results__body">
           {
