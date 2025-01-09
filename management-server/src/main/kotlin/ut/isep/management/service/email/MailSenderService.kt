@@ -54,10 +54,7 @@ class MailSenderService(
                 else -> throw MailSendException("Invalid email type")
             }
 
-            var additionalMessage = emailCreateDTO.additionalMessage
-            if (additionalMessage == null) {
-                additionalMessage = ""
-            }
+            val additionalMessage = emailCreateDTO.additionalMessage ?: ""
 
             val msg = applicant.email?.let {
                 EmailDTO(
