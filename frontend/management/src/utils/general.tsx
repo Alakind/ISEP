@@ -17,7 +17,7 @@ export function canCancelInvite(status: string): boolean {
     case InviteStatuses.APP_FINISHED:
       return false;
     default:
-      return true;
+      return false;
   }
 }
 
@@ -38,7 +38,7 @@ export function canDeleteInvite(status: string): boolean {
     case InviteStatuses.APP_FINISHED:
       return false;
     default:
-      return true;
+      return false;
   }
 }
 
@@ -59,7 +59,7 @@ export function canRemindInvite(status: string): boolean {
     case InviteStatuses.APP_FINISHED:
       return false;
     default:
-      return true;
+      return false;
   }
 }
 

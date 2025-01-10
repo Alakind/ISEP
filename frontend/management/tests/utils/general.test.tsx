@@ -13,7 +13,7 @@ describe("Invite Function Tests", () => {
       expect(canCancelInvite(InviteStatuses.APP_REMINDED_TWICE)).toBe(true);
       expect(canCancelInvite(InviteStatuses.APP_STARTED)).toBe(false);
       expect(canCancelInvite(InviteStatuses.APP_FINISHED)).toBe(false);
-      expect(canCancelInvite("UNKNOWN_STATUS")).toBe(true);
+      expect(canCancelInvite("UNKNOWN_STATUS")).toBe(false);
     });
   });
 
@@ -26,7 +26,7 @@ describe("Invite Function Tests", () => {
       expect(canDeleteInvite(InviteStatuses.APP_REMINDED_TWICE)).toBe(true);
       expect(canDeleteInvite(InviteStatuses.APP_STARTED)).toBe(false);
       expect(canDeleteInvite(InviteStatuses.APP_FINISHED)).toBe(false);
-      expect(canDeleteInvite("UNKNOWN_STATUS")).toBe(true);
+      expect(canDeleteInvite("UNKNOWN_STATUS")).toBe(false);
     });
   });
 
@@ -39,7 +39,7 @@ describe("Invite Function Tests", () => {
       expect(canRemindInvite(InviteStatuses.APP_REMINDED_TWICE)).toBe(false);
       expect(canRemindInvite(InviteStatuses.APP_STARTED)).toBe(false);
       expect(canRemindInvite(InviteStatuses.APP_FINISHED)).toBe(false);
-      expect(canRemindInvite("UNKNOWN_STATUS")).toBe(true);
+      expect(canRemindInvite("UNKNOWN_STATUS")).toBe(false);
     });
   });
 
