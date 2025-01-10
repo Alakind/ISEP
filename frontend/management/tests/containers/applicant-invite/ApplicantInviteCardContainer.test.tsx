@@ -1,6 +1,6 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import ApplicantInviteCardContainer from '../../../src/containers/applicant-invite/ApplicantInviteCardContainer';
-import {addInvite, getApplicant, getAssessments, updateApplicant} from '../../../src/utils/apiFunctions';
+import {addInvite, getApplicant, getAssessments, sendMail, updateApplicant} from '../../../src/utils/apiFunctions';
 import {MemoryRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import {ApplicantInterface, AssessmentInterface} from "../../../src/utils/types.tsx";
 import {vi} from "vitest";
@@ -13,6 +13,7 @@ vi.mock('../../../src/utils/apiFunctions', () => ({
   getAssessments: vi.fn(),
   addInvite: vi.fn(),
   updateApplicant: vi.fn(),
+  sendMail: vi.fn(),
 }));
 
 vi.mock('react-toastify', () => ({
@@ -508,4 +509,105 @@ describe('ApplicantInviteCardContainer', () => {
     })
   });
 
+  it('should handle invite action successfully and mail invitation when activated', async () => {
+    vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
+    vi.mocked(addInvite).mockResolvedValueOnce("fd5b4873-89c1-4255-88eb-f217ff1405ab");
+    vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
+    vi.mocked(sendMail).mockResolvedValueOnce("Successfully send email request")
+
+    render(
+      <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
+        <Routes>
+          <Route path="/applicants/:id/invite/add" element={<ApplicantInviteCardContainer/>}/>
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByTestId('loading-page')).toBeInTheDocument();
+    await waitFor(() => {
+      const assessmentSelect = screen.getByLabelText(/Assessment:/i);
+      const inviteButton = screen.getByRole('button', {name: /invite/i});
+
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.change(assessmentSelect, {target: {value: '1'}});
+      fireEvent.click(inviteButton);
+    });
+
+    const today = new Date();
+    const todayPlusWeek = getDateFormatted(new Date(today.setDate(today.getDate() + 7)).toString());
+
+    await waitFor(() => {
+      expect(addInvite).toHaveBeenCalledWith('1', '1', todayPlusWeek);
+      expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
+      expect(toast.success).toHaveBeenCalledWith("Successfully emailed invitation.")
+    });
+  });
+
+  it('should handle invite action successfully and mail invitation when activated and handles error gracefully', async () => {
+    vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
+    vi.mocked(addInvite).mockResolvedValueOnce("fd5b4873-89c1-4255-88eb-f217ff1405ab");
+    vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
+    vi.mocked(sendMail).mockRejectedValueOnce(new Error('Failed to send email request'));
+
+    render(
+      <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
+        <Routes>
+          <Route path="/applicants/:id/invite/add" element={<ApplicantInviteCardContainer/>}/>
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByTestId('loading-page')).toBeInTheDocument();
+    await waitFor(() => {
+      const assessmentSelect = screen.getByLabelText(/Assessment:/i);
+      const inviteButton = screen.getByRole('button', {name: /invite/i});
+
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.change(assessmentSelect, {target: {value: '1'}});
+      fireEvent.click(inviteButton);
+    });
+
+    const today = new Date();
+    const todayPlusWeek = getDateFormatted(new Date(today.setDate(today.getDate() + 7)).toString());
+
+    await waitFor(() => {
+      expect(addInvite).toHaveBeenCalledWith('1', '1', todayPlusWeek);
+      expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
+      expect(toast.error).toHaveBeenCalledWith("Failed to send email request")
+    });
+  });
+
+  it('should handle invite action successfully and mail invitation when activated and handles error gracefully (unknown error)', async () => {
+    vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
+    vi.mocked(addInvite).mockResolvedValueOnce("fd5b4873-89c1-4255-88eb-f217ff1405ab");
+    vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
+    vi.mocked(sendMail).mockRejectedValueOnce(null)
+
+    render(
+      <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
+        <Routes>
+          <Route path="/applicants/:id/invite/add" element={<ApplicantInviteCardContainer/>}/>
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByTestId('loading-page')).toBeInTheDocument();
+    await waitFor(() => {
+      const assessmentSelect = screen.getByLabelText(/Assessment:/i);
+      const inviteButton = screen.getByRole('button', {name: /invite/i});
+
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.change(assessmentSelect, {target: {value: '1'}});
+      fireEvent.click(inviteButton);
+    });
+
+    const today = new Date();
+    const todayPlusWeek = getDateFormatted(new Date(today.setDate(today.getDate() + 7)).toString());
+
+    await waitFor(() => {
+      expect(addInvite).toHaveBeenCalledWith('1', '1', todayPlusWeek);
+      expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
+      expect(toast.error).toHaveBeenCalledWith("Unknown error occurred.")
+    });
+  });
 });
