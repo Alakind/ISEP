@@ -344,7 +344,7 @@ describe('API Functions (invites)', (): void => {
       },
     });
 
-    const result = await addInvite("1", "1");
+    const result = await addInvite("1", "1", "2025-01-16T15:13:45.432862Z");
 
     expect(mockFetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite`,
@@ -356,6 +356,7 @@ describe('API Functions (invites)', (): void => {
         body: JSON.stringify({
           applicantId: "1",
           assessmentId: "1",
+          expiresAt: "2025-01-16T15:13:45.432862Z"
         }),
       })
     );
@@ -374,7 +375,7 @@ describe('API Functions (invites)', (): void => {
     });
 
     await expect(
-      addInvite("1", "1")
+      addInvite("1", "1", "2025-01-16T15:13:45.432862Z")
     ).rejects.toThrow("Failed to invite applicant");
   });
 
@@ -930,7 +931,8 @@ describe('API Functions (results)', (): void => {
         availablePoints: 10,
         description: "How is the hell hound called?"
       }
-      ]
+      ],
+      size: 1
     };
 
     mockFetch.mockResolvedValueOnce({

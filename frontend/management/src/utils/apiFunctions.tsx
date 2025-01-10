@@ -143,7 +143,7 @@ export async function getInvite(id: string): Promise<InviteInterface> {
   return await response.json();
 }
 
-export async function addInvite(applicantId: string, assessmentId: string): Promise<string> {
+export async function addInvite(applicantId: string, assessmentId: string, expiresAt: string): Promise<string> {
   const response: Response = await fetch(`${baseUrl}/invite`, {
     method: "POST",
     headers: {
@@ -152,6 +152,7 @@ export async function addInvite(applicantId: string, assessmentId: string): Prom
     body: JSON.stringify({
       applicantId: applicantId,
       assessmentId: assessmentId,
+      expiresAt: expiresAt
     }),
   });
 
