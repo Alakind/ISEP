@@ -9,6 +9,13 @@ test('mapStatus should map API status value to react statuses', (): void => {
   expect(mapStatus("cancelled")).toBe(InviteStatuses.CANCELLED);
   expect(mapStatus("expired")).toBe(InviteStatuses.EXPIRED);
   expect(mapStatus("not_started")).toBe(InviteStatuses.NOT_STARTED);
+  expect(mapStatus(InviteStatuses.APP_FINISHED)).toBe("app_finished");
+  expect(mapStatus(InviteStatuses.APP_STARTED)).toBe("app_started");
+  expect(mapStatus(InviteStatuses.APP_REMINDED_ONCE)).toBe("app_reminded_once");
+  expect(mapStatus(InviteStatuses.APP_REMINDED_TWICE)).toBe("app_reminded_twice");
+  expect(mapStatus(InviteStatuses.CANCELLED)).toBe("cancelled");
+  expect(mapStatus(InviteStatuses.EXPIRED)).toBe("expired");
+  expect(mapStatus(InviteStatuses.NOT_STARTED)).toBe("not_started");
   expect(mapStatus("adsfaskfaslkfj")).toBe("Applicant Created");
   expect(mapStatus("")).toBe("Applicant Created");
 })

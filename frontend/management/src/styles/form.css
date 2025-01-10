@@ -64,7 +64,7 @@ form i {
 }
 
 .input-email--disabled {
-    cursor: default;
+    cursor: default !important;
 }
 
 .i--disabled {

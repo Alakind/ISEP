@@ -1,13 +1,17 @@
 import {fireEvent, render, screen, waitFor} from '@testing-library/react';
-import {vi} from 'vitest';
 import InvitesOverviewContainer from '../../../src/containers/applicant-personal/InvitesOverviewContainer';
 import {toast} from 'react-toastify';
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from '../../../src/utils/types';
+import {updateInvite} from "../../../src/utils/apiFunctions.tsx";
 
 vi.mock('react-toastify', () => ({
   toast: {
     error: vi.fn(),
   },
+}));
+
+vi.mock('../../../src/utils/apiFunctions.tsx', () => ({
+  updateInvite: vi.fn(),
 }));
 
 describe('InvitesOverviewContainer', () => {
@@ -92,6 +96,7 @@ describe('InvitesOverviewContainer', () => {
   });
 
   it('should show an error toast when a past date is selected', async () => {
+    vi.mocked(updateInvite).mockRejectedValueOnce(null);
     render(
       <InvitesOverviewContainer
         invitesData={mockInvitesData}

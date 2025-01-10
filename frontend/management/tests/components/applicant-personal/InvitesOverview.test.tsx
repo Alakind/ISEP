@@ -2,6 +2,7 @@ import InvitesOverview from "../../../src/components/applicant-personal/InvitesO
 import {fireEvent, render, screen} from "@testing-library/react";
 import {AssessmentInterface, InviteInterface} from "../../../src/utils/types.tsx";
 import {mapStatus} from "../../../src/utils/mapping.tsx";
+import {vi} from "vitest";
 
 const mockInvitesData: InviteInterface[] = [
   {
@@ -22,6 +23,10 @@ const mockInvitesData: InviteInterface[] = [
   }
 ];
 
+const mockHandleCancel = vi.fn();
+const mockHandleDelete = vi.fn();
+const mockHandleRemind = vi.fn();
+
 const mockAssessmentsData: AssessmentInterface[] = [
   {id: '3', tag: 'JAVA assessment', sections: [5, 6]},
   {id: '4', tag: 'SQL assessment', sections: [7, 8]},
@@ -38,6 +43,9 @@ describe('InvitesOverview component', () => {
         assessmentsData={mockAssessmentsData}
         handleChangeExpirationDate={mockHandleChangeExpirationDate}
         expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
       />
     );
 
@@ -52,6 +60,9 @@ describe('InvitesOverview component', () => {
         assessmentsData={mockAssessmentsData}
         handleChangeExpirationDate={mockHandleChangeExpirationDate}
         expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
       />
     );
 
@@ -71,6 +82,9 @@ describe('InvitesOverview component', () => {
         assessmentsData={[]}
         handleChangeExpirationDate={mockHandleChangeExpirationDate}
         expirationDates={[]}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
       />
     );
 
@@ -85,6 +99,9 @@ describe('InvitesOverview component', () => {
         assessmentsData={mockAssessmentsData}
         handleChangeExpirationDate={mockHandleChangeExpirationDate}
         expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
       />
     );
 
@@ -103,6 +120,9 @@ describe('InvitesOverview component', () => {
         assessmentsData={mockAssessmentsData}
         handleChangeExpirationDate={mockHandleChangeExpirationDate}
         expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
       />
     );
 

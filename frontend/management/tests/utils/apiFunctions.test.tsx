@@ -18,6 +18,7 @@ import {
   getSectionResult,
   getSkillsStats,
   getUsers,
+  sendMail,
   updateApplicant,
   updateInvite,
   updateScoredPointsAssignment,
@@ -35,7 +36,7 @@ import {
   SkillsInterface,
   UserInterface
 } from "../../src/utils/types.tsx";
-import {AssignmentTypes} from "../../src/utils/constants.tsx";
+import {AssignmentTypes, EmailTypes} from "../../src/utils/constants.tsx";
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -542,6 +543,64 @@ describe('API Functions (invites)', (): void => {
     ).rejects.toThrow(`Failed to delete invite`);
   });
 })
+
+describe("API Functions (sendMail)", () => {
+  beforeEach((): void => {
+    mockFetch.mockReset();
+  });
+
+  it("should successfully send a mail request", async () => {
+    const mockResponse = {ok: true, statusText: "OK"};
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: createFetchResponse(mockResponse),
+    });
+
+    const result = await sendMail("applicantId1", "inviteId1", EmailTypes.INVITATION, "Additional message");
+
+    expect(mockFetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_MANAGEMENT_URL}/send-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        applicantId: "applicantId1",
+        inviteId: "inviteId1",
+        type: EmailTypes.INVITATION,
+        additionalMessage: "Additional message",
+      }),
+    });
+
+    expect(result).toBe("Successfully send email request");
+  });
+
+  it("should throw an error if response is not ok", async () => {
+    const mockResponse = {ok: false, statusText: "Bad Request"};
+
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Bad Request",
+      json: createFetchResponse(mockResponse),
+    });
+
+    await expect(sendMail("applicantId1", "inviteId1", EmailTypes.INVITATION, "Additional message"))
+      .rejects.toThrow("Failed to send email request: Bad Request");
+
+    expect(mockFetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_MANAGEMENT_URL}/send-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        applicantId: "applicantId1",
+        inviteId: "inviteId1",
+        type: EmailTypes.INVITATION,
+        additionalMessage: "Additional message",
+      }),
+    });
+  });
+});
 
 describe("API Functions (users)", (): void => {
   beforeEach((): void => {

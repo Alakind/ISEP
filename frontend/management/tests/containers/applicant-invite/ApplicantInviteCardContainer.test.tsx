@@ -6,6 +6,7 @@ import {ApplicantInterface, AssessmentInterface} from "../../../src/utils/types.
 import {vi} from "vitest";
 import {toast} from "react-toastify";
 import {getDateFormatted} from "../../../src/utils/general.tsx";
+import {act} from "react";
 
 vi.mock('../../../src/utils/apiFunctions', () => ({
   getApplicant: vi.fn(),
@@ -29,9 +30,7 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-
 const mockNavigate = vi.fn();
-vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
 describe('ApplicantInviteCardContainer', () => {
   const mockApplicant: ApplicantInterface = {
@@ -48,6 +47,9 @@ describe('ApplicantInviteCardContainer', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.resetAllMocks();
+
+    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
   });
 
   it('should fetch applicant and assessments data on load', async () => {
@@ -143,7 +145,7 @@ describe('ApplicantInviteCardContainer', () => {
 
     const today = new Date();
     const todayPlusWeek = getDateFormatted(new Date(today.setDate(today.getDate() + 7)).toString());
-    
+
     await waitFor(() => {
       expect(addInvite).toHaveBeenCalledWith('1', '1', todayPlusWeek);
       expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
@@ -272,7 +274,7 @@ describe('ApplicantInviteCardContainer', () => {
     });
   });
 
-  it('should handle email editing and updating successfully', () => {
+  it('should handle email editing and updating successfully', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(updateApplicant).mockResolvedValueOnce({data: {email: 'updated.email@example.com'}});
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
@@ -287,36 +289,27 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const invitationMailSwitch = screen.getByRole('checkbox');
-      fireEvent.click(invitationMailSwitch);
-    });
-    waitFor(() => {
-      const editEmailButton = screen.getByRole('button', {name: ""});
-      fireEvent.click(editEmailButton);
-    });
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
-      fireEvent.change(emailInput, {target: {value: 'updated.email@example.com'}});
-    });
-    waitFor(() => {
-      const saveEmailButton = screen.getAllByRole('button', {name: ""})[1];
-      fireEvent.click(saveEmailButton);
+    await waitFor(() => {
     });
 
+    await act(async () => {
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.click(screen.getByRole('button', {name: ""}));
+      fireEvent.change(screen.getByRole('textbox', {name: "To:"}), {target: {value: 'updated.email@example.com'}});
+      fireEvent.click(screen.getAllByRole('button', {name: ""})[1]);
+    })
 
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
+    await waitFor(() => {
       expect(updateApplicant).toHaveBeenCalledWith('1', {email: 'updated.email@example.com'});
       expect(toast.success).toHaveBeenCalledWith('Email successfully updated');
-      expect(emailInput).toHaveValue('updated.email@example.com');
+      expect(screen.getByRole('textbox', {name: "To:"})).toHaveValue('updated.email@example.com');
     });
   });
 
-  it('should handle email editing and restore to old value on cancel', () => {
+  it('should handle email editing and restore to old value on cancel', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
-    vi.mocked(updateApplicant).mockResolvedValueOnce({data: {email: 'updated.email@example.com'}});
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
+    vi.mocked(updateApplicant).mockClear();
 
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
@@ -328,33 +321,24 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const invitationMailSwitch = screen.getByRole('checkbox');
-      fireEvent.click(invitationMailSwitch);
-    });
-    waitFor(() => {
-      const editEmailButton = screen.getByRole('button', {name: ""});
-      fireEvent.click(editEmailButton);
-    });
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
-      fireEvent.change(emailInput, {target: {value: 'updated.email@example.com'}});
-    });
-    waitFor(() => {
-      const cancelEmailButton = screen.getAllByRole('button', {name: ""})[0];
-      fireEvent.click(cancelEmailButton);
+    await waitFor(() => {
     });
 
+    act(() => {
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.click(screen.getByRole('button', {name: ""}));
+      fireEvent.change(screen.getByRole('textbox', {name: "To:"}), {target: {value: 'updated.email@example.com'}});
+      fireEvent.click(screen.getAllByRole('button', {name: ""})[0]); // click on x button (cancel)
+    })
 
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
+    await waitFor(() => {
       expect(updateApplicant).not.toHaveBeenCalledWith('1', {email: 'updated.email@example.com'});
       expect(toast.success).not.toHaveBeenCalledWith('Email successfully updated');
-      expect(emailInput).toHaveValue('john.doe@example.com');
+      expect(screen.getByRole('textbox', {name: "To:"})).toHaveValue('john.doe@example.com');
     });
   });
 
-  it('should handle email editing and throw error', () => {
+  it('should handle email editing and throw error', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(updateApplicant).mockRejectedValueOnce(new Error("Couldn't update email"));
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
@@ -369,33 +353,25 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const invitationMailSwitch = screen.getByRole('checkbox');
-      fireEvent.click(invitationMailSwitch);
-    });
-    waitFor(() => {
-      const editEmailButton = screen.getByRole('button', {name: ""});
-      fireEvent.click(editEmailButton);
-    });
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
-      fireEvent.change(emailInput, {target: {value: 'updated.email@example.com'}});
-    });
-    waitFor(() => {
-      const saveEmailButton = screen.getAllByRole('button', {name: ""})[1];
-      fireEvent.click(saveEmailButton);
+    await waitFor(() => {
     });
 
+    await act(async () => {
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.click(screen.getByRole('button', {name: ""}));
+      fireEvent.change(screen.getByRole('textbox', {name: "To:"}), {target: {value: 'updated.email@example.com'}});
+      fireEvent.click(screen.getAllByRole('button', {name: ""})[1]);
+    })
 
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
+    await waitFor(() => {
+      const emailInput = screen.getByRole('textbox', {name: "To:"});
       expect(updateApplicant).toHaveBeenCalledWith('1', {email: 'updated.email@example.com'});
       expect(toast.error).toHaveBeenCalledWith('Couldn\'t update email');
       expect(emailInput).toHaveValue('john.doe@example.com');
     });
   });
 
-  it('should handle email editing and throw unknown error', () => {
+  it('should handle email editing and throw unknown error', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(updateApplicant).mockRejectedValueOnce(null);
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
@@ -410,33 +386,25 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const invitationMailSwitch = screen.getByRole('checkbox');
-      fireEvent.click(invitationMailSwitch);
-    });
-    waitFor(() => {
-      const editEmailButton = screen.getByRole('button', {name: ""});
-      fireEvent.click(editEmailButton);
-    });
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
-      fireEvent.change(emailInput, {target: {value: 'updated.email@example.com'}});
-    });
-    waitFor(() => {
-      const saveEmailButton = screen.getAllByRole('button', {name: ""})[1];
-      fireEvent.click(saveEmailButton);
+    await waitFor(() => {
     });
 
+    await act(async () => {
+      fireEvent.click(screen.getByRole('checkbox'));
+      fireEvent.click(screen.getByRole('button', {name: ""}));
+      fireEvent.change(screen.getByRole('textbox', {name: "To:"}), {target: {value: 'updated.email@example.com'}});
+      fireEvent.click(screen.getAllByRole('button', {name: ""})[1]);
+    })
 
-    waitFor(() => {
-      const emailInput = screen.getByLabelText('To:', {exact: true});
+    await waitFor(() => {
+      const emailInput = screen.getByRole('textbox', {name: "To:"});
       expect(updateApplicant).toHaveBeenCalledWith('1', {email: 'updated.email@example.com'});
-      expect(toast.error).toHaveBeenCalledWith('Unknown error occurred..');
+      expect(toast.error).toHaveBeenCalledWith('Unknown error occurred.');
       expect(emailInput).toHaveValue('john.doe@example.com');
     });
   });
 
-  it('should switch between disabled stated of the email edit input', () => {
+  it('should switch between disabled stated of the email edit input', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
 
@@ -450,18 +418,30 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const invitationMailSwitch = screen.getByRole('checkbox');
-      const emailInput = screen.getByLabelText('To:', {exact: true});
-      expect(emailInput).toBeDisabled();
-      fireEvent.click(invitationMailSwitch);
-      expect(emailInput).not.toBeDisabled();
-      fireEvent.click(invitationMailSwitch);
-      expect(emailInput).toBeDisabled();
+    await waitFor(() => {
     });
+
+    const emailEdit = screen.getByRole('button', {name: ""});
+    const invitationMailSwitch = screen.getByRole('checkbox');
+    expect(emailEdit).toHaveClass("input-email--disabled");
+    expect(invitationMailSwitch).not.toBeChecked();
+
+    act(() => {
+      fireEvent.click(invitationMailSwitch);
+    })
+
+    expect(invitationMailSwitch).toBeChecked();
+    expect(emailEdit).not.toHaveClass("input-email--disabled");
+
+    act(() => {
+      fireEvent.click(invitationMailSwitch);
+    })
+
+    expect(invitationMailSwitch).not.toBeChecked();
+    expect(emailEdit).toHaveClass("input-email--disabled");
   });
 
-  it('should validate expiration date and show error if it is in the past', () => {
+  it('should validate expiration date and show error if it is in the past', async () => {
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
         <Routes>
@@ -472,15 +452,19 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const expirationInput = screen.getByLabelText(/expiration date/i);
-      fireEvent.change(expirationInput, {target: {value: '2023-01-01'}});
+    await waitFor(() => {
+    });
 
+    act(() => {
+      const expirationInput = screen.getByLabelText(/Invitation will be valid for 7 days and will expire on:/i);
+      fireEvent.change(expirationInput, {target: {value: '2023-01-01'}});
+    })
+    await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('Select today or a day in the future.');
     });
   });
 
-  it('should navigate to applicant page on cancel', () => {
+  it('should navigate to applicant page on cancel', async () => {
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
         <Routes>
@@ -491,7 +475,7 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
+    await waitFor(() => {
       const cancelButton = screen.getByRole('button', {name: /cancel/i});
       fireEvent.click(cancelButton);
 
@@ -499,7 +483,7 @@ describe('ApplicantInviteCardContainer', () => {
     })
   });
 
-  it('should validate expiration date ', () => {
+  it('should validate expiration date ', async () => {
     render(
       <MemoryRouter initialEntries={["/applicants/1/invite/add"]}>
         <Routes>
@@ -510,8 +494,8 @@ describe('ApplicantInviteCardContainer', () => {
 
     expect(screen.getByTestId('loading-page')).toBeInTheDocument();
 
-    waitFor(() => {
-      const expirationInput = screen.getByLabelText('Invitation will be valid for');
+    await waitFor(() => {
+      const expirationInput = screen.getByLabelText(/Invitation will be valid for 7 days and will expire on:/i);
 
       const today = new Date();
       today.setDate(today.getDate() + 10);
