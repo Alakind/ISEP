@@ -6,17 +6,16 @@ import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 import {EmailTypes, InviteStatuses} from "../../utils/constants.tsx";
 import {deleteInvite, sendMail, updateInvite} from "../../utils/apiFunctions.tsx";
 import {mapStatus} from "../../utils/mapping.tsx";
-import {canCancelInvite} from "../../utils/general.tsx";
+import {canCancelInvite, getDateFormatted} from "../../utils/general.tsx";
 
-function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData, applicant}: Readonly<Props>): ReactNode {
+function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData, applicant, setApplicant}: Readonly<Props>): ReactNode {
   const [expirationDates, setExpirationDates] = useState<string[]>(
     invitesData.map((invite: InviteInterface): string => getDateFormatted(invite.expiresAt))
   );
 
-  //TODO remove this when inviteData excepts expirationDate
-
-  function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>, index: number): void {
-    const selectedDate: number = new Date(e.target.value).setHours(0, 0, 0, 0);
+  async function handleChangeExpirationDate(e: ChangeEvent<HTMLInputElement>, index: number): Promise<void> {
+    const {value} = e.target;
+    const selectedDate: number = new Date(value).setHours(0, 0, 0, 0);
     const todayDate: number = new Date().setHours(0, 0, 0, 0);
 
     if (todayDate > selectedDate) {
@@ -26,26 +25,12 @@ function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData,
 
     setExpirationDates((prev: string[]): string[] => {
       const updatedDates: string[] = [...prev];
-      updatedDates[index] = e.target.value;
+      updatedDates[index] = value;
       return updatedDates;
     });
 
-    // TODO: update via invites data
-    // setInviteData((prev: InviteInterface[]): InviteInterface[] => {
-    //   const updatedInvites = [...prev];
-    //   updatedInvites[index].expiresAt = e.target.value;
-    //   return updatedInvites;
-    // });
-  }
-
-  function getDateFormatted(inputDate: string): string {
-    const date: Date = new Date(inputDate);
-
-    const yyyy: number = date.getFullYear();
-    const mm: string = String(date.getMonth() + 1).padStart(2, '0');
-    const dd: string = String(date.getDate()).padStart(2, '0');
-
-    return `${yyyy}-${mm}-${dd}`;
+    const isoDate: string = new Date(value).toISOString();
+    await updateInvite(invitesData[index].id, {expiresAt: isoDate})
   }
 
   function findInvite(id: string): InviteInterface {
@@ -139,7 +124,18 @@ function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData,
   async function proceedHandleDelete(id: string): Promise<void> {
     try {
       const res: string = await deleteInvite(id);
-      setInvitesData(invitesData.filter(invite => invite.id !== id));
+
+      const updatedInvitesData = invitesData.filter(invite => invite.id !== id);
+      setInvitesData(updatedInvitesData);
+
+      setApplicant((prev: ApplicantInterface): ApplicantInterface => {
+        const updatedInvites = prev.invites?.filter(invite => invite !== id);
+
+        return {
+          ...prev,
+          invites: updatedInvites,
+        };
+      });
       toast.success(res);
     } catch (error) {
       if (error instanceof Error) {
@@ -172,6 +168,7 @@ interface Props {
   setInvitesData: Dispatch<SetStateAction<InviteInterface[]>>;
   assessmentsData: AssessmentInterface[];
   applicant: ApplicantInterface;
+  setApplicant: Dispatch<SetStateAction<ApplicantInterface>>;
 }
 
 export default InvitesOverviewContainer

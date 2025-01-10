@@ -4,6 +4,7 @@ import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import "../../styles/form.css";
 import "../../styles/dropdown.css";
 import ToggleContainer from "../../containers/ToggleContainer.tsx";
+import {getDateFormatted} from "../../utils/general.tsx";
 
 
 function ApplicantInviteCard({
@@ -16,7 +17,6 @@ function ApplicantInviteCard({
                                handleToggleMail,
                                handleChangeExpirationDate,
                                inviteData,
-                               expirationDate,
                                toggleValue,
                                handleChangeEmail,
                                editingEmail,
@@ -57,7 +57,7 @@ function ApplicantInviteCard({
               id="expirationDate"
               name="expirationDate"
               onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e)} //TODO implement expiration date
-              value={expirationDate}
+              value={getDateFormatted(inviteData.expiresAt)}
               autoComplete="off"
               required
             />
@@ -130,7 +130,6 @@ interface Props {
   handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOption: number;
   handleToggleMail: () => void;
-  expirationDate: string;
   handleChangeExpirationDate: (e: ChangeEvent<HTMLInputElement>) => void;
   inviteData: InviteInterface;
   toggleValue: boolean;

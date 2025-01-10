@@ -13,7 +13,7 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
       <h4>Invites overview</h4>
       <div className="invites-overview__body">
         {
-          invitesData.length > 0 || expirationDates.length > 0 ?
+          invitesData.length > 0 ?
             invitesData.map((invite: InviteInterface, index: number): ReactNode => {
               return (
                 <div key={invite.id} className={"invites-overview__body__item"}>
@@ -35,7 +35,7 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                           onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)} //TODO implement expiration date
                           value={expirationDates[index]}
                           autoComplete="off"
-                          min={invitesData[index].expiresAt}
+                          disabled={!canRemindInvite(mapStatus(invite.status))}
                           required
                         />
                       </div>

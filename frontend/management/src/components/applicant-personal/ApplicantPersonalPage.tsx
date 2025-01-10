@@ -21,7 +21,7 @@ function ApplicantPersonalPage({applicant, setApplicant, goToApplicantsPage, inv
       </CardHeaderContainer>
       <CardBodyContainer>
         <ApplicantPersonalCardContainer applicant={applicant} setApplicant={setApplicant}/>
-        <InvitesOverviewContainer invitesData={invitesData} setInvitesData={setInvitesData} assessmentsData={assessmentsData} applicant={applicant}/>
+        <InvitesOverviewContainer invitesData={invitesData} setInvitesData={setInvitesData} assessmentsData={assessmentsData} applicant={applicant} setApplicant={setApplicant}/>
       </CardBodyContainer>
       {
         applicant.invites?.length !== 0 && invitesData && assessmentsData ?

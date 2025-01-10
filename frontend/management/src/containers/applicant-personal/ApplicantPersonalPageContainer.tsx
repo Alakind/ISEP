@@ -29,20 +29,12 @@ function ApplicantPersonalPageContainer(): ReactNode {
     }
   }, [id]);
 
-  useEffect((): void => {
-    setApplicantData((prev: ApplicantInterface): ApplicantInterface => (
-        {
-          ...prev,
-          invites: prev.invites?.filter(invite =>
-            invitesData.some(data => data.id === invite)
-          ),
-          statuses: prev.statuses?.filter(invite =>
-            invitesData.some(data => data.id === invite)
-          ),
-        }
-      )
-    )
-  }, [invitesData]);
+  // useEffect((): void => {
+  //   if (invitesData.length !== applicantData.invites?.length) {
+  //     console.log("blub");
+  //
+  //   }
+  // }, [invitesData]);
 
   async function fetchApplicantData(): Promise<void> {
     setLoading(true);
@@ -86,7 +78,7 @@ function ApplicantPersonalPageContainer(): ReactNode {
   function goToApplicantsPage(): void {
     navigate(`/applicants`);
   }
-
+  
   return loading || applicantData.id === "0" || (invitesData.length !== applicantData.invites?.length) || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
     <LoadingPage/>
   ) : (

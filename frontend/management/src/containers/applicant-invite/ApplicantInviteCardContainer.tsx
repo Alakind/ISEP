@@ -8,9 +8,8 @@ import LoadingPage from "../../components/LoadingPage.tsx";
 import {EmailTypes} from "../../utils/constants.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
-  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: "", id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
+  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: getExpirationDateFormatted(), id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
-  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
 
@@ -80,7 +79,7 @@ function ApplicantInviteCardContainer(): ReactNode {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
       let inviteId;
       try {
-        inviteId = await addInvite(inviteData.applicantId, inviteData.assessmentId);
+        inviteId = await addInvite(inviteData.applicantId, inviteData.assessmentId, inviteData.expiresAt);
 
         toast.success("Applicant successfully invited.");
       } catch (error) {
@@ -142,12 +141,6 @@ function ApplicantInviteCardContainer(): ReactNode {
       setEditingEmail(false);
     }
     setSendMailToggle(!sendMailToggle);
-
-    //TODO uncomment when mails can be set
-    // setInviteData((prev: InviteInterface): InviteInterface => ({
-    //   ...prev,
-    //   sentMail: `${checked}`,
-    // }));
   }
 
   function getExpirationDateFormatted(inputDate?: string): string {
@@ -175,11 +168,12 @@ function ApplicantInviteCardContainer(): ReactNode {
       toast.error("Select today or a day in the future.");
       return;
     }
-    setExpirationDate(e.target.value); //TODO temporary expiration date state
-    // setInviteData((prev: InviteInterface): InviteInterface => ({
-    //   ...prev,
-    //   expiresAt: `${e.target.value}`,
-    // }));
+
+    const isoDate: string = new Date(e.target.value).toISOString();
+    setInviteData((prev: InviteInterface): InviteInterface => ({
+      ...prev,
+      expiresAt: isoDate,
+    }));
   }
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
@@ -246,7 +240,6 @@ function ApplicantInviteCardContainer(): ReactNode {
         handleSelect={handleSelect}
         selectedOption={selectedOption}
         handleToggleMail={handleToggleMail}
-        expirationDate={expirationDate}
         handleChangeExpirationDate={handleChangeExpirationDate}
         inviteData={inviteData}
         toggleValue={sendMailToggle}
