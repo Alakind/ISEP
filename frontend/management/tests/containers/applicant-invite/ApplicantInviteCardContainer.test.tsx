@@ -5,11 +5,12 @@ import {MemoryRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import {ApplicantInterface, AssessmentInterface} from "../../../src/utils/types.tsx";
 import {vi} from "vitest";
 import {toast} from "react-toastify";
+import {getDateFormatted} from "../../../src/utils/general.tsx";
 
 vi.mock('../../../src/utils/apiFunctions', () => ({
   getApplicant: vi.fn(),
   getAssessments: vi.fn(),
-  inviteApplicant: vi.fn(),
+  addInvite: vi.fn(),
   updateApplicant: vi.fn(),
 }));
 
@@ -118,7 +119,7 @@ describe('ApplicantInviteCardContainer', () => {
 
   it('should handle invite action successfully', async () => {
     vi.mocked(getApplicant).mockResolvedValueOnce(mockApplicant);
-    vi.mocked(addInvite).mockResolvedValueOnce("Successfully invited applicant");
+    vi.mocked(addInvite).mockResolvedValueOnce("fd5b4873-89c1-4255-88eb-f217ff1405ab");
     vi.mocked(getAssessments).mockResolvedValueOnce({data: mockAssessments, totalItems: 2});
 
     render(
@@ -140,8 +141,11 @@ describe('ApplicantInviteCardContainer', () => {
       fireEvent.click(inviteButton);
     });
 
+    const today = new Date();
+    const todayPlusWeek = getDateFormatted(new Date(today.setDate(today.getDate() + 7)).toString());
+    
     await waitFor(() => {
-      expect(addInvite).toHaveBeenCalledWith('1', '1');
+      expect(addInvite).toHaveBeenCalledWith('1', '1', todayPlusWeek);
       expect(toast.success).toHaveBeenCalledWith('Applicant successfully invited.');
     });
   });
