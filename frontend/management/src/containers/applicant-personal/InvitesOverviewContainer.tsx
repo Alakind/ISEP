@@ -29,7 +29,7 @@ function InvitesOverviewContainer({invitesData, setInvitesData, assessmentsData,
       return updatedDates;
     });
 
-    const isoDate: string = new Date(value).toISOString();
+    const isoDate: string = new Date(new Date(value).setUTCHours(23, 59)).toISOString();
     await updateInvite(invitesData[index].id, {expiresAt: isoDate})
   }
 

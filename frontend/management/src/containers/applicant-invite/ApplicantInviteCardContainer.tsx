@@ -169,7 +169,7 @@ function ApplicantInviteCardContainer(): ReactNode {
       return;
     }
 
-    const isoDate: string = new Date(e.target.value).toISOString();
+    const isoDate: string = new Date(new Date(e.target.value).setUTCHours(23, 59)).toISOString();
     setInviteData((prev: InviteInterface): InviteInterface => ({
       ...prev,
       expiresAt: isoDate,
