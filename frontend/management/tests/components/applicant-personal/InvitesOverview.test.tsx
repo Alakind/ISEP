@@ -131,4 +131,309 @@ describe('InvitesOverview component', () => {
 
     expect(mockHandleChangeExpirationDate).toHaveBeenCalledWith(expect.anything(), 0);
   });
+
+  it('calls handleCancel when clicked', () => {
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    fireEvent.click(cancelButton);
+
+    expect(mockHandleCancel).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls handleDelete when clicked', () => {
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    fireEvent.click(deleteButton);
+
+    expect(mockHandleDelete).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls handleRemind when clicked', () => {
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    fireEvent.click(remindButton);
+
+    expect(mockHandleRemind).toHaveBeenCalledTimes(1);
+  });
+
+  it('correct button disabled (status: not_started)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "not_started",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).not.toBeDisabled()
+    expect(deleteButton).not.toBeDisabled()
+    expect(remindButton).not.toBeDisabled()
+  });
+
+  it('correct button disabled (status: cancelled)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "cancelled",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).toBeDisabled()
+    expect(deleteButton).not.toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
+
+  it('correct button disabled (status: expired)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "expired",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).toBeDisabled()
+    expect(deleteButton).not.toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
+
+  it('correct button disabled (status: app_reminded_once)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "app_reminded_once",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).not.toBeDisabled()
+    expect(deleteButton).not.toBeDisabled()
+    expect(remindButton).not.toBeDisabled()
+  });
+
+  it('correct button disabled (status: app_reminded_twice)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "app_reminded_twice",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).not.toBeDisabled()
+    expect(deleteButton).not.toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
+
+  it('correct button disabled (status: app_started)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "app_started",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).toBeDisabled()
+    expect(deleteButton).toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
+
+  it('correct button disabled (status: app_finished)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "app_finished",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).toBeDisabled()
+    expect(deleteButton).toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
+
+  it('correct button disabled (status: unknown)', () => {
+    const mockInvitesData: InviteInterface[] = [
+      {
+        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+        applicantId: "90",
+        assessmentId: "3",
+        status: "unknown",
+        invitedAt: "2024-12-30T00:28:25.485108Z",
+        expiresAt: "2025-01-06T00:28:25.485108Z"
+      }
+    ];
+
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+    const cancelButton = screen.getAllByRole('button', {name: /cancel/i})[0]; // cancel button of first invite block
+    const deleteButton = screen.getAllByRole('button', {name: /delete/i})[0]; // delete button of first invite block
+    const remindButton = screen.getAllByRole('button', {name: /remind/i})[0]; // remind button of first invite block
+    expect(cancelButton).toBeDisabled()
+    expect(deleteButton).toBeDisabled()
+    expect(remindButton).toBeDisabled()
+  });
 })
