@@ -2,7 +2,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import {vi} from 'vitest';
 import InvitesOverviewContainer from '../../../src/containers/applicant-personal/InvitesOverviewContainer';
 import {toast} from 'react-toastify';
-import {AssessmentInterface, InviteInterface} from '../../../src/utils/types';
+import {ApplicantInterface, AssessmentInterface, InviteInterface} from '../../../src/utils/types';
 
 vi.mock('react-toastify', () => ({
   toast: {
@@ -30,10 +30,23 @@ describe('InvitesOverviewContainer', () => {
     }
   ];
 
+  const mockApplicant: ApplicantInterface = {
+    id: '1',
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    score: 85,
+    statuses: ['not_started'],
+    preferredLanguage: 'Kotlin',
+    invites: [],
+  };
+
   const mockAssessmentsData: AssessmentInterface[] = [
     {id: '3', tag: 'JAVA assessment', sections: [5, 6]},
     {id: '4', tag: 'SQL assessment', sections: [7, 8]},
   ];
+
+  const mockSetInvitesData = vi.fn();
+  const mockSetApplicant = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -44,6 +57,9 @@ describe('InvitesOverviewContainer', () => {
       <InvitesOverviewContainer
         invitesData={mockInvitesData}
         assessmentsData={mockAssessmentsData}
+        setInvitesData={mockSetInvitesData}
+        applicant={mockApplicant}
+        setApplicant={mockSetApplicant}
       />
     );
 
@@ -60,6 +76,9 @@ describe('InvitesOverviewContainer', () => {
       <InvitesOverviewContainer
         invitesData={mockInvitesData}
         assessmentsData={mockAssessmentsData}
+        setInvitesData={mockSetInvitesData}
+        applicant={mockApplicant}
+        setApplicant={mockSetApplicant}
       />
     );
 
@@ -77,6 +96,9 @@ describe('InvitesOverviewContainer', () => {
       <InvitesOverviewContainer
         invitesData={mockInvitesData}
         assessmentsData={mockAssessmentsData}
+        setInvitesData={mockSetInvitesData}
+        applicant={mockApplicant}
+        setApplicant={mockSetApplicant}
       />
     );
 
@@ -98,6 +120,9 @@ describe('InvitesOverviewContainer', () => {
       <InvitesOverviewContainer
         invitesData={mockInvitesData}
         assessmentsData={mockAssessmentsData}
+        setInvitesData={mockSetInvitesData}
+        applicant={mockApplicant}
+        setApplicant={mockSetApplicant}
       />
     );
 
