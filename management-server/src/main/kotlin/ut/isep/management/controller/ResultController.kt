@@ -33,22 +33,22 @@ class ResultController(
 
     @PutMapping("assignment/{assignmentId}/result/{inviteId}")
     @Operation(
-        summary = "Update the score of the assignment",
-        description = "Update an assignment in the PostGreSQL Management database"
+        summary = "Update the score of the assignment for the result",
+        description = "Update an assignment of the result in the PostGreSQL Management database"
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Updated the assignment",
+                description = "Updated the assignment of the result",
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Assignment not found",
+                description = "Assignment of the result couldn't be found",
             )
         ]
     )
-    fun putAssignment(@RequestBody resultAssignmentDTO: ResultAssignmentUpdateDTO, @PathVariable assignmentId: String, @PathVariable inviteId: UUID): ResponseEntity<String> {
+    fun putResultsPerAssignment(@RequestBody resultAssignmentDTO: ResultAssignmentUpdateDTO, @PathVariable assignmentId: String, @PathVariable inviteId: UUID): ResponseEntity<String> {
         return try {
             resultUpdateService.updateAssignment(inviteId, resultAssignmentDTO)
             ResponseEntity.ok("Updated an assignment")
