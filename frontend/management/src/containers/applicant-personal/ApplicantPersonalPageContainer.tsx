@@ -29,13 +29,6 @@ function ApplicantPersonalPageContainer(): ReactNode {
     }
   }, [id]);
 
-  // useEffect((): void => {
-  //   if (invitesData.length !== applicantData.invites?.length) {
-  //     console.log("blub");
-  //
-  //   }
-  // }, [invitesData]);
-
   async function fetchApplicantData(): Promise<void> {
     setLoading(true);
     try {
@@ -78,7 +71,7 @@ function ApplicantPersonalPageContainer(): ReactNode {
   function goToApplicantsPage(): void {
     navigate(`/applicants`);
   }
-  
+
   return loading || applicantData.id === "0" || (invitesData.length !== applicantData.invites?.length) || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
     <LoadingPage/>
   ) : (
