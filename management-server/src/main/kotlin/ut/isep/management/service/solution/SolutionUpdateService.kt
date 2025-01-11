@@ -1,12 +1,11 @@
 package ut.isep.management.service.solution
 
-import dto.solution.SolutionsUpdateDTO
 import dto.solution.AnswerCreateReadDTO
-import ut.isep.management.model.entity.*
+import dto.solution.SolutionsUpdateDTO
 import org.springframework.stereotype.Service
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
 import java.util.*
-import kotlin.NoSuchElementException
 
 @Service
 class SolutionUpdateService(
@@ -38,7 +37,7 @@ class SolutionUpdateService(
 
     private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
         val assignment = solution.assignment as AssignmentMultipleChoice
-        if (assignment.optionToSolution.values.count {it == true} == 1 && answerDto.answer.size > 1) {
+        if (assignment.optionToSolution.values.count { it } == 1 && answerDto.answer.size > 1) {
             throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${assignment.id}")
         }
         solution.userOptionsMarkedCorrect = answerDto.answer
