@@ -1,9 +1,16 @@
-import { Outlet } from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import HeaderContainer from "./containers/header/HeaderContainer.tsx";
-import {ReactNode} from "react";
+import {ReactNode, useEffect} from "react";
 
 function App(): ReactNode {
-  return (
+    const location = useLocation();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (location.pathname === "/") {
+            navigate("/dashboard", { replace: true });
+        }
+    }, [location, navigate]);
+    return (
     <div>
       <HeaderContainer />
       <main>

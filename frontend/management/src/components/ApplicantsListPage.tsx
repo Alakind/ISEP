@@ -40,7 +40,8 @@ function ApplicantsListPage({
             <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
             <div className="user-list-page__inner">
               <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
-              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage} currentPage={currentPage}/>
+              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage}
+                                   currentPage={currentPage}/>
             </div>
           </>
       }

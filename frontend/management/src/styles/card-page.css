@@ -48,6 +48,11 @@
     width: 100%;
 }
 
+.card-page__body--mod {
+    height: 100%;
+    align-items: center;
+}
+
 .card-page__body__inner {
     background-color: var(--card-body-inner) !important;
     padding: 15px;

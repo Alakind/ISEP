@@ -1,0 +1,21 @@
+.dashboard-page {
+    width: 75%;
+    min-width: 600px;
+
+}
+
+.dashboard-page__flex {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.dashboard-page__flex__left {
+    width: 66%;
+}
+
+.dashboard-page__flex__right {
+    width: 34%;
+}
