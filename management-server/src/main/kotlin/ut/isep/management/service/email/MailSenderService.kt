@@ -60,7 +60,7 @@ class MailSenderService(
                 EmailDTO(
                     to = it,
                     subject = "$subject ${applicant.name}",
-                    inviteLink = "http://localhost:5174/${invite.id}",
+                    inviteLink = "http://localhost:5300/${invite.id}",
                     expirationDate = formattedExpDate,
                     type = emailCreateDTO.type,
                     timeLeft = formattedTimeLeft,
