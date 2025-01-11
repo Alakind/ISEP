@@ -1176,13 +1176,13 @@ describe('API Functions (results)', (): void => {
       ok: true,
     });
 
-    const result = await updateScoredPointsAssignment("1", 3);
+    const result = await updateScoredPointsAssignment("1", 3, "invite123");
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1`,
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1/result/invite123`,
       expect.objectContaining({
         method: "PUT",
-        body: JSON.stringify({value: 3}),
+        body: JSON.stringify({id: "1", value: 3}),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -1199,7 +1199,7 @@ describe('API Functions (results)', (): void => {
     });
 
     await expect(
-      updateScoredPointsAssignment("1", 3)
+      updateScoredPointsAssignment("1", 3, "invite123")
     ).rejects.toThrow(`Failed to update scored points for assignment 1`);
   });
 });

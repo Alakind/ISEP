@@ -475,13 +475,16 @@ export async function getSkillsStats(assessmentId: string, inviteId: string): Pr
   return await response.json();
 }
 
-export async function updateScoredPointsAssignment(id: string, value: number): Promise<string> {
-  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
+export async function updateScoredPointsAssignment(id: string, value: number, inviteId: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/assignment/${id}/result/${inviteId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({value: value}),
+    body: JSON.stringify({
+      id: id,
+      value: value
+    }),
   });
 
   if (!response.ok) {

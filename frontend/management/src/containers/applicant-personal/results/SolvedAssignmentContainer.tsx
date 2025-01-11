@@ -4,7 +4,7 @@ import SolvedAssignment from "../../../components/applicant-personal/results/Sol
 import {toast} from "react-toastify";
 import {updateScoredPointsAssignment} from "../../../utils/apiFunctions.tsx";
 
-function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, children}: Readonly<Props>): ReactNode {
+function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, children, inviteId}: Readonly<Props>): ReactNode {
   function handleScoreChange(e: ChangeEvent<HTMLInputElement>, id: string, max: number): void {
     const value = Number(e.target.value);
 
@@ -20,12 +20,12 @@ function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, c
       return;
     }
 
-    updateScore(id, value).then();
+    updateScore(id, value, inviteId).then();
   }
 
-  async function updateScore(id: string, value: number): Promise<void> {
+  async function updateScore(id: string, value: number, inviteId: string): Promise<void> {
     try {
-      await updateScoredPointsAssignment(id, value);
+      await updateScoredPointsAssignment(id, value, inviteId);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -47,6 +47,7 @@ interface Props {
   assignmentIndex: number;
   sectionIndex: number;
   children: ReactNode;
+  inviteId: string
 }
 
 export default SolvedAssignmentContainer
