@@ -36,6 +36,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>
@@ -50,6 +51,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>
@@ -70,6 +72,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>
@@ -92,6 +95,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>
@@ -101,7 +105,7 @@ describe('SolvedAssignmentContainer', () => {
     fireEvent.change(input, {target: {value: '80'}});
 
     await waitFor(() => {
-      expect(updateScoredPointsAssignment).toHaveBeenCalledWith(mockAssignment.id, 80);
+      expect(updateScoredPointsAssignment).toHaveBeenCalledWith(mockAssignment.id, 80, 'invite123');
     });
   });
 
@@ -115,6 +119,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>
@@ -136,6 +141,7 @@ describe('SolvedAssignmentContainer', () => {
         assignment={mockAssignment}
         assignmentIndex={0}
         sectionIndex={0}
+        inviteId={'invite123'}
       >
         <div>Child Component</div>
       </SolvedAssignmentContainer>

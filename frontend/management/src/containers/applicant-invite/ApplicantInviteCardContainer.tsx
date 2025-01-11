@@ -1,17 +1,17 @@
 import {ChangeEvent, MouseEvent, ReactNode, useEffect, useState} from "react";
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {getApplicant, getAssessments, inviteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
+import {addInvite, getApplicant, getAssessments, sendMail, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import ApplicantInviteCard from "../../components/applicant-invite/ApplicantInviteCard.tsx";
 import LoadingPage from "../../components/LoadingPage.tsx";
+import {EmailTypes} from "../../utils/constants.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
-  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: "", id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
+  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: getExpirationDateFormatted(), id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
-  const [expirationDate, setExpirationDate] = useState<string>(getExpirationDateFormatted()); //TODO remove this when inviteData excepts expirationDate
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>();
 
   const [editingEmail, setEditingEmail] = useState<boolean>(false);
   const [applicantEmail, setApplicantEmail] = useState<string>("");
@@ -41,7 +41,6 @@ function ApplicantInviteCardContainer(): ReactNode {
             applicantId: `${data.id}`,
           })
         );
-        setMessage(`${data.name ? "Dear " + data.name : "Dear applicant"}, \n\nWe would like to invite you to do the following assessment %INVITE_LINK%\n\nGreetings,\nInfoSupport`);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -78,9 +77,10 @@ function ApplicantInviteCardContainer(): ReactNode {
 
   async function handleInvite(): Promise<void> {
     if (inviteData.applicantId != "0" && inviteData.assessmentId != "0") {
+      let inviteId;
       try {
-        await inviteApplicant(inviteData.applicantId, inviteData.assessmentId);
-        goToApplicantPage();
+        inviteId = await addInvite(inviteData.applicantId, inviteData.assessmentId, inviteData.expiresAt);
+
         toast.success("Applicant successfully invited.");
       } catch (error) {
         if (error instanceof Error) {
@@ -89,10 +89,29 @@ function ApplicantInviteCardContainer(): ReactNode {
           toast.error("Unknown error occurred.");
         }
       }
+      if (sendMailToggle && inviteId !== undefined) {
+        await handleMailing(inviteId)
+      }
     } else {
       toast.error(
         "Couldn't invite applicant, because the assessment could not be found."
       );
+    }
+    goToApplicantPage();
+  }
+
+  async function handleMailing(inviteId: string): Promise<void> {
+    try {
+      await sendMail(inviteData.applicantId, inviteId, EmailTypes.INVITATION, message);
+
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+    } finally {
+      toast.success("Successfully emailed invitation.");
     }
   }
 
@@ -122,12 +141,6 @@ function ApplicantInviteCardContainer(): ReactNode {
       setEditingEmail(false);
     }
     setSendMailToggle(!sendMailToggle);
-
-    //TODO uncomment when mails can be set
-    // setInviteData((prev: InviteInterface): InviteInterface => ({
-    //   ...prev,
-    //   sentMail: `${checked}`,
-    // }));
   }
 
   function getExpirationDateFormatted(inputDate?: string): string {
@@ -155,11 +168,12 @@ function ApplicantInviteCardContainer(): ReactNode {
       toast.error("Select today or a day in the future.");
       return;
     }
-    setExpirationDate(e.target.value); //TODO temporary expiration date state
-    // setInviteData((prev: InviteInterface): InviteInterface => ({
-    //   ...prev,
-    //   expiresAt: `${e.target.value}`,
-    // }));
+
+    const isoDate: string = new Date(new Date(e.target.value).setUTCHours(23, 59)).toISOString();
+    setInviteData((prev: InviteInterface): InviteInterface => ({
+      ...prev,
+      expiresAt: isoDate,
+    }));
   }
 
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
@@ -226,7 +240,6 @@ function ApplicantInviteCardContainer(): ReactNode {
         handleSelect={handleSelect}
         selectedOption={selectedOption}
         handleToggleMail={handleToggleMail}
-        expirationDate={expirationDate}
         handleChangeExpirationDate={handleChangeExpirationDate}
         inviteData={inviteData}
         toggleValue={sendMailToggle}

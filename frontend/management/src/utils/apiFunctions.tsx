@@ -1,4 +1,6 @@
 import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
+import {EmailTypes} from "./constants.tsx";
+import {testUuidValidity} from "./general.tsx";
 
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
 
@@ -111,25 +113,6 @@ export async function deleteApplicant(id: string): Promise<string> {
 
 // --------------------------------- INVITES -----------------------------------//
 
-export async function inviteApplicant(applicantId: string, assessmentId: string): Promise<string> {
-  const response: Response = await fetch(`${baseUrl}/invite`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      applicantId: applicantId,
-      assessmentId: assessmentId,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to invite applicant: ${response.statusText}`);
-  }
-
-  return "Successfully invited applicant";
-}
-
 export async function getInvites(): Promise<InviteInterface[]> {
   const response: Response = await fetch(`${baseUrl}/invite`, {
     method: "GET",
@@ -158,6 +141,93 @@ export async function getInvite(id: string): Promise<InviteInterface> {
   }
 
   return await response.json();
+}
+
+export async function addInvite(applicantId: string, assessmentId: string, expiresAt: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applicantId: applicantId,
+      assessmentId: assessmentId,
+      expiresAt: expiresAt
+    }),
+  });
+
+  const id = response.headers.get("Location")?.split("/").pop();
+  if (id !== undefined && !testUuidValidity(id)) {
+    throw new Error(`Failed to invite applicant: ${response.statusText}`);
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to invite applicant: ${response.statusText}`);
+  }
+
+  return `${id}`;
+}
+
+export async function updateInvite(id: string, data: Partial<InviteInterface>): Promise<{ data: Partial<InviteInterface> }> {
+  const response: Response = await fetch(`${baseUrl}/invite`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: id,
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update invite: ${response.statusText}`);
+  }
+
+  return {
+    data: {
+      id: id,
+      ...data
+    }
+  };
+}
+
+export async function deleteInvite(id: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/invite/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete invite: ${response.statusText}`);
+  }
+
+  return `Successfully deleted invite`;
+}
+
+// --------------------------------- EMAIL -----------------------------------//
+
+export async function sendMail(applicantId: string, inviteId: string, type: (typeof EmailTypes)[keyof typeof EmailTypes], additionalMessage?: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/send-email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      applicantId: applicantId,
+      inviteId: inviteId,
+      type: type,
+      additionalMessage: additionalMessage
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to send email request: ${response.statusText}`);
+  }
+
+  return "Successfully send email request";
 }
 
 // --------------------------------- USER -----------------------------------//
@@ -248,7 +318,7 @@ export async function getAssessments(currentPage: number = 0, itemsPerPage: numb
   } else {
     url = `${baseUrl}/assessment?sort=${orderBy != "" ? orderBy : "tag,asc"}${query ? "&" + query : ""}`
   }
-  console.log(url)
+
   const response: Response = await fetch(url, {
     method: "GET",
     headers: {
@@ -405,13 +475,16 @@ export async function getSkillsStats(assessmentId: string, inviteId: string): Pr
   return await response.json();
 }
 
-export async function updateScoredPointsAssignment(id: string, value: number): Promise<string> {
-  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
+export async function updateScoredPointsAssignment(id: string, value: number, inviteId: string): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/assignment/${id}/result/${inviteId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({value: value}),
+    body: JSON.stringify({
+      id: id,
+      value: value
+    }),
   });
 
   if (!response.ok) {

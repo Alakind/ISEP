@@ -43,4 +43,17 @@ describe("PageNotFound Component", () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "/applicants");
   });
+
+  it("contains the header container", () => {
+    render(
+      <MemoryRouter>
+        <PageNotFound/>
+      </MemoryRouter>
+    );
+
+    // Check for the header
+    const header = screen.getByTestId("header");
+    expect(header).toBeInTheDocument();
+    expect(header).toHaveClass("header");
+  });
 });

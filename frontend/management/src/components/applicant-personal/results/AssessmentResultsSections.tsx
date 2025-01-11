@@ -24,19 +24,22 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
               {section.assignments.map((assignment: AssignmentSolvedInterface, assignmentIndex: number): ReactNode => (
                 <div key={assignment.id}>
                   {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
-                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}>
+                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}
+                                               inviteId={inviteUuid}>
                       <SolvedAssignmentMultipleChoice
                         assignment={assignment as AssignmentMultipleChoiceSolvedInterface}
                       />
                     </SolvedAssignmentContainer>
                   )}
                   {assignment.type == AssignmentTypes.OPEN && (
-                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}>
+                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}
+                                               inviteId={inviteUuid}>
                       <SolvedAssignmentOpen assignment={assignment as AssignmentOpenSolvedInterface}/>
                     </SolvedAssignmentContainer>
                   )}
                   {assignment.type == AssignmentTypes.CODING && (
-                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}>
+                    <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}
+                                               inviteId={inviteUuid}>
                       <SolvedAssignmentCoding assignment={assignment as AssignmentCodingSolvedInterface}/>
                     </SolvedAssignmentContainer>
                   )}

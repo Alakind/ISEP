@@ -3,6 +3,7 @@ package ut.isep.management.controller
 import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteCreateDTO
 import dto.invite.InviteReadDTO
+import dto.invite.InviteUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -15,14 +16,18 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
+import ut.isep.management.service.invite.InviteUpdateService
 import java.net.URI
-import java.util.UUID
-import kotlin.NoSuchElementException
+import java.util.*
 
 @RestController
 @RequestMapping("/invite")
 @Tag(name = "Invite")
-class InviteController(val inviteReadService: InviteReadService, val inviteCreateService: InviteCreateService) {
+class InviteController(
+    val inviteReadService: InviteReadService,
+    val inviteCreateService: InviteCreateService,
+    val inviteUpdateService: InviteUpdateService,
+) {
 
 
     @GetMapping
@@ -63,7 +68,8 @@ class InviteController(val inviteReadService: InviteReadService, val inviteCreat
     @PostMapping
     @Operation(
         summary = "Invite an applicant",
-        description = "Link applicant to an assessment, and generate an invite URL")
+        description = "Link applicant to an assessment, and generate an invite URL"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -92,11 +98,38 @@ class InviteController(val inviteReadService: InviteReadService, val inviteCreat
         }
     }
 
+    @PutMapping
+    @Operation(
+        summary = "Update an invite",
+        description = "Update an invite in the PostGreSQL Management database"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Updated the invite",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Invite not found",
+            )
+        ]
+    )
+    fun putApplicant(@RequestBody inviteDTO: InviteUpdateDTO): ResponseEntity<String> {
+        return try {
+            inviteUpdateService.update(inviteDTO)
+            ResponseEntity.ok("Updated an invite")
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
 
     @DeleteMapping("{id}")
     @Operation(
         summary = "Delete an invite",
-        description = "Delete an invite from the PostGreSQL Management database")
+        description = "Delete an invite from the PostGreSQL Management database"
+    )
     @ApiResponses(
         value = [
             ApiResponse(

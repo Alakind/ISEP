@@ -36,15 +36,15 @@ describe('ApplicantPersonalPageContainer', () => {
     id: '1',
     name: 'John Doe',
     email: 'john.doe@example.com',
-    statuses: ['not_started'],
+    statuses: ['app_finished', 'app_finished'],
     preferredLanguage: 'Kotlin',
     score: 90,
     invites: ['invite1', 'invite2'],
   };
 
   const mockInvites: InviteInterface[] = [
-    {id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.NOT_STARTED, invitedAt: '', expiresAt: ''},
-    {id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.NOT_STARTED, invitedAt: '', expiresAt: ''},
+    {id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: ''},
+    {id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: ''},
   ];
 
   const mockAssessments: AssessmentInterface[] = [
@@ -131,6 +131,7 @@ describe('ApplicantPersonalPageContainer', () => {
 
     await waitFor(() => {
       expect(getApplicant).toHaveBeenCalledWith('1');
+      expect(getInvite).toHaveBeenCalledTimes(2);
       expect(toast.error).toHaveBeenCalledWith('Failed to fetch invite invite1:');
       expect(toast.error).toHaveBeenCalledWith('Failed to fetch invite invite2:');
     });

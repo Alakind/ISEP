@@ -82,6 +82,7 @@ function ApplicantPersonalPageContainer(): ReactNode {
         goToApplicantsPage={goToApplicantsPage}
         invitesData={invitesData}
         assessmentsData={assessmentsData}
+        setInvitesData={setInvitesData}
       />
     </CardPageContainer>
   );

@@ -4,6 +4,7 @@ import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import "../../styles/form.css";
 import "../../styles/dropdown.css";
 import ToggleContainer from "../../containers/ToggleContainer.tsx";
+import {getDateFormatted} from "../../utils/general.tsx";
 
 
 function ApplicantInviteCard({
@@ -16,7 +17,6 @@ function ApplicantInviteCard({
                                handleToggleMail,
                                handleChangeExpirationDate,
                                inviteData,
-                               expirationDate,
                                toggleValue,
                                handleChangeEmail,
                                editingEmail,
@@ -57,7 +57,7 @@ function ApplicantInviteCard({
               id="expirationDate"
               name="expirationDate"
               onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e)} //TODO implement expiration date
-              value={expirationDate}
+              value={getDateFormatted(inviteData.expiresAt)}
               autoComplete="off"
               required
             />
@@ -105,11 +105,12 @@ function ApplicantInviteCard({
             </span>
           </div>
           <div>
-            <label htmlFor="message">Message:</label>
+            <label htmlFor="message">Additional message:</label>
             <textarea
               id="message"
               name="message"
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => handleMessageChange(e)} //TODO implement mail sending
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>): void => handleMessageChange(e)}
+              placeholder={"No additional message provided"}
               value={message}
               disabled={!toggleValue}
               required
@@ -129,7 +130,6 @@ interface Props {
   handleSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
   selectedOption: number;
   handleToggleMail: () => void;
-  expirationDate: string;
   handleChangeExpirationDate: (e: ChangeEvent<HTMLInputElement>) => void;
   inviteData: InviteInterface;
   toggleValue: boolean;
@@ -138,7 +138,7 @@ interface Props {
   handleEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
   handleCancelEditingEmail: (e: MouseEvent<HTMLButtonElement>) => void;
   handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  message: string;
+  message: string | undefined;
 }
 
 export default ApplicantInviteCard

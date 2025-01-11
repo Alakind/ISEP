@@ -2,7 +2,9 @@
 
 import {
   addApplicant,
+  addInvite,
   deleteApplicant,
+  deleteInvite,
   deleteUser,
   getApplicant,
   getApplicants,
@@ -16,8 +18,9 @@ import {
   getSectionResult,
   getSkillsStats,
   getUsers,
-  inviteApplicant,
+  sendMail,
   updateApplicant,
+  updateInvite,
   updateScoredPointsAssignment,
   updateUser,
 } from "../../src/utils/apiFunctions";
@@ -33,7 +36,7 @@ import {
   SkillsInterface,
   UserInterface
 } from "../../src/utils/types.tsx";
-import {AssignmentTypes} from "../../src/utils/constants.tsx";
+import {AssignmentTypes, EmailTypes} from "../../src/utils/constants.tsx";
 
 // Mock fetch globally
 global.fetch = vi.fn();
@@ -333,11 +336,16 @@ describe('API Functions (invites)', (): void => {
   });
 
   it('should invite an applicant to the given assessment', async () => {
+    const mockLocationHeader = "https://localhost:8081/invite/cce487c0-9ff7-47a8-9844-b406e046459b";
+
     mockFetch.mockResolvedValueOnce({
       ok: true,
+      headers: {
+        get: () => mockLocationHeader,
+      },
     });
 
-    const result = await inviteApplicant("1", "1");
+    const result = await addInvite("1", "1", "2025-01-16T15:13:45.432862Z");
 
     expect(mockFetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite`,
@@ -349,21 +357,26 @@ describe('API Functions (invites)', (): void => {
         body: JSON.stringify({
           applicantId: "1",
           assessmentId: "1",
+          expiresAt: "2025-01-16T15:13:45.432862Z"
         }),
       })
     );
 
-    expect(result).toEqual("Successfully invited applicant");
+    expect(result).toEqual("cce487c0-9ff7-47a8-9844-b406e046459b");
   });
 
   it("should throw error when invite an applicant to the given assessment fails", async () => {
+    const mockLocationHeader = "https://localhost:8081/invite/undefined";
     mockFetch.mockResolvedValueOnce({
       ok: false,
       statusText: "Internal Server Error",
+      headers: {
+        get: () => mockLocationHeader,
+      },
     });
 
     await expect(
-      inviteApplicant("1", "1")
+      addInvite("1", "1", "2025-01-16T15:13:45.432862Z")
     ).rejects.toThrow("Failed to invite applicant");
   });
 
@@ -456,7 +469,138 @@ describe('API Functions (invites)', (): void => {
       getInvite("be05fc98-06d3-4763-9445-417ac149f90d")
     ).rejects.toThrow("Failed to retrieve invite");
   });
+
+  it("should update an existing invite", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+    });
+
+    const existingInvite = {
+      status: "app_finished",
+      expiresAt: "2025-01-06T00:28:25.485638Z"
+    };
+    const result = await updateInvite("be05fc98-06d3-4763-9445-417ac149f90d", existingInvite);
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite`,
+      expect.objectContaining({
+        method: "PUT",
+        body: JSON.stringify({id: "be05fc98-06d3-4763-9445-417ac149f90d", ...existingInvite}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    );
+
+    expect(result).toEqual(
+      {
+        data: {
+          id: "be05fc98-06d3-4763-9445-417ac149f90d",
+          ...existingInvite
+        }
+      });
+  });
+
+  it("should throw error when updating an existing invite fails", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Internal Server Error",
+    });
+
+    const existingInvite = {
+      status: "app_finished",
+      expiresAt: "2025-01-06T00:28:25.485638Z"
+    };
+
+    await expect(
+      updateInvite("be05fc98-06d3-4763-9445-417ac149f90d", existingInvite)
+    ).rejects.toThrow(`Failed to update invite`);
+  });
+
+  it("should delete an invite", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+    });
+
+    const result = await deleteInvite("be05fc98-06d3-4763-9445-417ac149f90d");
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite/be05fc98-06d3-4763-9445-417ac149f90d`,
+      expect.objectContaining({method: "DELETE"})
+    );
+
+    expect(result).toBe("Successfully deleted invite");
+  });
+
+  it("should throw error when deleting an existing invite fails", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Internal Server Error",
+    });
+
+    await expect(
+      deleteInvite("be05fc98-06d3-4763-9445-417ac149f90d")
+    ).rejects.toThrow(`Failed to delete invite`);
+  });
 })
+
+describe("API Functions (sendMail)", () => {
+  beforeEach((): void => {
+    mockFetch.mockReset();
+  });
+
+  it("should successfully send a mail request", async () => {
+    const mockResponse = {ok: true, statusText: "OK"};
+
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: createFetchResponse(mockResponse),
+    });
+
+    const result = await sendMail("applicantId1", "inviteId1", EmailTypes.INVITATION, "Additional message");
+
+    expect(mockFetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_MANAGEMENT_URL}/send-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        applicantId: "applicantId1",
+        inviteId: "inviteId1",
+        type: EmailTypes.INVITATION,
+        additionalMessage: "Additional message",
+      }),
+    });
+
+    expect(result).toBe("Successfully send email request");
+  });
+
+  it("should throw an error if response is not ok", async () => {
+    const mockResponse = {ok: false, statusText: "Bad Request"};
+
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      statusText: "Bad Request",
+      json: createFetchResponse(mockResponse),
+    });
+
+    await expect(sendMail("applicantId1", "inviteId1", EmailTypes.INVITATION, "Additional message"))
+      .rejects.toThrow("Failed to send email request: Bad Request");
+
+    expect(mockFetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_MANAGEMENT_URL}/send-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        applicantId: "applicantId1",
+        inviteId: "inviteId1",
+        type: EmailTypes.INVITATION,
+        additionalMessage: "Additional message",
+      }),
+    });
+  });
+});
 
 describe("API Functions (users)", (): void => {
   beforeEach((): void => {
@@ -846,7 +990,8 @@ describe('API Functions (results)', (): void => {
         availablePoints: 10,
         description: "How is the hell hound called?"
       }
-      ]
+      ],
+      size: 1
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -1031,13 +1176,13 @@ describe('API Functions (results)', (): void => {
       ok: true,
     });
 
-    const result = await updateScoredPointsAssignment("1", 3);
+    const result = await updateScoredPointsAssignment("1", 3, "invite123");
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1`,
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1/result/invite123`,
       expect.objectContaining({
         method: "PUT",
-        body: JSON.stringify({value: 3}),
+        body: JSON.stringify({id: "1", value: 3}),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -1054,7 +1199,7 @@ describe('API Functions (results)', (): void => {
     });
 
     await expect(
-      updateScoredPointsAssignment("1", 3)
+      updateScoredPointsAssignment("1", 3, "invite123")
     ).rejects.toThrow(`Failed to update scored points for assignment 1`);
   });
 });

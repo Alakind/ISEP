@@ -16,6 +16,20 @@ export function mapStatus(status: string): string {
       return InviteStatuses.EXPIRED
     case "not_started":
       return InviteStatuses.NOT_STARTED
+    case InviteStatuses.APP_FINISHED:
+      return "app_finished"
+    case InviteStatuses.APP_STARTED:
+      return "app_started"
+    case InviteStatuses.APP_REMINDED_ONCE:
+      return "app_reminded_once"
+    case InviteStatuses.APP_REMINDED_TWICE:
+      return "app_reminded_twice"
+    case InviteStatuses.CANCELLED:
+      return "cancelled"
+    case InviteStatuses.EXPIRED:
+      return "expired"
+    case InviteStatuses.NOT_STARTED:
+      return "not_started"
     default:
       return "Applicant Created"
   }
