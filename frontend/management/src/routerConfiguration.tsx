@@ -9,6 +9,7 @@ import ApplicantAddPageContainer from "./containers/applicant-add/ApplicantAddPa
 import ApplicantPersonalPageContainer from "./containers/applicant-personal/ApplicantPersonalPageContainer.tsx";
 import ApplicantInvitePageContainer from "./containers/applicant-invite/ApplicantInvitePageContainer.tsx";
 import PageNotFound from "./containers/PageNotFound.tsx";
+import DashboardContainer from "./containers/dashboard/DashboardContainer.tsx";
 
 export const router = createBrowserRouter(
   [
@@ -25,6 +26,25 @@ export const router = createBrowserRouter(
         //   ),
         //   errorElement: <ErrorBoundary />,
         // },
+        {
+          path: "dashboard",
+          element: (
+            <Suspense fallback={<LoadingPage/>}>
+              <DashboardContainer/>
+            </Suspense>
+          ),
+          children: [
+            {
+              path: "*",
+              element: (
+                <Suspense fallback={<LoadingPage/>}>
+                  <DashboardContainer/>
+                </Suspense>
+              ),
+            }
+          ],
+          errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
+        },
         {
           path: "settings",
           element: (

@@ -13,7 +13,7 @@ function PageNotFound(): ReactNode {
           <h2>Page Not Found</h2>
           <p>
             Sorry, the page you are looking for does not exist. <br></br>
-            You can go back to the <Link to={"/applicants"}>applicants dashboard</Link>.
+            You can go back to the <Link to={"/dashboard"}>dashboard</Link>.
           </p>
         </div>
       </main>
