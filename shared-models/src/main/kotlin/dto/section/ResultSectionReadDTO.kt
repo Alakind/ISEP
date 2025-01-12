@@ -6,9 +6,10 @@ import dto.assignment.ResultAssignmentReadDTO
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "A section with assignments including answers")
-data class ResultSectionReadDTO (
+data class ResultSectionReadDTO(
     @field: JsonUnwrapped
     val sectionInfo: SectionInfo,
     val assignments: List<ResultAssignmentReadDTO>,
     val scoredPoints: Int?,
+    val measuredSeconds: Long?
 ) : ReadDTO

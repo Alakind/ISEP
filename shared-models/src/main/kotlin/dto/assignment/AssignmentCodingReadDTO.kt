@@ -8,6 +8,7 @@ data class AssignmentCodingReadDTO(
     override val id: Long,
     override val description: String,
     override val availablePoints: Int,
+    override val availableSeconds: Long,
     val codeUri: URI,
     val language: String
 ) : BaseAssignment(), AssignmentReadDTO {
