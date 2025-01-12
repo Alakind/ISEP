@@ -1,0 +1,20 @@
+.bi-person-circle {
+    font-size: 35px;
+    color: var(--icons);
+}
+
+.bi-person-circle {
+    margin-right: 10px;
+    margin-left: 30px;
+}
+
+.profile-button {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-button__name {
+    color: var(--text-header);
+}

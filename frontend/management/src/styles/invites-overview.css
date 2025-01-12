@@ -1,0 +1,79 @@
+.invites-overview {
+    background-color: var(--card-body-inner);
+    border-radius: 5px;
+    padding: 10px 10px 15px;
+}
+
+.invites-overview__body {
+    overflow-y: scroll;
+    height: 254px;
+}
+
+.invites-overview__body__item {
+    margin-bottom: 25px;
+}
+
+.invites-overview__body__item__btns {
+    margin-top: 10px;
+    height: 34px;
+}
+
+.invites-overview__body__item__btns > button:not(:first-child):not(:last-child) {
+    margin: 0 5px !important;
+}
+
+.invites-overview__body__item__btns > button:first-child {
+    margin: 0 5px 0 0 !important;
+}
+
+.invites-overview__body__item__btns > button:last-child {
+    margin: 0 0 0 5px !important;
+}
+
+.invites-overview__body__item__btn {
+    height: 100%;
+}
+
+.invites-overview__body__item__btn__text {
+    font-size: 12px;
+}
+
+.invites-overview__body__item__btn .bi-x::before,
+.invites-overview__body__item__btn .bi-trash::before,
+.invites-overview__body__item__btn .bi-envelope::before {
+    font-size: 12px;
+}
+
+@media (max-width: 815px) {
+    .invites-overview__body__item__btn__text {
+        display: none;
+    }
+
+    .invites-overview__body__item__btn .bi-x,
+    .invites-overview__body__item__btn .bi-trash,
+    .invites-overview__body__item__btn .bi-envelope {
+        margin-right: 0 !important;
+    }
+}
+
+.invites-overview__body__item__label {
+    margin-right: 10px;
+    text-decoration: underline;
+    width: 100px;
+}
+
+@media (max-width: 650px) {
+    .invites-overview__body__item > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .invites-overview__body__item > div > span:nth-child(2) {
+        margin-left: 10px;
+        width: fit-content;
+    }
+}
+
+div.invites-overview__body__item__expiration-date form input[type="date"] {
+    width: fit-content;
+}

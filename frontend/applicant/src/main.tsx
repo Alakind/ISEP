@@ -3,14 +3,14 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import WelcomePageContainer from "./containers/WelcomePageContainer.tsx";
 import AssessmentPageContainer from "./containers/AssessmentPageContainer.tsx";
 import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/:inviteId",
     element: <WelcomePageContainer />,
   },
   {

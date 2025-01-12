@@ -1,16 +1,16 @@
-import React from 'react'
+import {ReactNode} from "react";
 
-function ErrorBoundary({ error } : Props) {
-    return (
-        <div>
-            <h1>Something went wrong!</h1>
-            <p>{error.message}</p>
-        </div>
-    )
+function ErrorBoundary({error}: Readonly<Props>): ReactNode {
+  return (
+    <div>
+      <h1>Something went wrong!</h1>
+      <p>{error ? error.message : new Error("Page not found").message}</p>
+    </div>
+  )
 }
 
 export interface Props {
-    error: Error;
+  error?: Error;
 }
 
 export default ErrorBoundary
