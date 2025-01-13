@@ -41,6 +41,16 @@ class ContainerAPI {
         }
 
         /**
+         * Stops the container with the provided name.
+         *
+         * @param name The id of the container which should be stopped.
+         * @return true if the container was found, false otherwise
+         */
+        fun stopContainerByName(name: String): Boolean {
+            return stopContainer("$PREFIX-$name")
+        }
+
+        /**
          * Stops the containers started by this class which are older than the specified time.
          *
          * @param time All containers before this time are killed
@@ -72,7 +82,7 @@ class ContainerAPI {
          * @param command The command to run.
          * @return the string output
          */
-        fun runCommandInContainer(
+        fun runCommandInContainerById(
             containerId: String,
             containerCommand: String,
             timeoutAmount: Long = 60,
@@ -83,16 +93,55 @@ class ContainerAPI {
         }
 
         /**
+         * Runs a command within the container
+         *
+         * @param name The name of the running container.
+         * @param containerCommand The command to run.
+         * @return the string output
+         */
+        fun runCommandInContainerByName(
+            name: String,
+            containerCommand: String,
+            timeoutAmount: Long = 60,
+            timeoutUnit: TimeUnit = TimeUnit.SECONDS,
+        ): Command {
+            val command = "docker exec $PREFIX-$name /bin/bash -c \"$containerCommand\""
+            return Command.CommandBuilder(command, timeoutAmount, timeoutUnit).execute()
+        }
+
+        /**
          * Copies a file or folder to the container
          *
          * @param id The id of the running container.
          * @param src The location of the file or folder to copy
          * @param dst The location inside the container where the file or folder should be copied to.
          */
-        fun copyToContainer(id: String, src: File, dst: String) {
+        fun copyToContainerById(id: String, src: File, dst: String) {
             val command = "docker cp ${src.absolutePath} ${id}:${dst}"
             val result = Command.CommandBuilder(command).execute()
             if (result.returnCode != 0) throw RuntimeException("Copying the file failed with the following error message:\n${result.error}")
+        }
+
+        /**
+         * Copies a file or folder to the container
+         *
+         * @param name The id of the running container.
+         * @param src The location of the file or folder to copy
+         * @param dst The location inside the container where the file or folder should be copied to.
+         */
+        fun copyToContainerByName(name: String, src: File, dst: String) {
+            val command = "docker cp ${src.absolutePath} ${PREFIX}-${name}:${dst}"
+            val result = Command.CommandBuilder(command).execute()
+            if (result.returnCode != 0) throw RuntimeException("Copying the file failed with the following error message:\n${result.error}")
+        }
+
+        /**
+         * Returns a list of all container names started by this API
+         */
+        fun getAllContainerNames(): List<String> {
+            val command = "docker container ls --format=\"{{.Names}}\""
+            val namesList = Command.CommandBuilder(command).execute().output
+            return namesList.split("\n").filter { it.startsWith(PREFIX) }
         }
 
         private fun buildImage(container: File, tag: String? = null): String {

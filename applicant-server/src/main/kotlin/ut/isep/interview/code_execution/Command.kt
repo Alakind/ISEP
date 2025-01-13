@@ -29,8 +29,9 @@ class Command (
                         process.errorStream.bufferedReader().readText(),
                         process.waitFor())
             } else {
+                val output = process.inputStream.bufferedReader().readText()
                 process.destroy()
-                throw TimeoutException("The command: \"${command}\" Timed out")
+                throw TimeoutException("The command: \"${command}\" Timed out:\n${output}")
             }
         }
     }

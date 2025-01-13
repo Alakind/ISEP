@@ -65,7 +65,7 @@ class TestContainerAPI {
         assertTrue(prepare.output.contains("testtest"))
 
         // execute
-        val result = ContainerAPI.runCommandInContainer(id, "echo HelloWorld")
+        val result = ContainerAPI.runCommandInContainerById(id, "echo HelloWorld")
 
         // test
         assertTrue(result.output.contains("HelloWorld"))
@@ -83,10 +83,10 @@ class TestContainerAPI {
         assertTrue(prepare.output.contains("testtest"))
 
         // execute
-        ContainerAPI.copyToContainer(id, File("src/test/resources/test.txt"), "/tmp")
+        ContainerAPI.copyToContainerById(id, File("src/test/resources/test.txt"), "/tmp")
 
         // test
-        val result = ContainerAPI.runCommandInContainer(id, "cat /tmp/test.txt")
+        val result = ContainerAPI.runCommandInContainerById(id, "cat /tmp/test.txt")
         assertTrue(result.output.contains("HelloWorld"))
 
         // cleanup
