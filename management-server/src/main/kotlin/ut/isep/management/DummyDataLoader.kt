@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
+import ut.isep.management.util.logger
 import kotlin.time.Duration.Companion.minutes
 
 @Component
@@ -18,6 +19,8 @@ class DummyDataLoader(
     private val solvedAssignmentRepository: SolvedAssignmentRepository,
     private val userRepository: UserRepository
 ) : CommandLineRunner {
+
+    private val log = logger()
 
     override fun run(vararg args: String?) {
         // clear database in the correct order to avoid foreign key constraint violations
@@ -270,6 +273,6 @@ class DummyDataLoader(
         inviteRepository.save(inviteApplicant0Assessment1)
         inviteRepository.save(inviteApplicant0Assessment2)
         inviteRepository.save(inviteApplicant1Assessment1)
-        println("Dummy data loaded!")
+        log.info("Dummy data loaded!")
     }
 }
