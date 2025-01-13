@@ -19,5 +19,4 @@ sealed interface ResultAssignmentReadDTO : ReadDTO {
     val solvedAssignment: SolvedAssignmentReadDTO
     val scoredPoints: Int?
     val referenceAnswer: AnswerCreateReadDTO
-    val measuredSeconds: Long?
 }

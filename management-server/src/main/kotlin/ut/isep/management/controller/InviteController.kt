@@ -20,7 +20,6 @@ import ut.isep.management.exception.UnauthorizedException
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
-import ut.isep.management.service.solution.ResultReadService
 import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
@@ -32,7 +31,6 @@ class InviteController(
     val inviteReadService: InviteReadService,
     val inviteCreateService: InviteCreateService,
     val inviteUpdateService: InviteUpdateService,
-    val resultReadService: ResultReadService,
 ) {
 
 

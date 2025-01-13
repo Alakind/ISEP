@@ -10,5 +10,4 @@ data class ResultAssignmentCodingReadDTO(
     override val solvedAssignment: SolvedAssignmentCodingReadDTO,
     override val referenceAnswer: AnswerCreateReadDTO.Coding,
     override val scoredPoints: Int?,
-    override val measuredSeconds: Long?
 ) : ResultAssignmentReadDTO
