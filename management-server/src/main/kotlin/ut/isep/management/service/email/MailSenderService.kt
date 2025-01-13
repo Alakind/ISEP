@@ -4,6 +4,7 @@ package ut.isep.management.service.email
 import dto.email.EmailCreateDTO
 import dto.email.EmailDTO
 import enumerable.EmailType
+import enumerable.InviteStatus
 import jakarta.mail.internet.MimeMessage
 import org.springframework.core.io.ClassPathResource
 import org.springframework.mail.MailSendException
@@ -74,6 +75,13 @@ class MailSenderService(
             if (msg != null) {
                 emailSender.send(msg)
             }
+
+            if (emailCreateDTO.type == EmailType.reminder && invite.status !== InviteStatus.app_reminded_once) {
+                invite.status = InviteStatus.app_reminded_once
+            } else if (emailCreateDTO.type == EmailType.reminder && invite.status === InviteStatus.app_reminded_once) {
+                invite.status = InviteStatus.app_reminded_twice
+            }
+
         } catch (e: Exception) {
             print("Failed to send email ${e.message}")
             throw MailSendException("Failed to send email", e)
