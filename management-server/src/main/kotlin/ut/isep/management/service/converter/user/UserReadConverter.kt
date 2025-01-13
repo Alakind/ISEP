@@ -12,7 +12,8 @@ class UserReadConverter : ReadConverter<User, UserReadDTO> {
             id = entity.id,
             name = entity.name!!,
             email = entity.email!!,
-            role = entity.role
+            role = entity.role,
+            createdAt = entity.createdAt,
         )
     }
 }
