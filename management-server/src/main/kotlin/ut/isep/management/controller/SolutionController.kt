@@ -20,14 +20,10 @@ class SolutionController(
     val solutionUpdateService: SolutionUpdateService
 ) {
 
-    /**
-     * Hello.
-     * This mapping has no useful logic; it's just a documentation example.
-     *
-     */
+
     @PutMapping("solution/{uuid}")
     @Operation(
-        description = "Test method for putting solutions",
+        description = "Method for putting solutions",
         operationId = "solution",
     )
     @ApiResponse(
