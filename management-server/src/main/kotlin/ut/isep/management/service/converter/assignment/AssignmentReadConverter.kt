@@ -28,9 +28,10 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
         return AssignmentMultipleChoiceReadDTO(
             id = entity.id,
             description = entity.description!!,
-            isMultipleAnswers = entity.optionToSolution.values.count{ it } > 1,
+            isMultipleAnswers = entity.optionToSolution.values.count { it } > 1,
             options = entity.optionToSolution.keys.toList(),
-            availablePoints = entity.availablePoints!!
+            availablePoints = entity.availablePoints!!,
+            availableSeconds = entity.availableSeconds!!,
         )
     }
 
@@ -38,7 +39,8 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
         return AssignmentOpenReadDTO(
             id = entity.id,
             description = entity.description!!,
-            availablePoints = entity.availablePoints!!
+            availablePoints = entity.availablePoints!!,
+            availableSeconds = entity.availableSeconds!!,
         )
     }
 
@@ -48,7 +50,8 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
             description = entity.description!!,
             language = entity.language!!,
             codeUri = entity.codeUri!!, // Replace with actual fetching of the files
-            availablePoints = entity.availablePoints!!
+            availablePoints = entity.availablePoints!!,
+            availableSeconds = entity.availableSeconds!!,
         )
     }
 }

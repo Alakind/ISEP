@@ -8,13 +8,46 @@ import SolvedAssignmentCoding from "./SolvedAssignmentCoding.tsx";
 import SolvedAssignmentContainer from "../../../containers/applicant-personal/results/SolvedAssignmentContainer.tsx";
 
 function AssessmentResultsSections({inviteUuid, sections, activeSection, setActiveSection}: Readonly<Props>): ReactNode {
+  function formatMeasuredTime(seconds: number | undefined): string | undefined {
+    if (seconds === undefined || seconds === 0) {
+      return undefined;
+    }
+
+    const hours: number = Math.floor(seconds / 3600);
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds: number = seconds % 60;
+    if (hours !== 0) {
+      return `${hours} hrs. ${minutes} min. ${remainingSeconds} sec.`;
+    } else {
+      return `${minutes} min. ${remainingSeconds} sec.`;
+    }
+  }
+
+  function formatAvailableTime(seconds: number | undefined): string | undefined {
+    if (seconds === undefined || seconds === 0) {
+      return undefined;
+    }
+
+    const minutes: number = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds: number = seconds % 60;
+
+    return `${minutes} min. ${remainingSeconds} sec.`;
+  }
+
   return (
     <div id={`invite_accordion_${inviteUuid}`} data-testid={"assessment-results-sections"}>
       {sections.map((section: SectionSolvedInterface, sectionIndex: number): ReactNode => (
         <div key={`section-${section.id}`} className="card">
           <button className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex)} data-testid={"section-header"}>
             <span>{section.title}</span>
-            <span>{section.measuredTime ?? "No measured time"}<br></br><span className={"section__header__sug-time"}>Suggested: {section.suggestedTime ?? "-"} min.</span></span>
+            <span>
+              <b
+                className={`${section.measuredSeconds && section.availableSeconds && section.measuredSeconds > section.availableSeconds ? "section__header__meas-time--exceeded" : ""}`}>{formatMeasuredTime(section.measuredSeconds) ?? "No measured time"}</b>
+              <br></br>
+              <span className={"section__header__sug-time"}>
+                Suggested: {formatAvailableTime(section.availableSeconds) ?? "-"}
+              </span>
+            </span>
             <span>{section.scoredPoints ?? 0} / {section.availablePoints}</span>
             <span>{section.availablePoints && section.scoredPoints ? (section.scoredPoints / section.availablePoints * 100).toFixed(2) : (0.00).toFixed(2)} %</span>
           </button>

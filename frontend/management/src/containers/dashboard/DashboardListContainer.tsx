@@ -1,8 +1,8 @@
 import "../../styles/dashboard.css";
 import DashboardList from "../../components/dashboard/DashboardList.tsx";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {ApplicantInterface} from "../../utils/types.tsx";
-import {getApplicants} from "../../utils/apiFunctions.tsx";
+import {ApplicantInterface, InviteInterface} from "../../utils/types.tsx";
+import {getApplicants, getInvites} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 
 function DashboardListContainer({totalItems, setTotalItems}: Readonly<Props>) {
@@ -16,13 +16,22 @@ function DashboardListContainer({totalItems, setTotalItems}: Readonly<Props>) {
     async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res: {
-          data: ApplicantInterface[],
-          totalItems: number
-        } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+        const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
+        const invitesResponse: InviteInterface[] = await getInvites();
 
-        setData(res.data);
-        setTotalItems(res.totalItems);
+        let applicantsWithStatuses: ApplicantInterface[] = applicantsResponse.data;
+        if (invitesResponse) {
+          applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface) => {
+            const applicantInvites = invitesResponse.filter((invite) => invite.applicantId === applicant.id);
+
+            return {
+              ...applicant,
+              statuses: applicantInvites.map((invite) => invite.status),
+            };
+          });
+        }
+        setData(applicantsWithStatuses);
+        setTotalItems(applicantsResponse.totalItems);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message)

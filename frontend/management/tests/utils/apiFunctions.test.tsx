@@ -979,8 +979,8 @@ describe('API Functions (results)', (): void => {
     const mockSection: SectionSolvedInterface = {
       id: "3",
       title: "data",
-      measuredTime: "00:10:00",
-      suggestedTime: "00:20:00",
+      measuredSeconds: 600,
+      availableSeconds: 1200,
       scoredPoints: 5,
       availablePoints: 10,
       assignments: [{

@@ -170,11 +170,21 @@ class InviteController(
                 content = [Content(
                     schema = Schema(implementation = DefaultErrorAttributes::class)
                 )]
+            ),
+            ApiResponse(
+                responseCode = "401",
+                description = "Not authorized to retrieve assessment",
+                content = [Content(
+                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                )]
             )
         ]
     )
     fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO> {
         return try {
+            // Check if the request can be proceeded
+            inviteReadService.checkAccessibilityAssessment(id)
+
             val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
             ResponseEntity.ok(assessment)
         } catch (e: NoSuchElementException) {

@@ -31,17 +31,17 @@ describe("PageNotFound Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("contains a link to the applicants dashboard", () => {
+  it("contains a link to the dashboard", () => {
     render(
       <MemoryRouter>
         <PageNotFound/>
       </MemoryRouter>
     );
 
-    // Check for the link to applicants
-    const link = screen.getByRole("link", {name: /applicants dashboard/i});
+    // Check for the link to dashboard
+    const link = screen.getByRole("link", {name: /dashboard/i});
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "/applicants");
+    expect(link).toHaveAttribute("href", "/dashboard");
   });
 
   it("contains the header container", () => {

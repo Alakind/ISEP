@@ -11,7 +11,7 @@ describe('Header component', () => {
 
     const brand = screen.getByRole('link', {name: /asserberus/i});
     expect(brand).toBeInTheDocument();
-    expect(brand).toHaveAttribute('href', `${urlPrefix}/`);
+    expect(brand).toHaveAttribute('href', `${urlPrefix}/dashboard`);
   });
 
   it('renders the navigation links with correct active state', () => {
