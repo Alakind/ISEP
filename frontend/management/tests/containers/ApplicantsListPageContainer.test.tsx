@@ -71,7 +71,7 @@ describe('ApplicantsListPageContainer', () => {
       data: mockApplicants,
       totalItems: 2,
     });
-    vi.mocked(getInvites).mockResolvedValueOnce(mockInvitesData);
+    vi.mocked(getInvites).mockResolvedValueOnce({data: mockInvitesData, totalItems: 2});
 
     render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
 
@@ -118,7 +118,7 @@ describe('ApplicantsListPageContainer', () => {
       data: mockApplicants,
       totalItems: 2,
     });
-    vi.mocked(getInvites).mockResolvedValueOnce(mockInvitesData);
+    vi.mocked(getInvites).mockResolvedValueOnce({data: mockInvitesData, totalItems: 2});
 
     render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
 

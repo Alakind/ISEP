@@ -381,39 +381,42 @@ describe('API Functions (invites)', (): void => {
   });
 
   it("should fetch invites", async (): Promise<void> => {
-    const mockResponse: InviteInterface[] = [
-      {
-        id: "cce487c0-9ff7-47a8-9844-b406e046459b",
-        applicantId: "90",
-        assessmentId: "3",
-        status: "not_started",
-        invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
-      },
-      {
-        id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
-        applicantId: "90",
-        assessmentId: "4",
-        status: "app_finished",
-        invitedAt: "2024-12-30T00:28:25.485638Z",
-        expiresAt: "2025-01-06T00:28:25.485638Z"
-      },
-      {
-        id: "be05fc98-06d3-4763-9445-417ac149f90d",
-        applicantId: "91",
-        assessmentId: "3",
-        status: "app_finished",
-        invitedAt: "2024-12-30T00:28:25.485638Z",
-        expiresAt: "2025-01-06T00:28:25.485638Z"
-      }
-    ];
+    const mockResponse: { data: InviteInterface[], totalItems: number } = {
+      data: [
+        {
+          id: "cce487c0-9ff7-47a8-9844-b406e046459b",
+          applicantId: "90",
+          assessmentId: "3",
+          status: "not_started",
+          invitedAt: "2024-12-30T00:28:25.485108Z",
+          expiresAt: "2025-01-06T00:28:25.485108Z"
+        },
+        {
+          id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
+          applicantId: "90",
+          assessmentId: "4",
+          status: "app_finished",
+          invitedAt: "2024-12-30T00:28:25.485638Z",
+          expiresAt: "2025-01-06T00:28:25.485638Z"
+        },
+        {
+          id: "be05fc98-06d3-4763-9445-417ac149f90d",
+          applicantId: "91",
+          assessmentId: "3",
+          status: "app_finished",
+          invitedAt: "2024-12-30T00:28:25.485638Z",
+          expiresAt: "2025-01-06T00:28:25.485638Z"
+        }
+      ],
+      totalItems: 3
+    };
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: createFetchResponse(mockResponse),
     });
 
-    const result: InviteInterface[] = await getInvites();
+    const result: { data: InviteInterface[], totalItems: number } = await getInvites();
 
     expect(mockFetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/invite`,

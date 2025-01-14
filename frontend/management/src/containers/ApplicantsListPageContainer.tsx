@@ -20,12 +20,12 @@ function ApplicantsListPageContainer(): ReactNode {
       setLoading(true);
       try {
         const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, query);
-        const invitesResponse: InviteInterface[] = await getInvites();
+        const invitesResponse: { data: InviteInterface[], totalItems: number } = await getInvites();
 
         let applicantsWithStatuses: ApplicantInterface[] = applicantsResponse.data;
         if (invitesResponse) {
           applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface) => {
-            const applicantInvites = invitesResponse.filter((invite) => invite.applicantId === applicant.id);
+            const applicantInvites = invitesResponse.data.filter((invite) => invite.applicantId === applicant.id);
 
             return {
               ...applicant,

@@ -113,7 +113,7 @@ export async function deleteApplicant(id: string): Promise<string> {
 
 // --------------------------------- INVITES -----------------------------------//
 
-export async function getInvites(): Promise<InviteInterface[]> {
+export async function getInvites(): Promise<{ data: InviteInterface[], totalItems: number }> {
   const response: Response = await fetch(`${baseUrl}/invite`, {
     method: "GET",
     headers: {
@@ -124,8 +124,9 @@ export async function getInvites(): Promise<InviteInterface[]> {
   if (!response.ok) {
     throw new Error(`Failed to retrieve invites`);
   }
+  const data: { data: InviteInterface[], total: number } = await response.json();
 
-  return await response.json();
+  return {data: data.data, totalItems: data.total};
 }
 
 export async function getInvite(id: string): Promise<InviteInterface> {

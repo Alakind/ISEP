@@ -14,15 +14,15 @@ function DashboardStatisticsContainer({totalItems}: Readonly<Props>) {
     async function fetchData(): Promise<void> {
       setLoading(true);
       try {
-        const res: InviteInterface[] = await getInvites();
-        setTotalWillExpire(res.filter((invite: InviteInterface): boolean => {
+        const res: { data: InviteInterface[], totalItems: number } = await getInvites();
+        setTotalWillExpire(res.data.filter((invite: InviteInterface): boolean => {
           const expirationDate = new Date(invite.expiresAt);
           const today = new Date();
           const twoDays = new Date();
           twoDays.setDate(twoDays.getDate() + 2);
           return expirationDate > today && expirationDate <= twoDays;
         }).length);
-        setTotalExpired(res.filter((invite: InviteInterface): boolean => {
+        setTotalExpired(res.data.filter((invite: InviteInterface): boolean => {
           return invite.status === 'expired';
         }).length);
 
