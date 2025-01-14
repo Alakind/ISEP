@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.solution.SolutionReadService
 import ut.isep.management.service.solution.SolutionUpdateService
 import java.util.*
@@ -17,7 +18,8 @@ import java.util.*
 @Tag(name = "Solution")
 class SolutionController(
     val solutionReadService: SolutionReadService,
-    val solutionUpdateService: SolutionUpdateService
+    val solutionUpdateService: SolutionUpdateService,
+    val inviteReadService: InviteReadService,
 ) {
 
 
@@ -39,6 +41,9 @@ class SolutionController(
         @RequestBody solutionsUpdateDTO: SolutionsUpdateDTO
     ): ResponseEntity<String> {
         return try {
+            // Check if the request can be proceeded
+            inviteReadService.checkAccessibilityAssessment(uuid)
+
             solutionUpdateService.updateSolutions(uuid, solutionsUpdateDTO)
             ResponseEntity.ok("Updated ${solutionsUpdateDTO.size} solutions")
         } catch (e: NoSuchElementException) {

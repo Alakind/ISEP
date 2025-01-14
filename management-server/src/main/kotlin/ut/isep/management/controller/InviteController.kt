@@ -4,8 +4,6 @@ import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteCreateDTO
 import dto.invite.InviteReadDTO
 import dto.invite.InviteUpdateDTO
-import dto.section.ResultSectionSimpleReadDTO
-import enumerable.InviteStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -16,12 +14,10 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import ut.isep.management.exception.UnauthorizedException
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
 import java.net.URI
-import java.time.OffsetDateTime
 import java.util.*
 
 @RestController
@@ -186,22 +182,8 @@ class InviteController(
     )
     fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO> {
         return try {
-            val invite: InviteReadDTO = inviteReadService.getById(id)
-            val sections: List<ResultSectionSimpleReadDTO> = inviteReadService.getSectionsByInviteId(id)
-            val totalAvailableSeconds = sections.sumOf { it.availableSeconds }
-            val totalMeasuredSeconds = sections.sumOf { it.measuredSeconds ?: 0 }
-
-            if (invite.status == InviteStatus.app_finished) {
-                throw UnauthorizedException("Not authorized to retrieve assessment, invite has been finished")
-            }
-            if (invite.expiresAt.isBefore(OffsetDateTime.now())) {
-                throw UnauthorizedException("Not authorized to retrieve assessment, invitation has been expired")
-            }
-            print(totalAvailableSeconds)
-            print(totalMeasuredSeconds)
-            if (totalAvailableSeconds <= totalMeasuredSeconds) {
-                throw UnauthorizedException("Not authorized to retrieve assessment, total available time has been past")
-            }
+            // Check if the request can be proceeded
+            inviteReadService.checkAccessibilityAssessment(id)
 
             val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
             ResponseEntity.ok(assessment)
