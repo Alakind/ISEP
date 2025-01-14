@@ -26,9 +26,8 @@ class CodeExecutor {
         }
 
         private fun parseJavaTestOutput(output: String): TestResult {
-            System.out.println(output)
             val tests = output.split(
-                "[INFO] -------------------------------------------------------\n" +
+                        "[INFO] -------------------------------------------------------\n" +
                         "[INFO]  T E S T S\n" +
                         "[INFO] -------------------------------------------------------\n"
             )
