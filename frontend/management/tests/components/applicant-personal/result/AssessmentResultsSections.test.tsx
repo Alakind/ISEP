@@ -47,8 +47,8 @@ describe("AssessmentResultsSections Component", () => {
       title: "Section 1",
       scoredPoints: 8,
       availablePoints: 10,
-      measuredTime: "10 min",
-      suggestedTime: "15 min",
+      measuredSeconds: 600,
+      availableSeconds: 900,
       assignments: [
         assignment1,
         assignment2
@@ -99,12 +99,109 @@ describe("AssessmentResultsSections Component", () => {
     );
 
     mockSections.forEach((section) => {
-      if (!section.measuredTime) {
+      if (!section.measuredSeconds) {
         expect(screen.getByText("No measured time")).toBeInTheDocument();
       }
 
-      if (!section.suggestedTime) {
-        expect(screen.getByText("Suggested: - min.")).toBeInTheDocument();
+      if (!section.availableSeconds) {
+        expect(screen.getByText("Suggested: -")).toBeInTheDocument();
+      }
+    });
+  });
+
+  it("renders red highlighted measured time if it exceeds suggested time", () => {
+    const mockSections: SectionSolvedInterface[] = [
+      {
+        id: "section1",
+        title: "Section 1",
+        scoredPoints: 8,
+        availablePoints: 10,
+        measuredSeconds: 1000,
+        availableSeconds: 900,
+        assignments: [
+          assignment1,
+          assignment2
+        ],
+        size: 2
+      },
+      {
+        id: "section2",
+        title: "Section 2",
+        scoredPoints: 6,
+        availablePoints: 10,
+        measuredSeconds: 800,
+        availableSeconds: 900,
+        assignments: [
+          assignment3
+        ],
+        size: 1
+      },
+    ];
+
+    render(
+      <AssessmentResultsSections
+        inviteUuid="invite123"
+        sections={mockSections}
+        activeSection={0}
+        setActiveSection={mockSetActiveSection}
+      />
+    );
+
+    mockSections.forEach((section) => {
+      if (section.measuredSeconds && section.availableSeconds && section.measuredSeconds > section.availableSeconds) {
+        const exceededMeasuredTime = screen.getByText("16 min. 40 sec.");
+        expect(exceededMeasuredTime).toBeInTheDocument();
+        expect(exceededMeasuredTime).toHaveClass("section__header__meas-time--exceeded");
+      } else {
+        const notExceededMeasuredTime = screen.getByText("13 min. 20 sec.");
+        expect(notExceededMeasuredTime).toBeInTheDocument();
+        expect(notExceededMeasuredTime).not.toHaveClass("section__header__meas-time--exceeded");
+      }
+    });
+  });
+
+  it("renders different formatting if the measured time surpasses 1 hour", () => {
+    const mockSections: SectionSolvedInterface[] = [
+      {
+        id: "section1",
+        title: "Section 1",
+        scoredPoints: 6,
+        availablePoints: 10,
+        measuredSeconds: 800,
+        availableSeconds: 900,
+        assignments: [
+          assignment3
+        ],
+        size: 1
+      },
+      {
+        id: "section2",
+        title: "Section 2",
+        scoredPoints: 6,
+        availablePoints: 10,
+        measuredSeconds: 4000,
+        availableSeconds: 900,
+        assignments: [
+          assignment3
+        ],
+        size: 1
+      },
+    ];
+
+    render(
+      <AssessmentResultsSections
+        inviteUuid="invite123"
+        sections={mockSections}
+        activeSection={0}
+        setActiveSection={mockSetActiveSection}
+      />
+    );
+
+    mockSections.forEach((section) => {
+      if (section.measuredSeconds && section.measuredSeconds >= 3600) {
+        expect(screen.getByText("1 hrs. 6 min. 40 sec.")).toBeInTheDocument();
+      } else {
+        expect(screen.getByText("13 min. 20 sec.")).toBeInTheDocument();
       }
     });
   });
