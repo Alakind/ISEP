@@ -381,7 +381,7 @@ describe('API Functions (invites)', (): void => {
   });
 
   it("should fetch invites", async (): Promise<void> => {
-    const mockResponse: { data: InviteInterface[], totalItems: number } = {
+    const mockResponse: { data: InviteInterface[], total: number } = {
       data: [
         {
           id: "cce487c0-9ff7-47a8-9844-b406e046459b",
@@ -408,7 +408,7 @@ describe('API Functions (invites)', (): void => {
           expiresAt: "2025-01-06T00:28:25.485638Z"
         }
       ],
-      totalItems: 3
+      total: 3
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -423,7 +423,10 @@ describe('API Functions (invites)', (): void => {
       expect.objectContaining({method: "GET"})
     );
 
-    expect(result).toEqual(mockResponse);
+    expect(result).toEqual({
+      data: mockResponse.data,
+      totalItems: mockResponse.total,
+    });
   });
 
   it("should throw error when fetching invites fails", async () => {
