@@ -4,7 +4,7 @@ import dto.timing.TimingPerSectionInSecondsUpdateDTO
 import dto.timing.TimingPerSectionSwitchUpdateDTO
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import ut.isep.management.exception.TooManyRegisteredTimedSectionsException
+import ut.isep.management.exception.TooManyRegisteredTimedObjectsException
 import ut.isep.management.model.entity.TimingPerSection
 import ut.isep.management.model.entity.TimingPerSectionId
 import ut.isep.management.repository.TimingPerSectionRepository
@@ -39,7 +39,7 @@ class TimingPerSectionUpdateService(
         val measuredTimeSectionsPrevious = repository.findByInviteIdAndVisitedAtNotNull(inviteId)
 
         if (measuredTimeSectionsPrevious.size > 1) {
-            throw TooManyRegisteredTimedSectionsException("${measuredTimeSectionsPrevious.size} section have a timestamp")
+            throw TooManyRegisteredTimedObjectsException("${measuredTimeSectionsPrevious.size} section have a timestamp")
         }
 
         check(measuredTimeSectionsPrevious.isNotEmpty()) { "No section with a timestamp found." }
