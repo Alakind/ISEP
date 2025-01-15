@@ -84,4 +84,15 @@ class TimingController(
             ResponseEntity.status(404).build()
         }
     }
+
+    @GetMapping("/timing/{inviteId}")
+    fun getMeasuredTimeInvite(
+        @PathVariable inviteId: UUID
+    ): ResponseEntity<TimingPerSectionReadDTO> {
+        return try {
+            ResponseEntity.ok(timingPerSectionReadService.getMeasuredTimeInvite(inviteId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
 }
