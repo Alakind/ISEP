@@ -20,6 +20,9 @@ import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import ut.isep.management.exception.EndDateBeforeStartDateException
+import ut.isep.management.exception.NotAllowedInviteStatusException
+import ut.isep.management.exception.NotAllowedSelectedBetweenDateAttributeException
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
@@ -54,6 +57,16 @@ class InviteController(
         @RequestParam(required = false) startDate: LocalDate?,
         @RequestParam(required = false) endDate: LocalDate?
     ): PaginatedDTO<InviteReadDTO> {
+        if (enumValues<AllowedInvitesDateAttributeNames>().any { it.name == betweenDateAttribute.toString() }) {
+            throw NotAllowedInviteStatusException("The given between date attribute ($betweenDateAttribute) is invalid")
+        }
+        if (enumValues<AllowedInvitesDateAttributeNames>().any { it.name == betweenDateAttribute.toString() }) {
+            throw NotAllowedSelectedBetweenDateAttributeException("The given between date attribute ($betweenDateAttribute) is invalid")
+        }
+        if (startDate != null && endDate != null && startDate > endDate) {
+            throw EndDateBeforeStartDateException("The given end date attribute ($endDate) lies before the given ($startDate)")
+        }
+
         return if (status != null) {
             inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttribute.toString(), listOf("status"), listOf(status))
         } else {

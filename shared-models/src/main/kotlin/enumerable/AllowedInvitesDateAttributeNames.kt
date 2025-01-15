@@ -2,5 +2,7 @@ package enumerable
 
 enum class AllowedInvitesDateAttributeNames {
     expiresAt,
-    invitedAt
+    invitedAt,
+    assessmentStartedAt,
+    assessmentFinishedAt
 }
