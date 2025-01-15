@@ -52,25 +52,39 @@ class InviteController(
             sort = ["expiresAt"],
             direction = Sort.Direction.DESC,
         ) pageable: Pageable,
-        @RequestParam(required = false) status: InviteStatus?,
-        @RequestParam(required = false) betweenDateAttribute: AllowedInvitesDateAttributeNames? = AllowedInvitesDateAttributeNames.expiresAt,
+        @RequestParam(required = false) status: String?,
+        @RequestParam(required = false) betweenDateAttribute: String?,
         @RequestParam(required = false) startDate: LocalDate?,
         @RequestParam(required = false) endDate: LocalDate?
     ): PaginatedDTO<InviteReadDTO> {
-        if (enumValues<AllowedInvitesDateAttributeNames>().any { it.name == betweenDateAttribute.toString() }) {
-            throw NotAllowedInviteStatusException("The given between date attribute ($betweenDateAttribute) is invalid")
+
+
+        if (status != null) {
+            val isValid = InviteStatus.isValidEnumLiteral(status)
+            if (!isValid) {
+                throw NotAllowedInviteStatusException("The given status attribute ($status) is invalid")
+            }
         }
-        if (enumValues<AllowedInvitesDateAttributeNames>().any { it.name == betweenDateAttribute.toString() }) {
-            throw NotAllowedSelectedBetweenDateAttributeException("The given between date attribute ($betweenDateAttribute) is invalid")
+        if (betweenDateAttribute != null) {
+            val isValid = AllowedInvitesDateAttributeNames.isValidEnumLiteral(betweenDateAttribute)
+            if (!isValid) {
+                throw NotAllowedSelectedBetweenDateAttributeException("The given between date attribute ($betweenDateAttribute) is invalid")
+            }
         }
         if (startDate != null && endDate != null && startDate > endDate) {
             throw EndDateBeforeStartDateException("The given end date attribute ($endDate) lies before the given ($startDate)")
         }
 
+        var betweenDateAttributeEnum = betweenDateAttribute?.let { AllowedInvitesDateAttributeNames.valueOf(it) }
+        if (betweenDateAttributeEnum == null && (startDate != null || endDate != null)) {
+            betweenDateAttributeEnum = AllowedInvitesDateAttributeNames.expiresAt
+        }
+
         return if (status != null) {
-            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttribute.toString(), listOf("status"), listOf(status))
+            val statusEnum = status.let { InviteStatus.valueOf(it) }
+            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString(), listOf("status"), listOf(statusEnum))
         } else {
-            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttribute.toString())
+            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString())
         }
     }
 
