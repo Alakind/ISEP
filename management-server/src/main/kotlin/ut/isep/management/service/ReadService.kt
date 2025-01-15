@@ -70,11 +70,11 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
                 }
             }
 
-            if (startDate != null) {
+            if (startDate != null && betweenDateAttribute != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get(betweenDateAttribute), startDate))
             }
 
-            if (endDate != null) {
+            if (endDate != null && betweenDateAttribute != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get(betweenDateAttribute), endDate))
             }
 
