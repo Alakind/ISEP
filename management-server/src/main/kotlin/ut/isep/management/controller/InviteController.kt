@@ -8,6 +8,7 @@ import dto.invite.InviteUpdateDTO
 import enumerable.AllowedInvitesDateAttributeNames
 import enumerable.InviteStatus
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -52,13 +53,19 @@ class InviteController(
             sort = ["expiresAt"],
             direction = Sort.Direction.DESC,
         ) pageable: Pageable,
+        @Parameter(
+            description = "Available status options on invite entity",
+            schema = Schema(implementation = InviteStatus::class)
+        )
         @RequestParam(required = false) status: String?,
+        @Parameter(
+            description = "Available time attributes on invite entity",
+            schema = Schema(implementation = InviteStatus::class)
+        )
         @RequestParam(required = false) betweenDateAttribute: String?,
         @RequestParam(required = false) startDate: LocalDate?,
         @RequestParam(required = false) endDate: LocalDate?
     ): PaginatedDTO<InviteReadDTO> {
-
-
         if (status != null) {
             val isValid = InviteStatus.isValidEnumLiteral(status)
             if (!isValid) {
