@@ -8,5 +8,13 @@ enum class InviteStatus {
     app_reminded_twice,
     cancelled,
     expired,
-    not_started,
+    not_started;
+
+    companion object {
+        fun isValidEnumLiteral(input: String): Boolean {
+            return entries.any { it.name.equals(input, ignoreCase = true) }
+        }
+    }
 }
+
+
