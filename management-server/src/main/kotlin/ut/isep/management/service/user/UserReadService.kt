@@ -14,10 +14,10 @@ class UserReadService(
     repository: UserRepository,
     converter: UserReadConverter,
 ) : ReadService<User, UserReadDTO, Long>(repository, converter) {
-    override val matcher = ExampleMatcher.matching()
+    override val matcher: ExampleMatcher = ExampleMatcher.matching()
         .withIgnoreNullValues()
         .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-        .withIgnorePaths("id", "role")
+        .withIgnorePaths("id", "role", "createdAt")
 }
 

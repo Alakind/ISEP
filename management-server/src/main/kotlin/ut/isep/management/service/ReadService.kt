@@ -20,7 +20,7 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     protected val converter: ReadConverter<E, R>
 ) {
     // override this for custom matcher, this should perhaps be split into searchable and non-searchable ReadService
-    open val matcher = ExampleMatcher.matching().withIgnoreNullValues()
+    open val matcher: ExampleMatcher = ExampleMatcher.matching().withIgnoreNullValues()
 
     // functions are marked as open otherwise @Transactional cannot override them to create proxies, apparently
     open fun getById(id: ID): R {

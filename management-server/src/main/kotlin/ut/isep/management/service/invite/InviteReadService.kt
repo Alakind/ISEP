@@ -4,13 +4,12 @@ import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteReadDTO
 import enumerable.InviteStatus
 import jakarta.transaction.Transactional
-import org.springframework.data.domain.ExampleMatcher
 import org.springframework.stereotype.Service
 import ut.isep.management.exception.AssessmentTimeExceededException
 import ut.isep.management.exception.UnauthorizedException
 import ut.isep.management.model.entity.Invite
-import ut.isep.management.repository.TimingPerSectionRepository
 import ut.isep.management.repository.BaseRepository
+import ut.isep.management.repository.TimingPerSectionRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.assessment.AssessmentReadConverter
 import ut.isep.management.service.converter.invite.InviteReadConverter
@@ -28,10 +27,6 @@ class InviteReadService(
     private val timingPerSectionRepository: TimingPerSectionRepository,
     private val timingPerSectionUpdateService: TimingPerSectionUpdateService,
 ) : ReadService<Invite, InviteReadDTO, UUID>(repository, converter) {
-    override val matcher = ExampleMatcher.matching()
-        .withIgnoreNullValues()
-        .withMatcher("status", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-        .withIgnorePaths("id", "applicant", "assessment", "solutions", "invitedAt", "expiresAt")
 
     fun getAssessmentByInviteId(id: UUID): AssessmentReadDTO {
         val invite = repository.findById(id)
