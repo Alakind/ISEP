@@ -5,6 +5,7 @@ import {toast} from 'react-toastify';
 import {ApplicantInterface, InviteInterface} from '../../src/utils/types';
 import {MemoryRouter, useNavigate} from "react-router-dom";
 import {vi} from "vitest";
+import {act} from "react";
 
 vi.mock('../../src/utils/apiFunctions.tsx', () => ({
   __esModule: true,
@@ -134,7 +135,7 @@ describe('ApplicantsListPageContainer', () => {
     });
   });
 
-  it("navigates to /applicants/add when the button is clicked", () => {
+  it("navigates to /applicants/add when the button is clicked", async () => {
     const mockNavigate = vi.fn();
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
@@ -145,7 +146,9 @@ describe('ApplicantsListPageContainer', () => {
     );
 
     const button = screen.getByRole('button', {name: "Add applicant"});
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    })
 
     expect(mockNavigate).toHaveBeenCalledWith("/applicants/add");
   });

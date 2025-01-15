@@ -361,7 +361,6 @@ describe('ApplicantPersonalCardContainer', () => {
         ...ActualReact,
         useState: vi.fn((initialState) => {
           if (initialState.id === 'null') {
-            console.log(initialState);
             return [null, vi.fn()]; // Mock prevApplicantData as null
           }
           return ActualReact.useState(initialState); // Default fallback
