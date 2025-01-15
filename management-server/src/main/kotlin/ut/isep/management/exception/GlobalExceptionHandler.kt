@@ -13,6 +13,26 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
     }
 
+    @ExceptionHandler(TooManyRegisteredTimedObjectsException::class)
+    fun handleTooManyRegisteredTimedObjectsException(ex: TooManyRegisteredTimedObjectsException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.message)
+    }
+
+    @ExceptionHandler(NotAllowedSelectedBetweenDateAttributeException::class)
+    fun handleNotAllowedSelectedBetweenDateAttributeException(ex: NotAllowedSelectedBetweenDateAttributeException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(NotAllowedInviteStatusException::class)
+    fun handleNotAllowedInviteStatusException(ex: NotAllowedInviteStatusException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(AssessmentTimeExceededException::class)
+    fun handleAssessmentTimeExceedException(ex: AssessmentTimeExceededException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.message)
+    }
+
     @ExceptionHandler(UnauthorizedException::class)
     fun handleUnauthorizedException(ex: UnauthorizedException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.message)
