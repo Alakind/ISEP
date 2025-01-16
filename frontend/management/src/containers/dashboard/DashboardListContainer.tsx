@@ -1,61 +1,74 @@
 import "../../styles/dashboard.css";
-import DashboardList from "../../components/dashboard/DashboardList.tsx";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {ApplicantInterface, InviteInterface} from "../../utils/types.tsx";
 import {getApplicants, getInvites} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
+import {InviteDateAttributes, InviteStatuses} from "../../utils/constants.tsx";
+import {formatDate} from "../../utils/general.tsx";
+import {mapStatus} from "../../utils/mapping.tsx";
+import DashboardList from "../../components/dashboard/DashboardList.tsx";
 
-function DashboardListContainer({totalItems, setTotalItems}: Readonly<Props>) {
-  const [data, setData] = useState<ApplicantInterface[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [orderBy, setOrderBy] = useState<string>("name,asc"); //TODO reorder based on newest finished (So date (desc) and status (complete))
+function DashboardListContainer({setTotalApplicants, setTotalWillExpire, setTotalExpired}: Readonly<Props>) {
+  const [dataApplicants, setDataApplicants] = useState<ApplicantInterface[]>([]);
+  const [dataFinished, setDataFinished] = useState<InviteInterface[]>([]);
+  const [dataExpired, setDataExpired] = useState<InviteInterface[]>([]);
+  const [dataWillExpire, setDataWillExpire] = useState<InviteInterface[]>([]);
 
   useEffect((): void => {
     async function fetchData(): Promise<void> {
-      setLoading(true);
       try {
-        const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, "");
-        const invitesResponse: InviteInterface[] = await getInvites();
+        const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(0, -1, "", "");
 
-        let applicantsWithStatuses: ApplicantInterface[] = applicantsResponse.data;
-        if (invitesResponse) {
-          applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface) => {
-            const applicantInvites = invitesResponse.filter((invite) => invite.applicantId === applicant.id);
+        const today = new Date();
+        const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        const sevenDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+        const comingTwoDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);
 
-            return {
-              ...applicant,
-              statuses: applicantInvites.map((invite) => invite.status),
-            };
-          });
-        }
-        setData(applicantsWithStatuses);
-        setTotalItems(applicantsResponse.totalItems);
+        const invitesFinished: {
+          data: InviteInterface[],
+          totalItems: number
+        } = await getInvites(mapStatus(InviteStatuses.APP_FINISHED), InviteDateAttributes.ASSESSMENT_FINISHED_AT, formatDate(sevenDaysAgo), undefined, "assessmentFinishedAt,desc");
+        const invitesExpired: {
+          data: InviteInterface[],
+          totalItems: number
+        } = await getInvites(mapStatus(InviteStatuses.EXPIRED));
+        const invitesWillExpire: {
+          data: InviteInterface[],
+          totalItems: number
+        } = await getInvites(undefined, InviteDateAttributes.EXPIRES_AT, formatDate(tomorrow), formatDate(comingTwoDays));
+        setTotalApplicants(applicantsResponse.totalItems);
+        setTotalWillExpire(invitesWillExpire.totalItems)
+        setTotalExpired(invitesExpired.totalItems)
+        setDataApplicants(applicantsResponse.data);
+        setDataFinished(invitesFinished.data);
+        setDataExpired(invitesExpired.data);
+        setDataWillExpire(invitesWillExpire.data);
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message)
         } else {
           toast.error("Unknown error occurred.");
         }
-      } finally {
-        setLoading(false);
       }
     }
 
     fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy]);
+  }, [setTotalApplicants, setTotalExpired, setTotalWillExpire]);
 
   return (
-    <DashboardList data={data} totalItems={totalItems} loading={loading} currentPage={currentPage}
-                   setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}
-                   orderBy={orderBy} setOrderBy={setOrderBy}/>
+    <DashboardList
+      dataApplicants={dataApplicants}
+      dataFinished={dataFinished}
+      dataExpired={dataExpired}
+      dataWillExpire={dataWillExpire}
+    />
   )
 }
 
 interface Props {
-  totalItems: number;
-  setTotalItems: Dispatch<SetStateAction<number>>
+  setTotalApplicants: Dispatch<SetStateAction<number>>;
+  setTotalWillExpire: Dispatch<SetStateAction<number>>;
+  setTotalExpired: Dispatch<SetStateAction<number>>;
 }
 
 export default DashboardListContainer

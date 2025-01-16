@@ -37,8 +37,8 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Readonly<Prop
         toast.error("Unknown error occurred.");
       }
     } finally {
-      setPrevApplicantData({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
-      setApplicant({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
+      setPrevApplicantData({createdAt: undefined, scores: [], statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
+      setApplicant({createdAt: undefined, scores: [], statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
       navigate(`/applicants`);
     }
   }

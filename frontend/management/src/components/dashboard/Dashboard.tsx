@@ -6,7 +6,7 @@ import DashboardStatisticsContainer from "../../containers/dashboard/DashboardSt
 import DashboardQuickLinksContainer from "../../containers/dashboard/DashboardQuickLinksContainer.tsx";
 import {Dispatch, SetStateAction} from "react";
 
-function Dashboard({totalItems, setTotalItems}: Readonly<Props>) {
+function Dashboard({totalApplicants, setTotalApplicants, totalWillExpire, setTotalWillExpire, totalExpired, setTotalExpired}: Readonly<Props>) {
   return (
     <div className={"dashboard-page"}>
       <h1> Welcome Jurre</h1>
@@ -16,7 +16,11 @@ function Dashboard({totalItems, setTotalItems}: Readonly<Props>) {
         <div className={"dashboard-page__flex"}>
           <div className={"dashboard-page__flex__left"}>
             <CardBodyContainer additionalClass={"card-page__body--mod"}>
-              <DashboardStatisticsContainer totalItems={totalItems}/>
+              <DashboardStatisticsContainer
+                totalApplicants={totalApplicants}
+                totalWillExpire={totalWillExpire}
+                totalExpired={totalExpired}
+              />
             </CardBodyContainer>
           </div>
 
@@ -27,7 +31,11 @@ function Dashboard({totalItems, setTotalItems}: Readonly<Props>) {
           </div>
         </div>
         <div>
-          <DashboardListContainer totalItems={totalItems} setTotalItems={setTotalItems}/>
+          <DashboardListContainer
+            setTotalApplicants={setTotalApplicants}
+            setTotalWillExpire={setTotalWillExpire}
+            setTotalExpired={setTotalExpired}
+          />
         </div>
       </div>
 
@@ -36,8 +44,12 @@ function Dashboard({totalItems, setTotalItems}: Readonly<Props>) {
 }
 
 interface Props {
-  totalItems: number;
-  setTotalItems: Dispatch<SetStateAction<number>>
+  totalApplicants: number;
+  setTotalApplicants: Dispatch<SetStateAction<number>>;
+  totalWillExpire: number;
+  setTotalWillExpire: Dispatch<SetStateAction<number>>;
+  totalExpired: number;
+  setTotalExpired: Dispatch<SetStateAction<number>>;
 }
 
 export default Dashboard

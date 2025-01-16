@@ -30,7 +30,11 @@ describe('InvitesOverviewContainer', () => {
       assessmentId: "3",
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
-      expiresAt: "2025-01-10T00:28:25.485108Z"
+      expiresAt: "2025-01-10T00:28:25.485108Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     },
     {
       id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
@@ -38,15 +42,20 @@ describe('InvitesOverviewContainer', () => {
       assessmentId: "4",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-15T00:28:25.485638Z"
+      expiresAt: "2025-01-15T00:28:25.485638Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     }
   ];
 
   const mockApplicant: ApplicantInterface = {
+    createdAt: new Date(),
     id: '1',
     name: 'John Doe',
     email: 'john.doe@example.com',
-    score: 85,
+    scores: [85],
     statuses: ['not_started'],
     preferredLanguage: 'Kotlin',
     invites: [],
@@ -433,7 +442,11 @@ describe('InvitesOverviewContainer', () => {
         assessmentId: "3",
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-10T00:28:25.485108Z"
+        expiresAt: "2025-01-10T00:28:25.485108Z",
+        assessmentFinishedAt: new Date(),
+        assessmentStartedAt: new Date(),
+        measuredSecondsPerSection: [],
+        scoredPoints: 0
       }
     ];
     render(
@@ -466,7 +479,11 @@ describe('InvitesOverviewContainer', () => {
         assessmentId: "3",
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-10T00:28:25.485108Z"
+        expiresAt: "2025-01-10T00:28:25.485108Z",
+        assessmentFinishedAt: new Date(),
+        assessmentStartedAt: new Date(),
+        measuredSecondsPerSection: [],
+        scoredPoints: 0
       }
     ];
     render(
@@ -499,7 +516,11 @@ describe('InvitesOverviewContainer', () => {
         assessmentId: "3",
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-10T00:28:25.485108Z"
+        expiresAt: "2025-01-10T00:28:25.485108Z",
+        assessmentFinishedAt: new Date(),
+        assessmentStartedAt: new Date(),
+        measuredSecondsPerSection: [],
+        scoredPoints: 0
       }
     ];
     render(

@@ -39,6 +39,7 @@ describe('ApplicantPersonalPage Component', () => {
 
   const mockSetApplicant = vi.fn();
   const mockGoToApplicantsPage = vi.fn();
+  const mockSetInvitesData = vi.fn();
 
   it('renders the header and back button', () => {
     render(
@@ -49,6 +50,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );
@@ -69,6 +71,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );
@@ -88,6 +91,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );
@@ -105,6 +109,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );
@@ -122,6 +127,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );
@@ -138,6 +144,7 @@ describe('ApplicantPersonalPage Component', () => {
           goToApplicantsPage={mockGoToApplicantsPage}
           invitesData={mockInvitesData}
           assessmentsData={mockAssessmentsData}
+          setInvitesData={mockSetInvitesData}
         />
       </MemoryRouter>
     );

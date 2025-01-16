@@ -1,4 +1,4 @@
-package ut.isep.management.repository
+package ut.isep.management.config
 
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties
 import org.springframework.boot.context.properties.ConfigurationProperties

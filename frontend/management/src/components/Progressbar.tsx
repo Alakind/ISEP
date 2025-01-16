@@ -1,23 +1,22 @@
-import {ApplicantInterface} from "../utils/types.tsx";
 import "../styles/progressbar.css";
 import {ReactNode} from "react";
 
-function Progressbar({applicant}: Readonly<Props>): ReactNode {
+function Progressbar({id, score}: Readonly<Props>): ReactNode {
   return (
     <progress
-      id={`progressbar${applicant.id}`}
+      id={`progressbar${id}`}
       max="100"
-      value={applicant.score ? applicant.score : 0}
+      value={score || 0}
       data-testid={"progressbar"}
     >
-      ({applicant.score ? applicant.score : 0}%)
+      ({score || 0}%)
     </progress>
   )
 }
 
 interface Props {
-  applicant: ApplicantInterface;
-
+  id: string;
+  score?: number;
 }
 
 export default Progressbar

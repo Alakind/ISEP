@@ -13,9 +13,10 @@ describe('TableRowApplicants Component', () => {
   ]
 
   const mockData: ApplicantInterface = {
+    createdAt: new Date(),
     id: '1',
     name: 'John Doe',
-    score: 75,
+    scores: [75],
     preferredLanguage: "Kotlin",
     statuses: ['not_started', 'expired'],
     invites: ['invite_1', 'invite_2'],
@@ -67,7 +68,7 @@ describe('TableRowApplicants Component', () => {
   it('renders the score with a progress bar when score is not present', () => {
     const noScoreData = {
       ...mockData,
-      score: undefined,
+      scores: undefined,
     };
     render(
       <table>

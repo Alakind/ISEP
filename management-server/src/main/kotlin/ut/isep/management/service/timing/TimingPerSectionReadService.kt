@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.TimingPerSection
 import ut.isep.management.model.entity.TimingPerSectionId
+import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.TimingPerSectionRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.timing.TimingPerSectionReadConverter
@@ -14,11 +15,20 @@ import java.util.*
 @Service
 class TimingPerSectionReadService(
     repository: TimingPerSectionRepository,
-    converter: TimingPerSectionReadConverter
+    converter: TimingPerSectionReadConverter,
+    private val inviteRepository: InviteRepository,
 ) : ReadService<TimingPerSection, TimingPerSectionReadDTO, TimingPerSectionId>(repository, converter) {
     fun getByMeasuredTimeSectionId(inviteId: UUID, sectionId: Long): TimingPerSectionReadDTO {
         val key = TimingPerSectionId(inviteId, sectionId)
         val measuredTimeSection = repository.findById(key).orElseThrow { NoSuchElementException("No measured section with ID: $key") }
         return TimingPerSectionReadDTO(seconds = measuredTimeSection.seconds)
+    }
+
+    fun getMeasuredTimeInvite(inviteId: UUID): TimingPerSectionReadDTO {
+        val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite found by provided ID") }
+        val totalTime = invite.measuredSecondsPerSection.map { it.seconds }.ifEmpty { null }?.sum() ?: 0
+        val timingPerSection = TimingPerSection(seconds = totalTime)
+
+        return converter.toDTO(timingPerSection)
     }
 }

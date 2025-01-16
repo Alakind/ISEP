@@ -14,8 +14,9 @@ function ApplicantPersonalPageContainer(): ReactNode {
     email: "",
     statuses: [],
     preferredLanguage: "",
-    score: 0,
-    invites: [],
+    scores: [],
+    createdAt: new Date(),
+    invites: []
   });
   const [invitesData, setInvitesData] = useState<InviteInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

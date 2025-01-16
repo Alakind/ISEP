@@ -100,7 +100,6 @@ describe('PaginationContainer', () => {
         setCurrentPage={mockSetCurrentPage}
       />
     );
-    screen.debug()
 
     const buttons = screen.queryAllByRole('button');
     expect(buttons).toHaveLength(3);

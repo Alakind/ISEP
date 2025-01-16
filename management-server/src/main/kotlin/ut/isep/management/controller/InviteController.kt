@@ -1,9 +1,12 @@
 package ut.isep.management.controller
 
+import dto.PaginatedDTO
 import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteCreateDTO
 import dto.invite.InviteReadDTO
 import dto.invite.InviteUpdateDTO
+import enumerable.AllowedInvitesDateAttributeNames
+import enumerable.InviteStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -11,13 +14,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import ut.isep.management.exception.EndDateBeforeStartDateException
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
 import java.net.URI
+import java.time.LocalDate
 import java.util.*
 
 @RestController
@@ -36,8 +44,31 @@ class InviteController(
         responseCode = "200",
         description = "Returns a list of all invites",
     )
-    fun getInvites(): List<InviteReadDTO> {
-        return inviteReadService.getAll()
+    fun getInvites(
+        @PageableDefault(
+            size = Int.MAX_VALUE,
+            sort = ["expiresAt"],
+            direction = Sort.Direction.DESC,
+        ) pageable: Pageable,
+        @RequestParam(required = false, name = "status") status: InviteStatus?,
+        @RequestParam(required = false, name = "betweenDateAttribute") betweenDateAttribute: AllowedInvitesDateAttributeNames?,
+        @RequestParam(required = false) startDate: LocalDate?,
+        @RequestParam(required = false) endDate: LocalDate?
+    ): PaginatedDTO<InviteReadDTO> {
+        if (startDate != null && endDate != null && startDate > endDate) {
+            throw EndDateBeforeStartDateException("The given end date attribute ($endDate) lies before the given ($startDate)")
+        }
+
+        var betweenDateAttributeEnum = betweenDateAttribute
+        if (betweenDateAttributeEnum == null && (startDate != null || endDate != null)) {
+            betweenDateAttributeEnum = AllowedInvitesDateAttributeNames.expiresAt
+        }
+
+        return if (status != null) {
+            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString(), listOf("status"), listOf(status))
+        } else {
+            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString())
+        }
     }
 
     @GetMapping("{id}")
@@ -115,7 +146,7 @@ class InviteController(
             )
         ]
     )
-    fun putApplicant(@RequestBody inviteDTO: InviteUpdateDTO): ResponseEntity<String> {
+    fun putInvite(@RequestBody inviteDTO: InviteUpdateDTO): ResponseEntity<String> {
         return try {
             inviteUpdateService.update(inviteDTO)
             ResponseEntity.ok("Updated an invite")
