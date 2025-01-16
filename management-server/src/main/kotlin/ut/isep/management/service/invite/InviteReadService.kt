@@ -3,7 +3,11 @@ package ut.isep.management.service.invite
 import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteReadDTO
 import enumerable.InviteStatus
+import jakarta.persistence.criteria.CriteriaBuilder
+import jakarta.persistence.criteria.CriteriaQuery
+import jakarta.persistence.criteria.Root
 import jakarta.transaction.Transactional
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import ut.isep.management.exception.AssessmentTimeExceededException
 import ut.isep.management.exception.UnauthorizedException
@@ -17,6 +21,7 @@ import ut.isep.management.service.timing.TimingPerSectionUpdateService
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.*
+
 
 @Transactional
 @Service
@@ -41,6 +46,7 @@ class InviteReadService(
             invite.assessmentStartedAt = currentTime
             invite.measuredSecondsPerSection.first().visitedAt = currentTime
             invite.status = InviteStatus.app_started
+            repository.save(invite)
         }
     }
 
@@ -75,8 +81,21 @@ class InviteReadService(
             invite.assessmentFinishedAt = currentTime
 
             timingPerSectionRepository.save(timingPerSectionUpdateService.setMeasuredSecondsPreviousSection(inviteId, currentTime))
-
+            repository.save(invite)
             throw AssessmentTimeExceededException("Assessment time exceeded for invite ID: $inviteId")
+        }
+    }
+
+    fun getAllToBeFinishedInvites(): List<InviteReadDTO> {
+        return repository.findAll(toBeFinishedQuery()).map { converter.toDTO(it) }
+    }
+
+    private fun toBeFinishedQuery(): Specification<Invite?> {
+        return Specification { root: Root<Invite?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
+            cb.and(
+                cb.isNotNull(root.get<Any>("assessmentStartedAt")),
+                cb.isNull(root.get<Any>("assessmentFinishedAt"))
+            )
         }
     }
 }
