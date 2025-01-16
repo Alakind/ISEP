@@ -1,72 +1,74 @@
 # 5. Building Block View
 
-## 5.1. Whitebox Overall System
+## 5.1. Whitebox Asserberus
 
 ***\<Overview Diagram>***
+![Architecture diagram](/docs/arc42-explanation-template/images/architecture-with-context.png)
 
 Motivation  
-*\<text explanation>*
+Components seperated by clear subsystems.
 
-Contained Building Blocks  
-*\<Description of contained building block (black boxes)>*
+Contained Building Blocks
 
-Important Interfaces  
-*\<Description of important interfaces>*
+| Building Block                    | Description                                                                           |
+|-----------------------------------|---------------------------------------------------------------------------------------|
+| Applicant Frontend                | React and Typescript web application to render interface for applicants.              |
+| Management Frontend               | React and Typescript web application to render interface for management.              |
+| Management Server                 | Via a springboot application. Run on azure cloud.                                     |
+| Code Execution Server             | Via a springboot application. Run on azure cloud.                                     |
+| Code Execution Container          | Docker container used to run coding question code given by the code execution server. |
+| User Database                     | PostgreSQL service run on azure cloud.                                                |
+| Question Repo                     | Git repository containing questions and the history of them                           |
+| Authentication Service (external) | InfoSupport system to login (Unimplemented)                                           |
 
-### 5.1.1. \<Name black box 1>
+Important Interfaces
 
-*\<Purpose/Responsibility>*
+STUB
+ 
+*\<Description of important interfaces. EG Subsystems that don't need more in depth explanation>*
 
-*\<Interface(s)>*
+## 5.2. building Blocks Level 2
 
-*\<(Optional) Quality/Performance Characteristics>*
+### 5.2.1. Applicant Frontend (Whitebox)
 
-*\<(Optional) Directory/File Location>*
+STUB
 
-*\<(Optional) Fulfilled Requirements>*
+### 5.2.2. Management Frontend (Whitebox)
 
-*\<(optional) Open Issues/Problems/Risks>*
+STUB
 
-### 5.1.2. \<Name black box 2>
+### 5.2.3. Management Server (Whitebox)
 
-*\<black box template>*
+contains:
 
-### 5.1.n. \<Name black box n>
+HTTP database: praat met verschillen
+controllers: handles HTTP requests en use services aan
+service: uses a repository that talks to database
 
-*\<black box template>*
+*\(verplaats naar Level 3: service)* service repository is abstraction of JPH database.
 
-### 5.1.n+1. \<Name interface 1>
+STUB
 
-…
+### 5.2.4. Code execution Server (Whitebox)
 
-### 5.1.m. \<Name interface m>
+STUB
 
-## 5.2. Level 2
+### 5.2.5. Code execution Container (Whitebox)
 
-### 5.2.1. White Box *\<building block 1>*
+STUB
 
-*\<white box template>*
+### 5.2.6. User Database (Whitebox)
 
-### 5.2.2. White Box *\<building block 2>*
+STUB
 
-*\<white box template>*
+### 5.2.7. Question Repo (Whitebox)
 
-…
+contains:
 
-### 5.2.m. White Box *\<building block m>*
+pipeline: Checks questions and uploads to the database and only filename and ID
 
-*\<white box template>*
+STUB
 
 ## 5.3. Level 3
 
-### 5.3.1. White Box \<\_building block x.1\_\>
-
-*\<white box template>*
-
-### 5.3.2. White Box \<\_building block x.2\_\>
-
-*\<white box template>*
-
-### 5.3.3. White Box \<\_building block y.1\_\>
-
-*\<white box template>*
+STUB
