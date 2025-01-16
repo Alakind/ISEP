@@ -4,8 +4,9 @@ enum class AllowedApplicantsDateAttributeNames {
     createdAt;
 
     companion object {
-        fun isValidEnumLiteral(input: String): Boolean {
-            return entries.any { it.name.equals(input, ignoreCase = true) }
+        fun fromString(value: String): InviteStatus {
+            return InviteStatus.entries.find { it.name.equals(value, ignoreCase = true) }
+                ?: throw IllegalArgumentException("No enum constant for value: $value")
         }
     }
 }

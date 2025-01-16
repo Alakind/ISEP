@@ -8,7 +8,6 @@ import dto.invite.InviteUpdateDTO
 import enumerable.AllowedInvitesDateAttributeNames
 import enumerable.InviteStatus
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -22,8 +21,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import ut.isep.management.exception.EndDateBeforeStartDateException
-import ut.isep.management.exception.NotAllowedInviteStatusException
-import ut.isep.management.exception.NotAllowedSelectedBetweenDateAttributeException
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
@@ -53,43 +50,22 @@ class InviteController(
             sort = ["expiresAt"],
             direction = Sort.Direction.DESC,
         ) pageable: Pageable,
-        @Parameter(
-            description = "Available status options on invite entity",
-            schema = Schema(implementation = InviteStatus::class)
-        )
-        @RequestParam(required = false) status: String?,
-        @Parameter(
-            description = "Available time attributes on invite entity",
-            schema = Schema(implementation = AllowedInvitesDateAttributeNames::class)
-        )
-        @RequestParam(required = false) betweenDateAttribute: String?,
+        @RequestParam(required = false, name = "status") status: InviteStatus?,
+        @RequestParam(required = false, name = "betweenDateAttribute") betweenDateAttribute: AllowedInvitesDateAttributeNames?,
         @RequestParam(required = false) startDate: LocalDate?,
         @RequestParam(required = false) endDate: LocalDate?
     ): PaginatedDTO<InviteReadDTO> {
-        if (status != null) {
-            val isValid = InviteStatus.isValidEnumLiteral(status)
-            if (!isValid) {
-                throw NotAllowedInviteStatusException("The given status attribute ($status) is invalid")
-            }
-        }
-        if (betweenDateAttribute != null) {
-            val isValid = AllowedInvitesDateAttributeNames.isValidEnumLiteral(betweenDateAttribute)
-            if (!isValid) {
-                throw NotAllowedSelectedBetweenDateAttributeException("The given between date attribute ($betweenDateAttribute) is invalid")
-            }
-        }
         if (startDate != null && endDate != null && startDate > endDate) {
             throw EndDateBeforeStartDateException("The given end date attribute ($endDate) lies before the given ($startDate)")
         }
 
-        var betweenDateAttributeEnum = betweenDateAttribute?.let { AllowedInvitesDateAttributeNames.valueOf(it) }
+        var betweenDateAttributeEnum = betweenDateAttribute //?.let { AllowedInvitesDateAttributeNames.valueOf(it) }
         if (betweenDateAttributeEnum == null && (startDate != null || endDate != null)) {
             betweenDateAttributeEnum = AllowedInvitesDateAttributeNames.expiresAt
         }
 
         return if (status != null) {
-            val statusEnum = status.let { InviteStatus.valueOf(it) }
-            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString(), listOf("status"), listOf(statusEnum))
+            inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString(), listOf("status"), listOf(status))
         } else {
             inviteReadService.getPaginatedAttributesWithDateRange(pageable, startDate, endDate, betweenDateAttributeEnum.toString())
         }

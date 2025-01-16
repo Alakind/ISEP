@@ -7,8 +7,9 @@ enum class AllowedInvitesDateAttributeNames {
     assessmentFinishedAt;
 
     companion object {
-        fun isValidEnumLiteral(input: String): Boolean {
-            return entries.any { it.name.equals(input, ignoreCase = true) }
+        fun fromString(value: String): AllowedInvitesDateAttributeNames {
+            return entries.find { it.name.equals(value, ignoreCase = true) }
+                ?: throw IllegalArgumentException("No enum constant for value: $value")
         }
     }
 }
