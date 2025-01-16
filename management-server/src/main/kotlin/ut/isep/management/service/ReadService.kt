@@ -54,7 +54,7 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     }
 
     open fun getPaginatedAttributesWithDateRange(
-        pageable: Pageable,
+        pageable: Pageable?,
         startDate: LocalDate?,
         endDate: LocalDate?,
         betweenDateAttribute: String?,
@@ -81,7 +81,12 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
             cb.and(*predicates.toTypedArray())
         }
 
-        return PaginatedDTO(repository.count(querySpec), repository.findAll(querySpec).map { converter.toDTO(it) })
+        val pagedResult = repository.findAll(querySpec, pageable ?: Pageable.unpaged())
+
+        return PaginatedDTO(
+            total = pagedResult.totalElements,
+            data = pagedResult.content.map { converter.toDTO(it) }
+        )
     }
 
     private fun parseSort(sort: String?): Sort {

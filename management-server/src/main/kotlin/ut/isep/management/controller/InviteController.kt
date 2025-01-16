@@ -60,7 +60,7 @@ class InviteController(
         @RequestParam(required = false) status: String?,
         @Parameter(
             description = "Available time attributes on invite entity",
-            schema = Schema(implementation = InviteStatus::class)
+            schema = Schema(implementation = AllowedInvitesDateAttributeNames::class)
         )
         @RequestParam(required = false) betweenDateAttribute: String?,
         @RequestParam(required = false) startDate: LocalDate?,
