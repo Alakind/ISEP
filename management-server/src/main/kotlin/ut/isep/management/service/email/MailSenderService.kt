@@ -81,10 +81,9 @@ class MailSenderService(
             if (msg != null) {
                 try {
                     emailSender.send(msg)
+                    log.info("Successfully sent email to ${applicant.name}<${applicant.email}> for invite ${invite.id}")
                 } catch (ex: MailException) {
                     log.error(ex.message, ex)
-                } finally {
-                    log.info("Successfully sent email to ${applicant.name}<${applicant.email}> for invite ${invite.id}")
                 }
             }
 
