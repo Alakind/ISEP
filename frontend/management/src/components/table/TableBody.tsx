@@ -1,16 +1,35 @@
-import {ApplicantInterface, Column, Selection, UserInterface} from "../../utils/types.tsx";
+import {ApplicantInterface, Column, InviteInterface, Selection, UserInterface} from "../../utils/types.tsx";
 import TableRowUsers from "./TableRowUsers.tsx";
 import TableRowApplicants from "./TableRowApplicants.tsx";
+import TableRowInvites from "./TableRowInvites.tsx";
+import TableRowLoading from "./loading/TableRowLoading.tsx";
 import {ReactNode} from "react";
+import {applicantColumns, dashboardExpiredColumns, dashboardFinishedColumns, dashboardWillExpireColumns, userColumns} from "../../utils/constants.tsx";
+
 
 function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelected}: Readonly<Props>): ReactNode {
   return (
     <tbody className="table__body" data-testid={"table-body"}>
     {
-      tableData.map((data: UserInterface | ApplicantInterface): ReactNode | null => {
-        if ("role" in data) { // Users //TODO find another way of checking for a certain interface with checking all accessors
+      tableData.map((data: UserInterface | ApplicantInterface | InviteInterface): ReactNode | null => {
+        if (columns === userColumns) {
           return (
-            <TableRowUsers key={"user_" + data.id} data={data} columns={columns} handleSelect={handleSelect} isSelected={isSelected}/>
+            <TableRowUsers
+              key={"user_" + data.id}
+              data={data as UserInterface}
+              columns={columns}
+              handleSelect={handleSelect}
+              isSelected={isSelected}
+            />
+          );
+        } else if (columns === applicantColumns) {
+          return (
+            <TableRowApplicants
+              key={"applicant_" + data.id}
+              data={data as ApplicantInterface}
+              columns={columns}
+              goToApplicantPage={goToApplicantPage}
+            />
           );
         } else if ("score" in data) { //Applicants
           return (

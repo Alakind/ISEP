@@ -5,8 +5,8 @@ import {MemoryRouter} from "react-router-dom";
 
 describe('ApplicantsTable component', () => {
   const mockApplicantData: ApplicantInterface[] = [
-    {id: '3', name: 'Applicant 1', email: 'applicant1@example.com', score: 85, preferredLanguage: "Kotlin", statuses: ['Invited'], invites: []},
-    {id: '4', name: 'Applicant 2', email: 'applicant2@example.com', score: 90, preferredLanguage: "Kotlin", statuses: ['Completed'], invites: []},
+    {createdAt: new Date(), id: '3', name: 'Applicant 1', email: 'applicant1@example.com', scores: [85], preferredLanguage: "Kotlin", statuses: ['Invited'], invites: []},
+    {createdAt: new Date(), id: '4', name: 'Applicant 2', email: 'applicant2@example.com', scores: [90], preferredLanguage: "Kotlin", statuses: ['Completed'], invites: []},
   ];
 
   const mockSetOrderBy = vi.fn();

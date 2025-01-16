@@ -33,10 +33,11 @@ const mockNavigate = vi.fn();
 vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
 const mockApplicant: ApplicantInterface = {
+  createdAt: new Date("2025-01-15T23:59:25.803Z"),
   id: '1',
   name: 'John Doe',
   email: 'john.doe@example.com',
-  score: 85,
+  scores: [85],
   statuses: ['not_started'],
   preferredLanguage: 'Kotlin',
   invites: [],
@@ -122,13 +123,14 @@ describe('ApplicantPersonalCardContainer', () => {
     await waitFor(() => {
       expect(deleteApplicant).toHaveBeenCalledWith(mockApplicant.id);
       expect(mockSetApplicant).toHaveBeenCalledWith({
-        score: 0,
+        scores: [],
         statuses: [],
         id: '',
         name: '',
         email: '',
         preferredLanguage: '',
         invites: [],
+        createdAt: undefined
       });
       expect(mockNavigate).toHaveBeenCalledWith('/applicants');
       expect(toast.success).toHaveBeenCalledWith('Applicant deleted successfully');

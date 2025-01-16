@@ -12,8 +12,8 @@ describe('ApplicantsListPage Component', () => {
 
 
   const mockData: ApplicantInterface[] = [
-    {id: '1', name: 'Applicant 1', email: 'applicant1@example.com', score: 85, preferredLanguage: "Kotlin", statuses: [], invites: []},
-    {id: '2', name: 'Applicant 2', email: 'applicant2@example.com', score: 90, preferredLanguage: "Kotlin", statuses: [], invites: []},
+    {createdAt: new Date(), id: '1', name: 'Applicant 1', email: 'applicant1@example.com', scores: [85], preferredLanguage: "Kotlin", statuses: [], invites: []},
+    {createdAt: new Date(), id: '2', name: 'Applicant 2', email: 'applicant2@example.com', scores: [90], preferredLanguage: "Kotlin", statuses: [], invites: []},
   ];
 
   it('renders the loading state when loading is true', () => {

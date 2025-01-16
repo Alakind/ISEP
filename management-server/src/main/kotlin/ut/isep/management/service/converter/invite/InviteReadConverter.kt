@@ -19,7 +19,8 @@ class InviteReadConverter : ReadConverter<Invite, InviteReadDTO> {
             measuredSecondsPerSection = entity.measuredSecondsPerSection.map { timingPerSection: TimingPerSection -> timingPerSection.seconds },
             status = entity.status,
             assessmentStartedAt = entity.assessmentStartedAt,
-            assessmentFinishedAt = entity.assessmentFinishedAt
+            assessmentFinishedAt = entity.assessmentFinishedAt,
+            scoredPoints = entity.solutions.mapNotNull { it.scoredPoints }.ifEmpty { null }?.sum()
         )
     }
 }

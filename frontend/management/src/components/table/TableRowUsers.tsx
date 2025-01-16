@@ -21,10 +21,10 @@ function TableRowUsers({data, columns, handleSelect, isSelected}: Readonly<Props
         } else if (accessor == "select") {
           return <th key={accessor}><CheckboxContainer id={data.id} additionalAction={handleSelect} isSelected={isSelected}/></th>
         } else {
-          const value: string = accessor in data ? (data)[accessor as keyof UserInterface] : "——";
+          const value: string | Date = accessor in data ? (data)[accessor as keyof UserInterface] : "——";
           return (
             <td key={accessor} data-testid={`${accessor}-cell`}>
-              {value}
+              {String(value)}
             </td>
           );
         }

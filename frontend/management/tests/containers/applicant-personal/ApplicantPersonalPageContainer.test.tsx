@@ -33,18 +33,31 @@ vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
 describe('ApplicantPersonalPageContainer', () => {
   const mockApplicant: ApplicantInterface = {
+    createdAt: new Date(),
     id: '1',
     name: 'John Doe',
     email: 'john.doe@example.com',
     statuses: ['app_finished', 'app_finished'],
     preferredLanguage: 'Kotlin',
-    score: 90,
+    scores: [90],
     invites: ['invite1', 'invite2'],
   };
 
   const mockInvites: InviteInterface[] = [
-    {id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: ''},
-    {id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: ''},
+    {
+      id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
+    },
+    {
+      id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
+    },
   ];
 
   const mockAssessments: AssessmentInterface[] = [

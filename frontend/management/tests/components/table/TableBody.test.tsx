@@ -1,38 +1,28 @@
 import TableBody from "../../../src/components/table/TableBody.tsx";
 import {ApplicantInterface, Column, Selection, UserInterface} from "../../../src/utils/types.tsx";
 import {render, screen} from "@testing-library/react";
-import {Roles} from "../../../src/utils/constants.tsx";
+import {applicantColumns, Roles, userColumns} from "../../../src/utils/constants.tsx";
 
 describe('TableBody Component', () => {
-  const mockUserColumns: Column[] = [
-    {label: "Select", accessor: "select", sortable: false},
-    {label: "Name", accessor: "name", sortable: true},
-    {label: "Email", accessor: "email", sortable: true},
-    {label: "Role", accessor: "role", sortable: true},
-  ]
+  const mockUserColumns: Column[] = userColumns;
 
-  const mockApplicantColumns: Column[] = [
-    {label: "Name", accessor: "name", sortable: true},
-    {label: "Email", accessor: "email", sortable: true},
-    {label: "Statuses", accessor: "statuses", sortable: false},
-    {label: "Score", accessor: "score", sortable: true},
-  ]
+  const mockApplicantColumns: Column[] = applicantColumns;
 
   const mockUserData: UserInterface[] = [
-    {id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN},
-    {id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER},
+    {createdAt: undefined, id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN},
+    {createdAt: undefined, id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER},
   ];
 
   const mockApplicantData: ApplicantInterface[] = [
-    {id: '3', name: 'Applicant 1', email: 'applicant1@example.com', score: 85, preferredLanguage: "Kotlin", statuses: ['Invited'], invites: []},
-    {id: '4', name: 'Applicant 2', email: 'applicant2@example.com', score: 90, preferredLanguage: "Kotlin", statuses: ['Completed'], invites: []},
+    {createdAt: undefined, id: '3', name: 'Applicant 1', email: 'applicant1@example.com', scores: [85], preferredLanguage: "Kotlin", statuses: ['Invited'], invites: []},
+    {createdAt: undefined, id: '4', name: 'Applicant 2', email: 'applicant2@example.com', scores: [90], preferredLanguage: "Kotlin", statuses: ['Completed'], invites: []},
   ];
 
   const mockHandleSelect = vi.fn();
   const mockGoToApplicantPage = vi.fn();
   const mockIsSelected: Selection[] = [{id: '1', checked: false}, {id: '2', checked: true}];
 
-  it('renders user rows when user data is provided', () => {
+  it('renders user rows when user data is provided', async () => {
     render(
       <table>
         <TableBody

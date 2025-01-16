@@ -32,14 +32,14 @@ vi.mock("react-router-dom", async () => {
 describe('ApplicantsListPageContainer', () => {
   const mockApplicants: ApplicantInterface[] = [
     {
-      id: '1', name: 'John Doe', email: 'john@example.com',
+      createdAt: new Date(), id: '1', name: 'John Doe', email: 'john@example.com',
       preferredLanguage: 'Kotlin', invites: ['invite1', 'invite2'],
-      score: 10
+      scores: [10]
     },
     {
-      id: '2', name: 'Jane Doe', email: 'jane@example.com',
+      createdAt: new Date(), id: '2', name: 'Jane Doe', email: 'jane@example.com',
       preferredLanguage: 'Kotlin', invites: ['invite1', 'invite2'],
-      score: 10
+      scores: [10]
     },
   ];
 
@@ -50,7 +50,11 @@ describe('ApplicantsListPageContainer', () => {
       assessmentId: "3",
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
-      expiresAt: "2025-01-06T00:28:25.485108Z"
+      expiresAt: "2025-01-06T00:28:25.485108Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     },
     {
       id: "invite2",
@@ -58,7 +62,11 @@ describe('ApplicantsListPageContainer', () => {
       assessmentId: "4",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-06T00:28:25.485638Z"
+      expiresAt: "2025-01-06T00:28:25.485638Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     }
   ];
 
