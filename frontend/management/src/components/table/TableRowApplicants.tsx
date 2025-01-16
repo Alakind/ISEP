@@ -45,7 +45,7 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
         if (accessor == "name") {
           return (
             <th className="table-row__link" key={accessor} scope="row" onClick={(): void => goToApplicantPage(data.id)}>
-              {data.name}
+              <a>{data.name}</a>
             </th>
           );
         } else if (accessor == "score") {

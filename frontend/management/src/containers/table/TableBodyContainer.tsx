@@ -1,9 +1,9 @@
 import TableBody from "../../components/table/TableBody.tsx";
-import {ApplicantInterface, Column, Selection, UserInterface} from "../../utils/types.tsx";
+import {ApplicantInterface, Column, InviteInterface, Selection, UserInterface} from "../../utils/types.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Dispatch, ReactNode, SetStateAction} from "react";
 
-function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Readonly<Props>): ReactNode {
+function TableBodyContainer({columns, tableData, setIsSelected, isSelected, additionalData}: Readonly<Props>): ReactNode {
   const navigate: NavigateFunction = useNavigate();
 
   function goToApplicantPage(applicantId: string): void {
@@ -24,15 +24,23 @@ function TableBodyContainer({columns, tableData, setIsSelected, isSelected}: Rea
   }
 
   return (
-    <TableBody columns={columns} tableData={tableData} goToApplicantPage={goToApplicantPage} handleSelect={handleSelect} isSelected={isSelected ?? []}/>
+    <TableBody
+      columns={columns}
+      tableData={tableData}
+      goToApplicantPage={goToApplicantPage}
+      handleSelect={handleSelect}
+      isSelected={isSelected ?? []}
+      additionalData={additionalData}
+    />
   )
 }
 
 interface Props {
   columns: Column[];
-  tableData: UserInterface[] | ApplicantInterface[];
+  tableData: UserInterface[] | ApplicantInterface[] | InviteInterface[];
   setIsSelected?: Dispatch<SetStateAction<Selection[]>>;
   isSelected?: Selection[];
+  additionalData?: ApplicantInterface[];
 }
 
 export default TableBodyContainer

@@ -7,7 +7,7 @@ import {ReactNode} from "react";
 import {applicantColumns, dashboardExpiredColumns, dashboardFinishedColumns, dashboardWillExpireColumns, userColumns} from "../../utils/constants.tsx";
 
 
-function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelected}: Readonly<Props>): ReactNode {
+function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelected, additionalData}: Readonly<Props>): ReactNode {
   return (
     <tbody className="table__body" data-testid={"table-body"}>
     {
@@ -31,10 +31,38 @@ function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelec
               goToApplicantPage={goToApplicantPage}
             />
           );
-        } else if ("score" in data) { //Applicants
-          return (
-            <TableRowApplicants key={"applicant_" + data.id} data={data} columns={columns} goToApplicantPage={goToApplicantPage}/>
-          );
+        } else if (columns === dashboardFinishedColumns || columns === dashboardExpiredColumns || columns === dashboardWillExpireColumns) {
+          const applicantData: ApplicantInterface | undefined = additionalData?.filter((applicant: ApplicantInterface): boolean => (applicant.id === (data as InviteInterface).applicantId))[0]
+          let subKey;
+
+          if (columns === dashboardFinishedColumns) {
+            subKey = "finished_";
+          } else if (columns === dashboardExpiredColumns) {
+            subKey = "expired_";
+          } else if (columns === dashboardWillExpireColumns) {
+            subKey = "will-expire_";
+          } else {
+            subKey = "unknown_";
+          }
+          if (applicantData) {
+            return (
+              <TableRowInvites
+                key={"invites_" + subKey + data.id + (data as InviteInterface).applicantId}
+                inviteData={data as InviteInterface}
+                applicantData={applicantData}
+                columns={columns}
+                goToApplicantPage={goToApplicantPage}
+              />
+            )
+          } else {
+            return (
+              <TableRowLoading
+                key={"invites_" + subKey + data.id + (data as InviteInterface).applicantId}
+                columns={columns}
+                id={data.id}
+              />
+            )
+          }
         }
       })
     }
@@ -44,10 +72,11 @@ function TableBody({columns, tableData, goToApplicantPage, handleSelect, isSelec
 
 interface Props {
   columns: Column[];
-  tableData: UserInterface[] | ApplicantInterface[]
+  tableData: UserInterface[] | ApplicantInterface[] | InviteInterface[];
   goToApplicantPage: (id: string) => void;
   handleSelect: (id: string) => void;
   isSelected: Selection[];
+  additionalData?: ApplicantInterface[];
 }
 
 export default TableBody

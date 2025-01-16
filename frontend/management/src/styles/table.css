@@ -58,3 +58,13 @@
 .table-striped > thead > tr:first-child > th:last-child {
     border-top-right-radius: 5px;
 }
+
+.table a {
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.table a:hover {
+    color: var(--tertiary-color) !important;
+    cursor: pointer;
+}

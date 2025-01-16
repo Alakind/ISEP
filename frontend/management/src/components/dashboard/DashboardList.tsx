@@ -1,51 +1,57 @@
 import "../../styles/dashboard.css";
-import TableLoadingContainer from "../../containers/table/loading/TableLoadingContainer.tsx";
-import ApplicantsTableContainer from "../../containers/table/ApplicantsTableContainer.tsx";
-import ItemPerPageSelectContainer from "../../containers/table/ItemsPerPageSelectContainer.tsx";
-import PaginationContainer from "../../containers/table/PaginationContainer.tsx";
-import {ApplicantInterface} from "../../utils/types.tsx";
-import {Dispatch, ReactNode, SetStateAction} from "react";
-import {dashboardColumns} from "../../utils/constants.tsx";
+import {ApplicantInterface, InviteInterface} from "../../utils/types.tsx";
+import {ReactNode} from "react";
+import InvitesTableContainer from "../../containers/dashboard/InvitesTableContainer.tsx";
+import {dashboardExpiredColumns, dashboardFinishedColumns, dashboardWillExpireColumns} from "../../utils/constants.tsx";
 
 function DashboardList({
-                         data,
-                         totalItems,
-                         loading,
-                         currentPage,
-                         setCurrentPage,
-                         itemsPerPage,
-                         setItemsPerPage,
-                         orderBy,
-                         setOrderBy
+                         dataApplicants,
+                         dataFinished,
+                         dataExpired,
+                         dataWillExpire
                        }: Readonly<Props>): ReactNode {
   return (
     <div>
-      {
-        (totalItems == 0 || loading) ?
-          <TableLoadingContainer columns={dashboardColumns} itemsPerPage={itemsPerPage}/> :
+      <h4>Finished assessments in the last week</h4>
+      <hr></hr>
+      {dataFinished.length !== 0
+        ? (
+          <InvitesTableContainer data={dataFinished} dataApplicants={dataApplicants} columns={dashboardFinishedColumns}/>
+        ) : (
+          <p>No data available</p>
+        )
+      }
+      {dataExpired.length !== 0
+        ? (
           <>
-            <ApplicantsTableContainer data={data} setOrderBy={setOrderBy} orderBy={orderBy}/>
-            <div className="user-list-page__inner">
-              <ItemPerPageSelectContainer itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}/>
-              <PaginationContainer itemsPerPage={itemsPerPage} totalItems={totalItems} setCurrentPage={setCurrentPage}
-                                   currentPage={currentPage}/>
-            </div>
+            <h4>Expired invites</h4>
+            <hr></hr>
+            <InvitesTableContainer data={dataExpired} dataApplicants={dataApplicants} columns={dashboardExpiredColumns}/>
           </>
+        ) : (
+          <></>
+        )
+      }
+      {dataWillExpire.length !== 0
+        ? (
+          <>
+            <h4>Invites that will expire in 2 days</h4>
+            <hr></hr>
+            <InvitesTableContainer data={dataWillExpire} dataApplicants={dataApplicants} columns={dashboardWillExpireColumns}/>
+          </>
+        ) : (
+          <></>
+        )
       }
     </div>
   )
 }
 
 interface Props {
-  data: ApplicantInterface[];
-  totalItems: number;
-  loading: boolean;
-  currentPage: number;
-  setCurrentPage: Dispatch<SetStateAction<number>>;
-  itemsPerPage: number;
-  setItemsPerPage: Dispatch<SetStateAction<number>>;
-  orderBy: string;
-  setOrderBy: Dispatch<SetStateAction<string>>;
+  dataApplicants: ApplicantInterface[];
+  dataFinished: InviteInterface[];
+  dataExpired: InviteInterface[];
+  dataWillExpire: InviteInterface[];
 }
 
 export default DashboardList
