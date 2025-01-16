@@ -12,7 +12,8 @@ class AssessmentReadConverter : ReadConverter<Assessment, AssessmentReadDTO> {
         return AssessmentReadDTO(
             id = entity.id,
             tag = entity.tag!!,
-            sections = entity.sections.map {it.id}
+            availableSeconds = entity.availableSeconds,
+            sections = entity.sections.map { it.id }
         )
     }
 }
