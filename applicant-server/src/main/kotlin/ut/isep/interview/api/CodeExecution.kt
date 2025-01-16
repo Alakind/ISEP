@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import ut.isep.interview.code_execution.CodeExecutor
 import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.exists
 
 @RestController
 @RequestMapping("/code-executor")
@@ -20,34 +22,25 @@ class CodeExecution {
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping(path = ["/{uuid}/java/test"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun testJavaCode(@PathVariable uuid: String, @RequestPart("files") files: List<MultipartFile>): ResponseEntity<Any> {
-        if (files.size != 2) {
-            return ResponseEntity.badRequest().body("You must provide 2 files")
+    @PostMapping("/{uuid}/java/test")
+    fun testJavaCode(@PathVariable uuid: String, @RequestBody() codeStrings: Map<String, String>): ResponseEntity<Any> {
+        if (!codeStrings.containsKey("code")) {
+            return ResponseEntity.badRequest().body("You must provide code with your request")
         }
-        var test:File? = null
-        var code:File? = null
 
-        val dir = File.createTempFile(uuid, System.nanoTime().toString());
-        dir.delete()
-        dir.mkdir()
-        for (file in files) {
-            val temp = File(dir, file.originalFilename!!)
-            file.transferTo(temp)
-            if (file.originalFilename!!.startsWith("Test")) {
-                test = temp
-            } else {
-                code = temp
-            }
+        val dir = Files.createTempDirectory(uuid)
+        val code = dir.resolve("Code.java").toFile()
+        code.writeText(codeStrings["code"]!!)
+
+        val test = dir.resolve("Test.java").toFile()
+        if (!test.exists() && !codeStrings.containsKey("test")) {
+            return ResponseEntity.badRequest().body("A file containing tests should be provided")
         }
-        if (code == null) {
-            return ResponseEntity.badRequest().body("You must provide a file with code not starting with \"Test\"")
+        if (codeStrings.containsKey("test")) {
+            test.writeText(codeStrings["test"]!!)
         }
-        if (test == null) {
-            return ResponseEntity.badRequest().body("You must provide a file containing test with a filename starting with \"Test\"")
-        }
-        val result = CodeExecutor.runJavaTest(uuid, code, test)
-        return ResponseEntity.ok().body(result)
+
+        return ResponseEntity.ok().body(CodeExecutor.runJavaTest(uuid, code, test))
     }
 
     @PostMapping("/{uuid}/cleanup")
