@@ -59,7 +59,7 @@ class InviteController(
             throw EndDateBeforeStartDateException("The given end date attribute ($endDate) lies before the given ($startDate)")
         }
 
-        var betweenDateAttributeEnum = betweenDateAttribute //?.let { AllowedInvitesDateAttributeNames.valueOf(it) }
+        var betweenDateAttributeEnum = betweenDateAttribute
         if (betweenDateAttributeEnum == null && (startDate != null || endDate != null)) {
             betweenDateAttributeEnum = AllowedInvitesDateAttributeNames.expiresAt
         }
