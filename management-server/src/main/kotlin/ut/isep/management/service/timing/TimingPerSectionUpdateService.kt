@@ -10,6 +10,7 @@ import ut.isep.management.model.entity.TimingPerSectionId
 import ut.isep.management.repository.TimingPerSectionRepository
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 @Transactional
@@ -26,7 +27,7 @@ class TimingPerSectionUpdateService(
     }
 
     fun updateTiming(inviteId: UUID, updateDTO: TimingPerSectionSwitchUpdateDTO) {
-        val currentTime = OffsetDateTime.now()
+        val currentTime = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
         val measuredTimeSectionPrevious = setMeasuredSecondsPreviousSection(inviteId, currentTime)
 
         val measuredTimeSectionNext = getMeasuredTimeEntity(inviteId, updateDTO.id)

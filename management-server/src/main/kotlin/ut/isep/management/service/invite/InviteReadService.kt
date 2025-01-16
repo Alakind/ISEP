@@ -20,6 +20,7 @@ import ut.isep.management.service.converter.invite.InviteReadConverter
 import ut.isep.management.service.timing.TimingPerSectionUpdateService
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.*
 
 
@@ -42,7 +43,7 @@ class InviteReadService(
 
     private fun startAssessment(invite: Invite) {
         if (invite.assessmentStartedAt == null) {
-            val currentTime = OffsetDateTime.now()
+            val currentTime = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
             invite.assessmentStartedAt = currentTime
             invite.measuredSecondsPerSection.first().visitedAt = currentTime
             invite.status = InviteStatus.app_started
@@ -57,14 +58,14 @@ class InviteReadService(
         if (invite.status == InviteStatus.app_finished) {
             throw UnauthorizedException("Not authorized to retrieve assessment, invite has been finished")
         }
-        if (invite.expiresAt.isBefore(OffsetDateTime.now()) || invite.status == InviteStatus.expired) {
+        if (invite.expiresAt.isBefore(OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)) || invite.status == InviteStatus.expired) {
             throw UnauthorizedException("Not authorized to retrieve assessment, invitation has been expired")
         }
         if (invite.status == InviteStatus.cancelled) {
             throw UnauthorizedException("Not authorized to retrieve assessment, invitation has been cancelled")
         }
 
-        val currentTime = OffsetDateTime.now()
+        val currentTime = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
 
         // At initial retrieval of assessment, assessment is started
         startAssessment(invite)
@@ -87,14 +88,24 @@ class InviteReadService(
     }
 
     fun getAllToBeFinishedInvites(): List<InviteReadDTO> {
-        return repository.findAll(toBeFinishedQuery()).map { converter.toDTO(it) }
+        val now = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
+        return repository.findAll(
+            toBeFinishedQuery()
+        ).filter { invite ->
+            val assessmentStartedAt = invite.assessmentStartedAt
+            val availableSeconds = invite.assessment?.availableSeconds ?: 0
+
+            val calculatedEndTime = assessmentStartedAt?.plusSeconds(availableSeconds)
+
+            calculatedEndTime?.isBefore(now) == true
+        }.map { converter.toDTO(it) }
     }
 
     private fun toBeFinishedQuery(): Specification<Invite?> {
         return Specification { root: Root<Invite?>, _: CriteriaQuery<*>?, cb: CriteriaBuilder ->
             cb.and(
-                cb.isNotNull(root.get<Any>("assessmentStartedAt")),
-                cb.isNull(root.get<Any>("assessmentFinishedAt"))
+                cb.isNotNull(root.get<OffsetDateTime>("assessmentStartedAt")),
+                cb.isNull(root.get<OffsetDateTime>("assessmentFinishedAt"))
             )
         }
     }

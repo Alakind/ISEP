@@ -18,6 +18,7 @@ import ut.isep.management.service.timing.TimingPerSectionUpdateService
 import ut.isep.management.util.logger
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 @Component
 class ScheduledTasks(
@@ -100,11 +101,11 @@ class ScheduledTasks(
     }
 
     private fun executeCloseAssessment(invites: List<InviteReadDTO>) {
-        val now = OffsetDateTime.now()
+        val now = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
         invites.forEach {
             timingPerSectionRepository.save(timingPerSectionUpdateService.setMeasuredSecondsPreviousSection(it.id, now))
             inviteUpdateInternalService.update(InviteUpdateInternalDTO(id = it.id, status = InviteStatus.expired, assessmentFinishedAt = now))
-            log.info("Closed the assessment with inviteId ${it.id} at ${it.assessmentFinishedAt}")
+            log.info("Closed the assessment with inviteId ${it.id} at $now")
         }
     }
 
