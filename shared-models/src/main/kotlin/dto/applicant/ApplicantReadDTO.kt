@@ -11,7 +11,6 @@ data class ApplicantReadDTO(
     val name: String,
     val email: String,
     val preferredLanguage: String?,
-    val score: Int?,
     val invites: List<UUID>,
     val createdAt: OffsetDateTime,
 ) : ReadDTO
