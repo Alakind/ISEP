@@ -44,9 +44,9 @@ describe("TableBodyContainer", () => {
   ];
 
   const mockTableData: ApplicantInterface[] = [
-    {id: "1", name: "John Doe", email: "john@example.com", preferredLanguage: "Kotlin", score: 85, statuses: [], invites: []},
-    {id: "2", name: "Jane Smith", email: "jane@example.com", preferredLanguage: "Kotlin", score: 90, statuses: [], invites: []},
-    {id: "3", name: "Jay Skip", email: "jay@example.com", preferredLanguage: "Kotlin", score: 50, statuses: [], invites: []},
+    {createdAt: new Date(), id: "1", name: "John Doe", email: "john@example.com", preferredLanguage: "Kotlin", scores: [85], statuses: [], invites: []},
+    {createdAt: new Date(), id: "2", name: "Jane Smith", email: "jane@example.com", preferredLanguage: "Kotlin", scores: [90], statuses: [], invites: []},
+    {createdAt: new Date(), id: "3", name: "Jay Skip", email: "jay@example.com", preferredLanguage: "Kotlin", scores: [50], statuses: [], invites: []},
   ];
 
   const mockIsSelected: Selection[] = [

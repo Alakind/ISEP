@@ -15,7 +15,8 @@ class SectionReadConverter(val assignmentReadConverter: AssignmentReadConverter)
             SectionInfo(
                 id = entity.id,
                 title = entity.title!!,
-                availablePoints = entity.availablePoints!!
+                availablePoints = entity.availablePoints,
+                availableSeconds = entity.availableSeconds,
             ),
             assignments = entity.assignments.map { assignmentReadConverter.toDTO(it) }
         )

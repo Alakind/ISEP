@@ -36,14 +36,15 @@ class SolutionReadService(
     }
 
     fun getSolvedSection(inviteId: UUID, sectionId: Long): SolvedSectionReadDTO {
-        val section = sectionRepository.findById(sectionId).orElseThrow { java.util.NoSuchElementException("No section with ID: $sectionId") }
+        val section = sectionRepository.findById(sectionId).orElseThrow { NoSuchElementException("No section with ID: $sectionId") }
         // Look for solved versions of all assignments of the section
         val assignmentDTOs = getSolvedAssignments(inviteId, section).map { converter.toDTO(it) }
         return SolvedSectionReadDTO(
             SectionInfo(
                 id = sectionId,
                 title = section.title!!,
-                availablePoints = section.availablePoints
+                availablePoints = section.availablePoints,
+                availableSeconds = section.availableSeconds,
             ),
             assignments = assignmentDTOs
         )

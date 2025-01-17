@@ -25,8 +25,7 @@ describe('Router Configuration', () => {
 
     render(<RouterProvider router={testRouter}/>);
 
-    expect(document.querySelector('main')).toBeInTheDocument();
-    expect(document.querySelector('main')?.firstChild).toBeNull();
+    expect(screen.getByText("Welcome to the management page of Asserberus. To view applicants and their assessment results navigate to the Applicants page. To view the roles of users navigate to the Users page.")).toBeInTheDocument();
   });
 
   it('renders settings route', () => {

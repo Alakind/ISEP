@@ -2,9 +2,18 @@ import Dashboard from "../../components/dashboard/Dashboard.tsx";
 import {useState} from "react";
 
 function DashboardContainer() {
-  const [totalItems, setTotalItems] = useState<number>(0);
+  const [totalApplicants, setTotalApplicants] = useState<number>(0);
+  const [totalWillExpire, setTotalWillExpire] = useState<number>(0);
+  const [totalExpired, setTotalExpired] = useState<number>(0)
   return (
-    <Dashboard totalItems={totalItems} setTotalItems={setTotalItems}/>
+    <Dashboard
+      totalApplicants={totalApplicants}
+      setTotalApplicants={setTotalApplicants}
+      totalWillExpire={totalWillExpire}
+      setTotalWillExpire={setTotalWillExpire}
+      totalExpired={totalExpired}
+      setTotalExpired={setTotalExpired}
+    />
   )
 }
 

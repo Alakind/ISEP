@@ -10,7 +10,7 @@ class InviteUpdateConverter : UpdateConverter<Invite, InviteUpdateDTO> {
     override fun updateEntity(entity: Invite, updateDTO: InviteUpdateDTO): Invite {
         return entity.apply {
             updateDTO.status?.let { this.status = it }
-            updateDTO.expiresAt?.let { this.expiresAt = it }
+            updateDTO.expiresAt?.let { this.expiresAt = it.withHour(23).withMinute(59).withSecond(59).withNano(0) }
         }
     }
 }

@@ -3,18 +3,18 @@ import {render, screen} from "@testing-library/react";
 import {ApplicantInterface} from "../../src/utils/types.tsx";
 
 describe('Progressbar', () => {
-  let applicant: ApplicantInterface = {
+  const applicant: ApplicantInterface = {
+    createdAt: new Date(),
     id: '123',
     email: "johndoe@gmail.com",
     invites: [],
     name: "John Doe",
     preferredLanguage: "Kotlin",
-    score: 10,
-    statuses: [],
+    statuses: []
   };
 
   it('renders correctly with a score', () => {
-    render(<Progressbar applicant={applicant}/>);
+    render(<Progressbar score={10} id={applicant.id}/>);
 
     const progressElement = screen.getByRole('progressbar');
     expect(progressElement).toBeInTheDocument();
@@ -24,12 +24,7 @@ describe('Progressbar', () => {
   });
 
   it('renders correctly without a score', () => {
-    applicant = {
-      ...applicant,
-      score: undefined
-    }
-
-    render(<Progressbar applicant={applicant}/>);
+    render(<Progressbar score={undefined} id={applicant.id}/>);
 
     const progressElement = screen.getByRole('progressbar');
     expect(progressElement).toBeInTheDocument();
@@ -39,7 +34,7 @@ describe('Progressbar', () => {
   });
 
   it('renders with the correct id based on applicant id', () => {
-    render(<Progressbar applicant={applicant}/>);
+    render(<Progressbar score={10} id={applicant.id}/>);
 
     const progressElement = screen.getByRole('progressbar');
     expect(progressElement).toHaveAttribute('id', 'progressbar123');

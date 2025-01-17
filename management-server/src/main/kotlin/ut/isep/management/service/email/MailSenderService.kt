@@ -4,29 +4,36 @@ package ut.isep.management.service.email
 import dto.email.EmailCreateDTO
 import dto.email.EmailDTO
 import enumerable.EmailType
+import enumerable.InviteStatus
 import jakarta.mail.internet.MimeMessage
 import org.springframework.core.io.ClassPathResource
+import org.springframework.mail.MailException
 import org.springframework.mail.MailSendException
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ut.isep.management.controller.EmailController
 import ut.isep.management.model.entity.Applicant
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.repository.ApplicantRepository
 import ut.isep.management.repository.InviteRepository
+import ut.isep.management.util.logger
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
+@Transactional
 @Service
 class MailSenderService(
     private val emailSender: JavaMailSender,
     private val applicantRepository: ApplicantRepository,
     private val inviteRepository: InviteRepository
 ) {
+
+    private val log = logger()
 
     fun checkData(emailCreateDTO: EmailCreateDTO): Pair<Applicant, Invite> {
         val applicant = applicantRepository.findById(emailCreateDTO.applicantId)
@@ -72,8 +79,21 @@ class MailSenderService(
                 )
             }
             if (msg != null) {
-                emailSender.send(msg)
+                try {
+                    emailSender.send(msg)
+                    log.info("Successfully sent email to ${applicant.name}<${applicant.email}> for invite ${invite.id}")
+                } catch (ex: MailException) {
+                    log.error(ex.message, ex)
+                }
             }
+
+            if (emailCreateDTO.type == EmailType.reminder && invite.status !== InviteStatus.app_reminded_once) {
+                invite.status = InviteStatus.app_reminded_once
+            } else if (emailCreateDTO.type == EmailType.reminder && invite.status === InviteStatus.app_reminded_once) {
+                invite.status = InviteStatus.app_reminded_twice
+            }
+            inviteRepository.save(invite)
+
         } catch (e: Exception) {
             print("Failed to send email ${e.message}")
             throw MailSendException("Failed to send email", e)

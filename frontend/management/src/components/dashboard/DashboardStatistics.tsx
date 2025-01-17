@@ -1,10 +1,10 @@
 import "../../styles/dashboard-statistics.css";
 
-function DashboardStatistics({totalItems, totalWillExpire, totalExpired}: Readonly<Props>) {
+function DashboardStatistics({totalApplicants, totalWillExpire, totalExpired}: Readonly<Props>) {
   return (
     <>
       <div className="dashboard-statistics-blocks">
-        <h1> {totalItems ?? 0} </h1>
+        <h1> {totalApplicants ?? 0} </h1>
         <div className="dashboard-statistics-bottom">
           <p>Total Applicants</p>
         </div>
@@ -26,9 +26,9 @@ function DashboardStatistics({totalItems, totalWillExpire, totalExpired}: Readon
 }
 
 interface Props {
-  totalItems: number;
-  totalWillExpire: number;
-  totalExpired: number;
+  totalApplicants?: number;
+  totalWillExpire?: number;
+  totalExpired?: number;
 }
 
 export default DashboardStatistics

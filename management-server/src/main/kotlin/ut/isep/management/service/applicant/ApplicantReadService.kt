@@ -18,11 +18,11 @@ class ApplicantReadService(
     converter: ApplicantReadConverter,
     private val inviteConverter: InviteReadConverter,
 ) : ReadService<Applicant, ApplicantReadDTO, Long>(repository, converter) {
-    override val matcher = ExampleMatcher.matching()
+    override val matcher: ExampleMatcher = ExampleMatcher.matching()
         .withIgnoreNullValues()
         .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
         .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-        .withIgnorePaths("id", "score", "preferredLanguage", "invites")
+        .withIgnorePaths("id", "score", "preferredLanguage", "invites", "createdAt")
 
     fun getInvitesByApplicantId(applicantId: Long): List<InviteReadDTO> {
         val applicant = repository.findById(applicantId)

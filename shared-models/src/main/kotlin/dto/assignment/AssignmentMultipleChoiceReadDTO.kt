@@ -7,8 +7,9 @@ data class AssignmentMultipleChoiceReadDTO(
     override val id: Long,
     override val description: String,
     override val availablePoints: Int,
+    override val availableSeconds: Long,
     val options: List<String>,
     val isMultipleAnswers: Boolean,
-): BaseAssignment(), AssignmentReadDTO {
+) : BaseAssignment(), AssignmentReadDTO {
     override val type: AssignmentType = AssignmentType.MultipleChoice
 }

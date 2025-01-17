@@ -1,20 +1,75 @@
 import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
-import {EmailTypes} from "./constants.tsx";
+import {EmailTypes, InviteDateAttributes, InviteStatuses} from "./constants.tsx";
 import {testUuidValidity} from "./general.tsx";
 
+// ------------------------------ URL ---------------------------------//
+
 const baseUrl = import.meta.env.VITE_API_MANAGEMENT_URL;
+
+function getUrl(
+  rootUrl: string,
+  currentPage: number,
+  itemsPerPage: number,
+  orderBy: string,
+  query: string,
+  defaultOrderBy: string
+): string {
+  const url = `${baseUrl}/${rootUrl}`;
+  const params: string[] = [];
+
+  if (itemsPerPage !== -1) {
+    params.push(`page=${currentPage}`, `size=${itemsPerPage}`);
+  }
+
+  if (orderBy) {
+    params.push(`sort=${orderBy}`);
+  } else if (itemsPerPage === -1) {
+    params.push(`sort=${defaultOrderBy}`);
+  }
+
+  if (query) {
+    params.push(query);
+  }
+
+  return params.length > 0 ? `${url}?${params.join("&")}` : url;
+}
+
+function getUrlInvites(
+  status?: (typeof InviteStatuses)[keyof typeof InviteStatuses],
+  betweenDateAttribute?: string,
+  startDate?: string,
+  endDate?: string,
+  orderBy?: string,
+): string {
+  const url = `${baseUrl}/invite`;
+  const params: string[] = [];
+
+  if (status) {
+    params.push(`status=${status}`);
+  }
+
+  if (betweenDateAttribute) {
+    if (startDate && endDate) {
+      params.push(`startDate=${startDate}`, `endDate=${endDate}`);
+    } else if (startDate) {
+      params.push(`startDate=${startDate}`);
+    } else if (endDate) {
+      params.push(`endDate=${endDate}`);
+    }
+    params.push(`betweenDateAttribute=${betweenDateAttribute}`)
+  }
+
+  if (orderBy) {
+    params.push(`sort=${orderBy}`);
+  }
+
+  return params.length > 0 ? `${url}?${params.join("&")}` : url;
+}
 
 // ------------------------------ APPLICANT ---------------------------------//
 
 export async function getApplicants(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: ApplicantInterface[], totalItems: number }> {
-  let url;
-  if (itemsPerPage != -1) {
-    url = `${baseUrl}/applicant?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? "&" + query : ""}`;
-  } else if (orderBy != "") {
-    url = `${baseUrl}/applicant${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? "&" + query : ""}`
-  } else {
-    url = `${baseUrl}/applicant?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? "&" + query : ""}`
-  }
+  const url = getUrl("applicant", currentPage, itemsPerPage, orderBy, query, "name,asc")
   const response: Response = await fetch(url, {
     method: "GET",
     headers: {
@@ -46,7 +101,6 @@ export async function getApplicant(id: string): Promise<ApplicantInterface> {
 
   return await response.json();
 }
-
 
 export async function addApplicant(data: Partial<ApplicantInterface>): Promise<{ id: string }> {
   const response: Response = await fetch(`${baseUrl}/applicant`, {
@@ -113,8 +167,15 @@ export async function deleteApplicant(id: string): Promise<string> {
 
 // --------------------------------- INVITES -----------------------------------//
 
-export async function getInvites(): Promise<InviteInterface[]> {
-  const response: Response = await fetch(`${baseUrl}/invite`, {
+export async function getInvites(
+  status?: (typeof InviteStatuses)[keyof typeof InviteStatuses],
+  betweenDateAttribute?: (typeof InviteDateAttributes)[keyof typeof InviteDateAttributes],
+  startDate?: string,
+  endDate?: string,
+  orderBy?: string
+): Promise<{ data: InviteInterface[], totalItems: number }> {
+  const url = getUrlInvites(status, betweenDateAttribute, startDate, endDate, orderBy);
+  const response: Response = await fetch(url, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -124,8 +185,9 @@ export async function getInvites(): Promise<InviteInterface[]> {
   if (!response.ok) {
     throw new Error(`Failed to retrieve invites`);
   }
+  const data: { data: InviteInterface[], total: number } = await response.json();
 
-  return await response.json();
+  return {data: data.data, totalItems: data.total};
 }
 
 export async function getInvite(id: string): Promise<InviteInterface> {
@@ -233,14 +295,7 @@ export async function sendMail(applicantId: string, inviteId: string, type: (typ
 // --------------------------------- USER -----------------------------------//
 
 export async function getUsers(currentPage: number, itemsPerPage: number, orderBy: string, query: string): Promise<{ data: UserInterface[], totalItems: number }> {
-  let url;
-  if (itemsPerPage != -1) {
-    url = `${baseUrl}/user?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? "&" + query : ""}`;
-  } else if (orderBy != "") {
-    url = `${baseUrl}/user${orderBy != "" ? "?sort=" + orderBy : ""}${query != "" ? "&" + query : ""}`
-  } else {
-    url = `${baseUrl}/user?sort=${orderBy != "" ? orderBy : "name,asc"}${query ? "&" + query : ""}`
-  }
+  const url = getUrl("user", currentPage, itemsPerPage, orderBy, query, "name,asc")
 
   const response: Response = await fetch(url, {
     method: "GET",
@@ -312,12 +367,7 @@ export async function deleteUser(id: string): Promise<string> {
 // --------------------------------- ASSESSMENT -----------------------------------//
 
 export async function getAssessments(currentPage: number = 0, itemsPerPage: number = -1, orderBy: string = "", query: string = ""): Promise<{ data: AssessmentInterface[], totalItems: number }> {
-  let url;
-  if (itemsPerPage != -1) {
-    url = `${baseUrl}/assessment?page=${currentPage}&size=${itemsPerPage}${orderBy != "" ? "&sort=" + orderBy : ""}${query != "" ? "&" + query : ""}`;
-  } else {
-    url = `${baseUrl}/assessment?sort=${orderBy != "" ? orderBy : "tag,asc"}${query ? "&" + query : ""}`
-  }
+  const url = getUrl("assessment", currentPage, itemsPerPage, orderBy, query, "tag,asc")
 
   const response: Response = await fetch(url, {
     method: "GET",

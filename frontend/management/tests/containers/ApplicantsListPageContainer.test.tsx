@@ -5,6 +5,7 @@ import {toast} from 'react-toastify';
 import {ApplicantInterface, InviteInterface} from '../../src/utils/types';
 import {MemoryRouter, useNavigate} from "react-router-dom";
 import {vi} from "vitest";
+import {act} from "react";
 
 vi.mock('../../src/utils/apiFunctions.tsx', () => ({
   __esModule: true,
@@ -31,14 +32,14 @@ vi.mock("react-router-dom", async () => {
 describe('ApplicantsListPageContainer', () => {
   const mockApplicants: ApplicantInterface[] = [
     {
-      id: '1', name: 'John Doe', email: 'john@example.com',
+      createdAt: new Date(), id: '1', name: 'John Doe', email: 'john@example.com',
       preferredLanguage: 'Kotlin', invites: ['invite1', 'invite2'],
-      score: 10
+      scores: [10]
     },
     {
-      id: '2', name: 'Jane Doe', email: 'jane@example.com',
+      createdAt: new Date(), id: '2', name: 'Jane Doe', email: 'jane@example.com',
       preferredLanguage: 'Kotlin', invites: ['invite1', 'invite2'],
-      score: 10
+      scores: [10]
     },
   ];
 
@@ -49,7 +50,11 @@ describe('ApplicantsListPageContainer', () => {
       assessmentId: "3",
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
-      expiresAt: "2025-01-06T00:28:25.485108Z"
+      expiresAt: "2025-01-06T00:28:25.485108Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     },
     {
       id: "invite2",
@@ -57,7 +62,11 @@ describe('ApplicantsListPageContainer', () => {
       assessmentId: "4",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-06T00:28:25.485638Z"
+      expiresAt: "2025-01-06T00:28:25.485638Z",
+      assessmentFinishedAt: new Date(),
+      assessmentStartedAt: new Date(),
+      measuredSecondsPerSection: [],
+      scoredPoints: 0
     }
   ];
 
@@ -71,7 +80,7 @@ describe('ApplicantsListPageContainer', () => {
       data: mockApplicants,
       totalItems: 2,
     });
-    vi.mocked(getInvites).mockResolvedValueOnce(mockInvitesData);
+    vi.mocked(getInvites).mockResolvedValueOnce({data: mockInvitesData, totalItems: 2});
 
     render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
 
@@ -118,7 +127,7 @@ describe('ApplicantsListPageContainer', () => {
       data: mockApplicants,
       totalItems: 2,
     });
-    vi.mocked(getInvites).mockResolvedValueOnce(mockInvitesData);
+    vi.mocked(getInvites).mockResolvedValueOnce({data: mockInvitesData, totalItems: 2});
 
     render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
 
@@ -134,7 +143,7 @@ describe('ApplicantsListPageContainer', () => {
     });
   });
 
-  it("navigates to /applicants/add when the button is clicked", () => {
+  it("navigates to /applicants/add when the button is clicked", async () => {
     const mockNavigate = vi.fn();
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
@@ -145,7 +154,9 @@ describe('ApplicantsListPageContainer', () => {
     );
 
     const button = screen.getByRole('button', {name: "Add applicant"});
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    })
 
     expect(mockNavigate).toHaveBeenCalledWith("/applicants/add");
   });

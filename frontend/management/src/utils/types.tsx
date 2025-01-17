@@ -5,9 +5,10 @@ export interface ApplicantInterface {
   name: string;
   email: string;
   statuses?: (typeof InviteStatuses)[keyof typeof InviteStatuses][];
-  score?: number;
+  scores?: number[];
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
   invites?: string[];
+  createdAt?: Date;
 }
 
 export interface InviteInterface {
@@ -17,6 +18,10 @@ export interface InviteInterface {
   status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
   invitedAt: string;
   expiresAt: string;
+  assessmentFinishedAt?: Date;
+  assessmentStartedAt?: Date;
+  measuredSecondsPerSection: number[];
+  scoredPoints?: number;
 }
 
 export interface UserInterface {
@@ -24,6 +29,7 @@ export interface UserInterface {
   name: string;
   email: string;
   role: (typeof Roles)[keyof typeof Roles];
+  createdAt?: Date;
 }
 
 export interface Column {
@@ -53,8 +59,8 @@ export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
   title: string;
-  measuredTime?: string;
-  suggestedTime?: string;
+  measuredSeconds?: number;
+  availableSeconds?: number;
   scoredPoints: number | null;
   availablePoints: number;
   size: number;

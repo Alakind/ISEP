@@ -188,13 +188,15 @@ describe("BulkActionSelectContainer", () => {
     // expect(toast.error).toHaveBeenCalledWith("API Error"); //gives error
   });
 
-  it("resets the select option after performing an action", () => {
+  it("resets the select option after performing an action", async () => {
     render(
       <BulkActionSelectContainer isSelected={mockIsSelected} removeUser={mockRemoveUser}/>
     );
 
     const select = screen.getByTestId("bulk-action-select");
-    fireEvent.change(select, {target: {value: "Delete selected"}});
+    await act(async () => {
+      fireEvent.change(select, {target: {value: "Delete selected"}});
+    })
 
     expect(select).toHaveValue("-");
   });

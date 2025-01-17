@@ -69,6 +69,10 @@
     align-items: center;
 }
 
+.section__header__meas-time--exceeded {
+    color: var(--status-item--error)
+}
+
 .section__header__sug-time {
     font-size: 11px;
 }

@@ -308,8 +308,8 @@ describe('AssessmentResultsViewer Component', () => {
       title: "Demo Section 1",
       scoredPoints: null,
       availablePoints: 22,
-      measuredTime: "",
-      suggestedTime: "",
+      measuredSeconds: undefined,
+      availableSeconds: undefined,
       assignments: [
         mockAssignment13,
         mockAssignment14,
@@ -322,8 +322,8 @@ describe('AssessmentResultsViewer Component', () => {
       title: "Demo Section 2",
       availablePoints: 42,
       scoredPoints: null,
-      measuredTime: "",
-      suggestedTime: "",
+      measuredSeconds: undefined,
+      availableSeconds: undefined,
       assignments: [
         mockAssignment16,
         mockAssignment17,
@@ -338,8 +338,8 @@ describe('AssessmentResultsViewer Component', () => {
       id: "7",
       title: "Demo Section 1",
       availablePoints: 22,
-      measuredTime: "",
-      suggestedTime: "",
+      measuredSeconds: undefined,
+      availableSeconds: undefined,
       assignments: [
         mockAssignment19,
         mockAssignment20,
@@ -352,8 +352,8 @@ describe('AssessmentResultsViewer Component', () => {
       id: "8",
       title: "Demo Section 2",
       availablePoints: 64,
-      measuredTime: "",
-      suggestedTime: "",
+      measuredSeconds: undefined,
+      availableSeconds: undefined,
       assignments: [
         mockAssignment22,
         mockAssignment23,

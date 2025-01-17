@@ -45,18 +45,37 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
         if (accessor == "name") {
           return (
             <th className="table-row__link" key={accessor} scope="row" onClick={(): void => goToApplicantPage(data.id)}>
-              {data.name}
+              <a>{data.name}</a>
             </th>
           );
         } else if (accessor == "score") {
           return (
             <td key={accessor}>
-              <span className="table-row__score">
-              {data.score ? data.score : 0}/100
-              </span>
-              <Progressbar applicant={data}/>
+              {
+                data.scores
+                  ? (
+                    data.scores.map((score: number, index: number): ReactNode => (
+                        <div key={"score_" + index + data.id}>
+                      <span className="table-row__score">
+                      {score || 0}/100
+                      </span>
+                          <Progressbar score={score} id={`${data.id}${index}`}/>
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <>
+                      <span className="table-row__score">
+                      {0}/100
+                      </span>
+                      <Progressbar score={0} id={data.id}/>
+                    </>
+                  )
+              }
+
             </td>
-          );
+          )
+            ;
         } else if (accessor == "statuses") {
           return (
             <td key={accessor} className={"block__status-item"}>
@@ -64,7 +83,7 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
             </td>
           )
         } else {
-          const value: string | number | string[] | undefined = accessor in data ? (data)[accessor as keyof ApplicantInterface] : "——";
+          const value: string | number[] | string[] | Date | undefined = accessor in data ? (data)[accessor as keyof ApplicantInterface] : "——";
           return (
             <td key={accessor} data-testid={`${accessor}-cell`}>
               {

@@ -20,16 +20,17 @@ function ApplicantsListPageContainer(): ReactNode {
       setLoading(true);
       try {
         const applicantsResponse: { data: ApplicantInterface[], totalItems: number } = await getApplicants(currentPage, itemsPerPage, orderBy, query);
-        const invitesResponse: InviteInterface[] = await getInvites();
+        const invitesResponse: { data: InviteInterface[], totalItems: number } = await getInvites();
 
         let applicantsWithStatuses: ApplicantInterface[] = applicantsResponse.data;
         if (invitesResponse) {
-          applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface) => {
-            const applicantInvites = invitesResponse.filter((invite) => invite.applicantId === applicant.id);
+          applicantsWithStatuses = applicantsResponse.data.map((applicant: ApplicantInterface): ApplicantInterface => {
+            const applicantInvites: InviteInterface[] = invitesResponse.data.filter((invite: InviteInterface): boolean => invite.applicantId === applicant.id);
 
             return {
               ...applicant,
-              statuses: applicantInvites.map((invite) => invite.status),
+              statuses: applicantInvites.map((invite: InviteInterface): string => invite.status),
+              scores: applicantInvites.map((invite: InviteInterface): number => invite.scoredPoints),
             };
           });
         }
