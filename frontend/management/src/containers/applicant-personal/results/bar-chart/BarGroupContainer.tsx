@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 
 function BarGroupContainer({barGroupData, barWidth}: Readonly<Props>): ReactNode {
   const barPadding = 2
-  const barColour = barGroupData.isSelected ? "var(--tertiary-color)" : "var(--text-secondary)";
+  const barColour = barGroupData.isSelected ? "var(--tertiary-color)" : "#b2b9c2";
 
   function heightScale(value: number) {
     return value * 2

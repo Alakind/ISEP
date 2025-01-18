@@ -136,6 +136,11 @@ html {
     align-items: center;
 }
 
+.btn--light {
+    border-color: black;
+    color: black;
+}
+
 .btn--mod:hover {
     border-color: var(--highlight-hover);
 }
@@ -165,4 +170,10 @@ main {
     align-items: center;
     overflow: hidden auto;
     margin-right: 5px;
+}
+
+@media (max-width: 992px) {
+    main {
+        height: calc(100vh - 53px);
+    }
 }
