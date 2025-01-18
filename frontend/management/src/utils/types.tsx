@@ -92,6 +92,13 @@ export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterfa
   language: string;
   answer: { type: string; answer: string };
   referenceAnswer: { type: string; answer: string };
+  testResults: TestResultsInterface[];
+}
+
+export interface TestResultsInterface {
+  name: string;
+  message?: string;
+  passed: boolean;
 }
 
 export interface AssignmentInterface {
