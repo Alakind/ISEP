@@ -34,10 +34,14 @@ class ScheduledTasks(
 
     @Scheduled(cron = "0 * * * * *") // Cron expression for running every minute
     fun expirationCheck() {
-        val checkList = listOf(InviteStatus.not_started, InviteStatus.app_reminded_once, InviteStatus.app_reminded_twice)
-        checkList.forEach {
-            log.info("Started to check invites with the status $it for expiration")
-            executeSetExpired(getExpirationInvites(it))
+        try {
+            val checkList = listOf(InviteStatus.not_started, InviteStatus.app_reminded_once, InviteStatus.app_reminded_twice)
+            checkList.forEach {
+                log.info("Started to check invites with the status $it for expiration")
+                executeSetExpired(getExpirationInvites(it))
+            }
+        } catch (ex: Exception) {
+            log.error(ex.message)
         }
     }
 
@@ -57,20 +61,24 @@ class ScheduledTasks(
 
     @Scheduled(cron = "0 * * * * *") // Cron expression for running every minute
     fun sendReminders() {
-        val checkList = listOf(InviteStatus.not_started, InviteStatus.app_reminded_once)
-        val fiveDaysPrior = LocalDate.now().plusDays(5)
-        val fourDaysPrior = LocalDate.now().plusDays(4)
-        val twoDaysPrior = LocalDate.now().plusDays(2)
-        val oneDayPrior = LocalDate.now().plusDays(1)
-        checkList.forEach {
-            log.info("Started to send reminder mails to invites with the status $it")
-            var startDate = fourDaysPrior
-            var endDate = fiveDaysPrior
-            if (it == InviteStatus.app_reminded_once) {
-                startDate = oneDayPrior
-                endDate = twoDaysPrior
+        try {
+            val checkList = listOf(InviteStatus.not_started, InviteStatus.app_reminded_once)
+            val fiveDaysPrior = LocalDate.now().plusDays(5)
+            val fourDaysPrior = LocalDate.now().plusDays(4)
+            val twoDaysPrior = LocalDate.now().plusDays(2)
+            val oneDayPrior = LocalDate.now().plusDays(1)
+            checkList.forEach {
+                log.info("Started to send reminder mails to invites with the status $it")
+                var startDate = fourDaysPrior
+                var endDate = fiveDaysPrior
+                if (it == InviteStatus.app_reminded_once) {
+                    startDate = oneDayPrior
+                    endDate = twoDaysPrior
+                }
+                executeSendReminder(getReminderInvites(startDate, endDate, it))
             }
-            executeSendReminder(getReminderInvites(startDate, endDate, it))
+        } catch (ex: Exception) {
+            log.error(ex.message)
         }
     }
 
@@ -96,8 +104,12 @@ class ScheduledTasks(
 
     @Scheduled(cron = "0 * * * * *") // Cron expression for running every minute
     fun closeAssessment() {
-        log.info("Started to check if started assessments need to be closed")
-        executeCloseAssessment(getToBeFinishedInvites())
+        try {
+            log.info("Started to check if started assessments need to be closed")
+            executeCloseAssessment(getToBeFinishedInvites())
+        } catch (ex: Exception) {
+            log.error(ex.message)
+        }
     }
 
     private fun executeCloseAssessment(invites: List<InviteReadDTO>) {
