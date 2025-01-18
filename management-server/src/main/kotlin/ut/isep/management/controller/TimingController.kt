@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import ut.isep.management.service.timing.TimingPerSectionReadService
@@ -74,6 +76,24 @@ class TimingController(
     }
 
     @GetMapping("section/{sectionId}/timing/{inviteId}")
+    @Operation(
+        description = "Method for getting timing for a section in seconds",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found the measured timing for the section",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "No measured timing for the section found",
+                content = [Content(
+                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                )]
+            ),
+        ]
+    )
     fun getMeasuredTimeSectionBySection(
         @PathVariable sectionId: Long,
         @PathVariable inviteId: UUID
@@ -86,11 +106,28 @@ class TimingController(
     }
 
     @GetMapping("/timing/{inviteId}")
+    @Operation(
+        description = "Method for getting the total measured time for an invite",
+    )
     fun getMeasuredTimeInvite(
         @PathVariable inviteId: UUID
     ): ResponseEntity<TimingPerSectionReadDTO> {
         return try {
             ResponseEntity.ok(timingPerSectionReadService.getMeasuredTimeInvite(inviteId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @GetMapping("/timing/{inviteId}/left")
+    @Operation(
+        description = "Method getting the left time in seconds for an invite",
+    )
+    fun getTimeLeftInvite(
+        @PathVariable inviteId: UUID
+    ): ResponseEntity<TimingPerSectionReadDTO> {
+        return try {
+            ResponseEntity.ok(timingPerSectionReadService.getTimeLeft(inviteId))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
