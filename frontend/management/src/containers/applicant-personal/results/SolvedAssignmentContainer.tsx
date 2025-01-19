@@ -26,6 +26,7 @@ function SolvedAssignmentContainer({assignment, assignmentIndex, sectionIndex, c
   async function updateScore(id: string, value: number, inviteId: string): Promise<void> {
     try {
       await updateScoredPointsAssignment(id, value, inviteId);
+      toast.success("Score successfully updated!");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)

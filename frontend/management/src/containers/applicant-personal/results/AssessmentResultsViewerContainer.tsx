@@ -25,7 +25,7 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
         "assessment-select__" + assessmentsData[activeAssessment].id
       );
     }
-  }, [activeAssessment]);
+  }, [activeAssessment, assessmentsData]);
 
   async function getData(): Promise<void> {
     setLoading(true);

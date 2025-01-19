@@ -74,7 +74,6 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
                   {assignment.type == AssignmentTypes.CODING && (
                     <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}
                                                inviteId={inviteUuid}>
-                      {/*<SolvedAssignmentCoding assignment={assignment as AssignmentCodingSolvedInterface}/>*/}
                       <SolvedAssignmentCodingContainer assignment={assignment as AssignmentCodingSolvedInterface}/>
                     </SolvedAssignmentContainer>
                   )}
