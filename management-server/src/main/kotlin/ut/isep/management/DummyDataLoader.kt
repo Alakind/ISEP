@@ -3,6 +3,8 @@ package ut.isep.management
 import enumerable.InviteStatus
 import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
+import org.springframework.data.domain.Example
+import org.springframework.data.domain.ExampleMatcher
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
@@ -322,6 +324,57 @@ class DummyDataLoader(
         inviteRepository.save(inviteApplicant0Assessment1)
         inviteRepository.save(inviteApplicant0Assessment2)
         inviteRepository.save(inviteApplicant1Assessment1)
+
+        // set solved answer for coding question
+        val matcher: ExampleMatcher = ExampleMatcher.matching()
+            .withIgnoreNullValues()
+            .withMatcher("applicant", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withMatcher("assessment", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withIgnorePaths("id", "solutions", "invitedAt", "expiresAt", "assessmentStartedAt", "assessmentFinishedAt", "measuredSecondsPerSection", "status")
+        val invite = inviteRepository.findAll(Example.of(Invite(applicant = applicants[0], assessment = assessment1), matcher))[0]
+        val solvedAssignmentCoding = solvedAssignmentRepository.findById(
+            SolvedAssignmentId(
+                inviteId = invite.id,
+                assignmentId = codingAssigment2.id
+            )
+        ).orElseThrow { NoSuchElementException("SolvedAssignment not found") }
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            solvedAssignmentCoding.userCode = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array to make is fun*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i !== 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(!isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n" +
+                    "/*Write the code that runs the above until the\n" +
+                    "length of the array equals the number of primes\n" +
+                    "desired*/\n" +
+                    "\n" +
+                    "var numPrimes = prompt(\"How many primes?\");\n" +
+                    "console.log(numPrimes) \n" +
+                    "//Display the finished array of primes\n" +
+                    "\n" +
+                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+                    "    PrimeCheck(i); //\n" +
+                    "}\n" +
+                    "console.log(primeArray);"
+        } else {
+            log.error("The solved assignment is not of type SolvedAssignmentCoding")
+        }
+
+        solvedAssignmentRepository.save(solvedAssignmentCoding)
         log.info("Dummy data loaded!")
     }
 }
