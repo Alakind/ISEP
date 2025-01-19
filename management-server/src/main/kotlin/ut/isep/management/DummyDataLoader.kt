@@ -20,7 +20,9 @@ class DummyDataLoader(
     private val sectionRepository: SectionRepository,
     private val assignmentRepository: AssignmentRepository,
     private val solvedAssignmentRepository: SolvedAssignmentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val timingPerSectionRepository: TimingPerSectionRepository,
+    private val testResultRepository: TestResultRepository
 ) : CommandLineRunner {
 
     private val log = logger()
@@ -34,6 +36,8 @@ class DummyDataLoader(
         sectionRepository.deleteAll()       // Delete sections
         assignmentRepository.deleteAll()    // Delete assignments
         userRepository.deleteAll()
+        timingPerSectionRepository.deleteAll()
+        testResultRepository.deleteAll()
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
@@ -372,6 +376,22 @@ class DummyDataLoader(
                     "console.log(primeArray);"
         } else {
             log.error("The solved assignment is not of type SolvedAssignmentCoding")
+        }
+        solvedAssignmentRepository.save(solvedAssignmentCoding)
+
+        // Add test result to solved coding assignment
+        val testResult1 = TestResult(name = "null check", passed = false, message = "The value can't be null")
+        val testResult2 = TestResult(name = "id check", passed = true)
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            testResult1.solvedAssignmentCoding = solvedAssignmentCoding
+            testResult2.solvedAssignmentCoding = solvedAssignmentCoding
+            testResultRepository.saveAll(listOf(testResult1, testResult2))
+            println("test")
+            println(testResultRepository.findAll())
+        }
+
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            solvedAssignmentCoding.testResults.addAll(listOf(testResult1, testResult2))
         }
 
         solvedAssignmentRepository.save(solvedAssignmentCoding)
