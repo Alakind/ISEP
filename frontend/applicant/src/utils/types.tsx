@@ -22,12 +22,13 @@ export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
   isMultipleAnswers: boolean;
 }
 
-export interface AssignmentCodingInterface extends AssessmentInterface {
+export interface AssignmentCodingInterface extends AssignmentInterface {
   id: string;
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
   text: string;
   image: string;
+  language: string;
   files: File[];
 }
 

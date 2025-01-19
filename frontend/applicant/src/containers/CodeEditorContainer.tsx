@@ -1,12 +1,21 @@
-import { javascript } from "@codemirror/lang-javascript";
+// import { javascript } from "@codemirror/lang-javascript";
+import { autocompletion } from "@codemirror/autocomplete";
+import { pythonLanguage } from "@codemirror/lang-python";
 import ReactCodeMirror from "@uiw/react-codemirror";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  getLspCompletionSource,
+  initLanguageServerConnection,
+} from "../utils/lspConnection";
 
 function CodeEditorContainer() {
-  const [value, setValue] = useState("console.log('hello world!');");
+  const [value, setValue] = useState("print('hello world!')");
   const onChange = useCallback((val, viewUpdate) => {
-    console.log("val:", val);
     setValue(val);
+  }, []);
+
+  useEffect(() => {
+    initLanguageServerConnection();
   }, []);
 
   return (
@@ -15,7 +24,11 @@ function CodeEditorContainer() {
         value={value}
         height="400px"
         width="600px"
-        extensions={[javascript({ jsx: true })]}
+        // extensions={[javascript({ jsx: true })]}
+        extensions={[
+          pythonLanguage,
+          autocompletion({ override: [getLspCompletionSource()] }),
+        ]}
         onChange={onChange}
         theme="dark"
         basicSetup={{

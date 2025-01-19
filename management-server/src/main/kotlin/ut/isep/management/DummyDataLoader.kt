@@ -8,6 +8,7 @@ import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
 import ut.isep.management.util.logger
 import kotlin.time.Duration.Companion.minutes
+import java.net.URI
 
 @Component
 class DummyDataLoader(
@@ -116,6 +117,22 @@ class DummyDataLoader(
             availableSeconds = 2.minutes.inWholeSeconds
         )
 
+        val codingAssigment1 = AssignmentCoding(
+            description = "Improve this code",
+            availablePoints = 30,
+            language = "python",
+            availableSeconds = 5.minutes.inWholeSeconds,
+            codeUri = URI("https://localhost:8080/code-executor/")
+        )
+
+        val codingAssigment2 = AssignmentCoding(
+            description = "Improve this code: two",
+            availablePoints = 30,
+            language = "python",
+            availableSeconds = 5.minutes.inWholeSeconds,
+            codeUri = URI("https://localhost:8080/code-executor/")
+        )
+
         val section1 = Section(
             title = "Demo Section 1",
             assignments = listOf(assignment1, assignment2, openAssignment1),
@@ -123,7 +140,7 @@ class DummyDataLoader(
 
         val section2 = Section(
             title = "Demo Section 2",
-            assignments = listOf(assignment3, assignment4, openAssignment2)
+            assignments = listOf(assignment3, assignment4, openAssignment2, codingAssigment1, codingAssigment2)
         )
 
         val section3 = Section(

@@ -2,7 +2,7 @@ import Assignment from "../components/Assignment";
 import { AssessmentInterface, AssignmentInterface } from "../utils/types";
 import "../styles/main.css";
 import scrollToAssignment from "../utils/operations.tsx";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AssignmentTypes } from "../utils/constants.tsx";
 
 function Main({
@@ -17,6 +17,16 @@ function Main({
       ].id
     );
   }, [currentSectionIndex, currentAssignmentIndex]);
+
+  const [isCurrentCoding, setIsCurrentCoding] = useState(false);
+
+  useEffect(() => {
+    setIsCurrentCoding(
+      assessment.sections[currentSectionIndex].assignments[
+        currentAssignmentIndex[currentSectionIndex]
+      ].type === AssignmentTypes.CODING
+    );
+  }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
 
   return (
     <main>
@@ -34,10 +44,12 @@ function Main({
                     <Assignment index={i} assignment={assignment} />
                   </div>
                 );
-              } else {
+              }
+              return null;
+            } else {
+              if (isCurrentCoding) {
                 return null;
               }
-            } else {
               return (
                 <div
                   className="assignment"

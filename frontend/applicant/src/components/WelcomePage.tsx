@@ -1,13 +1,11 @@
 import InfoSupportLogo from "../components/InfoSupportLogo";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
-import CodeEditorContainer from "../containers/CodeEditorContainer";
 import "../styles/general.css";
 import "../styles/welcome.css";
 
 function WelcomePage({ handleStart }: Props) {
   return (
     <div className="welcomePage">
-      <CodeEditorContainer />
       {/* TODO put name of user here. */}
       <div className="logoContainer">
         <InfoSupportLogo />
