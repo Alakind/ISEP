@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
 import ut.isep.management.util.logger
+import java.net.URI
 import kotlin.time.Duration.Companion.minutes
 
 @Component
@@ -116,6 +117,54 @@ class DummyDataLoader(
             availableSeconds = 2.minutes.inWholeSeconds
         )
 
+        val codingAssigment1 = AssignmentCoding(
+            description = "Improve this code",
+            availablePoints = 30,
+            language = "python",
+            availableSeconds = 20.minutes.inWholeSeconds,
+            referenceAnswer = "Improve this code by saying blub",
+            codeUri = URI("https://localhost:8080/code-executor/")
+        )
+
+        val codingAssigment2 = AssignmentCoding(
+            description = "Improve this code: two",
+            availablePoints = 30,
+            language = "javascript",
+            availableSeconds = 20.minutes.inWholeSeconds,
+            referenceAnswer = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i === 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n" +
+                    "/*Write the code that runs the above until the\n" +
+                    "length of the array equals the number of primes\n" +
+                    "desired*/\n" +
+                    "\n" +
+                    "var numPrimes = prompt(\"How many primes?\");\n" +
+                    "\n" +
+                    "//Display the finished array of primes\n" +
+                    "\n" +
+                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+                    "    PrimeCheck(i); //\n" +
+                    "}\n" +
+                    "console.log(primeArray);",
+            codeUri = URI("https://localhost:8080/code-executor/")
+        )
+
         val section1 = Section(
             title = "Demo Section 1",
             assignments = listOf(assignment1, assignment2, openAssignment1),
@@ -123,7 +172,7 @@ class DummyDataLoader(
 
         val section2 = Section(
             title = "Demo Section 2",
-            assignments = listOf(assignment3, assignment4, openAssignment2)
+            assignments = listOf(assignment3, assignment4, openAssignment2, codingAssigment1, codingAssigment2)
         )
 
         val section3 = Section(
@@ -264,9 +313,9 @@ class DummyDataLoader(
         applicants.forEach { applicantRepository.save(it) }
 
         val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
-        inviteApplicant0Assessment1.status = InviteStatus.not_started
+        inviteApplicant0Assessment1.status = InviteStatus.app_finished
         val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
-        inviteApplicant0Assessment2.status = InviteStatus.app_finished
+        inviteApplicant0Assessment2.status = InviteStatus.not_started
         val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
         inviteApplicant1Assessment1.status = InviteStatus.app_finished
 

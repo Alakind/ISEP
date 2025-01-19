@@ -8,9 +8,13 @@ import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.service.converter.ReadConverter
+import ut.isep.management.service.converter.testresult.TestResultReadConverter
 
 @Component
-class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignmentReadConverter) :
+class ResultAssignmentReadConverter(
+    val solvedAssignmentConverter: SolvedAssignmentReadConverter,
+    val testResultConverter: TestResultReadConverter
+) :
     ReadConverter<SolvedAssignment, ResultAssignmentReadDTO> {
 
     override fun toDTO(entity: SolvedAssignment): ResultAssignmentReadDTO {
@@ -30,6 +34,7 @@ class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignm
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!),
             scoredPoints = entity.scoredPoints,
+            testResults = entity.testResults.map { testResultConverter.toDTO(it) },
         )
     }
 
