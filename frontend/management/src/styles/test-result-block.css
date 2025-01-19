@@ -1,0 +1,30 @@
+.bi-check-circle-fill::before {
+    color: green;
+}
+
+.bi-x-circle-fill::before {
+    color: red;
+}
+
+.test-result-block__item .bi-x-circle-fill,
+.test-result-block__item .bi-check-circle-fill {
+    margin-right: 10px;
+}
+
+.test-result-block__header {
+    border: none;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    background: var(--transparent);
+    display: flex;
+    justify-content: space-between;
+}
+
+.test-result-block {
+    padding-top: 15px;
+}
+
+.test-result-block__item {
+    margin: 5px 0;
+    padding-left: 10px;
+}

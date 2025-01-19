@@ -10,7 +10,7 @@ import {scrollToAssignment} from "../../../utils/general.tsx";
 function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readonly<Props>): ReactNode {
   const [sectionsData, setSectionsData] = useState<SectionSolvedInterface[][]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [activeSection, setActiveSection] = useState<number>(0);
+  const [activeSection, setActiveSection] = useState<number>(-1);
   const [activeAssessment, setActiveAssessment] = useState<number>(0);
 
   useEffect((): void => {
