@@ -14,12 +14,13 @@ describe('SolvedAssignmentCoding Component', () => {
     language: "javascript",
     answer: {type: AssignmentTypes.CODING, answer: 'console.log("Hello, World!");'},
     referenceAnswer: {type: AssignmentTypes.CODING, answer: 'console.log("Expected Output");'},
+    testResults: [{name: "null test", passed: true}]
   };
 
   it('renders the assignment', () => {
     render(<SolvedAssignmentCoding assignment={mockAssignment}/>);
 
-    const textElement = screen.getByTestId(/solved-assignment-coding/i);
+    const textElement = screen.getByText(/Original code has been changed/i);
     expect(textElement).toBeInTheDocument();
   });
 });

@@ -11,7 +11,8 @@ const mockInvitesData: InviteInterface[] = [
     assessmentId: "3",
     status: "not_started",
     invitedAt: "2024-12-30T00:28:25.485108Z",
-    expiresAt: "2025-01-06T00:28:25.485108Z"
+    expiresAt: "2025-01-06T00:28:25.485108Z",
+    measuredSecondsPerSection: [],
   },
   {
     id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
@@ -19,7 +20,10 @@ const mockInvitesData: InviteInterface[] = [
     assessmentId: "4",
     status: "app_finished",
     invitedAt: "2024-12-30T00:28:25.485638Z",
-    expiresAt: "2025-01-06T00:28:25.485638Z"
+    expiresAt: "2025-01-06T00:28:25.485638Z",
+    measuredSecondsPerSection: [],
+    assessmentStartedAt: "2024-12-30T10:28:25.485638Z",
+    assessmentFinishedAt: "2024-12-30T11:28:25.485638Z",
   }
 ];
 
@@ -106,11 +110,31 @@ describe('InvitesOverview component', () => {
     );
 
     const dateInputs = screen.getAllByLabelText(/available till/i);
-    expect(dateInputs).toHaveLength(mockInvitesData.length);
+    expect(dateInputs).toHaveLength(mockInvitesData.length - 1); //app_finished will not show this
 
     dateInputs.forEach((input, index) => {
       expect(input).toHaveValue(mockExpirationDates[index]);
     });
+  });
+
+  it('renders finished at and started at', () => {
+    render(
+      <InvitesOverview
+        invitesData={mockInvitesData}
+        assessmentsData={mockAssessmentsData}
+        handleChangeExpirationDate={mockHandleChangeExpirationDate}
+        expirationDates={mockExpirationDates}
+        handleCancel={mockHandleCancel}
+        handleDelete={mockHandleDelete}
+        handleRemind={mockHandleRemind}
+      />
+    );
+
+    const startedAt = screen.getByText(/Start date:/i);
+    expect(startedAt.parentNode?.children[1]).toHaveTextContent("30/12/2024, 11:28:25");
+
+    const finishedAt = screen.getByText(/Finish date:/i);
+    expect(finishedAt.parentNode?.children[1]).toHaveTextContent("30/12/2024, 12:28:25");
   });
 
   it('calls handleChangeExpirationDate when an expiration date is changed', () => {
@@ -197,7 +221,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "not_started",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -228,7 +253,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "cancelled",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -259,7 +285,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "expired",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -290,7 +317,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -321,7 +349,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "app_reminded_twice",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -352,7 +381,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "app_started",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -383,7 +413,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "app_finished",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 
@@ -414,7 +445,8 @@ describe('InvitesOverview component', () => {
         assessmentId: "3",
         status: "unknown",
         invitedAt: "2024-12-30T00:28:25.485108Z",
-        expiresAt: "2025-01-06T00:28:25.485108Z"
+        expiresAt: "2025-01-06T00:28:25.485108Z",
+        measuredSecondsPerSection: []
       }
     ];
 

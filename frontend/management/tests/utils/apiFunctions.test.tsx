@@ -389,7 +389,8 @@ describe('API Functions (invites)', (): void => {
           assessmentId: "3",
           status: "not_started",
           invitedAt: "2024-12-30T00:28:25.485108Z",
-          expiresAt: "2025-01-06T00:28:25.485108Z"
+          expiresAt: "2025-01-06T00:28:25.485108Z",
+          measuredSecondsPerSection: []
         },
         {
           id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
@@ -397,7 +398,8 @@ describe('API Functions (invites)', (): void => {
           assessmentId: "4",
           status: "app_finished",
           invitedAt: "2024-12-30T00:28:25.485638Z",
-          expiresAt: "2025-01-06T00:28:25.485638Z"
+          expiresAt: "2025-01-06T00:28:25.485638Z",
+          measuredSecondsPerSection: []
         },
         {
           id: "be05fc98-06d3-4763-9445-417ac149f90d",
@@ -405,7 +407,8 @@ describe('API Functions (invites)', (): void => {
           assessmentId: "3",
           status: "app_finished",
           invitedAt: "2024-12-30T00:28:25.485638Z",
-          expiresAt: "2025-01-06T00:28:25.485638Z"
+          expiresAt: "2025-01-06T00:28:25.485638Z",
+          measuredSecondsPerSection: []
         }
       ],
       total: 3
@@ -447,7 +450,8 @@ describe('API Functions (invites)', (): void => {
       assessmentId: "3",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-06T00:28:25.485638Z"
+      expiresAt: "2025-01-06T00:28:25.485638Z",
+      measuredSecondsPerSection: []
     };
 
     mockFetch.mockResolvedValueOnce({
@@ -1188,7 +1192,7 @@ describe('API Functions (results)', (): void => {
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1/result/invite123`,
       expect.objectContaining({
         method: "PUT",
-        body: JSON.stringify({id: "1", value: 3}),
+        body: JSON.stringify({id: "1", scoredPoints: 3}),
         headers: {
           'Content-Type': 'application/json',
         },

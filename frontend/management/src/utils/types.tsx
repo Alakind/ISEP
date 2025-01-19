@@ -18,8 +18,8 @@ export interface InviteInterface {
   status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
   invitedAt: string;
   expiresAt: string;
-  assessmentFinishedAt?: Date;
-  assessmentStartedAt?: Date;
+  assessmentFinishedAt?: string;
+  assessmentStartedAt?: string;
   measuredSecondsPerSection: number[];
   scoredPoints?: number;
 }
