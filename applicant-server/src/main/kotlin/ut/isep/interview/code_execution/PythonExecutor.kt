@@ -31,7 +31,6 @@ object PythonExecutor {
             parseTests(testsString)
             .filter { it !in failedTests }
             .map { TestResult(it, "", true) })
-        //System.out.println(result)
         return result
     }
 
@@ -45,7 +44,6 @@ object PythonExecutor {
             }
             test = (test and !line.matches("[a-zA-Z].*".toRegex())) or line.matches("^class .+?\\(unittest\\.TestCase\\):.*$".toRegex())
         }
-        System.out.println(testNames)
         return testNames
     }
 
