@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import ut.isep.interview.code_execution.CodeExecutor
+import ut.isep.interview.code_execution.JavaExecutor
 import java.io.File
 import java.nio.file.Files
 import kotlin.io.path.exists
@@ -18,7 +19,7 @@ class CodeExecution {
     fun initializeJavaContainer(@PathVariable uuid: String, @RequestPart("file") file: MultipartFile): ResponseEntity<Any> {
         val temp = File.createTempFile(file.name, null)
         file.transferTo(temp)
-        CodeExecutor.startJavaContainer(uuid, temp)
+        JavaExecutor.startContainer(uuid, temp)
         return ResponseEntity.ok().build()
     }
 
@@ -28,19 +29,7 @@ class CodeExecution {
             return ResponseEntity.badRequest().body("You must provide code with your request")
         }
 
-        val dir = Files.createTempDirectory(uuid)
-        val code = dir.resolve("Code.java").toFile()
-        code.writeText(codeStrings["code"]!!)
-
-        val test = dir.resolve("Test.java").toFile()
-        if (!test.exists() && !codeStrings.containsKey("test")) {
-            return ResponseEntity.badRequest().body("A file containing tests should be provided")
-        }
-        if (codeStrings.containsKey("test")) {
-            test.writeText(codeStrings["test"]!!)
-        }
-
-        return ResponseEntity.ok().body(CodeExecutor.runJavaTest(uuid, code, test))
+        return ResponseEntity.ok().body(JavaExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"]))
     }
 
     @PostMapping("/{uuid}/cleanup")

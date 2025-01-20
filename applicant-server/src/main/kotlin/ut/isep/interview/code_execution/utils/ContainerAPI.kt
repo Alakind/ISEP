@@ -1,4 +1,4 @@
-package ut.isep.interview.code_execution
+package ut.isep.interview.code_execution.utils
 
 import kotlinx.serialization.json.*
 import java.io.File
@@ -129,7 +129,7 @@ object ContainerAPI {
      * @param dst The location inside the container where the file or folder should be copied to.
      */
     fun copyToContainerByName(name: String, src: File, dst: String) {
-        val command = "docker cp ${src.absolutePath} ${PREFIX}-${name}:${dst}"
+        val command = "docker cp ${src.absolutePath} $PREFIX-${name}:${dst}"
         val result = Command.CommandBuilder(command).execute()
         if (result.returnCode != 0) throw RuntimeException("Copying the file failed with the following error message:\n${result.error}")
     }

@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-class TestCodeExecutor {
+class TestJavaExecutor {
 
     val ID = "58aba3a9-400a-4f4c-b9c4-4ab40273a027"
 
     @AfterEach
-    fun killContainers(): Unit {
+    fun killContainers() {
         CodeExecutor.stopContainers(ID)
     }
 
@@ -20,10 +20,11 @@ class TestCodeExecutor {
         val code = File("src/test/resources/codeExecutor/javaGood/Code.java")
         val test = File("src/test/resources/codeExecutor/javaGood/TestCode.java")
 
-        CodeExecutor.startJavaContainer(ID, container)
-        val result = CodeExecutor.runJavaTest(ID, code, test)
+        JavaExecutor.startContainer(ID, container)
+        val result = JavaExecutor.runTest(ID, code.readText(), test.readText())
 
-        assertEquals(0, result.failedTests.size)
+        assertEquals(1, result.count { it.passed })
+        assertEquals(1, result.size)
     }
 
     @Test
@@ -32,10 +33,11 @@ class TestCodeExecutor {
         val code = File("src/test/resources/codeExecutor/javaBad/Code.java")
         val test = File("src/test/resources/codeExecutor/javaBad/TestCode.java")
 
-        CodeExecutor.startJavaContainer(ID, container)
-        val result = CodeExecutor.runJavaTest(ID, code, test)
+        JavaExecutor.startContainer(ID, container)
+        val result = JavaExecutor.runTest(ID, code.readText(), test.readText())
 
-        assertEquals(1, result.failedTests.size)
-        assertEquals("expected: <5> but was: <4>", result.failedTests.values.first())
+        assertEquals(1, result.count { !it.passed })
+        assertEquals(1, result.count { it.passed })
+        assertEquals("expected: <5> but was: <4>", result.filter { !it.passed }.first().result)
     }
 }
