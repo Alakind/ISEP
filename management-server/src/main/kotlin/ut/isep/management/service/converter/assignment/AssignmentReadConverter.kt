@@ -52,6 +52,7 @@ class AssignmentReadConverter : ReadConverter<Assignment, AssignmentReadDTO> {
             codeUri = entity.codeUri!!, // Replace with actual fetching of the files
             availablePoints = entity.availablePoints!!,
             availableSeconds = entity.availableSeconds!!,
+            startCode = entity.startingCode
         )
     }
 }

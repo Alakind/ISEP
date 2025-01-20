@@ -93,6 +93,7 @@ export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterfa
   answer: { type: string; answer: string };
   referenceAnswer: { type: string; answer: string };
   testResults: TestResultsInterface[];
+  startCode?: string;
 }
 
 export interface TestResultsInterface {

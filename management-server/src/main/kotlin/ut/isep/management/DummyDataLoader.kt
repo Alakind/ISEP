@@ -136,6 +136,24 @@ class DummyDataLoader(
             description = "Improve this code: two",
             availablePoints = 30,
             language = "javascript",
+            startingCode = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i === 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n",
             availableSeconds = 20.minutes.inWholeSeconds,
             referenceAnswer = "//Initialize the array that will hold the primes\n" +
                     "var primeArray = [];\n" +
@@ -386,8 +404,6 @@ class DummyDataLoader(
             testResult1.solvedAssignmentCoding = solvedAssignmentCoding
             testResult2.solvedAssignmentCoding = solvedAssignmentCoding
             testResultRepository.saveAll(listOf(testResult1, testResult2))
-            println("test")
-            println(testResultRepository.findAll())
         }
 
         if (solvedAssignmentCoding is SolvedAssignmentCoding) {
