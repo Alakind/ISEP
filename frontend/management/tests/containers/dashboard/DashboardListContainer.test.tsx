@@ -65,7 +65,7 @@ describe("DashboardListContainer", () => {
   });
 
   it("should call the api endpoints correctly", async () => {
-    const today = new Date("2025-01-15T23:59:25.803Z");
+    const today = new Date();
     const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
     const sevenDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
     const comingTwoDays = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3);

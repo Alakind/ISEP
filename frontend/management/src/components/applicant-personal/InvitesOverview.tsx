@@ -6,6 +6,7 @@ import "../../styles/form.css";
 import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import Button from "../Button.tsx";
 import {canCancelInvite, canDeleteInvite, canRemindInvite} from "../../utils/general.tsx";
+import {InviteStatuses} from "../../utils/constants.tsx";
 
 function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates, handleCancel, handleDelete, handleRemind}: Readonly<Props>) {
   return (
@@ -25,21 +26,46 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                     <StatusItem status={mapStatus(invite.status)} additionalClass={"status-item--invite"}/>
                   </div>
                   <div className={"invites-overview__body__item__expiration-date"}>
-                    <form>
-                      <div>
-                        <label className={"invites-overview__body__item__label"} htmlFor={`expirationDate_${invite.id}`}>Available till: </label>
-                        <input
-                          type="date"
-                          id={`expirationDate_${invite.id}`}
-                          name="expirationDate"
-                          onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)} //TODO implement expiration date
-                          value={expirationDates[index]}
-                          autoComplete="off"
-                          disabled={!canRemindInvite(mapStatus(invite.status))}
-                          required
-                        />
-                      </div>
-                    </form>
+                    {
+                      mapStatus(invite.status) === InviteStatuses.NOT_STARTED || mapStatus(invite.status) === InviteStatuses.APP_REMINDED_ONCE || mapStatus(invite.status) === InviteStatuses.APP_REMINDED_TWICE
+                        ? (
+                          <form>
+                            <div>
+                              <label className={"invites-overview__body__item__label"} htmlFor={`expirationDate_${invite.id}`}>Available till: </label>
+                              <input
+                                type="date"
+                                id={`expirationDate_${invite.id}`}
+                                name="expirationDate"
+                                onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)}
+                                value={expirationDates[index]}
+                                autoComplete="off"
+                                disabled={!canRemindInvite(mapStatus(invite.status))}
+                                required
+                              />
+                            </div>
+                          </form>
+                        ) : (
+                          <>
+                            {
+                              mapStatus(invite.status) === InviteStatuses.APP_FINISHED
+                                ? (
+                                  <>
+                                    <div>
+                                      <label className={"invites-overview__body__item__label"} htmlFor={`expirationDate_${invite.id}`}>Start date: </label>
+                                      <span>{invite.assessmentStartedAt ? new Date(invite.assessmentStartedAt).toLocaleString() : "-"}</span>
+                                    </div>
+                                    <div>
+                                      <label className={"invites-overview__body__item__label"} htmlFor={`expirationDate_${invite.id}`}>Finish date: </label>
+                                      <span>{invite.assessmentFinishedAt ? new Date(invite.assessmentFinishedAt).toLocaleString() : "-"}</span>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <></>
+                                )
+                            }
+                          </>
+                        )
+                    }
                     <div className="invites-overview__body__item__btns">
                       <Button
                         handleClick={(e: MouseEvent<HTMLButtonElement>): void => handleCancel(e, invite.id)}

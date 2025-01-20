@@ -31,8 +31,8 @@ describe('InvitesOverviewContainer', () => {
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
       expiresAt: "2025-01-10T00:28:25.485108Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
@@ -43,8 +43,8 @@ describe('InvitesOverviewContainer', () => {
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
       expiresAt: "2025-01-15T00:28:25.485638Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     }
@@ -85,11 +85,10 @@ describe('InvitesOverviewContainer', () => {
     );
 
     const expirationDateInputs = screen.getAllByLabelText(/Available till:/i);
-    expect(expirationDateInputs).toHaveLength(mockInvitesData.length);
+    expect(expirationDateInputs).toHaveLength(mockInvitesData.length - 1);
 
     // Verify formatted expiration dates
     expect(expirationDateInputs[0]).toHaveValue('2025-01-10');
-    expect(expirationDateInputs[1]).toHaveValue('2025-01-15');
   });
 
   it('should update expiration date when a valid date is selected', async () => {
@@ -443,8 +442,8 @@ describe('InvitesOverviewContainer', () => {
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
         expiresAt: "2025-01-10T00:28:25.485108Z",
-        assessmentFinishedAt: new Date(),
-        assessmentStartedAt: new Date(),
+        assessmentFinishedAt: "",
+        assessmentStartedAt: "",
         measuredSecondsPerSection: [],
         scoredPoints: 0
       }
@@ -480,8 +479,8 @@ describe('InvitesOverviewContainer', () => {
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
         expiresAt: "2025-01-10T00:28:25.485108Z",
-        assessmentFinishedAt: new Date(),
-        assessmentStartedAt: new Date(),
+        assessmentFinishedAt: "",
+        assessmentStartedAt: "",
         measuredSecondsPerSection: [],
         scoredPoints: 0
       }
@@ -517,8 +516,8 @@ describe('InvitesOverviewContainer', () => {
         status: "app_reminded_once",
         invitedAt: "2024-12-30T00:28:25.485108Z",
         expiresAt: "2025-01-10T00:28:25.485108Z",
-        assessmentFinishedAt: new Date(),
-        assessmentStartedAt: new Date(),
+        assessmentFinishedAt: "",
+        assessmentStartedAt: "",
         measuredSecondsPerSection: [],
         scoredPoints: 0
       }

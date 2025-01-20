@@ -18,8 +18,8 @@ export interface InviteInterface {
   status: (typeof InviteStatuses)[keyof typeof InviteStatuses];
   invitedAt: string;
   expiresAt: string;
-  assessmentFinishedAt?: Date;
-  assessmentStartedAt?: Date;
+  assessmentFinishedAt?: string;
+  assessmentStartedAt?: string;
   measuredSecondsPerSection: number[];
   scoredPoints?: number;
 }
@@ -92,6 +92,14 @@ export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterfa
   language: string;
   answer: { type: string; answer: string };
   referenceAnswer: { type: string; answer: string };
+  testResults: TestResultsInterface[];
+  startCode?: string;
+}
+
+export interface TestResultsInterface {
+  name: string;
+  message?: string;
+  passed: boolean;
 }
 
 export interface AssignmentInterface {

@@ -533,7 +533,7 @@ export async function updateScoredPointsAssignment(id: string, value: number, in
     },
     body: JSON.stringify({
       id: id,
-      value: value
+      scoredPoints: value
     }),
   });
 
