@@ -1,9 +1,6 @@
 package ut.isep.management.service.converter.solution
 
-import dto.assignment.ResultAssignmentCodingReadDTO
-import dto.assignment.ResultAssignmentMultipleChoiceReadDTO
-import dto.assignment.ResultAssignmentOpenReadDTO
-import dto.assignment.ResultAssignmentReadDTO
+import dto.assignment.*
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
@@ -27,39 +24,36 @@ class ResultAssignmentReadConverter(
     }
 
     private fun toDTO(entity: SolvedAssignmentCoding): ResultAssignmentCodingReadDTO {
-        val codingAssignment = entity.assignment as? AssignmentCoding
-            ?: throw IllegalStateException("SolvedAssignmentCoding ${entity.id} has an assignment field that is null")
         val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
         return ResultAssignmentCodingReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!),
+            //TODO implement this repo-side, and add common questionParser Service that can be used by solvedAssignment, Assignment, ResultAssignment converters
+            // and that can pass through reference answers to be used by ResultService, but not SolvedAssignment or Assignment Service
+            referenceAnswer = AnswerCreateReadDTO.Coding("placeholder reference answer"),
             scoredPoints = entity.scoredPoints,
             testResults = entity.testResults.map { testResultConverter.toDTO(it) },
         )
     }
 
     private fun toDTO(entity: SolvedAssignmentMultipleChoice): ResultAssignmentMultipleChoiceReadDTO {
-        val multipleChoiceAssignment = entity.assignment as? AssignmentMultipleChoice
-            ?: throw IllegalStateException("SolvedAssignmentMultipleChoice ${entity.id} has an assignment field that is null")
         val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
         return ResultAssignmentMultipleChoiceReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.MultipleChoice(
-                multipleChoiceAssignment.optionToSolution.entries
-                    .withIndex()
-                    .filter { (_, key) -> key.value == true }
-                    .map { it.index }),
+            referenceAnswer = AnswerCreateReadDTO.MultipleChoice(listOf(1)), //TODO() still need that Question Parser service
+//            referenceAnswer = AnswerCreateReadDTO.MultipleChoice(
+//                multipleChoiceAssignment.optionToSolution.entries
+//                    .withIndex()
+//                    .filter { (_, key) -> key.value == true }
+//                    .map { it.index }),
             scoredPoints = entity.scoredPoints,
         )
     }
 
     private fun toDTO(entity: SolvedAssignmentOpen): ResultAssignmentOpenReadDTO {
-        val openAssignment = entity.assignment as? AssignmentOpen
-            ?: throw IllegalStateException("SolvedAssignmentOpen ${entity.id} has an assignment field that is null")
         val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
         return ResultAssignmentOpenReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Open(openAssignment.referenceAnswer!!),
+            referenceAnswer = AnswerCreateReadDTO.Open("reference answer"),  //TODO() pass reference answers through repo
             scoredPoints = entity.scoredPoints,
         )
     }
