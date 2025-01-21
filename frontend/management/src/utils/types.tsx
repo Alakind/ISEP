@@ -1,4 +1,5 @@
 import {AssignmentTypes, InviteStatuses, PreferredLanguages, Roles} from "./constants";
+import {JwtPayload} from "jwt-decode";
 
 export interface ApplicantInterface {
   id: string;
@@ -153,4 +154,10 @@ export interface GraphDataInterface {
   surname?: string;
   userPrincipalName?: string;
   id?: string;
+}
+
+export interface ExJwtPayload extends JwtPayload {
+  given_name: string;
+  family_name: string;
+  unique_name: string; //email (fallback upn)
 }

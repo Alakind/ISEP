@@ -3,7 +3,7 @@ import HeaderContainer from "./containers/header/HeaderContainer.tsx";
 import {ReactNode, useEffect} from "react";
 import {AuthenticatedTemplate, UnauthenticatedTemplate, useMsal} from "@azure/msal-react";
 import LoginPageContainer from "./containers/auth/LoginPageContainer.tsx";
-import {GraphDataProvider} from "./utils/msal/GraphDataProvider.tsx";
+import {MsUserProvider} from "./utils/msal/MsUserProvider.tsx";
 
 function App(): ReactNode {
   const location = useLocation();
@@ -23,14 +23,14 @@ function App(): ReactNode {
         {
           activeAccount
             ? (
-              <GraphDataProvider instance={instance} activeAccount={activeAccount}>
+              <MsUserProvider instance={instance} activeAccount={activeAccount}>
                 <div>
                   <HeaderContainer/>
                   <main>
                     <Outlet/>
                   </main>
                 </div>
-              </GraphDataProvider>)
+              </MsUserProvider>)
             : null
         }
       </AuthenticatedTemplate>

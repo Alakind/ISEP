@@ -42,7 +42,3 @@ export const msalConfig: Configuration = {
 export const loginRequest = {
   scopes: ['User.Read']
 }
-
-export const graphConfig = {
-  graphMeEndpoint: "https://graph.microsoft.com/v1.0/me" //e.g. https://graph.microsoft.com/v1.0/me
-};

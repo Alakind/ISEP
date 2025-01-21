@@ -1,12 +1,12 @@
 import ProfileButton from "../../components/header/ProfileButton.tsx";
 import {ReactNode} from "react";
 import {useMsal} from "@azure/msal-react";
-import {useGraphData} from "../../utils/msal/GraphDataProvider.tsx";
+import {useMsUserData} from "../../utils/msal/MsUserProvider.tsx";
 import {capitalizeFirstLetter} from "../../utils/general.tsx";
 
 function ProfileButtonContainer(): ReactNode {
   const {instance} = useMsal();
-  const user = useGraphData()
+  const user = useMsUserData()
 
   function handleLogout() {
     instance.logoutRedirect({postLogoutRedirectUri: "/",}).then()
