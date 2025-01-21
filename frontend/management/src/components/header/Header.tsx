@@ -22,10 +22,10 @@ function Header({currentPage}: Readonly<Props>): ReactNode {
             <div className="collapse navbar-collapse header__left__nav" id="navbarScroll">
               <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
                 <li className="nav-item">
-                  <NavLink className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} to={"/applicants"}><i className="bi bi-people-fill"></i>Applicants</NavLink>
+                  <NavLink className={`nav-link nav-link--mod ${currentPage == "dashboard" ? "active" : ""}`} to={`/dashboard`}><i className="bi bi-columns-gap"></i>Dashboard</NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink className={`nav-link nav-link--mod ${currentPage == "assessments" ? "active" : ""}`} to={`/assessments`}><i className="bi bi-clipboard"></i>Assessments</NavLink>
+                  <NavLink className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} to={"/applicants"}><i className="bi bi-people-fill"></i>Applicants</NavLink>
                 </li>
                 <li className="nav-item">
                   {/*TODO hide this tab if the logged person doesn't have access (isn't an admin)*/}

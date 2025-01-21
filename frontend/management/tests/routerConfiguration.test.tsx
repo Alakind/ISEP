@@ -28,30 +28,6 @@ describe('Router Configuration', () => {
     expect(screen.getByText("Welcome to the management page of Asserberus. To view applicants and their assessment results navigate to the Applicants page. To view the roles of users navigate to the Users page.")).toBeInTheDocument();
   });
 
-  it('renders settings route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/settings']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('settings')).toBeInTheDocument();
-  });
-
-  it('renders profile route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/profile']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('profile')).toBeInTheDocument();
-  });
-
-  it('renders assessments route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/assessments']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('assessments')).toBeInTheDocument();
-  });
-
   it('renders users route', () => {
     const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/users']});
 

@@ -37,34 +37,6 @@ export const router = createBrowserRouter(
           errorElement: <ErrorBoundary error={new Error("Page not found")}/>,
         },
         {
-          path: "settings",
-          element: (
-            <Suspense fallback={<LoadingPage/>}>
-              <div data-testid={"settings"}>/settings</div>
-              {/*TODO show the welcome message of applicant and make it able to change it and show the standard invite email and make it able to change it.*/}
-            </Suspense>
-          ),
-          errorElement: <ErrorBoundary/>,
-        },
-        {
-          path: "profile",
-          element: (
-            <Suspense fallback={<LoadingPage/>}>
-              <div data-testid={"profile"}>/profile</div>
-            </Suspense>
-          ),
-          errorElement: <ErrorBoundary/>,
-        },
-        {
-          path: "assessments",
-          element: (
-            <Suspense fallback={<LoadingPage/>}>
-              <div data-testid={"assessments"}>/assessments</div>
-            </Suspense>
-          ),
-          errorElement: <ErrorBoundary/>,
-        },
-        {
           path: "users",
           element: (
             <Suspense fallback={<LoadingPage/>}>
