@@ -1,7 +1,8 @@
 import "../../styles/profile-button.css";
 import {ReactNode} from "react";
+import {Link} from "react-router-dom";
 
-function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
+function ProfileButton({currentUser, handleLogout}: Readonly<Props>): ReactNode {
   return (
     <span className="profile-button" data-testid={"profile-button"}>
       <li className="navbar-nav dropdown">
@@ -10,10 +11,10 @@ function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
           <span className="profile-button__name">{currentUser}</span>
         </button>
         <ul className="dropdown-menu">
-          <li><a className="dropdown-item" href={`${urlPrefix}/profile`}>My profile</a></li>
-          <li><a className="dropdown-item" href={`${urlPrefix}/settings`}>Settings</a></li>
+          {/*TODO implement actual role*/}
+          <li>Role: Admin</li>
           <li><hr className="dropdown-divider"/></li>
-          <li><a className="dropdown-item" href={`${urlPrefix}/logout`}>Logout</a></li>
+          <li><Link onClick={handleLogout} className="dropdown-item" to={`#`}>Logout</Link></li>
         </ul>
       </li>
     </span>
@@ -21,8 +22,8 @@ function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
 }
 
 interface Props {
-  urlPrefix: string;
   currentUser: string;
+  handleLogout: () => void;
 }
 
 export default ProfileButton

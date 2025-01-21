@@ -17,15 +17,6 @@ export const router = createBrowserRouter(
       path: "/",
       element: <App/>,
       children: [
-        // {
-        //   path: "login",
-        //   element: (
-        //     <Suspense fallback={<LoadingPage />}>
-        //       <div data-testid={"login"}>/login</div>
-        //     </Suspense>
-        //   ),
-        //   errorElement: <ErrorBoundary />,
-        // },
         {
           path: "dashboard",
           element: (
@@ -166,6 +157,6 @@ export const router = createBrowserRouter(
       v7_normalizeFormMethod: true,
       v7_fetcherPersist: true,
     },
-    basename: "/management",
+    // basename: "/management",
   }
 );

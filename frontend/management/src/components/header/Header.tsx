@@ -3,16 +3,17 @@ import {Bounce, ToastContainer} from "react-toastify";
 import ProfileButtonContainer from "../../containers/header/ProfileButtonContainer.tsx";
 import "../../styles/header.css"
 import {ReactNode} from "react";
+import {Link, NavLink} from "react-router-dom";
 
-function Header({currentPage, urlPrefix}: Readonly<Props>): ReactNode {
+function Header({currentPage}: Readonly<Props>): ReactNode {
   return (
     <header className="header" data-testid={"header"}>
       <span className="header__left">
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            <a className="navbar-brand" href={`${urlPrefix}/dashboard`}>
+            <Link className="navbar-brand" to={`/dashboard`}>
               <img src={`${import.meta.env.VITE_DOMAIN}/favicon-180x180.png`} width={30} alt="InfoSupport logo"/> Asserberus
-            </a>
+            </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
               <span>
                 <i className="bi bi-list"></i>
@@ -21,18 +22,18 @@ function Header({currentPage, urlPrefix}: Readonly<Props>): ReactNode {
             <div className="collapse navbar-collapse header__left__nav" id="navbarScroll">
               <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
                 <li className="nav-item">
-                  <a className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} href={`${urlPrefix}/applicants`}><i className="bi bi-people-fill"></i>Applicants</a>
+                  <NavLink className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} to={"/applicants"}><i className="bi bi-people-fill"></i>Applicants</NavLink>
                 </li>
                 <li className="nav-item">
-                  <a className={`nav-link nav-link--mod ${currentPage == "assessments" ? "active" : ""}`} href={`${urlPrefix}/assessments`}><i className="bi bi-clipboard"></i>Assessments</a>
+                  <NavLink className={`nav-link nav-link--mod ${currentPage == "assessments" ? "active" : ""}`} to={`/assessments`}><i className="bi bi-clipboard"></i>Assessments</NavLink>
                 </li>
                 <li className="nav-item">
                   {/*TODO hide this tab if the logged person doesn't have access (isn't an admin)*/}
-                  <a className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} href={`${urlPrefix}/users`}><i className="bi bi-person-rolodex"></i>Users</a>
+                  <NavLink className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} to={`/users`}><i className="bi bi-person-rolodex"></i>Users</NavLink>
                 </li>
               </ul>
               <span className="navbar-text navbar-text--mod">
-                <ProfileButtonContainer urlPrefix={urlPrefix}/>
+                <ProfileButtonContainer/>
                 <ThemeSwitchContainer/>
               </span>
             </div>
@@ -60,7 +61,6 @@ function Header({currentPage, urlPrefix}: Readonly<Props>): ReactNode {
 
 interface Props {
   currentPage: string;
-  urlPrefix: string;
 }
 
 export default Header
