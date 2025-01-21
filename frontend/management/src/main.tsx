@@ -11,6 +11,7 @@ import {AuthenticationResult, EventType, PublicClientApplication} from "@azure/m
 import {msalConfig} from "./AuthConfig.ts";
 
 const msalInstance = new PublicClientApplication(msalConfig);
+await msalInstance.initialize();
 
 if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
   msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0])

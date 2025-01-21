@@ -5,7 +5,7 @@ export const msalConfig: Configuration = {
     clientId: 'ed631f5b-f79b-462d-bc24-e74070b359f6',
     authority: 'https://login.microsoftonline.com/687c0e2f-17b0-4663-90df-261e3fd76ef6',
     redirectUri: `${import.meta.env.VITE_DOMAIN}/dashboard`,
-    postLogoutRedirectUri: `${import.meta.env.VITE_DOMAIN}/applicants`,
+    postLogoutRedirectUri: `${import.meta.env.VITE_DOMAIN}/`,
     navigateToLoginRequestUrl: false,
   },
   cache: {

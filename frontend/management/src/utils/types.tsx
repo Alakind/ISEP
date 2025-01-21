@@ -139,3 +139,18 @@ export interface ScoredAssessmentInterface {
   scoredPoints: number | null;
   availablePoints: number;
 }
+
+export interface GraphDataInterface {
+  //@odata.context: string; //"https://graph.microsoft.com/v1.0/$metadata#users/$entity"
+  businessPhones?: string[];
+  displayName?: string;
+  givenName?: string;
+  jobTitle?: string;
+  mail?: string;
+  mobilePhone?: string,
+  officeLocation?: string;
+  preferredLanguage?: string;
+  surname?: string;
+  userPrincipalName?: string;
+  id?: string;
+}

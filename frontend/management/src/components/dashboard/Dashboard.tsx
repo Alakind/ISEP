@@ -6,10 +6,10 @@ import DashboardStatisticsContainer from "../../containers/dashboard/DashboardSt
 import DashboardQuickLinksContainer from "../../containers/dashboard/DashboardQuickLinksContainer.tsx";
 import {Dispatch, SetStateAction} from "react";
 
-function Dashboard({totalApplicants, setTotalApplicants, totalWillExpire, setTotalWillExpire, totalExpired, setTotalExpired}: Readonly<Props>) {
+function Dashboard({currentUser, totalApplicants, setTotalApplicants, totalWillExpire, setTotalWillExpire, totalExpired, setTotalExpired}: Readonly<Props>) {
   return (
     <div className={"dashboard-page"}>
-      <h1> Welcome Jurre</h1>
+      <h1> Welcome {currentUser}</h1>
       <p>Welcome to the management page of Asserberus. To view applicants and their assessment results navigate to the
         Applicants page. To view the roles of users navigate to the Users page.</p>
       <div>
@@ -44,6 +44,7 @@ function Dashboard({totalApplicants, setTotalApplicants, totalWillExpire, setTot
 }
 
 interface Props {
+  currentUser: string;
   totalApplicants: number;
   setTotalApplicants: Dispatch<SetStateAction<number>>;
   totalWillExpire: number;
