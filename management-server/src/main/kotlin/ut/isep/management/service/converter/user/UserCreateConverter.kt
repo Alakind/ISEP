@@ -11,6 +11,7 @@ class UserCreateConverter : CreateConverter<User, UserCreateDTO> {
     override fun fromDTO(createDTO: UserCreateDTO): User {
         return User(
             name = createDTO.name,
+            oid = createDTO.oid,
             email = createDTO.email,
             role = createDTO.role
         )
