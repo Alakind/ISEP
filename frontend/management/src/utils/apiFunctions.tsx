@@ -446,6 +446,7 @@ export async function getAssignment(id: string): Promise<AssignmentInterface> {
 }
 
 export async function getBarChartStats(inviteId: string): Promise<BarChartInterface> {
+  console.log(inviteId)
   //TODO uncomment next part when implemented
   /*const response: Response = await fetch(`${baseUrl}/statistics`, {
     method: "GET",

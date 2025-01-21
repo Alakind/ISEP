@@ -21,6 +21,7 @@ describe("Interface Compliance", () => {
       status: InviteStatuses.EXPIRED,
       invitedAt: "2024-01-01T12:00:00Z",
       expiresAt: "2024-01-10T12:00:00Z",
+      measuredSecondsPerSection: []
     };
     expect(expectTypeOf(invite).toMatchTypeOf<InviteInterface>()).toBe(true);
   });

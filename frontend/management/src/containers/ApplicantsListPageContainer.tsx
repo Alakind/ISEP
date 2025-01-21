@@ -30,7 +30,7 @@ function ApplicantsListPageContainer(): ReactNode {
             return {
               ...applicant,
               statuses: applicantInvites.map((invite: InviteInterface): string => invite.status),
-              scores: applicantInvites.map((invite: InviteInterface): number => invite.scoredPoints),
+              scores: applicantInvites.map((invite: InviteInterface): number => invite.scoredPoints ?? 0),
             };
           });
         }
