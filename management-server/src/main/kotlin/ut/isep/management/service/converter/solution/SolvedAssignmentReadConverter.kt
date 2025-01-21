@@ -1,9 +1,6 @@
 package ut.isep.management.service.converter.solution
 
-import dto.assignment.SolvedAssignmentCodingReadDTO
-import dto.assignment.SolvedAssignmentMultipleChoiceReadDTO
-import dto.assignment.SolvedAssignmentOpenReadDTO
-import dto.assignment.SolvedAssignmentReadDTO
+import dto.assignment.*
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
@@ -24,9 +21,8 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
     }
 
     fun toDTO(entity: SolvedAssignmentCoding): SolvedAssignmentCodingReadDTO {
-        val codingAssignment = entity.assignment as? AssignmentCoding
-            ?: throw IllegalStateException("SolvedAssignmentCoding ${entity.id} has an assignment field that is null")
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(codingAssignment)
+        val codingAssignment = entity.assignment!!
+        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(codingAssignment) as AssignmentCodingReadDTO
         return SolvedAssignmentCodingReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.Coding(entity.userCode)
@@ -34,9 +30,9 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
     }
 
     fun toDTO(entity: SolvedAssignmentMultipleChoice): SolvedAssignmentMultipleChoiceReadDTO {
-        val multipleChoiceAssignment = entity.assignment as? AssignmentMultipleChoice
-            ?: throw IllegalStateException("SolvedAssignmentMultipleChoice ${entity.id} has an assignment field that is null")
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(multipleChoiceAssignment)
+        val multipleChoiceAssignment = entity.assignment!!
+        val unsolvedAssignment =
+            unsolvedAssignmentConverter.toDTO(multipleChoiceAssignment) as AssignmentMultipleChoiceReadDTO
         return SolvedAssignmentMultipleChoiceReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
@@ -44,9 +40,8 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
     }
 
     fun toDTO(entity: SolvedAssignmentOpen): SolvedAssignmentOpenReadDTO {
-        val openAssignment = entity.assignment as? AssignmentOpen
-            ?: throw IllegalStateException("SolvedAssignmentOpen ${entity.id} has an assignment field that is null")
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(openAssignment)
+        val openAssignment = entity.assignment!!
+        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(openAssignment) as AssignmentOpenReadDTO
         return SolvedAssignmentOpenReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.Open(entity.userSolution)
