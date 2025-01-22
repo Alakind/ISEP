@@ -81,6 +81,32 @@ class UserController(
         }
     }
 
+
+    @GetMapping("/oid/{oid}")
+    @Operation(summary = "Get user based on oid", description = "Returns an user or 404 if not found")
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found the user",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "User not found",
+                content = [Content(
+                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                )]
+            )
+        ]
+    )
+    fun getUserOid(@PathVariable oid: String): ResponseEntity<UserReadDTO> {
+        return try {
+            ResponseEntity.ok(userReadService.getByOid(oid, User(oid = oid)))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
     @PostMapping
     @Operation(
         summary = "Add an user",
