@@ -30,7 +30,8 @@ export interface UserInterface {
   name: string;
   email: string;
   role: (typeof Roles)[keyof typeof Roles];
-  createdAt?: Date;
+  createdAt?: string;
+  oid: string;
 }
 
 export interface Column {
@@ -160,4 +161,5 @@ export interface ExJwtPayload extends JwtPayload {
   given_name: string;
   family_name: string;
   unique_name: string; //email (fallback upn)
+  oid: string;
 }

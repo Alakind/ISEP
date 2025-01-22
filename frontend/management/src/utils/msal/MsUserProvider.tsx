@@ -8,19 +8,22 @@ interface MsUserInterface {
   givenName: string;
   surname: string;
   mail: string;
+  oid: string;
 }
 
 export const MsUserContext = createContext({
   givenName: "",
   surname: "",
-  mail: ""
+  mail: "",
+  oid: ""
 });
 
 export const MsUserProvider = ({children, activeAccount, instance}: { children: ReactNode, activeAccount: AccountInfo, instance: IPublicClientApplication }) => {
   const [msUserData, setMsUserData] = useState<MsUserInterface>({
     givenName: "",
     surname: "",
-    mail: ""
+    mail: "",
+    oid: ""
   });
 
   useEffect(() => {
@@ -43,6 +46,7 @@ export const MsUserProvider = ({children, activeAccount, instance}: { children: 
             givenName: newGivenName,
             surname: data.family_name ?? "",
             mail: data.unique_name ?? "",
+            oid: data.oid
           });
         })
         .catch((error) => {
@@ -51,7 +55,7 @@ export const MsUserProvider = ({children, activeAccount, instance}: { children: 
     }
   }, [activeAccount]);
 
-  const contextValue = useMemo(() => ({givenName: msUserData?.givenName, surname: msUserData?.surname, mail: msUserData?.mail}), [msUserData]);
+  const contextValue = useMemo(() => ({givenName: msUserData.givenName, surname: msUserData.surname, mail: msUserData.mail, oid: msUserData.oid}), [msUserData]);
 
   return <MsUserContext.Provider value={contextValue}>{children}</MsUserContext.Provider>;
 }

@@ -313,7 +313,39 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
   return {data: data.data, totalItems: data.total};
 }
 
-// addUser is not part of the system
+export async function getUserOid(oid: string): Promise<UserInterface> {
+  const response: Response = await fetch(`${baseUrl}/user/oid/${oid}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve user with oid`);
+  }
+
+  return await response.json();
+}
+
+export async function addUser(data: Partial<UserInterface>): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add user: ${response.statusText}`);
+  }
+
+  return "Successfully added a new user";
+}
 
 export async function updateUser(id: string, data: Partial<UserInterface>): Promise<{ data: Partial<UserInterface> }> {
   if (data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL) {

@@ -4,6 +4,7 @@ import {ReactNode, useEffect} from "react";
 import {AuthenticatedTemplate, UnauthenticatedTemplate, useMsal} from "@azure/msal-react";
 import LoginPageContainer from "./containers/auth/LoginPageContainer.tsx";
 import {MsUserProvider} from "./utils/msal/MsUserProvider.tsx";
+import {UserProvider} from "./utils/msal/UserProvider.tsx";
 
 function App(): ReactNode {
   const location = useLocation();
@@ -24,12 +25,14 @@ function App(): ReactNode {
           activeAccount
             ? (
               <MsUserProvider instance={instance} activeAccount={activeAccount}>
-                <div>
-                  <HeaderContainer/>
-                  <main>
-                    <Outlet/>
-                  </main>
-                </div>
+                <UserProvider>
+                  <div>
+                    <HeaderContainer/>
+                    <main>
+                      <Outlet/>
+                    </main>
+                  </div>
+                </UserProvider>
               </MsUserProvider>)
             : null
         }

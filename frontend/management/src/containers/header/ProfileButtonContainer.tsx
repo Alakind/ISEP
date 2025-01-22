@@ -1,21 +1,20 @@
 import ProfileButton from "../../components/header/ProfileButton.tsx";
 import {ReactNode} from "react";
 import {useMsal} from "@azure/msal-react";
-import {useMsUserData} from "../../utils/msal/MsUserProvider.tsx";
-import {capitalizeFirstLetter} from "../../utils/general.tsx";
+import {useUserData} from "../../utils/msal/UserProvider.tsx";
 
 function ProfileButtonContainer(): ReactNode {
   const {instance} = useMsal();
-  const user = useMsUserData()
+  const user = useUserData();
 
   function handleLogout() {
     instance.logoutRedirect({postLogoutRedirectUri: "/",}).then()
   }
 
-
   return (
     <ProfileButton
-      currentUser={user.surname !== "" ? `${capitalizeFirstLetter(user.givenName)} ${capitalizeFirstLetter(user.surname)}` : capitalizeFirstLetter(user.givenName) ?? "-"}
+      currentUser={user.name ?? "-"}
+      currentRole={user.role ?? "-"}
       handleLogout={handleLogout}/>
   )
 }
