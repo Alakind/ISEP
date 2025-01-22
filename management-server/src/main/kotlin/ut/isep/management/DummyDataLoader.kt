@@ -3,10 +3,13 @@ package ut.isep.management
 import enumerable.InviteStatus
 import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
+import org.springframework.data.domain.Example
+import org.springframework.data.domain.ExampleMatcher
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
 import ut.isep.management.util.logger
+import java.net.URI
 import kotlin.time.Duration.Companion.minutes
 import java.net.URI
 
@@ -18,7 +21,9 @@ class DummyDataLoader(
     private val sectionRepository: SectionRepository,
     private val assignmentRepository: AssignmentRepository,
     private val solvedAssignmentRepository: SolvedAssignmentRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val timingPerSectionRepository: TimingPerSectionRepository,
+    private val testResultRepository: TestResultRepository
 ) : CommandLineRunner {
 
     private val log = logger()
@@ -32,6 +37,8 @@ class DummyDataLoader(
         sectionRepository.deleteAll()       // Delete sections
         assignmentRepository.deleteAll()    // Delete assignments
         userRepository.deleteAll()
+        timingPerSectionRepository.deleteAll()
+        testResultRepository.deleteAll()
         // dummy Assignments
         val assignment1 = AssignmentMultipleChoice(
             description = "What will I get if I will sum 2 and 2?",
@@ -121,15 +128,65 @@ class DummyDataLoader(
             description = "Improve this code",
             availablePoints = 30,
             language = "python",
-            availableSeconds = 5.minutes.inWholeSeconds,
+            availableSeconds = 20.minutes.inWholeSeconds,
+            referenceAnswer = "Improve this code by saying blub",
             codeUri = URI("https://localhost:8080/code-executor/")
         )
 
         val codingAssigment2 = AssignmentCoding(
             description = "Improve this code: two",
             availablePoints = 30,
-            language = "python",
-            availableSeconds = 5.minutes.inWholeSeconds,
+            language = "javascript",
+            startingCode = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i === 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n",
+            availableSeconds = 20.minutes.inWholeSeconds,
+            referenceAnswer = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i === 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n" +
+                    "/*Write the code that runs the above until the\n" +
+                    "length of the array equals the number of primes\n" +
+                    "desired*/\n" +
+                    "\n" +
+                    "var numPrimes = prompt(\"How many primes?\");\n" +
+                    "\n" +
+                    "//Display the finished array of primes\n" +
+                    "\n" +
+                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+                    "    PrimeCheck(i); //\n" +
+                    "}\n" +
+                    "console.log(primeArray);",
             codeUri = URI("https://localhost:8080/code-executor/")
         )
 
@@ -281,15 +338,80 @@ class DummyDataLoader(
         applicants.forEach { applicantRepository.save(it) }
 
         val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
-        inviteApplicant0Assessment1.status = InviteStatus.not_started
+        inviteApplicant0Assessment1.status = InviteStatus.app_finished
         val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
-        inviteApplicant0Assessment2.status = InviteStatus.app_finished
+        inviteApplicant0Assessment2.status = InviteStatus.not_started
         val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
         inviteApplicant1Assessment1.status = InviteStatus.app_finished
 
         inviteRepository.save(inviteApplicant0Assessment1)
         inviteRepository.save(inviteApplicant0Assessment2)
         inviteRepository.save(inviteApplicant1Assessment1)
+
+        // set solved answer for coding question
+        val matcher: ExampleMatcher = ExampleMatcher.matching()
+            .withIgnoreNullValues()
+            .withMatcher("applicant", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withMatcher("assessment", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withIgnorePaths("id", "solutions", "invitedAt", "expiresAt", "assessmentStartedAt", "assessmentFinishedAt", "measuredSecondsPerSection", "status")
+        val invite = inviteRepository.findAll(Example.of(Invite(applicant = applicants[0], assessment = assessment1), matcher))[0]
+        val solvedAssignmentCoding = solvedAssignmentRepository.findById(
+            SolvedAssignmentId(
+                inviteId = invite.id,
+                assignmentId = codingAssigment2.id
+            )
+        ).orElseThrow { NoSuchElementException("SolvedAssignment not found") }
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            solvedAssignmentCoding.userCode = "//Initialize the array that will hold the primes\n" +
+                    "var primeArray = [];\n" +
+                    "/*Write a function that checks for primeness and\n" +
+                    "pushes those values to the array to make is fun*/\n" +
+                    "function PrimeCheck(candidate){\n" +
+                    "  isPrime = true;\n" +
+                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+                    "    if(candidate%i !== 0){\n" +
+                    "      isPrime = false;\n" +
+                    "    } else {\n" +
+                    "      isPrime = true;\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "  if(!isPrime){\n" +
+                    "    primeArray.push(candidate);\n" +
+                    "  }\n" +
+                    "  return primeArray;\n" +
+                    "}\n" +
+                    "/*Write the code that runs the above until the\n" +
+                    "length of the array equals the number of primes\n" +
+                    "desired*/\n" +
+                    "\n" +
+                    "var numPrimes = prompt(\"How many primes?\");\n" +
+                    "console.log(numPrimes) \n" +
+                    "//Display the finished array of primes\n" +
+                    "\n" +
+                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+                    "    PrimeCheck(i); //\n" +
+                    "}\n" +
+                    "console.log(primeArray);"
+        } else {
+            log.error("The solved assignment is not of type SolvedAssignmentCoding")
+        }
+        solvedAssignmentRepository.save(solvedAssignmentCoding)
+
+        // Add test result to solved coding assignment
+        val testResult1 = TestResult(name = "null check", passed = false, message = "The value can't be null")
+        val testResult2 = TestResult(name = "id check", passed = true)
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            testResult1.solvedAssignmentCoding = solvedAssignmentCoding
+            testResult2.solvedAssignmentCoding = solvedAssignmentCoding
+            testResultRepository.saveAll(listOf(testResult1, testResult2))
+        }
+
+        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+            solvedAssignmentCoding.testResults.addAll(listOf(testResult1, testResult2))
+        }
+
+        solvedAssignmentRepository.save(solvedAssignmentCoding)
         log.info("Dummy data loaded!")
     }
 }

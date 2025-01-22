@@ -148,6 +148,7 @@ class InviteController(
     )
     fun putInvite(@RequestBody inviteDTO: InviteUpdateDTO): ResponseEntity<String> {
         return try {
+            //TODO do checks for status change
             inviteUpdateService.update(inviteDTO)
             ResponseEntity.ok("Updated an invite")
         } catch (e: NoSuchElementException) {

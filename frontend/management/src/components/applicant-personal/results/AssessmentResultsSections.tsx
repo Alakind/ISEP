@@ -3,9 +3,9 @@ import {Dispatch, ReactNode, SetStateAction} from "react";
 import {AssignmentTypes} from "../../../utils/constants.tsx";
 import SolvedAssignmentMultipleChoice from "./SolvedAssignmentMultipleChoice.tsx";
 import SolvedAssignmentOpen from "./SolvedAssignmentOpen.tsx";
-import SolvedAssignmentCoding from "./SolvedAssignmentCoding.tsx";
 
 import SolvedAssignmentContainer from "../../../containers/applicant-personal/results/SolvedAssignmentContainer.tsx";
+import SolvedAssignmentCodingContainer from "../../../containers/applicant-personal/results/SolvedAssignmentCodingContainer.tsx";
 
 function AssessmentResultsSections({inviteUuid, sections, activeSection, setActiveSection}: Readonly<Props>): ReactNode {
   function formatMeasuredTime(seconds: number | undefined): string | undefined {
@@ -38,7 +38,8 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
     <div id={`invite_accordion_${inviteUuid}`} data-testid={"assessment-results-sections"}>
       {sections.map((section: SectionSolvedInterface, sectionIndex: number): ReactNode => (
         <div key={`section-${section.id}`} className="card">
-          <button className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex)} data-testid={"section-header"}>
+          <button className="card-header section__header" id={`heading-${section.id}`} onClick={(): void => setActiveSection(sectionIndex == activeSection ? -1 : sectionIndex)}
+                  data-testid={"section-header"}>
             <span>{section.title}</span>
             <span>
               <b
@@ -73,7 +74,7 @@ function AssessmentResultsSections({inviteUuid, sections, activeSection, setActi
                   {assignment.type == AssignmentTypes.CODING && (
                     <SolvedAssignmentContainer assignment={assignment} assignmentIndex={assignmentIndex} key={`{section-${sectionIndex}_assignment-${assignmentIndex}`} sectionIndex={sectionIndex}
                                                inviteId={inviteUuid}>
-                      <SolvedAssignmentCoding assignment={assignment as AssignmentCodingSolvedInterface}/>
+                      <SolvedAssignmentCodingContainer assignment={assignment as AssignmentCodingSolvedInterface}/>
                     </SolvedAssignmentContainer>
                   )}
                 </div>

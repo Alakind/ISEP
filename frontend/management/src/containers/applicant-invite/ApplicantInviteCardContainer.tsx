@@ -8,7 +8,15 @@ import LoadingPage from "../../components/LoadingPage.tsx";
 import {EmailTypes} from "../../utils/constants.tsx";
 
 function ApplicantInviteCardContainer(): ReactNode {
-  const [inviteData, setInviteData] = useState<InviteInterface>({expiresAt: getExpirationDateFormatted(), id: "", invitedAt: "", status: "", applicantId: "0", assessmentId: "0"});
+  const [inviteData, setInviteData] = useState<InviteInterface>({
+    expiresAt: getExpirationDateFormatted(),
+    id: "",
+    invitedAt: "",
+    status: "",
+    applicantId: "0",
+    assessmentId: "0",
+    measuredSecondsPerSection: []
+  });
   //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();

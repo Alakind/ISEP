@@ -12,10 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 @EnableAsync
 @EnableJpaRepositories(basePackages = ["ut.isep.management.repository"])
 @EnableScheduling
-class ManagementApplication {
-}
+class ManagementApplication
 
 fun main(args: Array<String>) {
     runApplication<ManagementApplication>(*args)
-
 }

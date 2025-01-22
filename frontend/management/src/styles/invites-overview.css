@@ -34,6 +34,11 @@
     height: 100%;
 }
 
+[data-theme="light"] .invites-overview__body__item__btn:disabled {
+    border-color: white !important;
+    color: white !important;
+}
+
 .invites-overview__body__item__btn__text {
     font-size: 12px;
 }

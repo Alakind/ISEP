@@ -3,18 +3,18 @@ import HeaderContainer from "./containers/header/HeaderContainer.tsx";
 import {ReactNode, useEffect} from "react";
 
 function App(): ReactNode {
-    const location = useLocation();
-    const navigate = useNavigate();
-    useEffect(() => {
-        if (location.pathname === "/") {
-            navigate("/dashboard", { replace: true });
-        }
-    }, [location, navigate]);
-    return (
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/dashboard", {replace: true});
+    }
+  }, [location, navigate]);
+  return (
     <div>
-      <HeaderContainer />
+      <HeaderContainer/>
       <main>
-        <Outlet />
+        <Outlet/>
       </main>
     </div>
   );

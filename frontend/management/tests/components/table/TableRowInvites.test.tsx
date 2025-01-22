@@ -21,8 +21,8 @@ describe("TableRowInvites", () => {
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
     status: "app_finished",
-    assessmentStartedAt: new Date("2025-01-14T00:00:00Z"),
-    assessmentFinishedAt: new Date("2025-01-15T00:00:00Z"),
+    assessmentStartedAt: "2025-01-14T00:00:00Z",
+    assessmentFinishedAt: "2025-01-15T00:00:00Z",
     expiresAt: "2025-01-14T00:00:00Z",
     measuredSecondsPerSection: [0]
   };
@@ -35,8 +35,8 @@ describe("TableRowInvites", () => {
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
     status: "expired",
-    assessmentStartedAt: new Date("2025-01-14T00:00:00Z"),
-    assessmentFinishedAt: new Date("2025-01-15T00:00:00Z"),
+    assessmentStartedAt: "2025-01-14T00:00:00Z",
+    assessmentFinishedAt: "2025-01-15T00:00:00Z",
     expiresAt: "2025-01-14T00:00:00Z",
     measuredSecondsPerSection: [0]
   };
@@ -48,8 +48,8 @@ describe("TableRowInvites", () => {
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
     status: "reminder_once",
-    assessmentStartedAt: new Date("2025-01-14T00:00:00Z"),
-    assessmentFinishedAt: new Date("2025-01-15T00:00:00Z"),
+    assessmentStartedAt: "2025-01-14T00:00:00Z",
+    assessmentFinishedAt: "2025-01-15T00:00:00Z",
     expiresAt: "2025-01-20T00:00:00Z",
     measuredSecondsPerSection: [0]
   };
