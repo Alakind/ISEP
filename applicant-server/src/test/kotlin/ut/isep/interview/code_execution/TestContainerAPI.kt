@@ -3,6 +3,8 @@ package ut.isep.interview.code_execution
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import ut.isep.interview.code_execution.utils.Command
+import ut.isep.interview.code_execution.utils.ContainerAPI
 import java.io.File
 import java.lang.Thread.sleep
 import java.time.Instant
