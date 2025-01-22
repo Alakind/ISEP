@@ -15,11 +15,17 @@ class CodeExecution {
     // Python, C#, SQL, Java, and JavaScript
 
     @PostMapping(path = ["/{uuid}/java/initialize"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun initializeJavaContainer(@PathVariable uuid: String, @RequestPart("file") file: MultipartFile): ResponseEntity<Any> {
-        val temp = File.createTempFile(file.name, null)
-        file.transferTo(temp)
+    fun initializeJavaContainer(@PathVariable uuid: String, @RequestPart("file", required = false) file: MultipartFile?): ResponseEntity<Any> {
+        val containerFile: File
+        if (file == null) {
+            containerFile = File("src/main/resources/defaultContainers/JavaDockerfile")
+        } else {
+            containerFile = File.createTempFile(file.name, null)
+            file.transferTo(containerFile)
+        }
+
         try {
-            JavaExecutor.startContainer(uuid, temp)
+            JavaExecutor.startContainer(uuid, containerFile)
             return ResponseEntity.ok().build()
         } catch (e: Exception) {
             return ResponseEntity.badRequest().body(e.message)
@@ -40,11 +46,17 @@ class CodeExecution {
     }
 
     @PostMapping(path = ["/{uuid}/python/initialize"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun initializePythonContainer(@PathVariable uuid: String, @RequestPart("file") file: MultipartFile): ResponseEntity<Any> {
-        val temp = File.createTempFile(file.name, null)
-        file.transferTo(temp)
+    fun initializePythonContainer(@PathVariable uuid: String, @RequestPart("file", required = false) file: MultipartFile?): ResponseEntity<Any> {
+        val containerFile: File
+        if (file == null) {
+            containerFile = File("src/main/resources/defaultContainers/PythonDockerfile")
+        } else {
+            containerFile = File.createTempFile(file.name, null)
+            file.transferTo(containerFile)
+        }
+
         try {
-            PythonExecutor.startContainer(uuid, temp)
+            PythonExecutor.startContainer(uuid, containerFile)
             return ResponseEntity.ok().build()
         } catch (e: Exception) {
             return ResponseEntity.badRequest().body(e.message)
