@@ -25,11 +25,11 @@ describe('UsersListPageContainer', () => {
   const mockUsers: UserInterface[] = [
     {
       id: '1', name: 'John Doe', email: 'john@example.com',
-      role: Roles.ADMIN
+      role: Roles.ADMIN, oid: ""
     },
     {
       id: '2', name: 'Jane Doe', email: 'jane@example.com',
-      role: Roles.INTERVIEWER
+      role: Roles.INTERVIEWER, oid: ""
     },
   ];
 

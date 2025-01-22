@@ -46,15 +46,15 @@ describe('ApplicantPersonalPageContainer', () => {
   const mockInvites: InviteInterface[] = [
     {
       id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
     {
       id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },

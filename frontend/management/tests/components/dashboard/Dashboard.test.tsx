@@ -43,6 +43,7 @@ describe("Dashboard", () => {
         setTotalWillExpire={mockSetTotalWillExpire}
         totalExpired={10}
         setTotalExpired={mockSetTotalExpired}
+        currentUser={""}
       />
     );
 

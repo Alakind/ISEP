@@ -32,6 +32,7 @@ describe("Interface Compliance", () => {
       name: "Jane Doe",
       email: "jane@example.com",
       role: Roles.ADMIN,
+      oid: ""
     };
     expect(expectTypeOf(user).toMatchTypeOf<UserInterface>()).toBe(true);
   });

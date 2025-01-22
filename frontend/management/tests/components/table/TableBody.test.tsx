@@ -17,8 +17,8 @@ describe('TableBody Component', () => {
 
 
   const mockUserData: UserInterface[] = [
-    {createdAt: undefined, id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN},
-    {createdAt: undefined, id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER},
+    {createdAt: undefined, id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN, oid: ""},
+    {createdAt: undefined, id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER, oid: ""},
   ];
 
   const mockApplicantData: ApplicantInterface[] = [
@@ -36,7 +36,7 @@ describe('TableBody Component', () => {
       expiresAt: "2025-01-16T10:58:40Z",
       measuredSecondsPerSection: [],
       scoredPoints: 85,
-      assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+      assessmentFinishedAt: "2025-01-16T10:58:40Z",
     },
     {
       id: "",
@@ -47,7 +47,7 @@ describe('TableBody Component', () => {
       expiresAt: "2025-01-21T10:58:40Z",
       measuredSecondsPerSection: [],
       scoredPoints: 90,
-      assessmentFinishedAt: new Date("2025-01-17T10:58:40Z"),
+      assessmentFinishedAt: "2025-01-17T10:58:40Z",
     },
   ];
 
@@ -149,7 +149,7 @@ describe('TableBody Component', () => {
         expiresAt: "2025-01-16T10:58:40Z",
         measuredSecondsPerSection: [],
         scoredPoints: 85,
-        assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+        assessmentFinishedAt: "2025-01-16T10:58:40Z",
       },
     ];
     render(
@@ -183,7 +183,7 @@ describe('TableBody Component', () => {
         expiresAt: "2025-01-16T10:58:40Z",
         measuredSecondsPerSection: [],
         scoredPoints: 85,
-        assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+        assessmentFinishedAt: "2025-01-16T10:58:40Z",
       },
     ];
     render(
@@ -197,7 +197,7 @@ describe('TableBody Component', () => {
         />
       </table>
     );
-    
+
     expect(screen.getAllByTestId('empty-cell')).toHaveLength(4);
 
   });

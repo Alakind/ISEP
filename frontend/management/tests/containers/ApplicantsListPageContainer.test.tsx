@@ -51,8 +51,8 @@ describe('ApplicantsListPageContainer', () => {
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
       expiresAt: "2025-01-06T00:28:25.485108Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
@@ -63,8 +63,8 @@ describe('ApplicantsListPageContainer', () => {
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
       expiresAt: "2025-01-06T00:28:25.485638Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     }
