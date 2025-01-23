@@ -24,7 +24,7 @@ object PythonExecutor {
         return getTestResult(tests, testOutput.error);
     }
 
-    private fun getTestResult(testsString: String, output: String): List<TestResult> {
+    fun getTestResult(testsString: String, output: String): List<TestResult> {
         val result = parseTestOutput(output).toMutableList()
         val failedTests = result.map { it.name }
         result.addAll(
@@ -37,11 +37,13 @@ object PythonExecutor {
     private fun parseTests(testString: String): List<String> {
         val testNames: MutableList<String> = mutableListOf()
         var test = false
+        var classMethod = false
 
         for (line in testString.lines()) {
-            if (test and line.matches(" +def .+".toRegex())) {
+            if (test and !classMethod and line.matches(" +def .+".toRegex())) {
                 testNames.add(line.split("def ")[1].split("(").first())
             }
+            classMethod = test and line.matches(" +@classmethod.*".toRegex())
             test = (test and !line.matches("[a-zA-Z].*".toRegex())) or line.matches("^class .+?\\(unittest\\.TestCase\\):.*$".toRegex())
         }
         return testNames
@@ -50,6 +52,9 @@ object PythonExecutor {
     private fun parseTestOutput(output: String): List<TestResult> {
         val result: MutableList<TestResult> = mutableListOf()
         val tests = output.split("={10,}".toRegex()).drop(1)
+        if (tests.isNotEmpty() && tests.first().startsWith("\nERROR:")) {
+            throw RuntimeException("Build failed:\n\n$output")
+        }
         for (test in tests) {
             result.add(TestResult("FAIL: (\\w+)".toRegex().find(test)!!.groupValues[1],
                 test.split("-{10,}".toRegex())[1],

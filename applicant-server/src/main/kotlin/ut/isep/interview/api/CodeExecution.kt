@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile
 import ut.isep.interview.code_execution.CodeExecutor
 import ut.isep.interview.code_execution.JavaExecutor
 import ut.isep.interview.code_execution.PythonExecutor
+import ut.isep.interview.code_execution.SQLExecutor
 import java.io.File
 
 @RestController
@@ -70,6 +71,37 @@ class CodeExecution {
         }
         try {
             val result = PythonExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
+            return ResponseEntity.ok().body(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(400).body(e.message)
+        }
+    }
+
+    @PostMapping(path = ["/{uuid}/sql/initialize"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun initializeSQLContainer(@PathVariable uuid: String, @RequestPart("file", required = false) file: MultipartFile?): ResponseEntity<Any> {
+        val containerFile: File
+        if (file == null) {
+            containerFile = File("src/main/resources/defaultContainers/SQLDockerfile")
+        } else {
+            containerFile = File.createTempFile(file.name, null)
+            file.transferTo(containerFile)
+        }
+
+        try {
+            SQLExecutor.startContainer(uuid, containerFile)
+            return ResponseEntity.ok().build()
+        } catch (e: Exception) {
+            return ResponseEntity.badRequest().body(e.message)
+        }
+    }
+
+    @PostMapping("/{uuid}/sql/test")
+    fun testSQLCode(@PathVariable uuid: String, @RequestBody() codeStrings: Map<String, String>): ResponseEntity<Any> {
+        if (!codeStrings.containsKey("code")) {
+            return ResponseEntity.badRequest().body("You must provide code with your request")
+        }
+        try {
+            val result = SQLExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
             return ResponseEntity.ok().body(result)
         } catch (e: Exception) {
             return ResponseEntity.status(400).body(e.message)
