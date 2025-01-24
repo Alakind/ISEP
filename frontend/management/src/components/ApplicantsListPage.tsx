@@ -6,8 +6,9 @@ import ItemPerPageSelectContainer from "../containers/table/ItemsPerPageSelectCo
 import PaginationContainer from "../containers/table/PaginationContainer.tsx";
 import "../styles/applicant-list-page.css"
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
-import {applicantColumns} from "../utils/constants.tsx";
+import {applicantColumns, Roles} from "../utils/constants.tsx";
 import Button from "./Button.tsx";
+import {useUserData} from "../utils/msal/UserProvider.tsx";
 
 function ApplicantsListPage({
                               handleAddApplicant,
@@ -22,15 +23,21 @@ function ApplicantsListPage({
                               setOrderBy,
                               setQuery
                             }: Readonly<Props>): ReactNode {
+  const user = useUserData();
   return (
     <div className="applicant-list-page" data-testid={"applicants-list-page"}>
       <span>
-        <Button
-          handleClick={handleAddApplicant}
-          iconClass={"bi-person-add"}
-          spanTextClass={"applicant-list-page__btn__text"}
-          text={"Add applicant"}
-        />
+        {
+          user.role === Roles.ADMIN || user.role == Roles.RECRUITER
+            ? (
+              <Button
+                handleClick={handleAddApplicant}
+                iconClass={"bi-person-add"}
+                spanTextClass={"applicant-list-page__btn__text"}
+                text={"Add applicant"}
+              />
+            ) : null
+        }
         <SearchContainer setQuery={setQuery}/>
       </span>
       {

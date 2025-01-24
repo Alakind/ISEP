@@ -4,8 +4,11 @@ import ProfileButtonContainer from "../../containers/header/ProfileButtonContain
 import "../../styles/header.css"
 import {ReactNode} from "react";
 import {Link, NavLink} from "react-router-dom";
+import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {Roles} from "../../utils/constants.tsx";
 
 function Header({currentPage}: Readonly<Props>): ReactNode {
+  const user = useUserData();
   return (
     <header className="header" data-testid={"header"}>
       <span className="header__left">
@@ -24,13 +27,22 @@ function Header({currentPage}: Readonly<Props>): ReactNode {
                 <li className="nav-item">
                   <NavLink className={`nav-link nav-link--mod ${currentPage == "dashboard" ? "active" : ""}`} to={`/dashboard`}><i className="bi bi-columns-gap"></i>Dashboard</NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} to={"/applicants"}><i className="bi bi-people-fill"></i>Applicants</NavLink>
-                </li>
-                <li className="nav-item">
-                  {/*TODO hide this tab if the logged person doesn't have access (isn't an admin)*/}
-                  <NavLink className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} to={`/users`}><i className="bi bi-person-rolodex"></i>Users</NavLink>
-                </li>
+                {
+                  user.role === Roles.ADMIN || user.role === Roles.RECRUITER || user.role === Roles.INTERVIEWER
+                    ? (
+                      <li className="nav-item">
+                        <NavLink className={`nav-link nav-link--mod ${currentPage == "applicants" ? "active" : ""}`} to={"/applicants"}><i className="bi bi-people-fill"></i>Applicants</NavLink>
+                      </li>
+                    ) : null
+                }
+                {
+                  user.role === Roles.ADMIN
+                    ? (
+                      <li className="nav-item">
+                        <NavLink className={`nav-link nav-link--mod ${currentPage == "users" ? "active" : ""}`} to={`/users`}><i className="bi bi-person-rolodex"></i>Users</NavLink>
+                      </li>
+                    ) : null
+                }
               </ul>
               <span className="navbar-text navbar-text--mod">
                 <ProfileButtonContainer/>
