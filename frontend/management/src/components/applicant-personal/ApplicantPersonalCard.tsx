@@ -2,7 +2,7 @@ import {ApplicantInterface} from "../../utils/types.tsx";
 import Button from "../Button.tsx";
 import {ChangeEvent, ReactNode} from "react";
 import "../../styles/form.css";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 import {Roles} from "../../utils/constants.tsx";
 
 function ApplicantPersonalCard({applicant, handleChange, handleInvite, handleEdit, handleDelete, isEditing, handleSave, handleCancel}: Readonly<Props>): ReactNode {

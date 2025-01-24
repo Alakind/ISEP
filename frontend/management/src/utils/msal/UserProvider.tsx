@@ -1,5 +1,4 @@
-import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
-import {useMsUserData} from "./MsUserProvider.tsx";
+import {ReactNode, useEffect, useMemo, useState} from "react";
 import {UserInterface} from "../types.tsx";
 import {Roles} from "../constants.tsx";
 import {mapRole} from "../mapping.tsx";
@@ -7,15 +6,8 @@ import {addUser, getUserOid, updateUser} from "../apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {useMsal} from "@azure/msal-react";
 import {capitalizeFirstLetter} from "../general.tsx";
-
-
-export const UserContext = createContext({
-  name: "",
-  email: "",
-  role: "",
-  id: "",
-  oid: ""
-});
+import {useMsUserData} from "./UseMsUserData.tsx";
+import {UserContext} from "./UserContext.tsx";
 
 export const UserProvider = ({children}: { children: ReactNode }) => {
   const {instance} = useMsal();
@@ -96,12 +88,3 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
 
   return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
 }
-
-export const useUserData = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error("useMsUserData must be used within a MsUserProvider");
-  }
-  return context;
-};
-

@@ -8,7 +8,7 @@ import "../styles/applicant-list-page.css"
 import TableLoadingContainer from "../containers/table/loading/TableLoadingContainer.tsx";
 import {applicantColumns, Roles} from "../utils/constants.tsx";
 import Button from "./Button.tsx";
-import {useUserData} from "../utils/msal/UserProvider.tsx";
+import {useUserData} from "../utils/msal/UseUserData.tsx";
 
 function ApplicantsListPage({
                               handleAddApplicant,

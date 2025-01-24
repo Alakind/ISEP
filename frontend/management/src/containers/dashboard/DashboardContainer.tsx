@@ -1,6 +1,6 @@
 import Dashboard from "../../components/dashboard/Dashboard.tsx";
 import {useState} from "react";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function DashboardContainer() {
   const [totalApplicants, setTotalApplicants] = useState<number>(0);

@@ -5,7 +5,7 @@ import "../../styles/card-page.css";
 import DashboardStatisticsContainer from "../../containers/dashboard/DashboardStatisticsContainer.tsx";
 import DashboardQuickLinksContainer from "../../containers/dashboard/DashboardQuickLinksContainer.tsx";
 import {Dispatch, SetStateAction} from "react";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 import {Roles} from "../../utils/constants.tsx";
 
 function Dashboard({currentUser, totalApplicants, setTotalApplicants, totalWillExpire, setTotalWillExpire, totalExpired, setTotalExpired}: Readonly<Props>) {

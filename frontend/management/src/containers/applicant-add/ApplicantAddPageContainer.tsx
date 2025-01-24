@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 import CardPageContainer from "../card/CardPageContainer.tsx";
 import {Roles} from "../../utils/constants.tsx";
 import PageNoAccess from "../PageNoAccess.tsx";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function ApplicantAddPageContainer(): ReactNode {
   const navigate = useNavigate();

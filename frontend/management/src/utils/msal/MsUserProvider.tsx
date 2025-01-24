@@ -1,8 +1,9 @@
-import {createContext, ReactNode, useContext, useEffect, useMemo, useState} from "react";
+import {ReactNode, useEffect, useMemo, useState} from "react";
 import {loginRequest} from "../../AuthConfig.ts";
 import {AccountInfo, IPublicClientApplication} from "@azure/msal-browser";
 import {jwtDecode} from "jwt-decode";
 import {ExJwtPayload} from "../types.tsx";
+import {MsUserContext} from "./MsUserContext.tsx";
 
 interface MsUserInterface {
   givenName: string;
@@ -10,13 +11,6 @@ interface MsUserInterface {
   mail: string;
   oid: string;
 }
-
-export const MsUserContext = createContext({
-  givenName: "",
-  surname: "",
-  mail: "",
-  oid: ""
-});
 
 export const MsUserProvider = ({children, activeAccount, instance}: { children: ReactNode, activeAccount: AccountInfo, instance: IPublicClientApplication }) => {
   const [msUserData, setMsUserData] = useState<MsUserInterface>({
@@ -60,11 +54,4 @@ export const MsUserProvider = ({children, activeAccount, instance}: { children: 
   return <MsUserContext.Provider value={contextValue}>{children}</MsUserContext.Provider>;
 }
 
-export const useMsUserData = () => {
-  const context = useContext(MsUserContext);
-  if (!context) {
-    throw new Error("useMsUserData must be used within a MsUserProvider");
-  }
-  return context;
-};
 

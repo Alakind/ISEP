@@ -1,6 +1,6 @@
 import {AssignmentSolvedInterface} from "../../../utils/types.tsx";
 import {ChangeEvent, Children, ReactNode} from "react";
-import {useUserData} from "../../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../../utils/msal/UseUserData.tsx";
 import {Roles} from "../../../utils/constants.tsx";
 
 function SolvedAssignment({assignment, index, handleScoreChange, children}: Readonly<Props>): ReactNode {

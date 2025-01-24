@@ -5,7 +5,7 @@ import {getApplicants, getInvites} from "../utils/apiFunctions.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import {Roles} from "../utils/constants.tsx";
-import {useUserData} from "../utils/msal/UserProvider.tsx";
+import {useUserData} from "../utils/msal/UseUserData.tsx";
 import PageNoAccess from "./PageNoAccess.tsx";
 
 function ApplicantsListPageContainer(): ReactNode {

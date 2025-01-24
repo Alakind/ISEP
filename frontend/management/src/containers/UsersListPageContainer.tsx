@@ -3,7 +3,7 @@ import {Selection, UserInterface} from "../utils/types";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {ReactNode, useEffect, useState} from "react";
-import {useUserData} from "../utils/msal/UserProvider.tsx";
+import {useUserData} from "../utils/msal/UseUserData.tsx";
 import {Roles} from "../utils/constants.tsx";
 import PageNoAccess from "./PageNoAccess.tsx";
 

@@ -3,7 +3,7 @@ import ApplicantInvitePage from "../../components/applicant-invite/ApplicantInvi
 import {ReactNode} from "react";
 import CardPageContainer from "../card/CardPageContainer.tsx";
 import {Roles} from "../../utils/constants.tsx";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 import PageNoAccess from "../PageNoAccess.tsx";
 
 function ApplicantInvitePageContainer(): ReactNode {

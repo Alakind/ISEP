@@ -7,7 +7,7 @@ import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import Button from "../Button.tsx";
 import {canCancelInvite, canDeleteInvite, canRemindInvite} from "../../utils/general.tsx";
 import {InviteStatuses, Roles} from "../../utils/constants.tsx";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates, handleCancel, handleDelete, handleRemind}: Readonly<Props>) {
   const user = useUserData();

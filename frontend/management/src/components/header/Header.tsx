@@ -4,7 +4,7 @@ import ProfileButtonContainer from "../../containers/header/ProfileButtonContain
 import "../../styles/header.css"
 import {ReactNode} from "react";
 import {Link, NavLink} from "react-router-dom";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 import {Roles} from "../../utils/constants.tsx";
 
 function Header({currentPage}: Readonly<Props>): ReactNode {

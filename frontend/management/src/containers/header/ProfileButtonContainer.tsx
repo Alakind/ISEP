@@ -1,7 +1,7 @@
 import ProfileButton from "../../components/header/ProfileButton.tsx";
 import {ReactNode} from "react";
 import {useMsal} from "@azure/msal-react";
-import {useUserData} from "../../utils/msal/UserProvider.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function ProfileButtonContainer(): ReactNode {
   const {instance} = useMsal();
