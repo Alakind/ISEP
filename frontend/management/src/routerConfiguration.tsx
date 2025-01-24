@@ -8,8 +8,8 @@ import ApplicantsListPageContainer from "./containers/ApplicantsListPageContaine
 import ApplicantAddPageContainer from "./containers/applicant-add/ApplicantAddPageContainer.tsx";
 import ApplicantPersonalPageContainer from "./containers/applicant-personal/ApplicantPersonalPageContainer.tsx";
 import ApplicantInvitePageContainer from "./containers/applicant-invite/ApplicantInvitePageContainer.tsx";
-import PageNotFound from "./containers/PageNotFound.tsx";
 import DashboardContainer from "./containers/dashboard/DashboardContainer.tsx";
+import PageNotFound from "./containers/PageNotFound.tsx";
 
 export const router = createBrowserRouter(
   [
