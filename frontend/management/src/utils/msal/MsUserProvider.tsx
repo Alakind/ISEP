@@ -26,6 +26,7 @@ export const MsUserProvider = ({children, activeAccount, instance}: { children: 
         .acquireTokenSilent({
           ...loginRequest,
           account: activeAccount,
+          redirectUri: "/redirect.html"
         })
         .then((response) => {
           const data: ExJwtPayload = jwtDecode(response.accessToken);
