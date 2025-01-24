@@ -1,5 +1,6 @@
 import {loginRequest} from "../../AuthConfig.ts";
 import {useMsal} from "@azure/msal-react";
+import LoginPage from "../../components/auth/LoginPage.tsx";
 
 function LoginPageContainer() {
   const {instance} = useMsal()
@@ -9,7 +10,7 @@ function LoginPageContainer() {
   }
 
   return (
-    <button onClick={handleRedirect}>Login</button>
+    <LoginPage handleRedirect={handleRedirect}/>
   )
 }
 
