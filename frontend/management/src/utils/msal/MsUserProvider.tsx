@@ -45,6 +45,7 @@ export const MsUserProvider = ({children, activeAccount, instance}: { children: 
         })
         .catch((error) => {
           console.error("Error acquiring token", error);
+          instance.logoutRedirect({postLogoutRedirectUri: "/",}).then()
         });
     }
   }, [activeAccount]);
