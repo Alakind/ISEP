@@ -24,14 +24,19 @@ Contained Building Blocks
 Important Interfaces
 
 STUB
- 
+
 *\<Description of important interfaces. EG Subsystems that don't need more in depth explanation>*
 
 ## 5.2. building Blocks Level 2
 
 ### 5.2.1. Applicant Frontend (Whitebox)
 
-STUB
+Login/Welcome scherm abd Assesment scherm
+
+Assesment scherm:
+Secties. Assignments. Every type is block. Multiple Choice, Open Question, Coding.
+
+Coding can be divided into types/language Java, SQL and Python. Javascript and C# moeten nog.
 
 ### 5.2.2. Management Frontend (Whitebox)
 
