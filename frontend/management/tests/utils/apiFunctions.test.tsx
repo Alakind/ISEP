@@ -787,7 +787,7 @@ describe("API Functions (users)", (): void => {
       ok: true,
     });
 
-    const result = await deleteUser("135");
+    const result = await deleteUser("135", "999");
 
     expect(mockFetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/user/135`,
@@ -804,19 +804,19 @@ describe("API Functions (users)", (): void => {
     });
 
     await expect(
-      deleteUser("1")
+      deleteUser("1", "999")
     ).rejects.toThrow(`Failed to delete user`);
   });
 
   it("should throw error when deleting an existing user fails when it is the standard admin", async () => {
     await expect(
-      deleteUser(import.meta.env.VITE_DEFAULT_ADMIN_ID)
+      deleteUser(import.meta.env.VITE_DEFAULT_ADMIN_ID, "999")
     ).rejects.toThrow("The standard admin can't be deleted");
   })
 
-  it.skip("should throw error when deleting an existing user fails when it is the current user", async () => {
+  it("should throw error when deleting an existing user fails when it is the current user", async () => {
     await expect(
-      deleteUser("currentUser")
+      deleteUser("999", "999")
     ).rejects.toThrow("Can't delete current user");
   })
 });

@@ -374,14 +374,13 @@ export async function updateUser(id: string, data: Partial<UserInterface>): Prom
   };
 }
 
-export async function deleteUser(id: string): Promise<string> {
+export async function deleteUser(id: string, checkId: string): Promise<string> {
   if (id == import.meta.env.VITE_DEFAULT_ADMIN_ID) {
     throw new Error("The standard admin can't be deleted");
   }
-  //TODO uncomment when auth is implemented
-  // if (id == currentuser.id) {
-  //   throw new Error(`Can't delete current user`);
-  // }
+  if (id == checkId) {
+    throw new Error("Can't delete current user");
+  }
   const response: Response = await fetch(`${baseUrl}/user/${id}`, {
     method: "DELETE",
     headers: {
