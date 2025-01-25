@@ -41,6 +41,7 @@ function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCod
                       testResults={assignment.testResults}
                       showTestResults={showTestResults}
                       handleShowTestResults={handleShowTestResults}
+                      theme={theme}
                     />
                   ) : (
                     <p>No test results available</p>
