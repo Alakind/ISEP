@@ -51,12 +51,6 @@ export interface AssessmentInterface {
   sections: number[]
 }
 
-export interface SectionInterface {
-  id: string;
-  assignments: AssignmentInterface[];
-  title: string;
-}
-
 export interface SectionSolvedInterface {
   id: string;
   assignments: AssignmentSolvedInterface[];
@@ -112,16 +106,6 @@ export interface AssignmentInterface {
   description: string;
 }
 
-export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
-  options: string[];
-  isMultipleAnswers: boolean;
-}
-
-export interface AssignmentCodingInterface extends AssignmentInterface {
-  image: string;
-  files: File[];
-}
-
 export interface BarChartInterface {
   percentage: string;
   barGroups: BarGroupInterface[];
@@ -141,21 +125,6 @@ export interface SkillsInterface {
 export interface ScoredAssessmentInterface {
   scoredPoints: number | null;
   availablePoints: number;
-}
-
-export interface GraphDataInterface {
-  //@odata.context: string; //"https://graph.microsoft.com/v1.0/$metadata#users/$entity"
-  businessPhones?: string[];
-  displayName?: string;
-  givenName?: string;
-  jobTitle?: string;
-  mail?: string;
-  mobilePhone?: string,
-  officeLocation?: string;
-  preferredLanguage?: string;
-  surname?: string;
-  userPrincipalName?: string;
-  id?: string;
 }
 
 export interface ExJwtPayload extends JwtPayload {

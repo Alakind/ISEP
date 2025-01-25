@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, BarChartInterface, InviteInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
 import {EmailTypes, InviteDateAttributes, InviteStatuses} from "./constants.tsx";
 import {testUuidValidity} from "./general.tsx";
 
@@ -432,21 +432,6 @@ export async function getAssessment(id: string): Promise<AssessmentInterface> {
   return await response.json();
 }
 
-export async function getSection(id: string): Promise<SectionInterface> {
-  const response: Response = await fetch(`${baseUrl}/section/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve section`);
-  }
-
-  return await response.json();
-}
-
 export async function getSectionResult(id: string, inviteId: string): Promise<SectionSolvedInterface> {
   const response: Response = await fetch(`${baseUrl}/section/${id}/result/${inviteId}`, {
     method: "GET",
@@ -457,21 +442,6 @@ export async function getSectionResult(id: string, inviteId: string): Promise<Se
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve result of section`);
-  }
-
-  return await response.json();
-}
-
-export async function getAssignment(id: string): Promise<AssignmentInterface> {
-  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve assignment`);
   }
 
   return await response.json();

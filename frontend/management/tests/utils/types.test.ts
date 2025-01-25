@@ -1,5 +1,5 @@
-import {ApplicantInterface, AssignmentInterface, InviteInterface, UserInterface,} from "../../src/utils/types";
-import {AssignmentTypes, InviteStatuses, Roles} from "../../src/utils/constants";
+import {ApplicantInterface, InviteInterface, UserInterface,} from "../../src/utils/types";
+import {InviteStatuses, Roles} from "../../src/utils/constants";
 
 describe("Interface Compliance", () => {
   it("should match ApplicantInterface structure", () => {
@@ -54,16 +54,6 @@ describe("Interface Compliance", () => {
   //AssignmentMultipleChoiceSolvedInterface
 
   //AssignmentCodingSolvedInterface
-
-  it("should match AssignmentInterface structure", () => {
-    const assignment: AssignmentInterface = {
-      id: "a1",
-      type: AssignmentTypes.OPEN,
-      isSolved: false,
-      description: "Write a function to reverse a string.",
-    };
-    expect(expectTypeOf(assignment).toMatchTypeOf<AssignmentInterface>()).toBe(true);
-  });
 
   //AssignmentMultipleChoiceInterface
 
