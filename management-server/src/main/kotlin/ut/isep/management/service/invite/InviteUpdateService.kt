@@ -5,7 +5,9 @@ import enumerable.InviteStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
 import ut.isep.management.exception.NotAllowedUpdateException
+import ut.isep.management.model.entity.AssignmentMultipleChoice
 import ut.isep.management.model.entity.Invite
+import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
 import ut.isep.management.service.UpdateService
 import ut.isep.management.service.converter.UpdateConverter
 import java.time.OffsetDateTime
@@ -27,8 +29,12 @@ class InviteUpdateService(
             InviteStatus.expired -> throw NotAllowedUpdateException("Expiration status change is not allowed")
             InviteStatus.app_started -> throw NotAllowedUpdateException("Start of assessment is done via /{id}/assessment")
             InviteStatus.app_finished -> {
-                invite.assessmentFinishedAt = OffsetDateTime.now()
-                repository.save(invite)
+                if (invite.status != InviteStatus.app_finished) {
+                    invite.assessmentFinishedAt = OffsetDateTime.now()
+                    repository.save(invite)
+                } else {
+                    throw NotAllowedUpdateException("Assessment has already been finished")
+                }
             }
 
             InviteStatus.cancelled -> {
@@ -39,6 +45,32 @@ class InviteUpdateService(
 
             null -> {
                 return
+            }
+        }
+    }
+
+    fun startAutoScoring(inviteUpdateDTO: InviteUpdateDTO) {
+        val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite not found") }
+
+        // Multiple choice auto scorable other assignments aren't
+        invite.solutions.forEach { solution ->
+            when (val assignment = solution.assignment) {
+                is AssignmentMultipleChoice -> {
+                    if (solution is SolvedAssignmentMultipleChoice) {
+                        val userOptionsCorrect = solution.userOptionsMarkedCorrect
+                        val correctAnswerIndexes = assignment.optionToSolution
+                            .entries
+                            .filter { it.value }
+                            .map { it.key }
+
+                        // Assign full points if only all the correct answers are given
+                        if (correctAnswerIndexes.size == userOptionsCorrect.size && correctAnswerIndexes.all { it in userOptionsCorrect }) {
+                            solution.scoredPoints = assignment.availablePoints
+                        } else {
+                            solution.scoredPoints = 0
+                        }
+                    }
+                }
             }
         }
     }
