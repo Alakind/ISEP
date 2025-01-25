@@ -7,6 +7,7 @@ export interface ApplicantInterface {
   email: string;
   statuses?: (typeof InviteStatuses)[keyof typeof InviteStatuses][];
   scores?: number[];
+  availablePoints?: number[];
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
   invites?: string[];
   createdAt?: Date;
@@ -23,6 +24,7 @@ export interface InviteInterface {
   assessmentStartedAt?: string;
   measuredSecondsPerSection: number[];
   scoredPoints?: number;
+  availablePoints?: number;
 }
 
 export interface UserInterface {

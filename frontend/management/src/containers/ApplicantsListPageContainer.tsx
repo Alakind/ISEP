@@ -35,6 +35,7 @@ function ApplicantsListPageContainer(): ReactNode {
               ...applicant,
               statuses: applicantInvites.map((invite: InviteInterface): string => invite.status),
               scores: applicantInvites.map((invite: InviteInterface): number => invite.scoredPoints ?? 0),
+              availablePoints: applicantInvites.map((invite: InviteInterface): number => invite.availablePoints ?? 0),
             };
           });
         }

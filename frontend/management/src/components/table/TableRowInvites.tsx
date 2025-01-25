@@ -18,9 +18,9 @@ function TableRowInvites({inviteData, columns, goToApplicantPage, applicantData,
           return (
             <td key={accessor}>
               <span className="table-row__score">
-              {inviteData.scoredPoints ? inviteData.scoredPoints : 0}/100
+              {inviteData.scoredPoints ?? 0}/{inviteData.availablePoints ?? 0}
               </span>
-              <Progressbar id={applicantData.id} score={inviteData.scoredPoints}/>
+              <Progressbar id={applicantData.id} score={inviteData.scoredPoints} max={inviteData.availablePoints ?? 0}/>
             </td>
           );
         } else if (accessor == "status") {
