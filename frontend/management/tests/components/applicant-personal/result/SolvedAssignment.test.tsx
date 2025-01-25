@@ -1,7 +1,8 @@
 import {fireEvent, render, screen} from '@testing-library/react';
 import SolvedAssignment from "../../../../src/components/applicant-personal/results/SolvedAssignment.tsx";
 import {AssignmentSolvedInterface} from "../../../../src/utils/types.tsx";
-import {AssignmentTypes} from "../../../../src/utils/constants.tsx";
+import {AssignmentTypes, Roles} from "../../../../src/utils/constants.tsx";
+import {vi} from "vitest";
 
 const mockAssignment: AssignmentSolvedInterface = {
   id: '1',
@@ -10,6 +11,10 @@ const mockAssignment: AssignmentSolvedInterface = {
   scoredPoints: 3,
   availablePoints: 5,
 };
+
+vi.mock("../../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 describe('SolvedAssignment Component', () => {
   const mockHandleScoreChange = vi.fn();

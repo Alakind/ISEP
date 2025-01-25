@@ -1,7 +1,31 @@
 import {createMemoryRouter, RouterProvider} from "react-router-dom";
 import {render, screen} from "@testing-library/react";
 import {router} from "../src/routerConfiguration.tsx";
-import {StrictMode} from "react";
+import {ReactNode, StrictMode} from "react";
+import {vi} from "vitest";
+import {Roles} from "../src/utils/constants.tsx";
+
+vi.mock("../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
+
+vi.mock("@azure/msal-react", () => ({
+  AuthenticatedTemplate: ({children}: { children: ReactNode }) => <>{children}</>,
+  UnauthenticatedTemplate: ({children}: { children: ReactNode }) => <>{children}</>,
+  useMsal: vi.fn(() => ({
+    instance: {
+      getActiveAccount: vi.fn(() => ({username: "testuser@gmail.com"})),
+    },
+  })),
+}));
+
+vi.mock("../src/utils/msal/MsUserProvider.tsx", () => ({
+  MsUserProvider: ({children}: { children: ReactNode }) => <>{children}</>
+}))
+
+vi.mock("../src/utils/msal/UserProvider.tsx", () => ({
+  UserProvider: ({children}: { children: ReactNode }) => <>{children}</>
+}))
 
 describe('Router Configuration', () => {
   it('renders the application without crashing', () => {

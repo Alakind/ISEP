@@ -6,6 +6,9 @@ import {getApplicant, getAssessment, getInvite} from "../../utils/apiFunctions.t
 import {toast} from "react-toastify";
 import LoadingPage from "../../components/LoadingPage.tsx";
 import CardPageContainer from "../card/CardPageContainer.tsx";
+import {Roles} from "../../utils/constants.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
+import PageNoAccess from "../PageNoAccess.tsx";
 
 function ApplicantPersonalPageContainer(): ReactNode {
   const [applicantData, setApplicantData] = useState<ApplicantInterface>({
@@ -23,10 +26,13 @@ function ApplicantPersonalPageContainer(): ReactNode {
   const navigate: NavigateFunction = useNavigate();
   const {id} = useParams();
   const [assessmentsData, setAssessmentsData] = useState<AssessmentInterface[]>([]);
+  const user = useUserData();
 
   useEffect((): void => {
     if (id) {
-      fetchApplicantData().then();
+      if (user.role === Roles.ADMIN || user.role === Roles.RECRUITER || user.role === Roles.INTERVIEWER) {
+        fetchApplicantData().then();
+      }
     }
   }, [id]);
 
@@ -73,20 +79,24 @@ function ApplicantPersonalPageContainer(): ReactNode {
     navigate(`/applicants`);
   }
 
-  return loading || applicantData.id === "0" || (invitesData.length !== applicantData.invites?.length) || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
-    <LoadingPage/>
-  ) : (
-    <CardPageContainer>
-      <ApplicantPersonalPage
-        applicant={applicantData}
-        setApplicant={setApplicantData}
-        goToApplicantsPage={goToApplicantsPage}
-        invitesData={invitesData}
-        assessmentsData={assessmentsData}
-        setInvitesData={setInvitesData}
-      />
-    </CardPageContainer>
-  );
+  if (user.role === Roles.ADMIN || user.role === Roles.RECRUITER || user.role === Roles.INTERVIEWER) {
+    return loading || applicantData.id === "0" || (invitesData.length !== applicantData.invites?.length) || (invitesData.length !== 0 && assessmentsData.length === 0) ? (
+      <LoadingPage/>
+    ) : (
+      <CardPageContainer>
+        <ApplicantPersonalPage
+          applicant={applicantData}
+          setApplicant={setApplicantData}
+          goToApplicantsPage={goToApplicantsPage}
+          invitesData={invitesData}
+          assessmentsData={assessmentsData}
+          setInvitesData={setInvitesData}
+        />
+      </CardPageContainer>
+    );
+  } else {
+    return <PageNoAccess/>
+  }
 }
 
 export default ApplicantPersonalPageContainer;

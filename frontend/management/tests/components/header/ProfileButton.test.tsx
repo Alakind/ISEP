@@ -25,7 +25,7 @@ describe('ProfileButton component', () => {
 
     const logoutLink = screen.getByText(/logout/i);
     expect(logoutLink).toBeInTheDocument();
-    expect(logoutLink).toHaveAttribute('href', '/logout');
+    expect(logoutLink).toHaveAttribute('href', '/');
   });
 
   it('renders the dropdown menu divider', () => {

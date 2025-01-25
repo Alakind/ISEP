@@ -5,7 +5,7 @@ import {getApplicant, getAssessment, getInvite} from '../../../src/utils/apiFunc
 import {MemoryRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../../src/utils/types.tsx";
-import {InviteStatuses} from "../../../src/utils/constants.tsx";
+import {InviteStatuses, Roles} from "../../../src/utils/constants.tsx";
 
 vi.mock('../../../src/utils/apiFunctions', () => ({
   getApplicant: vi.fn(),
@@ -27,6 +27,10 @@ vi.mock("react-router-dom", async () => {
     useNavigate: vi.fn(),
   };
 });
+
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 const mockNavigate = vi.fn();
 vi.mocked(useNavigate).mockReturnValue(mockNavigate);

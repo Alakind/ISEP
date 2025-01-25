@@ -46,8 +46,10 @@ function UsersListPageContainer(): ReactNode {
       }
     }
 
-    fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy, query]);
+    if (user.role === Roles.ADMIN) {
+      fetchData().then();
+    }
+  }, [currentPage, itemsPerPage, orderBy, query, user.role]);
 
   function removeUser(id: string): void {
     setData((prev: UserInterface[]): UserInterface[] => prev.filter((user: UserInterface): boolean => user.id !== id));

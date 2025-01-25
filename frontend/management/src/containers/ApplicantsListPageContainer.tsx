@@ -51,8 +51,10 @@ function ApplicantsListPageContainer(): ReactNode {
       }
     }
 
-    fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy, query]);
+    if (user.role === Roles.ADMIN || user.role === Roles.RECRUITER || user.role === Roles.INTERVIEWER) {
+      fetchData().then();
+    }
+  }, [currentPage, itemsPerPage, orderBy, query, user.role]);
 
   function handleAddApplicant(): void {
     navigate("/applicants/add");

@@ -9,14 +9,19 @@ vi.mock("../../../src/components/dashboard/Dashboard.tsx", () => {
   };
 });
 
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({name: "Jenna"}))
+}))
+
 describe("DashboardContainer", () => {
   it("should render the Dashboard component with correct initial props", () => {
     render(<DashboardContainer/>);
-    
+
     expect(screen.getByText("Mocked Dashboard")).toBeInTheDocument();
 
     expect(Dashboard).toHaveBeenCalledWith(
       {
+        currentUser: "Jenna",
         totalApplicants: 0,
         setTotalApplicants: expect.any(Function),
         totalWillExpire: 0,
