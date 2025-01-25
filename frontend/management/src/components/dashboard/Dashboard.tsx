@@ -19,7 +19,7 @@ function Dashboard({currentUser, totalApplicants, setTotalApplicants, totalWillE
           ? (
             <>
               <p>Welcome to the management page of Asserberus. To view applicants and their assessment results navigate to the
-                Applicants page. To view the roles of users navigate to the Users page.</p>
+                Applicants page. {user.role === Roles.ADMIN && "To view the roles of users navigate to the Users page."}</p>
               <div>
                 <div className={"dashboard-page__flex"}>
                   <div className={"dashboard-page__flex__left"}>
@@ -31,7 +31,6 @@ function Dashboard({currentUser, totalApplicants, setTotalApplicants, totalWillE
                       />
                     </CardBodyContainer>
                   </div>
-
                   <div className={"dashboard-page__flex__right"}>
                     <CardBodyContainer>
                       <DashboardQuickLinksContainer/>
