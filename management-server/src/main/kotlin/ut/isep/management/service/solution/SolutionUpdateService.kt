@@ -5,11 +5,13 @@ import dto.solution.SolutionsUpdateDTO
 import org.springframework.stereotype.Service
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
+import ut.isep.management.service.converter.assignment.AssignmentReadConverter
 import java.util.*
 
 @Service
 class SolutionUpdateService(
     private val repository: SolvedAssignmentRepository,
+    private val assignmentReadConverter: AssignmentReadConverter
 ) {
 
     fun updateSolutions(inviteId: UUID, createDTO: SolutionsUpdateDTO) {
@@ -36,10 +38,10 @@ class SolutionUpdateService(
     }
 
     private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
-        val assignment = solution.assignment as AssignmentMultipleChoice
-        if (assignment.optionToSolution.values.count { it } == 1 && answerDto.answer.size > 1) {
-            throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${assignment.id}")
-        }
+//        val assignment = assignmentReadConverter.toDTO(solution.assignment!!)
+//        if (assignment.optionToSolution.values.count { it } == 1 && answerDto.answer.size > 1) {
+//            throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${assignment.id}")
+//        }
         solution.userOptionsMarkedCorrect = answerDto.answer
         repository.save(solution)
     }

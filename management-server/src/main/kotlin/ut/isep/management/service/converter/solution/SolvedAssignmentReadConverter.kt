@@ -3,7 +3,10 @@ package ut.isep.management.service.converter.solution
 import dto.assignment.*
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
-import ut.isep.management.model.entity.*
+import ut.isep.management.model.entity.SolvedAssignment
+import ut.isep.management.model.entity.SolvedAssignmentCoding
+import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
+import ut.isep.management.model.entity.SolvedAssignmentOpen
 import ut.isep.management.service.converter.ReadConverter
 import ut.isep.management.service.converter.assignment.AssignmentReadConverter
 
@@ -22,7 +25,10 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
 
     fun toDTO(entity: SolvedAssignmentCoding): SolvedAssignmentCodingReadDTO {
         val codingAssignment = entity.assignment!!
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(codingAssignment) as AssignmentCodingReadDTO
+        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(
+            codingAssignment,
+            entity.invite!!.assessment!!.gitCommitHash!!
+        ) as AssignmentCodingReadDTO
         return SolvedAssignmentCodingReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.Coding(entity.userCode)
@@ -32,7 +38,10 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
     fun toDTO(entity: SolvedAssignmentMultipleChoice): SolvedAssignmentMultipleChoiceReadDTO {
         val multipleChoiceAssignment = entity.assignment!!
         val unsolvedAssignment =
-            unsolvedAssignmentConverter.toDTO(multipleChoiceAssignment) as AssignmentMultipleChoiceReadDTO
+            unsolvedAssignmentConverter.toDTO(
+                multipleChoiceAssignment,
+                entity.invite!!.assessment!!.gitCommitHash!!
+            ) as AssignmentMultipleChoiceReadDTO
         return SolvedAssignmentMultipleChoiceReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
@@ -41,7 +50,10 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
 
     fun toDTO(entity: SolvedAssignmentOpen): SolvedAssignmentOpenReadDTO {
         val openAssignment = entity.assignment!!
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(openAssignment) as AssignmentOpenReadDTO
+        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(
+            openAssignment,
+            entity.invite!!.assessment!!.gitCommitHash!!
+        ) as AssignmentOpenReadDTO
         return SolvedAssignmentOpenReadDTO(
             unsolvedAssignment = unsolvedAssignment,
             answer = AnswerCreateReadDTO.Open(entity.userSolution)

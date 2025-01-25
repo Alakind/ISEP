@@ -9,10 +9,7 @@ import dto.assignment.AssignmentReadDTO
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import ut.isep.management.service.assignment.AssignmentReadService
 import java.util.NoSuchElementException
 
@@ -36,9 +33,9 @@ class AssignmentController(val assignmentReadService: AssignmentReadService) {
             )]
         )
     ])
-    fun getAssignmentById(@PathVariable id: Long): ResponseEntity<AssignmentReadDTO> {
+    fun getAssignmentById(@PathVariable id: Long, @RequestParam commit: String): ResponseEntity<AssignmentReadDTO> {
         return try {
-            return ResponseEntity.ok(assignmentReadService.getById(id))
+            return ResponseEntity.ok(assignmentReadService.getById(id, commit))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }

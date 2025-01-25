@@ -18,7 +18,7 @@ class SectionReadConverter(val assignmentReadConverter: AssignmentReadConverter)
                 availablePoints = entity.availablePoints,
                 availableSeconds = entity.availableSeconds,
             ),
-            assignments = entity.assignments.map { assignmentReadConverter.toDTO(it) }
+            assignments = entity.assignments.map { assignmentReadConverter.toDTO(it, entity.assessment!!.gitCommitHash!!) }
         )
     }
 }

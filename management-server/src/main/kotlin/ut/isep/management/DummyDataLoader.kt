@@ -14,215 +14,215 @@ import kotlin.time.Duration.Companion.minutes
 
 @Component
 class DummyDataLoader(
-    private val applicantRepository: ApplicantRepository,
-    private val assessmentRepository: AssessmentRepository,
-    private val inviteRepository: InviteRepository,
-    private val sectionRepository: SectionRepository,
-    private val assignmentRepository: AssignmentRepository,
-    private val solvedAssignmentRepository: SolvedAssignmentRepository,
-    private val userRepository: UserRepository,
-    private val timingPerSectionRepository: TimingPerSectionRepository,
-    private val testResultRepository: TestResultRepository
+        private val applicantRepository: ApplicantRepository,
+        private val assessmentRepository: AssessmentRepository,
+        private val inviteRepository: InviteRepository,
+        private val sectionRepository: SectionRepository,
+        private val assignmentRepository: AssignmentRepository,
+        private val solvedAssignmentRepository: SolvedAssignmentRepository,
+        private val userRepository: UserRepository,
+        private val timingPerSectionRepository: TimingPerSectionRepository,
+        private val testResultRepository: TestResultRepository
 ) : CommandLineRunner {
 
     private val log = logger()
 
     override fun run(vararg args: String?) {
         // clear database in the correct order to avoid foreign key constraint violations
-        solvedAssignmentRepository.deleteAll()
-        inviteRepository.deleteAll()        // This will cascade to delete SolvedAssignments
-        applicantRepository.deleteAll()     // Delete applicants
-        assessmentRepository.deleteAll()    // Delete assessments
-        sectionRepository.deleteAll()       // Delete sections
-        assignmentRepository.deleteAll()    // Delete assignments
-        userRepository.deleteAll()
-        timingPerSectionRepository.deleteAll()
-        testResultRepository.deleteAll()
-        // dummy Assignments
-        val assignment1 = AssignmentMultipleChoice(
-            description = "What will I get if I will sum 2 and 2?",
-            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
-            availablePoints = 10,
-            availableSeconds = 120
-        )
-
-        val assignment2 = AssignmentMultipleChoice(
-            description = "Which member(s) should receive a red card?",
-            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
-            availablePoints = 3,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val assignment3 = AssignmentMultipleChoice(
-            description = "You are a 15th century plague doctor, please cure this sick person",
-            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
-            availablePoints = 34,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val assignment4 = AssignmentMultipleChoice(
-            description = "How Long is a Chinese person",
-            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
-            availablePoints = 3,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val openAssignment1 = AssignmentOpen(
-            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
-            referenceAnswer = "words words words",
-            availablePoints = 9,
-            availableSeconds = 8.minutes.inWholeSeconds
-        )
-
-        val openAssignment2 = AssignmentOpen(
-            description = "Prove whether or not P = NP in 150 words",
-            referenceAnswer = "Let P = NP, then PN = P.",
-            availablePoints = 5,
-            availableSeconds = 15.minutes.inWholeSeconds
-        )
-
-        val assignment5 = AssignmentMultipleChoice(
-            description = "What will I get if I will sum 2 and 2?",
-            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
-            availablePoints = 10,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val assignment6 = AssignmentMultipleChoice(
-            description = "Which member(s) should receive a red card?",
-            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
-            availablePoints = 10,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val assignment7 = AssignmentMultipleChoice(
-            description = "You are a 15th century plague doctor, please cure this sick person",
-            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
-            availablePoints = 2,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val assignment8 = AssignmentMultipleChoice(
-            description = "How Long is a Chinese person",
-            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
-            availablePoints = 3,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val openAssignment3 = AssignmentOpen(
-            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
-            referenceAnswer = "words words words",
-            availablePoints = 2,
-            availableSeconds = 10.minutes.inWholeSeconds
-        )
-
-        val openAssignment4 = AssignmentOpen(
-            description = "Prove whether or not P = NP in 150 words",
-            referenceAnswer = "Let P = NP, then PN = P.",
-            availablePoints = 59,
-            availableSeconds = 2.minutes.inWholeSeconds
-        )
-
-        val codingAssigment1 = AssignmentCoding(
-            description = "Improve this code",
-            availablePoints = 30,
-            language = "python",
-            availableSeconds = 20.minutes.inWholeSeconds,
-            referenceAnswer = "Improve this code by saying blub",
-            codeUri = URI("https://localhost:8080/code-executor/")
-        )
-
-        val codingAssigment2 = AssignmentCoding(
-            description = "Improve this code: two",
-            availablePoints = 30,
-            language = "javascript",
-            startingCode = "//Initialize the array that will hold the primes\n" +
-                    "var primeArray = [];\n" +
-                    "/*Write a function that checks for primeness and\n" +
-                    "pushes those values to the array*/\n" +
-                    "function PrimeCheck(candidate){\n" +
-                    "  isPrime = true;\n" +
-                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
-                    "    if(candidate%i === 0){\n" +
-                    "      isPrime = false;\n" +
-                    "    } else {\n" +
-                    "      isPrime = true;\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "  if(isPrime){\n" +
-                    "    primeArray.push(candidate);\n" +
-                    "  }\n" +
-                    "  return primeArray;\n" +
-                    "}\n",
-            availableSeconds = 20.minutes.inWholeSeconds,
-            referenceAnswer = "//Initialize the array that will hold the primes\n" +
-                    "var primeArray = [];\n" +
-                    "/*Write a function that checks for primeness and\n" +
-                    "pushes those values to the array*/\n" +
-                    "function PrimeCheck(candidate){\n" +
-                    "  isPrime = true;\n" +
-                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
-                    "    if(candidate%i === 0){\n" +
-                    "      isPrime = false;\n" +
-                    "    } else {\n" +
-                    "      isPrime = true;\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "  if(isPrime){\n" +
-                    "    primeArray.push(candidate);\n" +
-                    "  }\n" +
-                    "  return primeArray;\n" +
-                    "}\n" +
-                    "/*Write the code that runs the above until the\n" +
-                    "length of the array equals the number of primes\n" +
-                    "desired*/\n" +
-                    "\n" +
-                    "var numPrimes = prompt(\"How many primes?\");\n" +
-                    "\n" +
-                    "//Display the finished array of primes\n" +
-                    "\n" +
-                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
-                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
-                    "    PrimeCheck(i); //\n" +
-                    "}\n" +
-                    "console.log(primeArray);",
-            codeUri = URI("https://localhost:8080/code-executor/")
-        )
-
-        val section1 = Section(
-            title = "Demo Section 1",
-            assignments = listOf(assignment1, assignment2, openAssignment1),
-        )
-
-        val section2 = Section(
-            title = "Demo Section 2",
-            assignments = listOf(assignment3, assignment4, openAssignment2, codingAssigment1, codingAssigment2)
-        )
-
-        val section3 = Section(
-            title = "Demo Section 1",
-            assignments = listOf(assignment5, assignment6, openAssignment3)
-        )
-
-        val section4 = Section(
-            title = "Demo Section 2",
-            assignments = listOf(assignment7, assignment8, openAssignment4)
-        )
-
-        val assessment1 = Assessment(tag = "JAVA assessment", sections = mutableListOf(section1, section2))
-        section1.assessment = assessment1
-        section2.assessment = assessment1
-
-        val assessment2 = Assessment(tag = "SQL assessment", sections = mutableListOf(section3, section4))
-        section3.assessment = assessment2
-        section4.assessment = assessment2
-
-        assessmentRepository.save(assessment1)
-        assessmentRepository.save(assessment2)
-        sectionRepository.save(section1)
-        sectionRepository.save(section2)
-        sectionRepository.save(section3)
-        sectionRepository.save(section4)
+//        solvedAssignmentRepository.deleteAll()
+//        inviteRepository.deleteAll()        // This will cascade to delete SolvedAssignments
+//        applicantRepository.deleteAll()     // Delete applicants
+//        assessmentRepository.deleteAll()    // Delete assessments
+//        sectionRepository.deleteAll()       // Delete sections
+//        assignmentRepository.deleteAll()    // Delete assignments
+//        userRepository.deleteAll()
+//        timingPerSectionRepository.deleteAll()
+//        testResultRepository.deleteAll()
+//        // dummy Assignments
+//        val assignment1 = AssignmentMultipleChoice(
+//            description = "What will I get if I will sum 2 and 2?",
+//            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
+//            availablePoints = 10,
+//            availableSeconds = 120
+//        )
+//
+//        val assignment2 = AssignmentMultipleChoice(
+//            description = "Which member(s) should receive a red card?",
+//            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
+//            availablePoints = 3,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val assignment3 = AssignmentMultipleChoice(
+//            description = "You are a 15th century plague doctor, please cure this sick person",
+//            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
+//            availablePoints = 34,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val assignment4 = AssignmentMultipleChoice(
+//            description = "How Long is a Chinese person",
+//            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
+//            availablePoints = 3,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val openAssignment1 = AssignmentOpen(
+//            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
+//            referenceAnswer = "words words words",
+//            availablePoints = 9,
+//            availableSeconds = 8.minutes.inWholeSeconds
+//        )
+//
+//        val openAssignment2 = AssignmentOpen(
+//            description = "Prove whether or not P = NP in 150 words",
+//            referenceAnswer = "Let P = NP, then PN = P.",
+//            availablePoints = 5,
+//            availableSeconds = 15.minutes.inWholeSeconds
+//        )
+//
+//        val assignment5 = AssignmentMultipleChoice(
+//            description = "What will I get if I will sum 2 and 2?",
+//            optionToSolution = mapOf("42" to false, "Isaac Newton" to true, "Madagascar" to false),
+//            availablePoints = 10,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val assignment6 = AssignmentMultipleChoice(
+//            description = "Which member(s) should receive a red card?",
+//            optionToSolution = mapOf("Aleks" to true, "Jarno" to true, "Jesse" to true, "Ruben" to true, "Everard" to false),
+//            availablePoints = 10,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val assignment7 = AssignmentMultipleChoice(
+//            description = "You are a 15th century plague doctor, please cure this sick person",
+//            optionToSolution = mapOf("Mouse bites" to true, "Leeches" to false, "More mouse bites" to true, "All of the above" to true),
+//            availablePoints = 2,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val assignment8 = AssignmentMultipleChoice(
+//            description = "How Long is a Chinese person",
+//            optionToSolution = mapOf("Option A" to false, "169.7 cm (5 ft 7 in)" to false, "Trick question" to true),
+//            availablePoints = 3,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val openAssignment3 = AssignmentOpen(
+//            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon.",
+//            referenceAnswer = "words words words",
+//            availablePoints = 2,
+//            availableSeconds = 10.minutes.inWholeSeconds
+//        )
+//
+//        val openAssignment4 = AssignmentOpen(
+//            description = "Prove whether or not P = NP in 150 words",
+//            referenceAnswer = "Let P = NP, then PN = P.",
+//            availablePoints = 59,
+//            availableSeconds = 2.minutes.inWholeSeconds
+//        )
+//
+//        val codingAssigment1 = AssignmentCoding(
+//            description = "Improve this code",
+//            availablePoints = 30,
+//            language = "python",
+//            availableSeconds = 20.minutes.inWholeSeconds,
+//            referenceAnswer = "Improve this code by saying blub",
+//            codeUri = URI("https://localhost:8080/code-executor/")
+//        )
+//
+//        val codingAssigment2 = AssignmentCoding(
+//            description = "Improve this code: two",
+//            availablePoints = 30,
+//            language = "javascript",
+//            startingCode = "//Initialize the array that will hold the primes\n" +
+//                    "var primeArray = [];\n" +
+//                    "/*Write a function that checks for primeness and\n" +
+//                    "pushes those values to the array*/\n" +
+//                    "function PrimeCheck(candidate){\n" +
+//                    "  isPrime = true;\n" +
+//                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+//                    "    if(candidate%i === 0){\n" +
+//                    "      isPrime = false;\n" +
+//                    "    } else {\n" +
+//                    "      isPrime = true;\n" +
+//                    "    }\n" +
+//                    "  }\n" +
+//                    "  if(isPrime){\n" +
+//                    "    primeArray.push(candidate);\n" +
+//                    "  }\n" +
+//                    "  return primeArray;\n" +
+//                    "}\n",
+//            availableSeconds = 20.minutes.inWholeSeconds,
+//            referenceAnswer = "//Initialize the array that will hold the primes\n" +
+//                    "var primeArray = [];\n" +
+//                    "/*Write a function that checks for primeness and\n" +
+//                    "pushes those values to the array*/\n" +
+//                    "function PrimeCheck(candidate){\n" +
+//                    "  isPrime = true;\n" +
+//                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+//                    "    if(candidate%i === 0){\n" +
+//                    "      isPrime = false;\n" +
+//                    "    } else {\n" +
+//                    "      isPrime = true;\n" +
+//                    "    }\n" +
+//                    "  }\n" +
+//                    "  if(isPrime){\n" +
+//                    "    primeArray.push(candidate);\n" +
+//                    "  }\n" +
+//                    "  return primeArray;\n" +
+//                    "}\n" +
+//                    "/*Write the code that runs the above until the\n" +
+//                    "length of the array equals the number of primes\n" +
+//                    "desired*/\n" +
+//                    "\n" +
+//                    "var numPrimes = prompt(\"How many primes?\");\n" +
+//                    "\n" +
+//                    "//Display the finished array of primes\n" +
+//                    "\n" +
+//                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+//                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+//                    "    PrimeCheck(i); //\n" +
+//                    "}\n" +
+//                    "console.log(primeArray);",
+//            codeUri = URI("https://localhost:8080/code-executor/")
+//        )
+//
+//        val section1 = Section(
+//            title = "Demo Section 1",
+//            assignments = listOf(assignment1, assignment2, openAssignment1),
+//        )
+//
+//        val section2 = Section(
+//            title = "Demo Section 2",
+//            assignments = listOf(assignment3, assignment4, openAssignment2, codingAssigment1, codingAssigment2)
+//        )
+//
+//        val section3 = Section(
+//            title = "Demo Section 1",
+//            assignments = listOf(assignment5, assignment6, openAssignment3)
+//        )
+//
+//        val section4 = Section(
+//            title = "Demo Section 2",
+//            assignments = listOf(assignment7, assignment8, openAssignment4)
+//        )
+//
+//        val assessment1 = Assessment(tag = "JAVA assessment", sections = mutableListOf(section1, section2))
+//        section1.assessment = assessment1
+//        section2.assessment = assessment1
+//
+//        val assessment2 = Assessment(tag = "SQL assessment", sections = mutableListOf(section3, section4))
+//        section3.assessment = assessment2
+//        section4.assessment = assessment2
+//
+//        assessmentRepository.save(assessment1)
+//        assessmentRepository.save(assessment2)
+//        sectionRepository.save(section1)
+//        sectionRepository.save(section2)
+//        sectionRepository.save(section3)
+//        sectionRepository.save(section4)
 
         val user1 = User(name = "Default admin", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
         val user2 = User(name = "Abbc", email = "abbc@gmail.com")
@@ -336,81 +336,81 @@ class DummyDataLoader(
 
         applicants.forEach { applicantRepository.save(it) }
 
-        val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
-        inviteApplicant0Assessment1.status = InviteStatus.app_finished
-        val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
-        inviteApplicant0Assessment2.status = InviteStatus.not_started
-        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
-        inviteApplicant1Assessment1.status = InviteStatus.app_finished
-
-        inviteRepository.save(inviteApplicant0Assessment1)
-        inviteRepository.save(inviteApplicant0Assessment2)
-        inviteRepository.save(inviteApplicant1Assessment1)
-
-        // set solved answer for coding question
-        val matcher: ExampleMatcher = ExampleMatcher.matching()
-            .withIgnoreNullValues()
-            .withMatcher("applicant", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-            .withMatcher("assessment", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-            .withIgnorePaths("id", "solutions", "invitedAt", "expiresAt", "assessmentStartedAt", "assessmentFinishedAt", "measuredSecondsPerSection", "status")
-        val invite = inviteRepository.findAll(Example.of(Invite(applicant = applicants[0], assessment = assessment1), matcher))[0]
-        val solvedAssignmentCoding = solvedAssignmentRepository.findById(
-            SolvedAssignmentId(
-                inviteId = invite.id,
-                assignmentId = codingAssigment2.id
-            )
-        ).orElseThrow { NoSuchElementException("SolvedAssignment not found") }
-        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
-            solvedAssignmentCoding.userCode = "//Initialize the array that will hold the primes\n" +
-                    "var primeArray = [];\n" +
-                    "/*Write a function that checks for primeness and\n" +
-                    "pushes those values to the array to make is fun*/\n" +
-                    "function PrimeCheck(candidate){\n" +
-                    "  isPrime = true;\n" +
-                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
-                    "    if(candidate%i !== 0){\n" +
-                    "      isPrime = false;\n" +
-                    "    } else {\n" +
-                    "      isPrime = true;\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "  if(!isPrime){\n" +
-                    "    primeArray.push(candidate);\n" +
-                    "  }\n" +
-                    "  return primeArray;\n" +
-                    "}\n" +
-                    "/*Write the code that runs the above until the\n" +
-                    "length of the array equals the number of primes\n" +
-                    "desired*/\n" +
-                    "\n" +
-                    "var numPrimes = prompt(\"How many primes?\");\n" +
-                    "console.log(numPrimes) \n" +
-                    "//Display the finished array of primes\n" +
-                    "\n" +
-                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
-                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
-                    "    PrimeCheck(i); //\n" +
-                    "}\n" +
-                    "console.log(primeArray);"
-        } else {
-            log.error("The solved assignment is not of type SolvedAssignmentCoding")
-        }
-        solvedAssignmentRepository.save(solvedAssignmentCoding)
-
-        // Add test result to solved coding assignment
-        val testResult1 = TestResult(name = "null check", passed = false, message = "The value can't be null")
-        val testResult2 = TestResult(name = "id check", passed = true)
-        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
-            testResult1.solvedAssignmentCoding = solvedAssignmentCoding
-            testResult2.solvedAssignmentCoding = solvedAssignmentCoding
-            testResultRepository.saveAll(listOf(testResult1, testResult2))
-        }
-
-        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
-            solvedAssignmentCoding.testResults.addAll(listOf(testResult1, testResult2))
-        }
-
-        solvedAssignmentRepository.save(solvedAssignmentCoding)
+//        val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
+//        inviteApplicant0Assessment1.status = InviteStatus.app_finished
+//        val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
+//        inviteApplicant0Assessment2.status = InviteStatus.not_started
+//        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
+//        inviteApplicant1Assessment1.status = InviteStatus.app_finished
+//
+//        inviteRepository.save(inviteApplicant0Assessment1)
+//        inviteRepository.save(inviteApplicant0Assessment2)
+//        inviteRepository.save(inviteApplicant1Assessment1)
+//
+//        // set solved answer for coding question
+//        val matcher: ExampleMatcher = ExampleMatcher.matching()
+//            .withIgnoreNullValues()
+//            .withMatcher("applicant", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+//            .withMatcher("assessment", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+//            .withIgnorePaths("id", "solutions", "invitedAt", "expiresAt", "assessmentStartedAt", "assessmentFinishedAt", "measuredSecondsPerSection", "status")
+//        val invite = inviteRepository.findAll(Example.of(Invite(applicant = applicants[0], assessment = assessment1), matcher))[0]
+//        val solvedAssignmentCoding = solvedAssignmentRepository.findById(
+//            SolvedAssignmentId(
+//                inviteId = invite.id,
+//                assignmentId = codingAssigment2.id
+//            )
+//        ).orElseThrow { NoSuchElementException("SolvedAssignment not found") }
+//        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+//            solvedAssignmentCoding.userCode = "//Initialize the array that will hold the primes\n" +
+//                    "var primeArray = [];\n" +
+//                    "/*Write a function that checks for primeness and\n" +
+//                    "pushes those values to the array to make is fun*/\n" +
+//                    "function PrimeCheck(candidate){\n" +
+//                    "  isPrime = true;\n" +
+//                    "  for(var i = 2; i < candidate && isPrime; i++){\n" +
+//                    "    if(candidate%i !== 0){\n" +
+//                    "      isPrime = false;\n" +
+//                    "    } else {\n" +
+//                    "      isPrime = true;\n" +
+//                    "    }\n" +
+//                    "  }\n" +
+//                    "  if(!isPrime){\n" +
+//                    "    primeArray.push(candidate);\n" +
+//                    "  }\n" +
+//                    "  return primeArray;\n" +
+//                    "}\n" +
+//                    "/*Write the code that runs the above until the\n" +
+//                    "length of the array equals the number of primes\n" +
+//                    "desired*/\n" +
+//                    "\n" +
+//                    "var numPrimes = prompt(\"How many primes?\");\n" +
+//                    "console.log(numPrimes) \n" +
+//                    "//Display the finished array of primes\n" +
+//                    "\n" +
+//                    "//for loop starting at 2 as that is the lowest prime number keep going until the array is as long as we requested\n" +
+//                    "for (var i = 2; primeArray.length < numPrimes; i++) {   \n" +
+//                    "    PrimeCheck(i); //\n" +
+//                    "}\n" +
+//                    "console.log(primeArray);"
+//        } else {
+//            log.error("The solved assignment is not of type SolvedAssignmentCoding")
+//        }
+//        solvedAssignmentRepository.save(solvedAssignmentCoding)
+//
+//        // Add test result to solved coding assignment
+//        val testResult1 = TestResult(name = "null check", passed = false, message = "The value can't be null")
+//        val testResult2 = TestResult(name = "id check", passed = true)
+//        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+//            testResult1.solvedAssignmentCoding = solvedAssignmentCoding
+//            testResult2.solvedAssignmentCoding = solvedAssignmentCoding
+//            testResultRepoAssessmentsitory.saveAll(listOf(testResult1, testResult2))
+//        }
+//
+//        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
+//            solvedAssignmentCoding.testResults.addAll(listOf(testResult1, testResult2))
+//        }
+//
+//        solvedAssignmentRepository.save(solvedAssignmentCoding)
         log.info("Dummy data loaded!")
     }
 }

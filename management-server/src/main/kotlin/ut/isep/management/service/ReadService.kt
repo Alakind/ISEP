@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 @Transactional
 abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
-    protected val repository: BaseRepository<E, ID>,
+    protected open val repository: BaseRepository<E, ID>,
     protected val converter: ReadConverter<E, R>
 ) {
     // override this for custom matcher, this should perhaps be split into searchable and non-searchable ReadService
