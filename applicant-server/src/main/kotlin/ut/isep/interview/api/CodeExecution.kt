@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import ut.isep.interview.code_execution.CodeExecutor
+import ut.isep.interview.code_execution.JavaExecutor
+import ut.isep.interview.code_execution.PythonExecutor
 import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.exists
 
 @RestController
 @RequestMapping("/code-executor")
@@ -15,11 +15,21 @@ class CodeExecution {
     // Python, C#, SQL, Java, and JavaScript
 
     @PostMapping(path = ["/{uuid}/java/initialize"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun initializeJavaContainer(@PathVariable uuid: String, @RequestPart("file") file: MultipartFile): ResponseEntity<Any> {
-        val temp = File.createTempFile(file.name, null)
-        file.transferTo(temp)
-        CodeExecutor.startJavaContainer(uuid, temp)
-        return ResponseEntity.ok().build()
+    fun initializeJavaContainer(@PathVariable uuid: String, @RequestPart("file", required = false) file: MultipartFile?): ResponseEntity<Any> {
+        val containerFile: File
+        if (file == null) {
+            containerFile = File("src/main/resources/defaultContainers/JavaDockerfile")
+        } else {
+            containerFile = File.createTempFile(file.name, null)
+            file.transferTo(containerFile)
+        }
+
+        try {
+            JavaExecutor.startContainer(uuid, containerFile)
+            return ResponseEntity.ok().build()
+        } catch (e: Exception) {
+            return ResponseEntity.badRequest().body(e.message)
+        }
     }
 
     @PostMapping("/{uuid}/java/test")
@@ -27,20 +37,43 @@ class CodeExecution {
         if (!codeStrings.containsKey("code")) {
             return ResponseEntity.badRequest().body("You must provide code with your request")
         }
-
-        val dir = Files.createTempDirectory(uuid)
-        val code = dir.resolve("Code.java").toFile()
-        code.writeText(codeStrings["code"]!!)
-
-        val test = dir.resolve("Test.java").toFile()
-        if (!test.exists() && !codeStrings.containsKey("test")) {
-            return ResponseEntity.badRequest().body("A file containing tests should be provided")
+        try {
+            val result = JavaExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
+            return ResponseEntity.ok().body(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(400).body(e.message)
         }
-        if (codeStrings.containsKey("test")) {
-            test.writeText(codeStrings["test"]!!)
+    }
+
+    @PostMapping(path = ["/{uuid}/python/initialize"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun initializePythonContainer(@PathVariable uuid: String, @RequestPart("file", required = false) file: MultipartFile?): ResponseEntity<Any> {
+        val containerFile: File
+        if (file == null) {
+            containerFile = File("src/main/resources/defaultContainers/PythonDockerfile")
+        } else {
+            containerFile = File.createTempFile(file.name, null)
+            file.transferTo(containerFile)
         }
 
-        return ResponseEntity.ok().body(CodeExecutor.runJavaTest(uuid, code, test))
+        try {
+            PythonExecutor.startContainer(uuid, containerFile)
+            return ResponseEntity.ok().build()
+        } catch (e: Exception) {
+            return ResponseEntity.badRequest().body(e.message)
+        }
+    }
+
+    @PostMapping("/{uuid}/python/test")
+    fun testPythonCode(@PathVariable uuid: String, @RequestBody() codeStrings: Map<String, String>): ResponseEntity<Any> {
+        if (!codeStrings.containsKey("code")) {
+            return ResponseEntity.badRequest().body("You must provide code with your request")
+        }
+        try {
+            val result = PythonExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
+            return ResponseEntity.ok().body(result)
+        } catch (e: Exception) {
+            return ResponseEntity.status(400).body(e.message)
+        }
     }
 
     @PostMapping("/{uuid}/cleanup")
