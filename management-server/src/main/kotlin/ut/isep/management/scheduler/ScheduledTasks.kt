@@ -116,7 +116,7 @@ class ScheduledTasks(
         val now = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
         invites.forEach {
             timingPerSectionRepository.save(timingPerSectionUpdateService.setMeasuredSecondsPreviousSection(it.id, now))
-            inviteUpdateInternalService.update(InviteUpdateInternalDTO(id = it.id, status = InviteStatus.expired, assessmentFinishedAt = now))
+            inviteUpdateInternalService.update(InviteUpdateInternalDTO(id = it.id, status = InviteStatus.app_finished, assessmentFinishedAt = now))
             log.info("Closed the assessment with inviteId ${it.id} at $now")
         }
     }
