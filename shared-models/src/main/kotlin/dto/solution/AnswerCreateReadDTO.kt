@@ -1,12 +1,12 @@
 package dto.solution
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import io.swagger.v3.oas.annotations.media.Schema
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import dto.CreateDTO
 import dto.ReadDTO
+import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "Answer objects for open, multiple-choice, and coding questions")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -20,7 +20,7 @@ import dto.ReadDTO
 sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
 
     data class MultipleChoice @JsonCreator constructor(
-        @JsonProperty("answer") val answer: List<Int>
+        @JsonProperty("answer") val answer: List<String>
     ) : AnswerCreateReadDTO()
 
     data class Open @JsonCreator constructor(
