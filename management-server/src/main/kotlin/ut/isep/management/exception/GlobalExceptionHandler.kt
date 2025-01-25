@@ -34,6 +34,11 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
     }
 
+    @ExceptionHandler(NotAllowedUpdateException::class)
+    fun handleNotAllowedUpdateException(ex: RuntimeException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
     @ExceptionHandler(OidNotUniqueException::class)
     fun handleOidNotUniqueException(ex: RuntimeException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)

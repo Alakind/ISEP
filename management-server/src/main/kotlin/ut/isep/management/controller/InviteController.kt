@@ -149,6 +149,7 @@ class InviteController(
     fun putInvite(@RequestBody inviteDTO: InviteUpdateDTO): ResponseEntity<String> {
         return try {
             //TODO do checks for status change
+            inviteUpdateService.checkStatusChange(inviteDTO)
             inviteUpdateService.update(inviteDTO)
             ResponseEntity.ok("Updated an invite")
         } catch (e: NoSuchElementException) {
@@ -188,7 +189,7 @@ class InviteController(
     @Tag(name = "Assessment")
     @Operation(
         summary = "Get the assessment by invite UUID",
-        description = "Return assessment as list of section IDs"
+        description = "Return assessment as list of section IDs and starts the assessment"
     )
     @ApiResponses(
         value = [
