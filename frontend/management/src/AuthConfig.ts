@@ -5,7 +5,7 @@ export const msalConfig: Configuration = {
     clientId: import.meta.env.VITE_CLIENT_ID,
     authority: import.meta.env.VITE_AUTHORITY,
     redirectUri: '/dashboard',
-    postLogoutRedirectUri: '/',
+    postLogoutRedirectUri: '/redirect.html',
     navigateToLoginRequestUrl: true,
   },
   cache: {

@@ -5,18 +5,18 @@ import {AuthenticatedTemplate, UnauthenticatedTemplate, useMsal} from "@azure/ms
 import LoginPageContainer from "./containers/auth/LoginPageContainer.tsx";
 import {MsUserProvider} from "./utils/msal/MsUserProvider.tsx";
 import {UserProvider} from "./utils/msal/UserProvider.tsx";
+import {InteractionStatus} from "@azure/msal-browser";
 
 function App(): ReactNode {
+  const {instance, inProgress} = useMsal()
+  const activeAccount = instance.getActiveAccount()
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (location.pathname === "/" && inProgress == InteractionStatus.None) {
       navigate("/dashboard", {replace: true});
     }
-  }, [location, navigate]);
-
-  const {instance} = useMsal()
-  const activeAccount = instance.getActiveAccount()
+  }, [inProgress, location, navigate]);
 
   return (
     <>
