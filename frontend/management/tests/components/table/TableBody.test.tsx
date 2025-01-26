@@ -17,13 +17,33 @@ describe('TableBody Component', () => {
 
 
   const mockUserData: UserInterface[] = [
-    {createdAt: undefined, id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN},
-    {createdAt: undefined, id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER},
+    {createdAt: undefined, id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN, oid: ""},
+    {createdAt: undefined, id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER, oid: ""},
   ];
 
   const mockApplicantData: ApplicantInterface[] = [
-    {createdAt: undefined, id: '3', name: 'Applicant 1', email: 'applicant1@example.com', scores: [85], preferredLanguage: "Kotlin", statuses: [mapStatus(InviteStatuses.NOT_STARTED)], invites: []},
-    {createdAt: undefined, id: '4', name: 'Applicant 2', email: 'applicant2@example.com', scores: [90], preferredLanguage: "Kotlin", statuses: [mapStatus(InviteStatuses.APP_FINISHED)], invites: []},
+    {
+      createdAt: undefined,
+      id: '3',
+      name: 'Applicant 1',
+      email: 'applicant1@example.com',
+      scores: [85],
+      availablePoints: [124],
+      preferredLanguage: "Kotlin",
+      statuses: [mapStatus(InviteStatuses.NOT_STARTED)],
+      invites: []
+    },
+    {
+      createdAt: undefined,
+      id: '4',
+      name: 'Applicant 2',
+      email: 'applicant2@example.com',
+      scores: [90],
+      availablePoints: [124],
+      preferredLanguage: "Kotlin",
+      statuses: [mapStatus(InviteStatuses.APP_FINISHED)],
+      invites: []
+    },
   ];
 
   const mockInvitesData: InviteInterface[] = [
@@ -36,7 +56,8 @@ describe('TableBody Component', () => {
       expiresAt: "2025-01-16T10:58:40Z",
       measuredSecondsPerSection: [],
       scoredPoints: 85,
-      assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+      availablePoints: 124,
+      assessmentFinishedAt: "2025-01-16T10:58:40Z",
     },
     {
       id: "",
@@ -47,7 +68,8 @@ describe('TableBody Component', () => {
       expiresAt: "2025-01-21T10:58:40Z",
       measuredSecondsPerSection: [],
       scoredPoints: 90,
-      assessmentFinishedAt: new Date("2025-01-17T10:58:40Z"),
+      availablePoints: 124,
+      assessmentFinishedAt: "2025-01-17T10:58:40Z",
     },
   ];
 
@@ -92,11 +114,11 @@ describe('TableBody Component', () => {
 
     expect(screen.getByText('Applicant 1')).toBeInTheDocument();
     expect(screen.getByText('applicant1@example.com')).toBeInTheDocument();
-    expect(screen.getByText('85/100')).toBeInTheDocument();
+    expect(screen.getByText('85/124')).toBeInTheDocument();
 
     expect(screen.getByText('Applicant 2')).toBeInTheDocument();
     expect(screen.getByText('applicant2@example.com')).toBeInTheDocument();
-    expect(screen.getByText('90/100')).toBeInTheDocument();
+    expect(screen.getByText('90/124')).toBeInTheDocument();
   });
 
   it('renders invites rows when invites data is provided for finished invites', () => {
@@ -115,7 +137,7 @@ describe('TableBody Component', () => {
 
     expect(screen.getByText('Applicant 1')).toBeInTheDocument();
     expect(screen.getByText('applicant1@example.com')).toBeInTheDocument();
-    expect(screen.getByText('85/100')).toBeInTheDocument();
+    expect(screen.getByText('85/124')).toBeInTheDocument();
     expect(screen.getByText('Thu, 16 Jan 2025 10:58:40 GMT')).toBeInTheDocument();
   });
 
@@ -149,7 +171,8 @@ describe('TableBody Component', () => {
         expiresAt: "2025-01-16T10:58:40Z",
         measuredSecondsPerSection: [],
         scoredPoints: 85,
-        assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+        availablePoints: 124,
+        assessmentFinishedAt: "2025-01-16T10:58:40Z",
       },
     ];
     render(
@@ -183,7 +206,8 @@ describe('TableBody Component', () => {
         expiresAt: "2025-01-16T10:58:40Z",
         measuredSecondsPerSection: [],
         scoredPoints: 85,
-        assessmentFinishedAt: new Date("2025-01-16T10:58:40Z"),
+        availablePoints: 124,
+        assessmentFinishedAt: "2025-01-16T10:58:40Z",
       },
     ];
     render(
@@ -197,7 +221,7 @@ describe('TableBody Component', () => {
         />
       </table>
     );
-    
+
     expect(screen.getAllByTestId('empty-cell')).toHaveLength(4);
 
   });

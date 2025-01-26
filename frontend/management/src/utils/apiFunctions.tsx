@@ -1,4 +1,4 @@
-import {ApplicantInterface, AssessmentInterface, AssignmentInterface, BarChartInterface, InviteInterface, SectionInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
+import {ApplicantInterface, AssessmentInterface, BarChartInterface, InviteInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
 import {EmailTypes, InviteDateAttributes, InviteStatuses} from "./constants.tsx";
 import {testUuidValidity} from "./general.tsx";
 
@@ -313,7 +313,39 @@ export async function getUsers(currentPage: number, itemsPerPage: number, orderB
   return {data: data.data, totalItems: data.total};
 }
 
-// addUser is not part of the system
+export async function getUserOid(oid: string): Promise<UserInterface> {
+  const response: Response = await fetch(`${baseUrl}/user/oid/${oid}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve user with oid`);
+  }
+
+  return await response.json();
+}
+
+export async function addUser(data: Partial<UserInterface>): Promise<string> {
+  const response: Response = await fetch(`${baseUrl}/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      ...data,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add user: ${response.statusText}`);
+  }
+
+  return "Successfully added a new user";
+}
 
 export async function updateUser(id: string, data: Partial<UserInterface>): Promise<{ data: Partial<UserInterface> }> {
   if (data.email == import.meta.env.VITE_DEFAULT_ADMIN_EMAIL) {
@@ -342,14 +374,13 @@ export async function updateUser(id: string, data: Partial<UserInterface>): Prom
   };
 }
 
-export async function deleteUser(id: string): Promise<string> {
+export async function deleteUser(id: string, checkId: string): Promise<string> {
   if (id == import.meta.env.VITE_DEFAULT_ADMIN_ID) {
     throw new Error("The standard admin can't be deleted");
   }
-  //TODO uncomment when auth is implemented
-  // if (id == currentuser.id) {
-  //   throw new Error(`Can't delete current user`);
-  // }
+  if (id == checkId) {
+    throw new Error("Can't delete current user");
+  }
   const response: Response = await fetch(`${baseUrl}/user/${id}`, {
     method: "DELETE",
     headers: {
@@ -400,21 +431,6 @@ export async function getAssessment(id: string): Promise<AssessmentInterface> {
   return await response.json();
 }
 
-export async function getSection(id: string): Promise<SectionInterface> {
-  const response: Response = await fetch(`${baseUrl}/section/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve section`);
-  }
-
-  return await response.json();
-}
-
 export async function getSectionResult(id: string, inviteId: string): Promise<SectionSolvedInterface> {
   const response: Response = await fetch(`${baseUrl}/section/${id}/result/${inviteId}`, {
     method: "GET",
@@ -430,84 +446,19 @@ export async function getSectionResult(id: string, inviteId: string): Promise<Se
   return await response.json();
 }
 
-export async function getAssignment(id: string): Promise<AssignmentInterface> {
-  const response: Response = await fetch(`${baseUrl}/assignment/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to retrieve assignment`);
-  }
-
-  return await response.json();
-}
-
 export async function getBarChartStats(inviteId: string): Promise<BarChartInterface> {
-  //TODO uncomment next part when implemented
-  /*const response: Response = await fetch(`${baseUrl}/statistics`, {
+  const response: Response = await fetch(`${baseUrl}/result/${inviteId}/comparison`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      inviteId: inviteId,
-    }),
   });
-
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve bar chart statistics`);
   }
 
-  return await response.json();*/
-  return {
-    percentage: "46.17",
-    barGroups: [
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "4",
-        isSelected: false,
-      },
-      {
-        value: "14",
-        isSelected: false,
-      },
-      {
-        value: "24",
-        isSelected: false,
-      },
-      {
-        value: "31",
-        isSelected: true,
-      },
-      {
-        value: "14",
-        isSelected: false,
-      },
-      {
-        value: "9",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-    ]
-  };
+  return await response.json();
 }
 
 export async function getSkillsStats(assessmentId: string, inviteId: string): Promise<SkillsInterface[]> {

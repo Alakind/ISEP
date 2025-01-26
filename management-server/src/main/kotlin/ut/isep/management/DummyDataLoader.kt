@@ -233,12 +233,12 @@ class DummyDataLoader(
         sectionRepository.save(section3)
         sectionRepository.save(section4)
 
-        val user1 = User(name = "Default admin", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
-        val user2 = User(name = "Abbc", email = "abbc@gmail.com")
-        val user3 = User(name = "SuperUser", email = "su@sudo.com", role = UserRole.Admin)
-        val user4 = User(name = "Inge Interviewer", email = "inge@infosupport.nl", role = UserRole.Interviewer)
-        val user5 = User(name = "Zacharias", email = "z@hotmail.com", role = UserRole.Recruiter)
-        val user6 = User(name = "Jurre", email = "jurre@infosupport.nl", role = UserRole.Admin)
+        val user1 = User(name = "Default admin", oid = "jdkc39e4-3453-345g-8360-dfg24d45dg56", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
+        val user2 = User(name = "J S", oid = "3f0dcb34-5638-4f90-8767-cdf4f0bc8b29", email = "j.e.sweers@student.utwente.nl")
+        val user3 = User(name = "SuperUser", oid = "sdf45df4-4574-34r5-3465-xgvrf345fg44", email = "su@sudo.com", role = UserRole.Admin)
+        val user4 = User(name = "Inge Interviewer", oid = "fggsf34f-4535-dg5d-5273-dfg54bg5tg54", email = "inge@infosupport.nl", role = UserRole.Interviewer)
+        val user5 = User(name = "Zacharias poef", oid = "cb5yd545-7534-3f5v-3471-xbf45xcb4c4b", email = "z@hotmail.com", role = UserRole.Recruiter)
+        val user6 = User(name = "Jurre Brandsen", oid = "", email = "jurre@infosupport.nl", role = UserRole.Admin)
 
         userRepository.apply {
             save(user1)

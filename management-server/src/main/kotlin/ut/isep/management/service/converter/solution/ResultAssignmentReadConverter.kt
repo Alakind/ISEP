@@ -46,9 +46,7 @@ class ResultAssignmentReadConverter(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.MultipleChoice(
                 multipleChoiceAssignment.optionToSolution.entries
-                    .withIndex()
-                    .filter { (_, key) -> key.value == true }
-                    .map { it.index }),
+                    .filter { it.value }.map { it.key }),
             scoredPoints = entity.scoredPoints,
         )
     }

@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
 
     data class MultipleChoice @JsonCreator constructor(
-        @JsonProperty("answer") val answer: List<Int>
+        @JsonProperty("answer") val answer: List<String>
     ) : AnswerCreateReadDTO()
 
     data class Open @JsonCreator constructor(

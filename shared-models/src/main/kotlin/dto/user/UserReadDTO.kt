@@ -9,6 +9,7 @@ import java.time.OffsetDateTime
 data class UserReadDTO(
     val id: Long = 0,
     val name: String = "",
+    val oid: String = "",
     val email: String = "",
     val role: UserRole? = null,
     val createdAt: OffsetDateTime,

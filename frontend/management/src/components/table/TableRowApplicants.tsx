@@ -57,9 +57,9 @@ function TableRowApplicants({data, columns, goToApplicantPage}: Readonly<Props>)
                     data.scores.map((score: number, index: number): ReactNode => (
                         <div key={"score_" + index + data.id}>
                       <span className="table-row__score">
-                      {score || 0}/100
+                      {score || 0}/{data.availablePoints ? data.availablePoints[index] : 0}
                       </span>
-                          <Progressbar score={score} id={`${data.id}${index}`}/>
+                          <Progressbar score={score} id={`${data.id}${index}`} max={data.availablePoints ? data.availablePoints[index] : 0}/>
                         </div>
                       )
                     )

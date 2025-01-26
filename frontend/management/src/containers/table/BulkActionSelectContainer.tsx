@@ -4,11 +4,13 @@ import {deleteUser} from "../../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {Selection} from "../../utils/types.tsx";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function BulkActionSelectContainer({isSelected, removeUser}: Readonly<Props>): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("-");
   const options: string[] = ["-", "Delete selected"];
+  const user = useUserData();
 
   function proceedAction(): void {
     deleteUsers().then();
@@ -22,7 +24,7 @@ function BulkActionSelectContainer({isSelected, removeUser}: Readonly<Props>): R
     try {
       for (const element of isSelected) {
         if (element.checked) {
-          await deleteUser(element.id);
+          await deleteUser(element.id, user.id);
           removeUser(element.id);
         }
       }

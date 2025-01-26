@@ -66,7 +66,7 @@ export const applicantColumns: Column[] = [
   {label: "Name", accessor: "name", sortable: true},
   {label: "Email", accessor: "email", sortable: true},
   {label: "Statuses", accessor: "statuses", sortable: false},
-  {label: "Score", accessor: "score", sortable: true},
+  {label: "Score", accessor: "score", sortable: false},
 ]
 
 export const dashboardFinishedColumns: Column[] = [

@@ -1,6 +1,11 @@
 import {describe, expect, it, vi} from 'vitest';
 import {fireEvent, render, screen} from '@testing-library/react';
 import ApplicantPersonalCard from "../../../src/components/applicant-personal/ApplicantPersonalCard.tsx";
+import {Roles} from "../../../src/utils/constants.tsx";
+
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 const mockApplicant = {
   id: '1',

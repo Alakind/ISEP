@@ -6,8 +6,8 @@ import {MemoryRouter} from "react-router-dom";
 
 describe('UsersTable component', () => {
   const mockUserData: UserInterface[] = [
-    {id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN},
-    {id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER},
+    {id: '1', name: 'User 1', email: 'user1@example.com', role: Roles.ADMIN, oid: ""},
+    {id: '2', name: 'User 2', email: 'user2@example.com', role: Roles.INTERVIEWER, oid: ""},
   ];
 
   const mockSetOrderBy = vi.fn();

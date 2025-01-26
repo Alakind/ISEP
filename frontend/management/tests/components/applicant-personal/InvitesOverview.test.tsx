@@ -2,7 +2,11 @@ import InvitesOverview from "../../../src/components/applicant-personal/InvitesO
 import {fireEvent, render, screen} from "@testing-library/react";
 import {AssessmentInterface, InviteInterface} from "../../../src/utils/types.tsx";
 import {mapStatus} from "../../../src/utils/mapping.tsx";
-import {vi} from "vitest";
+import {Roles} from "../../../src/utils/constants.tsx";
+
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 const mockInvitesData: InviteInterface[] = [
   {

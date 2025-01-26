@@ -25,6 +25,9 @@
 }
 
 .test-result-block__item {
-    margin: 5px 0;
     padding-left: 10px;
+}
+
+.test-result-block__code {
+    margin-bottom: 10px;
 }

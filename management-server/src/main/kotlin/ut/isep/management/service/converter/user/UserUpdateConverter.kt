@@ -12,6 +12,7 @@ class UserUpdateConverter : UpdateConverter<User, UserUpdateDTO> {
             updateDTO.email?.let { this.email = it }
             updateDTO.role?.let { this.role = it }
             updateDTO.name?.let { this.name = it }
+            updateDTO.oid?.let { this.oid = it }
         }
     }
 }

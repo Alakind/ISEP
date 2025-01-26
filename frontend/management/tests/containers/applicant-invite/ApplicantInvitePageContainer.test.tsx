@@ -1,3 +1,10 @@
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {MemoryRouter, useNavigate} from "react-router-dom";
+import ApplicantInvitePageContainer from "../../../src/containers/applicant-invite/ApplicantInvitePageContainer.tsx";
+import {Roles} from "../../../src/utils/constants.tsx";
+import {vi} from "vitest";
+import {useUserData} from "../../../src/utils/msal/UseUserData.tsx";
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return {
@@ -6,9 +13,9 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
-import {fireEvent, render, screen} from "@testing-library/react";
-import {MemoryRouter, useNavigate} from "react-router-dom";
-import ApplicantInvitePageContainer from "../../../src/containers/applicant-invite/ApplicantInvitePageContainer.tsx";
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 describe("ApplicantInvitePageContainer", () => {
   it("renders the ApplicantInvitePageContainer and ApplicantInvitePage components", () => {
@@ -36,5 +43,33 @@ describe("ApplicantInvitePageContainer", () => {
     fireEvent.click(button);
 
     expect(mockNavigate).toHaveBeenCalledWith("/applicants");
+  });
+
+  it('shouldn\'t render no access page a Recruiter role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.RECRUITER});
+
+    render(<MemoryRouter><ApplicantInvitePageContainer/></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
+    });
+  });
+
+  it('should render no access page a Interviewer role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.INTERVIEWER});
+
+    render(<MemoryRouter><ApplicantInvitePageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).toBeInTheDocument();
+    });
+  });
+
+  it('shouldn\'t render no access page a Admin role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.ADMIN});
+
+    render(<MemoryRouter><ApplicantInvitePageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
+    });
   });
 });

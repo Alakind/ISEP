@@ -1,7 +1,9 @@
 import {TestResultsInterface} from "../../../utils/types.tsx";
 import "../../../styles/test-result-block.css"
+import TestResultRow from "./TestResultRow.tsx";
+import {Themes} from "../../../utils/constants.tsx";
 
-function TestResultBlock({testResults, showTestResults, handleShowTestResults}: Readonly<Props>) {
+function TestResultBlock({testResults, showTestResults, handleShowTestResults, theme}: Readonly<Props>) {
   return (
     <div className="test-result-block">
       <button className="test-result-block__header" onClick={handleShowTestResults}>
@@ -17,21 +19,7 @@ function TestResultBlock({testResults, showTestResults, handleShowTestResults}: 
               {
                 testResults.map((testResult, index) => {
                   return (
-                    <div key={testResult.name + index} className="test-result-block__item">
-                      <span>
-                      {
-                        testResult.passed
-                          ? <i className="bi bi-check-circle-fill"></i>
-                          : <i className="bi bi-x-circle-fill"></i>
-                      }
-                      </span>
-                      <span>{testResult.name}</span>
-                      {
-                        testResult.message
-                          ? <span>: {testResult.message}</span>
-                          : <></>
-                      }
-                    </div>
+                    <TestResultRow key={testResult.name + index} testResult={testResult} theme={theme}/>
                   )
                 })
               }
@@ -49,6 +37,7 @@ interface Props {
   testResults: TestResultsInterface[];
   showTestResults: boolean;
   handleShowTestResults: () => void;
+  theme?: (typeof Themes)[keyof typeof Themes];
 }
 
 export default TestResultBlock

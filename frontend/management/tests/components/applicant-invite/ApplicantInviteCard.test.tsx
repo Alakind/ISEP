@@ -27,7 +27,8 @@ const mockInviteData: InviteInterface = {
   assessmentId: "4",
   status: "app_finished",
   invitedAt: "2024-12-30T00:28:25.485638Z",
-  expiresAt: "2025-01-06T00:28:25.485638Z"
+  expiresAt: "2025-01-06T00:28:25.485638Z",
+  measuredSecondsPerSection: []
 };
 
 describe('ApplicantInviteCard Component', () => {
