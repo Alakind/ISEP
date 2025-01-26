@@ -6,30 +6,44 @@ function AssignmentMultipleChoice({ assignment, setAssignmentAnswer }: Props) {
   const [checkedAnswers, setCheckedAnswers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    setCheckedAnswers((prev) => {
+    setCheckedAnswers(() => {
       const answers: Set<string> = new Set();
-      for (const currentAnswer in assignment.answer.answer) {
+      if (
+        assignment === undefined ||
+        assignment.answer === undefined ||
+        assignment.answer.answer === undefined
+      ) {
+        return new Set();
+      }
+
+      for (const currentAnswer of assignment.answer.answer) {
         answers.add(currentAnswer);
       }
+
       return answers;
     });
   }, []);
 
   const handleOptionChange = async (option: string) => {
-    let newAnswers = new Set();
-    setCheckedAnswers((prev: Set<string>) => {
-      newAnswers = new Set(prev);
-      if (prev.has(option)) {
+    let newAnswers: Set<string> = new Set();
+
+    if (assignment.isMultipleAnswers) {
+      newAnswers = new Set(checkedAnswers);
+
+      if (newAnswers.has(option)) {
         newAnswers.delete(option);
       } else {
         newAnswers.add(option);
       }
+    } else {
+      newAnswers.add(option);
+    }
 
-      return newAnswers;
-    });
-    setAssignmentAnswer(newAnswers);
+    setCheckedAnswers(newAnswers);
 
-    await sendMultipleChoiceSolution(assignment, [...checkedAnswers]);
+    setAssignmentAnswer({ answer: [...newAnswers] });
+
+    await sendMultipleChoiceSolution(assignment, [...newAnswers]);
   };
 
   return (
