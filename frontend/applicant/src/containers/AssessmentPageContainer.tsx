@@ -140,16 +140,7 @@ function AssessmentPageContainer() {
   return (
     <div className="page">
       {isLoading ? (
-        <div className="page page--center">
-          <ReactLoading
-            type="spin"
-            color="var(--text-primary)"
-            height={"80px"}
-            width={"80px"}
-          />
-          <br></br>
-          <p>{errorMessage != "" ? errorMessage.toString() : "Loading..."}</p>
-        </div>
+        <LoadingPage errorMessage={errorMessage} showMessage={true}/>
       ) : (
         <>
           <Header
@@ -157,14 +148,12 @@ function AssessmentPageContainer() {
             currentSectionIndex={currentSectionIndex}
             secondsLeft={secondsLeft}
           />
-
           <Main
             assessment={assessment}
             currentSectionIndex={currentSectionIndex}
             currentAssignmentIndex={currentAssignmentIndex}
             setAssignmentAnswer={setAssignmentAnswer}
           />
-
           <Footer
             assessment={assessment}
             currentSectionIndex={currentSectionIndex}
