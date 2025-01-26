@@ -1,18 +1,18 @@
-import { AssessmentInterface } from "../utils/types";
+import {AssessmentInterface} from "../utils/types";
 import "../styles/header.css";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {ToastContainer} from "react-toastify";
 
-function Header({ assessment, currentSectionIndex, secondsLeft }: Props) {
-    const [hours, setHours] = useState<number>(0);
-    const [minutes, setMinutes] = useState<number>(0);
-    const [seconds, setSeconds] = useState<number>(0);
+function Header({assessment, currentSectionIndex, secondsLeft}: Readonly<Props>) {
+  const [hours, setHours] = useState<number>(0);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
 
-    useEffect(() => {
-        setHours(Math.floor(secondsLeft / 3600));
-        setMinutes(Math.floor(secondsLeft % 3600 / 60));
-        setSeconds(Math.floor(secondsLeft % 3600 % 60));
-    }, [secondsLeft]);
+  useEffect(() => {
+    setHours(Math.floor(secondsLeft / 3600));
+    setMinutes(Math.floor(secondsLeft % 3600 / 60));
+    setSeconds(Math.floor(secondsLeft % 3600 % 60));
+  }, [secondsLeft]);
 
   return (
     <header className="header">
@@ -27,18 +27,18 @@ function Header({ assessment, currentSectionIndex, secondsLeft }: Props) {
       </span>
       <span className="header__center">
         <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            transition: Bounce
-          />
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition: Bounce
+        />
       </span>
       <span className="header__right">
         <span>

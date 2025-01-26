@@ -1,8 +1,8 @@
-import { sendMultipleChoiceSolution } from "../utils/apiFunctions";
-import { AssignmentMultipleChoiceInterface } from "../utils/types";
-import { useEffect, useState } from "react";
+import {sendMultipleChoiceSolution} from "../utils/apiFunctions";
+import {AssignmentMultipleChoiceInterface} from "../utils/types";
+import {useEffect, useState} from "react";
 
-function AssignmentMultipleChoice({ assignment, setAssignmentAnswer }: Props) {
+function AssignmentMultipleChoice({assignment, setAssignmentAnswer}: Readonly<Props>) {
   const [checkedAnswers, setCheckedAnswers] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function AssignmentMultipleChoice({ assignment, setAssignmentAnswer }: Props) {
 
     setCheckedAnswers(newAnswers);
 
-    setAssignmentAnswer({ answer: [...newAnswers] });
+    setAssignmentAnswer({answer: [...newAnswers]});
 
     await sendMultipleChoiceSolution(assignment, [...newAnswers]);
   };

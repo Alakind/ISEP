@@ -3,8 +3,8 @@ import "../styles/section_menu.css"
 import React, {useState} from "react";
 import AssignmentMenu from "./AssignmentMenu.tsx";
 
-function SectionMenu({ assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex }: Props) {
-    const [hoveredSection, setHoveredSection] = useState<number | null>(null);
+function SectionMenu({assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex}: Readonly<Props>) {
+  const [hoveredSection, setHoveredSection] = useState<number | null>(null);
 
     const handleNextSection = (mapIndex) => {
         //TODO save the state of the question(s)

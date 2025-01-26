@@ -9,7 +9,7 @@ import AssignmentCoding from "./AssignmentCoding.tsx";
 import AssignmentOpen from "./AssignmentOpen";
 import "../styles/question.css";
 
-function Assignment({ index, assignment, setAssignmentAnswer }: Props) {
+function Assignment({index, assignment, setAssignmentAnswer}: Readonly<Props>) {
   return (
     <>
       <div className="assignment__header">

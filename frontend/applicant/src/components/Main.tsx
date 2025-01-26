@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 import { AssignmentTypes } from "../utils/constants.tsx";
 
 function Main({
-  assessment,
-  currentSectionIndex,
-  currentAssignmentIndex,
-  setAssignmentAnswer,
-}: Props) {
+                assessment,
+                currentSectionIndex,
+                currentAssignmentIndex,
+                setAssignmentAnswer,
+              }: Readonly<Props>) {
   useEffect(() => {
     scrollToAssignment(
       assessment.sections[currentSectionIndex].assignments[

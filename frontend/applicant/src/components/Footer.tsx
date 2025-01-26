@@ -1,22 +1,22 @@
 import InfoSupportMailSupport from "./InfoSupportMailSupport";
 import "../styles/footer.css";
-import { AssessmentInterface } from "../utils/types.tsx";
+import {AssessmentInterface} from "../utils/types.tsx";
 import SectionMenu from "./SectionMenu.tsx";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import React, {useEffect, useState} from "react";
+import {toast} from "react-toastify";
 import ThemeSwitch from "./ThemeSwitch.tsx";
-import { finishAssessment } from "../utils/apiFunctions.tsx";
-import { useNavigate } from "react-router-dom";
+import {finishAssessment} from "../utils/apiFunctions.tsx";
+import {useNavigate} from "react-router-dom";
 
 function Footer({
-  assessment,
-  currentSectionIndex,
-  setCurrentSectionIndex,
-  currentAssignmentIndex,
-  setCurrentAssignmentIndex,
-  endOfAssessment,
-  setEndOfAssessment,
-}: Props) {
+                  assessment,
+                  currentSectionIndex,
+                  setCurrentSectionIndex,
+                  currentAssignmentIndex,
+                  setCurrentAssignmentIndex,
+                  endOfAssessment,
+                  setEndOfAssessment,
+                }: Readonly<Props>) {
   const [isFinishModalVisible, setIsFinishModalVisible] =
     useState<boolean>(false);
 
@@ -75,7 +75,7 @@ function Footer({
         <InfoSupportMailSupport
           element={<i className="bi bi-question-circle"></i>}
         />
-        <ThemeSwitch />
+        <ThemeSwitch/>
       </span>
       <span className="footer__center">
         <span className="footer__center__question-menu">

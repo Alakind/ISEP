@@ -1,17 +1,17 @@
-import { AssignmentInterface, SectionInterface } from "../utils/types";
+import {AssignmentInterface, SectionInterface} from "../utils/types";
 import "../styles/assignment_menu.css";
 import React from "react";
 
 function AssignmentMenu({
-  section,
-  assignmentSectionIndex,
-  currentSectionIndex,
-  setCurrentSectionIndex,
-  currentAssignmentIndex,
-  setCurrentAssignmentIndex,
-  onMouseEnter,
-  onMouseLeave,
-}: Props) {
+                          section,
+                          assignmentSectionIndex,
+                          currentSectionIndex,
+                          setCurrentSectionIndex,
+                          currentAssignmentIndex,
+                          setCurrentAssignmentIndex,
+                          onMouseEnter,
+                          onMouseLeave,
+                        }: Readonly<Props>) {
   const handleAssignmentClick = (
     assignment: AssignmentInterface,
     assignmentIndex: number

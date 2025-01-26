@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-import ace from "ace-builds";
+import {useEffect, useState} from "react";
 import AceEditor from "react-ace";
 // import "ace-builds/webpack-resolver.js";
 // import brace from 'brace';
-
 // import 'brace/mode/java';
 // import 'brace/mode/javascript';
-
 // import 'brace/theme/
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -17,17 +14,17 @@ import "ace-builds/src-noconflict/mode-mysql";
 import "ace-builds/src-noconflict/theme-twilight";
 import "ace-builds/src-noconflict/snippets/java.js";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { AssignmentCodingInterface } from "../utils/types.tsx";
-import { LanguageToMode } from "../utils/constants.tsx";
-import { runTests, sendCodingSolution } from "../utils/apiFunctions.tsx";
+import {AssignmentCodingInterface} from "../utils/types.tsx";
+import {LanguageToMode} from "../utils/constants.tsx";
+import {runTests, sendCodingSolution} from "../utils/apiFunctions.tsx";
 
 function AssignmentCoding({
-  assignment,
-  theme,
-  fontSize,
-  defaultValue,
-  setAssignmentAnswer,
-}: Props) {
+                            assignment,
+                            theme,
+                            fontSize,
+                            defaultValue,
+                            setAssignmentAnswer,
+                          }: Readonly<Props>) {
   const [isCodingOpen, setIsCodingOpen] = useState(true);
   const [output, setOutput] = useState("");
   const [isError, setIsError] = useState(false);
@@ -50,10 +47,10 @@ function AssignmentCoding({
 
     if (isCodingOpen) {
       setCodeValue(newValue);
-      setAssignmentAnswer({ code: newValue });
+      setAssignmentAnswer({code: newValue});
     } else {
       setTestValue(newValue);
-      setAssignmentAnswer({ test: newValue });
+      setAssignmentAnswer({test: newValue});
     }
   }
 
@@ -141,7 +138,7 @@ function AssignmentCoding({
         name={assignment.id.toString()}
         fontSize={fontSize == undefined ? 16 : fontSize}
         defaultValue={defaultValue == undefined ? "" : defaultValue}
-        editorProps={{ $blockScrolling: true }}
+        editorProps={{$blockScrolling: true}}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
@@ -172,7 +169,7 @@ function AssignmentCoding({
             name={assignment.id.toString() + " output"}
             fontSize={fontSize == undefined ? 16 : fontSize}
             defaultValue={""}
-            editorProps={{ $blockScrolling: true }}
+            editorProps={{$blockScrolling: true}}
             value={output}
             height="200px"
             width="inherit"
@@ -193,4 +190,5 @@ interface Props {
   defaultValue?: string;
   setAssignmentAnswer: (arg: object) => void;
 }
+
 export default AssignmentCoding;

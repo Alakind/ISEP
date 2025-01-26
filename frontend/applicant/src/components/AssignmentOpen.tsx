@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { AssignmentInterface } from "../utils/types";
 import { sendOpenSolution } from "../utils/apiFunctions";
 
-function AssignmentOpen({ assignment, setAssignmentAnswer }: Props) {
+function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
   const [value, setValue] = useState("");
   const valueRef = useRef(value);
   const [updateIntervalId, setUpdateIntervalId] = useState(0);

@@ -3,12 +3,12 @@ import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
 import "../styles/general.css";
 import "../styles/welcome.css";
 
-function WelcomePage({ handleStart }: Props) {
+function WelcomePage({handleStart}: Readonly<Props>) {
   return (
     <div className="welcomePage">
       {/* TODO put name of user here. */}
       <div className="logoContainer">
-        <InfoSupportLogo />
+        <InfoSupportLogo/>
       </div>
       <h2>Welcome, Claire!</h2>
       <div className="infoTextContainer">
@@ -20,7 +20,7 @@ function WelcomePage({ handleStart }: Props) {
         </p>
         <p>
           In case of any problems, please contact{" "}
-          <InfoSupportMailSupport element={"InfoSupport"} />. <br></br>During
+          <InfoSupportMailSupport element={"InfoSupport"}/>. <br></br>During
           the questionnaire, you can press the ? button to request support.
         </p>
       </div>
