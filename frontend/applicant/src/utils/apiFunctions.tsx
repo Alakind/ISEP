@@ -4,6 +4,7 @@ import {
   AssignmentInterface,
   AssignmentMultipleChoiceInterface,
 } from "./types";
+import { Languages } from "./constants";
 
 const baseUrl = import.meta.env.VITE_API_APPLICANT_URL;
 
@@ -120,4 +121,38 @@ export async function fetchAssessment(
   }
 
   return { sections: sectionsFetched };
+}
+
+export async function runTests(
+  language: (typeof Languages)[keyof typeof Languages],
+  inviteId: string,
+  code: string,
+  test: string
+): Promise<Array<any>> {
+  const API_SECTIONS_URL =
+    import.meta.env.VITE_API_CODE_EXECUTION_URL +
+    "/code-executor/" +
+    inviteId +
+    "/" +
+    language +
+    "/test";
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const response = await fetch(API_SECTIONS_URL, {
+    method: "POST",
+    body: JSON.stringify({ code: code, test: test }),
+    headers: headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Couldn't connect to the server, please try again or email InfoSupport!"
+    );
+  }
+
+  const data = await response.json();
+
+  return data;
 }

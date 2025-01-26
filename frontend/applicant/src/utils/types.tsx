@@ -30,6 +30,7 @@ export interface AssignmentCodingInterface extends AssignmentInterface {
   image: string;
   language: string;
   files: File[];
+  startingCode?: string;
 }
 
 export interface AssignmentSolutionInterface {

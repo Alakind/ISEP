@@ -19,6 +19,7 @@ import "ace-builds/src-noconflict/snippets/java.js";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { AssignmentCodingInterface } from "../utils/types.tsx";
 import { LanguageToMode } from "../utils/constants.tsx";
+import { runTests } from "../utils/apiFunctions.tsx";
 
 function AssignmentCoding({
   assignment,
@@ -29,7 +30,9 @@ function AssignmentCoding({
   const [isCodingOpen, setIsCodingOpen] = useState(true);
   const [output, setOutput] = useState("");
 
-  const [codeValue, setCodeValue] = useState("Code stub");
+  const [codeValue, setCodeValue] = useState(
+    assignment.startingCode ?? "Code stub"
+  );
   const [testValue, setTestValue] = useState("Test stub");
 
   function onChangeValue(newValue: string) {
@@ -46,6 +49,33 @@ function AssignmentCoding({
 
   function onOpenTest() {
     setIsCodingOpen(false);
+  }
+
+  async function onRunTests() {
+    const inviteId = localStorage.getItem("inviteId") ?? "";
+
+    const testResults = await runTests(
+      LanguageToMode[assignment.language.toLowerCase()],
+      inviteId,
+      codeValue,
+      testValue
+    );
+
+    console.log(testResults);
+    const resultsString = testResults
+      .map((result) => {
+        return (
+          result.name +
+          ": " +
+          (result.passed ? "passed" : "failed") +
+          "\n" +
+          result.result +
+          "\n"
+        );
+      })
+      .join("\n");
+
+    setOutput(resultsString);
   }
 
   return (
@@ -89,7 +119,10 @@ function AssignmentCoding({
       />
 
       <div>
-        <button className="btn btn-primary btn-lg btn--mod" onClick={() => {}}>
+        <button
+          className="btn btn-primary btn-lg btn--mod"
+          onClick={onRunTests}
+        >
           Run Tests
         </button>
       </div>
