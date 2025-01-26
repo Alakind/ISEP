@@ -77,7 +77,7 @@ describe('InvitesOverviewContainer', () => {
   beforeEach(() => {
     vi.resetAllMocks();
 
-    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.ADMIN})
+    vi.mocked(useUserData).mockReturnValue({email: "", id: "", name: "", oid: "", role: Roles.ADMIN})
   });
 
   it('should render invites with formatted expiration dates', () => {
@@ -111,7 +111,7 @@ describe('InvitesOverviewContainer', () => {
 
     const expirationDateInputs = screen.getAllByLabelText(/Available till:/i);
     fireEvent.change(expirationDateInputs[0], {target: {value: '2050-01-20'}});
-
+    
     // Verify the input value is updated
     await waitFor(() => {
       expect(expirationDateInputs[0]).toHaveValue('2050-01-20');

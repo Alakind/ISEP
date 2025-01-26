@@ -981,66 +981,22 @@ describe('API Functions (results)', (): void => {
 
   it("should fetch a single bar chart statistics by ID", async () => {
     const mockSection: BarChartInterface = {
-      percentage: "46.17",
-      barGroups: [
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "4",
-          isSelected: false,
-        },
-        {
-          value: "14",
-          isSelected: false,
-        },
-        {
-          value: "24",
-          isSelected: false,
-        },
-        {
-          value: "31",
-          isSelected: true,
-        },
-        {
-          value: "14",
-          isSelected: false,
-        },
-        {
-          value: "9",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-      ]
+      percentage: 46.17,
+      distributionGroups: [1, 4, 14, 24, 31, 14, 9, 1, 1, 1],
+      selectedGroup: 4
     };
 
-    // mockFetch.mockResolvedValueOnce({
-    //   ok: true,
-    //   json: createFetchResponse(mockSection),
-    //   body: JSON.stringify({
-    //     inviteId: "cce487c0-9ff7-47a8-9844-b406e046459b",
-    //   })
-    // });
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: createFetchResponse(mockSection),
+    });
 
     const result: BarChartInterface = await getBarChartStats("cce487c0-9ff7-47a8-9844-b406e046459b");
 
-    //TODO: uncomment when correctly implemented
-    // expect(mockFetch).toHaveBeenCalledWith(
-    //   `${import.meta.env.VITE_API_MANAGEMENT_URL}/statistics`,
-    //   expect.objectContaining({method: "GET"})
-    // );
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/result/cce487c0-9ff7-47a8-9844-b406e046459b/comparison`,
+      expect.objectContaining({method: "GET"})
+    );
 
     expect(result).toEqual(mockSection);
   });

@@ -4,6 +4,7 @@ import {expect, vi} from "vitest";
 import {BrowserRouter as Router, MemoryRouter, useNavigate} from "react-router-dom";
 import {ReactNode} from "react";
 import {useMsal} from "@azure/msal-react";
+import {InteractionStatus} from "@azure/msal-browser";
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
@@ -21,6 +22,7 @@ vi.mock("@azure/msal-react", () => ({
     instance: {
       getActiveAccount: vi.fn(() => ({username: "testuser@gmail.com"})),
     },
+    inProgress: InteractionStatus.None
   })),
 }));
 

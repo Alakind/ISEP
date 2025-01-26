@@ -4,6 +4,7 @@ import {router} from "../src/routerConfiguration.tsx";
 import {ReactNode, StrictMode} from "react";
 import {vi} from "vitest";
 import {Roles} from "../src/utils/constants.tsx";
+import {InteractionStatus} from "@azure/msal-browser";
 
 vi.mock("../src/utils/msal/UseUserData.tsx", () => ({
   useUserData: vi.fn(() => ({role: Roles.ADMIN})),
@@ -16,6 +17,7 @@ vi.mock("@azure/msal-react", () => ({
     instance: {
       getActiveAccount: vi.fn(() => ({username: "testuser@gmail.com"})),
     },
+    inProgress: InteractionStatus.None
   })),
 }));
 
@@ -56,7 +58,7 @@ describe('Router Configuration', () => {
     const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/users']});
 
     render(<RouterProvider router={testRouter}/>);
-
+    
     expect(screen.getByTestId('users-list-page')).toBeInTheDocument();
   });
 
