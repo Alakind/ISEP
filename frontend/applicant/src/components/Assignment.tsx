@@ -9,7 +9,7 @@ import AssignmentCoding from "./AssignmentCoding.tsx";
 import AssignmentOpen from "./AssignmentOpen";
 import "../styles/question.css";
 
-function Assignment({ index, assignment }: Props) {
+function Assignment({ index, assignment, setAssignmentAnswer }: Props) {
   return (
     <>
       <div className="assignment__header">
@@ -19,14 +19,19 @@ function Assignment({ index, assignment }: Props) {
         {assignment.type == AssignmentTypes.MULTIPLE_CHOICE && (
           <AssignmentMultipleChoice
             assignment={assignment as AssignmentMultipleChoiceInterface}
+            setAssignmentAnswer={setAssignmentAnswer}
           />
         )}
         {assignment.type == AssignmentTypes.OPEN && (
-          <AssignmentOpen assignment={assignment as AssignmentInterface} />
+          <AssignmentOpen
+            assignment={assignment as AssignmentInterface}
+            setAssignmentAnswer={setAssignmentAnswer}
+          />
         )}
         {assignment.type == AssignmentTypes.CODING && (
           <AssignmentCoding
             assignment={assignment as AssignmentCodingInterface}
+            setAssignmentAnswer={setAssignmentAnswer}
           />
         )}
       </div>
@@ -37,6 +42,7 @@ function Assignment({ index, assignment }: Props) {
 interface Props {
   index: number;
   assignment: AssignmentInterface;
+  setAssignmentAnswer: (answer: object) => void;
 }
 
 export default Assignment;

@@ -18,6 +18,23 @@ function AssessmentPageContainer() {
   const [endOfAssessment, setEndOfAssessment] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
+  function setAssignmentAnswer(
+    sectionIndex: number,
+    assignmentIndex: number,
+    newAnswer: object
+  ) {
+    setAssessment((oldAssessment: { sections: SectionInterface[] }) => {
+      const oldAnswer =
+        oldAssessment.sections[sectionIndex].assignments[assignmentIndex]
+          .answer;
+
+      oldAssessment.sections[sectionIndex].assignments[assignmentIndex].answer =
+        { ...oldAnswer, ...newAnswer };
+
+      return oldAssessment;
+    });
+  }
+
   const [currentAssignmentIndex, setCurrentAssignmentIndex] = useState<
     number[]
   >([0]);
@@ -86,6 +103,7 @@ function AssessmentPageContainer() {
             assessment={assessment}
             currentSectionIndex={currentSectionIndex}
             currentAssignmentIndex={currentAssignmentIndex}
+            setAssignmentAnswer={setAssignmentAnswer}
           />
 
           <Footer

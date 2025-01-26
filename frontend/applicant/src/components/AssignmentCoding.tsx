@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ace from "ace-builds";
 import AceEditor from "react-ace";
 // import "ace-builds/webpack-resolver.js";
@@ -19,27 +19,41 @@ import "ace-builds/src-noconflict/snippets/java.js";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { AssignmentCodingInterface } from "../utils/types.tsx";
 import { LanguageToMode } from "../utils/constants.tsx";
-import { runTests } from "../utils/apiFunctions.tsx";
+import { runTests, sendCodingSolution } from "../utils/apiFunctions.tsx";
 
 function AssignmentCoding({
   assignment,
   theme,
   fontSize,
   defaultValue,
+  setAssignmentAnswer,
 }: Props) {
   const [isCodingOpen, setIsCodingOpen] = useState(true);
   const [output, setOutput] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [updateIntervalId, setUpdateIntervalId] = useState(0);
 
-  const [codeValue, setCodeValue] = useState(
-    assignment.startingCode ?? "Code stub"
-  );
-  const [testValue, setTestValue] = useState("Test stub");
+  const [codeValue, setCodeValue] = useState("");
+  const [testValue, setTestValue] = useState("");
+
+  useEffect(() => {
+    setCodeValue(assignment.answer.code ?? assignment.startCode ?? "Code stub");
+
+    setTestValue(assignment.answer.test ?? assignment.startTest ?? "Test stub");
+  }, []);
 
   function onChangeValue(newValue: string) {
+    if (isError) {
+      setIsError(false);
+      setOutput("");
+    }
+
     if (isCodingOpen) {
       setCodeValue(newValue);
+      setAssignmentAnswer({ code: newValue });
     } else {
       setTestValue(newValue);
+      setAssignmentAnswer({ test: newValue });
     }
   }
 
@@ -51,17 +65,38 @@ function AssignmentCoding({
     setIsCodingOpen(false);
   }
 
+  const handleOnFocus = () => {
+    const intervalId = setInterval(async () => {
+      await sendCodingSolution(assignment, codeValue, testValue);
+    }, 5000);
+
+    setUpdateIntervalId(intervalId);
+  };
+
+  const handleBlur = async () => {
+    clearInterval(updateIntervalId);
+    setUpdateIntervalId(0);
+
+    await sendCodingSolution(assignment, codeValue, testValue);
+  };
+
   async function onRunTests() {
     const inviteId = localStorage.getItem("inviteId") ?? "";
 
-    const testResults = await runTests(
-      LanguageToMode[assignment.language.toLowerCase()],
-      inviteId,
-      codeValue,
-      testValue
-    );
+    try {
+      const testResults = await runTests(
+        LanguageToMode[assignment.language.toLowerCase()],
+        inviteId,
+        codeValue,
+        testValue
+      );
+    } catch (error) {
+      setIsError(true);
+      setOutput("Error");
+    }
 
-    console.log(testResults);
+    await sendCodingSolution(assignment, codeValue, testValue);
+
     const resultsString = testResults
       .map((result) => {
         return (
@@ -116,6 +151,8 @@ function AssignmentCoding({
         value={isCodingOpen ? codeValue : testValue}
         onChange={onChangeValue}
         width="inherit"
+        onFocus={handleOnFocus}
+        onBlur={handleBlur}
       />
 
       <div>
@@ -153,5 +190,6 @@ interface Props {
   theme?: string;
   fontSize?: number;
   defaultValue?: string;
+  setAssignmentAnswer: (arg: object) => void;
 }
 export default AssignmentCoding;

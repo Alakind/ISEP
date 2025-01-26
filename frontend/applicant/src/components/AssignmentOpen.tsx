@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { AssignmentInterface } from "../utils/types";
 import { sendOpenSolution } from "../utils/apiFunctions";
 
-function AssignmentOpen({ assignment }: Props) {
+function AssignmentOpen({ assignment, setAssignmentAnswer }: Props) {
   const [value, setValue] = useState("");
   const valueRef = useRef(value);
   const [updateIntervalId, setUpdateIntervalId] = useState(0);
@@ -36,6 +36,7 @@ function AssignmentOpen({ assignment }: Props) {
   };
 
   const handleSendSolution = async (newValue: string) => {
+    setAssignmentAnswer({ answer: newValue });
     await sendOpenSolution(assignment, newValue);
   };
 
@@ -58,6 +59,7 @@ function AssignmentOpen({ assignment }: Props) {
 
 interface Props {
   assignment: AssignmentInterface;
+  setAssignmentAnswer: (arg: object) => void;
 }
 
 export default AssignmentOpen;

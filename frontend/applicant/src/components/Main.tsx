@@ -9,6 +9,7 @@ function Main({
   assessment,
   currentSectionIndex,
   currentAssignmentIndex,
+  setAssignmentAnswer,
 }: Props) {
   useEffect(() => {
     scrollToAssignment(
@@ -41,7 +42,13 @@ function Main({
                     key={assignment.id}
                     id={assignment.id}
                   >
-                    <Assignment index={i} assignment={assignment} />
+                    <Assignment
+                      index={i}
+                      assignment={assignment}
+                      setAssignmentAnswer={(answer: object) => {
+                        setAssignmentAnswer(currentSectionIndex, i, answer);
+                      }}
+                    />
                   </div>
                 );
               }
@@ -56,7 +63,13 @@ function Main({
                   key={assignment.id}
                   id={assignment.id}
                 >
-                  <Assignment index={i} assignment={assignment} />
+                  <Assignment
+                    index={i}
+                    assignment={assignment}
+                    setAssignmentAnswer={(answer: object) => {
+                      setAssignmentAnswer(currentSectionIndex, i, answer);
+                    }}
+                  />
                 </div>
               );
             }
@@ -71,6 +84,7 @@ interface Props {
   assessment: AssessmentInterface;
   currentSectionIndex: number;
   currentAssignmentIndex: number[];
+  setAssignmentAnswer: (arg1: number, arg2: number, arg3: object) => void;
 }
 
 export default Main;

@@ -15,6 +15,7 @@ export interface AssignmentInterface {
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
   description: string;
+  answer?: object;
 }
 
 export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
@@ -30,7 +31,12 @@ export interface AssignmentCodingInterface extends AssignmentInterface {
   image: string;
   language: string;
   files: File[];
-  startingCode?: string;
+  startCode?: string;
+  startTest?: string;
+  answer: {
+    code: string;
+    test: string;
+  };
 }
 
 export interface AssignmentSolutionInterface {

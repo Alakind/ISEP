@@ -10,7 +10,7 @@ const baseUrl = import.meta.env.VITE_API_APPLICANT_URL;
 
 export async function sendMultipleChoiceSolution(
   assignment: AssignmentMultipleChoiceInterface,
-  answer: number[]
+  answer: string[]
 ): Promise<void> {
   let inviteId = localStorage.getItem("inviteId");
 
@@ -56,6 +56,43 @@ export async function sendOpenSolution(
       [assignment.id]: {
         type: assignment.type,
         answer,
+      },
+    };
+
+    const response: Response = await fetch(`${baseUrl}/solution/${inviteId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to save a solution: ${response.statusText}`);
+    }
+
+    return;
+  } else {
+    toast.error(`Failed to retrive invite ID`);
+    throw new Error(`Failed to retrive invite ID from localstorage`);
+  }
+}
+
+export async function sendCodingSolution(
+  assignment: AssignmentInterface,
+  code: string,
+  test: string
+): Promise<void> {
+  let inviteId = localStorage.getItem("inviteId");
+
+  if (inviteId) {
+    inviteId = String(inviteId);
+
+    const body = {
+      [assignment.id]: {
+        type: assignment.type,
+        code,
+        test,
       },
     };
 
