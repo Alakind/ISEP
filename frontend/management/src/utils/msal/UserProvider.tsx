@@ -29,10 +29,11 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
     if (msUserContext.mail !== "" && msUserContext.mail !== data.email) {
       updateUserData["email"] = msUserContext.mail
     }
-
-    updateUser(data.id, updateUserData).catch(() => {
-      toast.error("Error updating user data");
-    })
+    if (Object.keys(updateUserData).length !== 0) {
+      updateUser(data.id, updateUserData).catch(() => {
+        toast.error("Error updating user data");
+      })
+    }
   }
 
   function addUserWithMsUserData(fullName: string, oid: string) {
@@ -60,7 +61,9 @@ export const UserProvider = ({children}: { children: ReactNode }) => {
       }, 3000);
       return;
     }
-    addUser(addUserData).then(() => toast.success("New user has been added"));
+    if (Object.keys(addUserData).length !== 0) {
+      addUser(addUserData).then(() => toast.success("New user has been added"));
+    }
   }
 
   useEffect(() => {
