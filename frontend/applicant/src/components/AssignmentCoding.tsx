@@ -115,6 +115,7 @@ function AssignmentCoding({
 
   return (
     <div id={assignment.id}>
+      <div>Language: {LanguageToMode[assignment.language.toLowerCase()]}</div>
       <div>
         <button
           className={

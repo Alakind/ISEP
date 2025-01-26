@@ -5,7 +5,7 @@
   --tertiary-color: #008bbd; /* buttons, borders*/
   --highlight: #17489b; /* hover buttons */
   --question-block: #faf9f62d;
-  --assigntment-menu: #344050bf;
+  --assignment-menu: #344050bf;
   --text-primary: #faf9f6;
   --text-secondary: #b2b9c2;
   --icons: white;
@@ -13,7 +13,7 @@
   --transparent: #ffffff00;
   --scrollbar-thumb: grey;
   --scrollbar-thumb-hover: #555;
-  --assigntment-menu-text: black;
+  --assignment-menu-text: #faf9f6;
 }
 
 [data-theme="light"] {
@@ -22,7 +22,7 @@
   --tertiary-color: #008bbd; /* buttons, borders*/
   --highlight: #17489b; /* hover buttons */
   --question-block: rgba(52, 51, 51, 0.18);
-  --assigntment-menu: rgba(20, 61, 108, 0.75);
+  --assignment-menu: rgba(20, 61, 108, 0.75);
   --text-primary: black;
   --text-secondary: white;
   --icons: white;
@@ -30,7 +30,7 @@
   --transparent: #ffffff00;
   --scrollbar-thumb: grey;
   --scrollbar-thumb-hover: #555;
-  --assigntment-menu-text: black;
+  --assignment-menu-text: black;
 }
 
 body, html {

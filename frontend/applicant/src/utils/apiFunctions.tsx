@@ -157,7 +157,7 @@ export async function fetchAssessment(
     });
   }
 
-  return { sections: sectionsFetched };
+  return { sections: sectionsFetched, availableSeconds: data.availableSeconds };
 }
 
 export async function runTests(
@@ -192,4 +192,67 @@ export async function runTests(
   const data = await response.json();
 
   return data;
+}
+
+export async function getSecondsLeft(inviteId: string): Promise<number> {
+  const API_SECTIONS_URL =
+    import.meta.env.VITE_API_APPLICANT_URL + "/timing/" + inviteId + "/left";
+
+  const response = await fetch(API_SECTIONS_URL);
+
+  if (!response.ok) {
+    throw new Error(
+      "Couldn't connect to the server, please try again or email InfoSupport!"
+    );
+  }
+
+  const data = await response.json();
+
+  return data.seconds;
+}
+
+export async function switchSection(
+  inviteId: string,
+  sectionId: string
+): Promise<void> {
+  const API_SECTIONS_URL =
+    import.meta.env.VITE_API_APPLICANT_URL + "/timing/" + inviteId + "/switch";
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  const response = await fetch(API_SECTIONS_URL, {
+    method: "PUT",
+    body: JSON.stringify({ id: sectionId }),
+    headers: headers,
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Couldn't connect to the server, please try again or email InfoSupport!"
+    );
+  }
+
+  return;
+}
+
+export async function finishAssessment(inviteId: string): Promise<void> {
+  const API_URL = import.meta.env.VITE_API_APPLICANT_URL + "/invite";
+
+  const response: Response = await fetch(API_URL, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: inviteId,
+      status: "app_finished",
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to finish the assessment: ${response.statusText}`);
+  }
+
+  return;
 }

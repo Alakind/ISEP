@@ -1,9 +1,19 @@
 import { AssessmentInterface } from "../utils/types";
 import "../styles/header.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {ToastContainer} from "react-toastify";
 
-function Header({ assessment, currentSectionIndex }: Props) {
+function Header({ assessment, currentSectionIndex, secondsLeft }: Props) {
+    const [hours, setHours] = useState<number>(0);
+    const [minutes, setMinutes] = useState<number>(0);
+    const [seconds, setSeconds] = useState<number>(0);
+
+    useEffect(() => {
+        setHours(Math.floor(secondsLeft / 3600));
+        setMinutes(Math.floor(secondsLeft % 3600 / 60));
+        setSeconds(Math.floor(secondsLeft % 3600 % 60));
+    }, [secondsLeft]);
+
   return (
     <header className="header">
       <span className="header__left">
@@ -33,7 +43,7 @@ function Header({ assessment, currentSectionIndex }: Props) {
       <span className="header__right">
         <span>
           <span>Time left: </span>
-          <span className="header__time-text">00:12:34</span>
+          <span className="header__time-text">{hours}:{minutes}:{seconds}</span>
         </span>
         <span>
           <i className="bi bi-clock"></i>
@@ -46,6 +56,7 @@ function Header({ assessment, currentSectionIndex }: Props) {
 interface Props {
   assessment: AssessmentInterface;
   currentSectionIndex: number;
+  secondsLeft: number;
 }
 
 export default Header;

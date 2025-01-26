@@ -2,6 +2,7 @@ import { AssignmentTypes } from "./constants";
 
 export interface AssessmentInterface {
   sections: SectionInterface[];
+  availableSeconds: number;
 }
 
 export interface SectionInterface {
