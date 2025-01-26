@@ -34,7 +34,7 @@ function BarChartContainer({inviteId}: Readonly<Props>): ReactNode {
 
   if (loading) {
     return (
-      <LoadingPage additionalClasses={"page--barchart"} size={30}/>
+      <LoadingPage additionalClasses={"page--barchart page--mod"} size={30}/>
     )
 
   } else {
