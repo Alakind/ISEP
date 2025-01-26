@@ -1,6 +1,7 @@
 package ut.isep.management.service.solution
 
 import dto.assignment.ResultAssignmentReadDTO
+import dto.scorecomparison.ScoreComparisonReadDTO
 import dto.section.ResultSectionReadDTO
 import dto.section.ResultSectionSimpleReadDTO
 import dto.section.SectionInfo
@@ -17,6 +18,7 @@ import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.solution.ResultAssignmentReadConverter
+import ut.isep.management.service.invite.InviteReadService
 import java.util.*
 
 @Transactional
@@ -26,7 +28,8 @@ class ResultReadService(
     converter: ResultAssignmentReadConverter,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
-    val assessmentRepository: AssessmentRepository
+    val assessmentRepository: AssessmentRepository,
+    private val inviteReadService: InviteReadService
 ) : ReadService<SolvedAssignment, ResultAssignmentReadDTO, SolvedAssignmentId>(repository, converter) {
 
     fun getResultSection(inviteId: UUID, sectionId: Long): ResultSectionReadDTO {
@@ -82,4 +85,81 @@ class ResultReadService(
             createSimpleResultDTO(solvedAssignments, section, invite)
         }
     }
+
+    fun computeScoreComparison(inviteId: UUID): ScoreComparisonReadDTO {
+        //FIXME: refactor to having a database with computed percentages after the finished assessment has been auto scored
+        // and update the percentage when scores updates to prevent from having to recalculate these values. With large datasets
+        // this will be become too much to be computed in the way down below
+
+        // Determine the invite percentage of the selected invite
+        val selectedInvite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
+        val invitePercentage = selectedInvite.solutions.mapNotNull { it.scoredPoints }.sum().toFloat() / selectedInvite.assessment!!.availablePoints * 100;
+
+        // Retrieve the valid percentages of all invites
+        val allInvites: List<Invite> = inviteRepository.findAll().toList()
+        val validPercentages = getValidPercentages(allInvites)
+
+        // Calculate the percentage of invites the current invite percentage is better than
+        val betterScores = validPercentages.count { it < invitePercentage }
+        val betterThanPercentage = if (validPercentages.isNotEmpty()) {
+            (betterScores.toFloat() / validPercentages.size) * 100
+        } else {
+            0f
+        }
+
+        // Create the distribution groups with data
+        val distributionGroups = getDistributionGroups(validPercentages)
+
+        // Determine the distribution group for specified invite percentage
+        val selectedGroup = getSelectedDistributionGroup(invitePercentage)
+
+        // Normalize the distributionGroups to 100%
+        val normDistributionGroups = distributionGroups.map { it.div(validPercentages.size.toFloat()) * 100 }
+
+        return ScoreComparisonReadDTO(
+            percentage = betterThanPercentage,
+            distributionGroups = normDistributionGroups,
+            selectedGroup = selectedGroup
+        )
+    }
+
+    private fun getDistributionGroups(validPercentages: List<Float>): MutableList<Int> {
+        val distributionGroups = MutableList(10) { 0 }
+
+        validPercentages.forEach { score ->
+            val groupIndex = getSelectedDistributionGroup(score)
+            if (groupIndex != -1) distributionGroups[groupIndex]++
+        }
+        return distributionGroups
+    }
+
+    private fun getSelectedDistributionGroup(percentage: Float): Int {
+        return when (percentage) {
+            in 0.00..<10.00 -> 0
+            in 10.00..<20.00 -> 1
+            in 20.00..<30.00 -> 2
+            in 30.00..<40.00 -> 3
+            in 40.00..<50.00 -> 4
+            in 50.00..<60.00 -> 5
+            in 60.00..<70.00 -> 6
+            in 70.00..<80.00 -> 7
+            in 80.00..<90.00 -> 8
+            in 90.00..100.00 -> 9
+            else -> -1
+        }
+    }
+
+    //.filter { it.status == InviteStatus.app_finished }
+    private fun getValidPercentages(allInvites: List<Invite>) = allInvites.mapNotNull { invite ->
+        val availablePoints = invite.assessment!!.availablePoints
+        val totalScoredPoints = invite.solutions.mapNotNull { it.scoredPoints }.sum()
+
+        if (availablePoints > 0) {
+            (totalScoredPoints.toFloat() / availablePoints) * 100
+        } else {
+            null
+        }
+    }
+
+
 }

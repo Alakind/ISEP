@@ -447,69 +447,18 @@ export async function getSectionResult(id: string, inviteId: string): Promise<Se
 }
 
 export async function getBarChartStats(inviteId: string): Promise<BarChartInterface> {
-  console.log(inviteId)
-  //TODO uncomment next part when implemented
-  /*const response: Response = await fetch(`${baseUrl}/statistics`, {
+  const response: Response = await fetch(`${baseUrl}/result/${inviteId}/comparison`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      inviteId: inviteId,
-    }),
   });
-
 
   if (!response.ok) {
     throw new Error(`Failed to retrieve bar chart statistics`);
   }
 
-  return await response.json();*/
-  return {
-    percentage: "46.17",
-    barGroups: [
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "4",
-        isSelected: false,
-      },
-      {
-        value: "14",
-        isSelected: false,
-      },
-      {
-        value: "24",
-        isSelected: false,
-      },
-      {
-        value: "31",
-        isSelected: true,
-      },
-      {
-        value: "14",
-        isSelected: false,
-      },
-      {
-        value: "9",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-      {
-        value: "1",
-        isSelected: false,
-      },
-    ]
-  };
+  return await response.json();
 }
 
 export async function getSkillsStats(assessmentId: string, inviteId: string): Promise<SkillsInterface[]> {

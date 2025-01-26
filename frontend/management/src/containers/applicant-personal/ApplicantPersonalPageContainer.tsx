@@ -34,7 +34,7 @@ function ApplicantPersonalPageContainer(): ReactNode {
         fetchApplicantData().then();
       }
     }
-  }, [id]);
+  }, [id, user.role]);
 
   async function fetchApplicantData(): Promise<void> {
     setLoading(true);

@@ -109,13 +109,9 @@ export interface AssignmentInterface {
 }
 
 export interface BarChartInterface {
-  percentage: string;
-  barGroups: BarGroupInterface[];
-}
-
-export interface BarGroupInterface {
-  value: string;
-  isSelected: boolean;
+  percentage: number;
+  distributionGroups: number[];
+  selectedGroup: number;
 }
 
 export interface SkillsInterface {
