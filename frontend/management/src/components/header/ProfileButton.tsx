@@ -10,7 +10,6 @@ function ProfileButton({currentUser, currentRole, handleLogout}: Readonly<Props>
           <i className="bi bi-person-circle"></i>
         </button>
         <ul className="dropdown-menu">
-          {/*TODO implement actual role*/}
           <li className={"dropdown-item"}><b>{currentUser}</b></li>
           <li className={"dropdown-item"}>Role: {currentRole}</li>
           <li><hr className="dropdown-divider"/></li>
