@@ -9,6 +9,7 @@ import ut.isep.interview.code_execution.CodeExecutor
 import ut.isep.interview.code_execution.JavaExecutor
 import ut.isep.interview.code_execution.PythonExecutor
 import ut.isep.interview.code_execution.SQLExecutor
+import ut.isep.interview.code_execution.dto.Test
 import java.io.File
 
 @RestController
@@ -18,7 +19,7 @@ class CodeExecution {
 
     @PostMapping(path = ["/{uuid}/sql/initialize", "/{uuid}/python/initialize", "/{uuid}/java/initialize"],
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun initializeSQLContainer(@PathVariable uuid: String,
+    fun initializeContainer(@PathVariable uuid: String,
                                @RequestPart("file", required = false) file: MultipartFile?,
                                request: HttpServletRequest): ResponseEntity<Any> {
         val containerFile: File
@@ -49,18 +50,15 @@ class CodeExecution {
     }
 
     @PostMapping(path = ["/{uuid}/sql/test", "/{uuid}/python/test", "/{uuid}/java/test"])
-    fun testSQLCode(@PathVariable uuid: String,
-                    @RequestBody() codeStrings: Map<String, String>,
+    fun testCode(@PathVariable uuid: String,
+                    @RequestBody() codeStrings: Test,
                     request: HttpServletRequest): ResponseEntity<Any> {
-        if (!codeStrings.containsKey("code")) {
-            return ResponseEntity.badRequest().body("You must provide code with your request")
-        }
         val path = request.requestURI
         try {
             val result = when {
-                path.contains("/sql/") -> SQLExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
-                path.contains("/python/") -> PythonExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
-                path.contains("/java/") -> JavaExecutor.runTest(uuid, codeStrings["code"]!!, codeStrings["test"])
+                path.contains("/sql/") -> SQLExecutor.runTest(uuid, codeStrings)
+                path.contains("/python/") -> PythonExecutor.runTest(uuid, codeStrings)
+                path.contains("/java/") -> JavaExecutor.runTest(uuid, codeStrings)
                 else -> return ResponseEntity.badRequest().body("The requested language is not supported.")
             }
             return ResponseEntity.ok().body(result)

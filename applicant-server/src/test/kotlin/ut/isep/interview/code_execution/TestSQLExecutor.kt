@@ -28,7 +28,9 @@ class TestSQLExecutor {
         val code = File("src/test/resources/codeExecutor/sqlGood/Code.sql")
         val test = File("src/test/resources/codeExecutor/sqlGood/TestCode.py")
 
-        val result = SQLExecutor.runTest(ID, code.readText(), test.readText())
+        val result = SQLExecutor.runTest(ID,
+            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+        )
 
         assertEquals(4, result.count { it.passed })
         assertEquals(4, result.size)
@@ -39,7 +41,9 @@ class TestSQLExecutor {
         val code = File("src/test/resources/codeExecutor/sqlBad/Code.sql")
         val test = File("src/test/resources/codeExecutor/sqlBad/TestCode.py")
 
-        val result = SQLExecutor.runTest(ID, code.readText(), test.readText())
+        val result = SQLExecutor.runTest(ID,
+            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+        )
 
         assertEquals(1, result.count { !it.passed })
         assertEquals(3, result.count { it.passed })

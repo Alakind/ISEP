@@ -1,6 +1,7 @@
 package ut.isep.interview.code_execution
 
 import ut.isep.interview.code_execution.CodeExecutor.createAndReturnTempFiles
+import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
@@ -12,16 +13,13 @@ object PythonExecutor {
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
     }
 
-    fun runTest(inviteId: String, code: String, tests: String?): List<TestResult> {
+    fun runTest(inviteId: String, test: Test): List<TestResult> {
         val name = "$inviteId-python"
-        val files = createAndReturnTempFiles(inviteId, code, tests, "Code.py", "Test.py")
+        val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.py", test.testFileName ?: "Test.py")
         ContainerAPI.copyToContainerByName(name, files.first, "/project")
         ContainerAPI.copyToContainerByName(name, files.second, "/project")
         val testOutput = ContainerAPI.runCommandInContainerByName(name, "cd /project ; python Test.py")
-        if (tests == null) {
-            return getTestResult(files.second.readText(), testOutput.output)
-        }
-        return getTestResult(tests, testOutput.error);
+        return getTestResult(test.test ?: files.second.readText(), testOutput.error)
     }
 
     fun getTestResult(testsString: String, output: String): List<TestResult> {
