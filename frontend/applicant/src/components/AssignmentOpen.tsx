@@ -36,24 +36,22 @@ function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
   };
 
   const handleSendSolution = async (newValue: string) => {
-    setAssignmentAnswer({ answer: newValue });
+    setAssignmentAnswer({answer: newValue});
     await sendOpenSolution(assignment, newValue);
   };
 
   return (
-    <>
-      <textarea
-        className="assignment__textarea"
-        placeholder="Type here ..."
-        name={assignment.id}
-        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-          handleTextChange(event)
-        }
-        value={value}
-        onFocus={handleOnFocus}
-        onBlur={handleBlur}
-      />
-    </>
+    <textarea
+      className="assignment__textarea"
+      placeholder="Type here ..."
+      name={assignment.id}
+      onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+        handleTextChange(event)
+      }
+      value={value}
+      onFocus={handleOnFocus}
+      onBlur={handleBlur}
+    />
   );
 }
 

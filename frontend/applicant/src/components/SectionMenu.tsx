@@ -3,14 +3,14 @@ import "../styles/section_menu.css"
 import React, {useState} from "react";
 import AssignmentMenu from "./AssignmentMenu.tsx";
 
-function SectionMenu({assessment, currentSectionIndex, setCurrentSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex}: Readonly<Props>) {
+function SectionMenu({assessment, currentSectionIndex, changeSectionIndex, currentAssignmentIndex, setCurrentAssignmentIndex}: Readonly<Props>) {
   const [hoveredSection, setHoveredSection] = useState<number | null>(null);
 
-    const handleNextSection = (mapIndex) => {
-        //TODO save the state of the question(s)
+  const handleNextSection = (mapIndex: number) => {
+    //TODO save the state of the question(s)
 
-        setCurrentSectionIndex(mapIndex);
-    };
+    changeSectionIndex(mapIndex).then();
+  };
 
     return (
       <div className="section-menu">
@@ -46,11 +46,11 @@ function SectionMenu({assessment, currentSectionIndex, setCurrentSectionIndex, c
 }
 
 interface Props {
-    assessment: AssessmentInterface;
-    currentSectionIndex: number;
-    setCurrentSectionIndex: React.Dispatch<React.SetStateAction<number>>;
-    currentAssignmentIndex: number[];
-    setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
+  assessment: AssessmentInterface;
+  currentSectionIndex: number;
+  changeSectionIndex: (sectionIndex: number) => Promise<void>;
+  currentAssignmentIndex: number[];
+  setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 export default SectionMenu;

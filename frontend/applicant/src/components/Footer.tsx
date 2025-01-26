@@ -11,7 +11,7 @@ import {useNavigate} from "react-router-dom";
 function Footer({
                   assessment,
                   currentSectionIndex,
-                  setCurrentSectionIndex,
+                  changeSectionIndex,
                   currentAssignmentIndex,
                   setCurrentAssignmentIndex,
                   endOfAssessment,
@@ -54,14 +54,14 @@ function Footer({
         );
       } else if (currentSectionIndex < assessment.sections.length - 1) {
         // Move to the first assignment of the next section
-        setCurrentSectionIndex(currentSectionIndex + 1);
+        changeSectionIndex(currentSectionIndex + 1);
         return prevIndexes.map((index: number, mapIndex: number): number =>
           mapIndex === currentSectionIndex + 1 ? 0 : index
         );
       } else if (currentSectionIndex + 1 >= assessment.sections.length - 1) {
         // Loop back to the first section and assignment
         setEndOfAssessment(true);
-        setCurrentSectionIndex(0);
+        changeSectionIndex(0);
         return prevIndexes.map((_: number, mapIndex: number): number =>
           mapIndex === 0 ? 0 : prevIndexes[mapIndex]
         );
@@ -83,7 +83,7 @@ function Footer({
           <SectionMenu
             assessment={assessment}
             currentSectionIndex={currentSectionIndex}
-            setCurrentSectionIndex={setCurrentSectionIndex}
+            changeSectionIndex={changeSectionIndex}
             currentAssignmentIndex={currentAssignmentIndex}
             setCurrentAssignmentIndex={setCurrentAssignmentIndex}
           />
@@ -125,7 +125,7 @@ function Footer({
 interface Props {
   assessment: AssessmentInterface;
   currentSectionIndex: number;
-  setCurrentSectionIndex: (arg: number) => void;
+  changeSectionIndex: (sectionIndex: number) => Promise<void>;
   currentAssignmentIndex: number[];
   setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
   endOfAssessment: boolean;

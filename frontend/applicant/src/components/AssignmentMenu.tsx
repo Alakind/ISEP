@@ -1,25 +1,22 @@
 import {AssignmentInterface, SectionInterface} from "../utils/types";
 import "../styles/assignment_menu.css";
-import React from "react";
+import {Dispatch, SetStateAction} from "react";
 
 function AssignmentMenu({
                           section,
                           assignmentSectionIndex,
                           currentSectionIndex,
-                          setCurrentSectionIndex,
+                          changeSectionIndex,
                           currentAssignmentIndex,
                           setCurrentAssignmentIndex,
                           onMouseEnter,
                           onMouseLeave,
                         }: Readonly<Props>) {
-  const handleAssignmentClick = (
-    assignment: AssignmentInterface,
-    assignmentIndex: number
-  ): void => {
+  const handleAssignmentClick = (assignment: AssignmentInterface, assignmentIndex: number): void => {
     //TODO save the state of the question(s)
 
     if (currentSectionIndex !== assignmentSectionIndex) {
-      setCurrentSectionIndex(assignmentSectionIndex);
+      changeSectionIndex(assignmentSectionIndex);
     }
 
     setCurrentAssignmentIndex((prevIndexes: number[]) =>
@@ -60,9 +57,9 @@ interface Props {
   section: SectionInterface;
   assignmentSectionIndex: number;
   currentSectionIndex: number;
-  setCurrentSectionIndex: React.Dispatch<React.SetStateAction<number>>;
+  changeSectionIndex: (sectionIndex: number) => Promise<void>;
   currentAssignmentIndex: number[];
-  setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
+  setCurrentAssignmentIndex: Dispatch<SetStateAction<number[]>>;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }

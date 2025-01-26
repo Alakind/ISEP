@@ -1,9 +1,9 @@
 import Assignment from "../components/Assignment";
-import { AssessmentInterface, AssignmentInterface } from "../utils/types";
+import {AssessmentInterface, AssignmentInterface} from "../utils/types";
 import "../styles/main.css";
 import scrollToAssignment from "../utils/operations.tsx";
-import { useEffect, useState } from "react";
-import { AssignmentTypes } from "../utils/constants.tsx";
+import {useEffect, useState} from "react";
+import {AssignmentTypes} from "../utils/constants.tsx";
 
 function Main({
                 assessment,
@@ -15,7 +15,7 @@ function Main({
     scrollToAssignment(
       assessment.sections[currentSectionIndex].assignments[
         currentAssignmentIndex[currentSectionIndex]
-      ].id
+        ].id
     );
   }, [currentSectionIndex, currentAssignmentIndex]);
 
@@ -25,7 +25,7 @@ function Main({
     setIsCurrentCoding(
       assessment.sections[currentSectionIndex].assignments[
         currentAssignmentIndex[currentSectionIndex]
-      ].type === AssignmentTypes.CODING
+        ].type === AssignmentTypes.CODING
     );
   }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
 

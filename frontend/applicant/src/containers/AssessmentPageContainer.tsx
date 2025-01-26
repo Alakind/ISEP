@@ -168,7 +168,7 @@ function AssessmentPageContainer() {
           <Footer
             assessment={assessment}
             currentSectionIndex={currentSectionIndex}
-            setCurrentSectionIndex={changeSectionIndex}
+            changeSectionIndex={changeSectionIndex}
             currentAssignmentIndex={currentAssignmentIndex}
             setCurrentAssignmentIndex={setCurrentAssignmentIndex}
             endOfAssessment={endOfAssessment}
