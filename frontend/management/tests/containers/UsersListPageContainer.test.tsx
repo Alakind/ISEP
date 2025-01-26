@@ -6,6 +6,7 @@ import {UserInterface} from '../../src/utils/types';
 import {Roles} from "../../src/utils/constants.tsx";
 import {MemoryRouter} from "react-router-dom";
 import {vi} from "vitest";
+import {useUserData} from "../../src/utils/msal/UseUserData.tsx";
 
 vi.mock('../../src/utils/apiFunctions.tsx', () => ({
   __esModule: true,
@@ -21,15 +22,19 @@ vi.mock('react-toastify', () => ({
   },
 }));
 
+vi.mock("../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
+
 describe('UsersListPageContainer', () => {
   const mockUsers: UserInterface[] = [
     {
       id: '1', name: 'John Doe', email: 'john@example.com',
-      role: Roles.ADMIN
+      role: Roles.ADMIN, oid: ""
     },
     {
       id: '2', name: 'Jane Doe', email: 'jane@example.com',
-      role: Roles.INTERVIEWER
+      role: Roles.INTERVIEWER, oid: ""
     },
   ];
 
@@ -159,6 +164,34 @@ describe('UsersListPageContainer', () => {
 
     await waitFor(() => {
       expect(getUsers).toHaveBeenCalledWith(0, 10, 'name,asc', 'name=Jane');
+    });
+  });
+
+  it('should render no access page a Recruiter role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.RECRUITER});
+
+    render(<MemoryRouter><UsersListPageContainer/></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', {name: "Access denied"})).toBeInTheDocument();
+    });
+  });
+
+  it('should render no access page a Interviewer role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.INTERVIEWER});
+
+    render(<MemoryRouter><UsersListPageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.getByRole('heading', {name: "Access denied"})).toBeInTheDocument();
+    });
+  });
+
+  it('shouldn\'t render no access page a Admin role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.ADMIN});
+
+    render(<MemoryRouter><UsersListPageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
     });
   });
 });

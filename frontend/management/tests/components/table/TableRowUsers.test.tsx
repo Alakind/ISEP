@@ -17,6 +17,7 @@ describe('TableRowUsers Component', () => {
     name: 'John Doe',
     email: 'john.doe@example.com',
     role: Roles.ADMIN,
+    oid: ""
   };
 
   const mockHandleSelect = vi.fn();
@@ -102,7 +103,7 @@ describe('TableRowUsers Component', () => {
         </tbody>
       </table>
     );
-    
+
     expect(screen.getByTestId('unknown-cell')).toBeInTheDocument();
   });
 });

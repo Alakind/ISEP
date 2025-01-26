@@ -20,7 +20,8 @@ class InviteReadConverter : ReadConverter<Invite, InviteReadDTO> {
             status = entity.status,
             assessmentStartedAt = entity.assessmentStartedAt,
             assessmentFinishedAt = entity.assessmentFinishedAt,
-            scoredPoints = entity.solutions.mapNotNull { it.scoredPoints }.ifEmpty { null }?.sum()
+            scoredPoints = entity.solutions.mapNotNull { it.scoredPoints }.ifEmpty { null }?.sum(),
+            availablePoints = entity.assessment!!.availablePoints
         )
     }
 }

@@ -3,49 +3,9 @@ import {render, screen} from "@testing-library/react";
 import {BarChartInterface} from "../../../../../src/utils/types.tsx";
 
 const mockBarChartData: BarChartInterface = {
-  percentage: "46.17",
-  barGroups: [
-    {
-      value: "1",
-      isSelected: false,
-    },
-    {
-      value: "4",
-      isSelected: false,
-    },
-    {
-      value: "14",
-      isSelected: false,
-    },
-    {
-      value: "24",
-      isSelected: false,
-    },
-    {
-      value: "31",
-      isSelected: true,
-    },
-    {
-      value: "14",
-      isSelected: false,
-    },
-    {
-      value: "9",
-      isSelected: false,
-    },
-    {
-      value: "1",
-      isSelected: false,
-    },
-    {
-      value: "1",
-      isSelected: false,
-    },
-    {
-      value: "1",
-      isSelected: false,
-    },
-  ]
+  percentage: 46.17,
+  distributionGroups: [1, 4, 14, 24, 31, 14, 9, 1, 1, 1],
+  selectedGroup: 4
 };
 
 describe('BarChart Component', () => {
@@ -62,7 +22,7 @@ describe('BarChart Component', () => {
     render(<BarChart barChartData={mockBarChartData} barWidth={barWidth}/>);
 
     const barGroups = screen.getAllByTestId('bar-group');
-    expect(barGroups).toHaveLength(mockBarChartData.barGroups.length);
+    expect(barGroups).toHaveLength(mockBarChartData.distributionGroups.length);
   });
 
   it('passes correct data to BarGroupContainer', () => {
@@ -72,7 +32,7 @@ describe('BarChart Component', () => {
     barGroups.forEach((barGroup, index) => {
       expect(barGroup).toHaveAttribute(
         'height',
-        JSON.stringify(Number(mockBarChartData.barGroups[index].value) * 2) + "%"
+        JSON.stringify(Number(mockBarChartData.distributionGroups[index]) * 2) + "%"
       );
       expect(barGroup).toHaveAttribute('width', `${barWidth - 2}`);
     });

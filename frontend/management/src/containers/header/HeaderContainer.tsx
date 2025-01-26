@@ -10,7 +10,7 @@ function HeaderContainer(): ReactNode {
   }, []);
 
   return (
-    <Header currentPage={currentPage} urlPrefix={`${import.meta.env.VITE_DOMAIN}${import.meta.env.VITE_SUBDOMAIN}`}/>
+    <Header currentPage={currentPage}/>
   );
 }
 

@@ -2,6 +2,12 @@ import {fireEvent, render, screen} from "@testing-library/react";
 import {ApplicantInterface} from "../../src/utils/types.tsx";
 import ApplicantsListPage from "../../src/components/ApplicantsListPage.tsx";
 import {MemoryRouter} from "react-router-dom";
+import {vi} from "vitest";
+import {Roles} from "../../src/utils/constants.tsx";
+
+vi.mock("../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 describe('ApplicantsListPage Component', () => {
   const mockHandleAddApplicant = vi.fn();

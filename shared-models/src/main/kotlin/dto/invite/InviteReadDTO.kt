@@ -18,4 +18,5 @@ data class InviteReadDTO(
     val assessmentStartedAt: OffsetDateTime? = null,
     val assessmentFinishedAt: OffsetDateTime? = null,
     val scoredPoints: Int?,
+    val availablePoints: Int?,
 ) : ReadDTO

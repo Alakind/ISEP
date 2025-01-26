@@ -34,6 +34,21 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
     }
 
+    @ExceptionHandler(NotAllowedUpdateException::class)
+    fun handleNotAllowedUpdateException(ex: RuntimeException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(OidNotUniqueException::class)
+    fun handleOidNotUniqueException(ex: RuntimeException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGenericException(ex: Exception): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred")

@@ -2,11 +2,16 @@ import "../styles/general.css";
 import {Link} from "react-router-dom";
 import {ReactNode} from "react";
 import HeaderContainer from "./header/HeaderContainer.tsx";
+import {useIsAuthenticated, useMsal} from "@azure/msal-react";
 
 function PageNotFound(): ReactNode {
+  const {instance} = useMsal();
+  const activeAccount = instance.getActiveAccount()
+  const isAuthenticated = useIsAuthenticated();
+  const authenticated = activeAccount && isAuthenticated;
   return (
     <div>
-      <HeaderContainer/>
+      {authenticated && <HeaderContainer/>}
       <main>
         <div className="page page--center" data-testid={"page-not-found"}>
           <h1>404</h1>

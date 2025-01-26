@@ -32,13 +32,13 @@
     border-color: white;
 }
 
-.bi-list, .bi-people-fill, .bi-clipboard, .bi-person-rolodex {
+.bi-list, .bi-people-fill, .bi-columns-gap, .bi-person-rolodex {
     font-size: 30px;
     color: var(--icons);
     cursor: pointer;
 }
 
-.bi-people-fill, .bi-clipboard, .bi-person-rolodex {
+.bi-people-fill, .bi-columns-gap, .bi-person-rolodex {
     margin-right: 10px;
     margin-left: 30px;
 }

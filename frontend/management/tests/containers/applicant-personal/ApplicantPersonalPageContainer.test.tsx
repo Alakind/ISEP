@@ -5,7 +5,7 @@ import {getApplicant, getAssessment, getInvite} from '../../../src/utils/apiFunc
 import {MemoryRouter, Route, Routes, useNavigate} from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {ApplicantInterface, AssessmentInterface, InviteInterface} from "../../../src/utils/types.tsx";
-import {InviteStatuses} from "../../../src/utils/constants.tsx";
+import {InviteStatuses, Roles} from "../../../src/utils/constants.tsx";
 
 vi.mock('../../../src/utils/apiFunctions', () => ({
   getApplicant: vi.fn(),
@@ -28,6 +28,10 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
+
 const mockNavigate = vi.fn();
 vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
@@ -46,15 +50,15 @@ describe('ApplicantPersonalPageContainer', () => {
   const mockInvites: InviteInterface[] = [
     {
       id: 'invite1', applicantId: '1', assessmentId: 'assessment1', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
     {
       id: 'invite2', applicantId: '1', assessmentId: 'assessment2', status: InviteStatuses.APP_FINISHED, invitedAt: '', expiresAt: '',
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },

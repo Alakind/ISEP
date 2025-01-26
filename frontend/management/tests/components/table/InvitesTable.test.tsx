@@ -12,8 +12,8 @@ describe('InvitesTable component', () => {
       status: "",
       invitedAt: "",
       expiresAt: "",
-      assessmentFinishedAt: new Date("2025-01-15T23:59:25.803Z"),
-      assessmentStartedAt: new Date("2025-01-15T22:59:25.803Z"),
+      assessmentFinishedAt: "2025-01-15T23:59:25.803Z",
+      assessmentStartedAt: "2025-01-15T22:59:25.803Z",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
@@ -24,8 +24,8 @@ describe('InvitesTable component', () => {
       status: "",
       invitedAt: "",
       expiresAt: "",
-      assessmentFinishedAt: new Date("2025-01-15T23:59:25.803Z"),
-      assessmentStartedAt: new Date("2025-01-15T22:59:25.803Z"),
+      assessmentFinishedAt: "2025-01-15T23:59:25.803Z",
+      assessmentStartedAt: "2025-01-15T22:59:25.803Z",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },

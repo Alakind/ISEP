@@ -1,4 +1,5 @@
 import {AssignmentTypes, InviteStatuses, PreferredLanguages, Roles} from "./constants";
+import {JwtPayload} from "jwt-decode";
 
 export interface ApplicantInterface {
   id: string;
@@ -6,6 +7,7 @@ export interface ApplicantInterface {
   email: string;
   statuses?: (typeof InviteStatuses)[keyof typeof InviteStatuses][];
   scores?: number[];
+  availablePoints?: number[];
   preferredLanguage: (typeof PreferredLanguages)[keyof typeof PreferredLanguages];
   invites?: string[];
   createdAt?: Date;
@@ -22,6 +24,7 @@ export interface InviteInterface {
   assessmentStartedAt?: string;
   measuredSecondsPerSection: number[];
   scoredPoints?: number;
+  availablePoints?: number;
 }
 
 export interface UserInterface {
@@ -29,7 +32,8 @@ export interface UserInterface {
   name: string;
   email: string;
   role: (typeof Roles)[keyof typeof Roles];
-  createdAt?: Date;
+  createdAt?: string;
+  oid: string;
 }
 
 export interface Column {
@@ -47,12 +51,6 @@ export interface AssessmentInterface {
   id: string;
   tag: string;
   sections: number[]
-}
-
-export interface SectionInterface {
-  id: string;
-  assignments: AssignmentInterface[];
-  title: string;
 }
 
 export interface SectionSolvedInterface {
@@ -100,6 +98,7 @@ export interface TestResultsInterface {
   name: string;
   message?: string;
   passed: boolean;
+  code?: string;
 }
 
 export interface AssignmentInterface {
@@ -109,24 +108,10 @@ export interface AssignmentInterface {
   description: string;
 }
 
-export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
-  options: string[];
-  isMultipleAnswers: boolean;
-}
-
-export interface AssignmentCodingInterface extends AssignmentInterface {
-  image: string;
-  files: File[];
-}
-
 export interface BarChartInterface {
-  percentage: string;
-  barGroups: BarGroupInterface[];
-}
-
-export interface BarGroupInterface {
-  value: string;
-  isSelected: boolean;
+  percentage: number;
+  distributionGroups: number[];
+  selectedGroup: number;
 }
 
 export interface SkillsInterface {
@@ -138,4 +123,11 @@ export interface SkillsInterface {
 export interface ScoredAssessmentInterface {
   scoredPoints: number | null;
   availablePoints: number;
+}
+
+export interface ExJwtPayload extends JwtPayload {
+  given_name: string;
+  family_name: string;
+  unique_name: string; //email (fallback upn)
+  oid: string;
 }

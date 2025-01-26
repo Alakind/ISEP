@@ -1,5 +1,5 @@
-import {ApplicantInterface, AssignmentInterface, InviteInterface, UserInterface,} from "../../src/utils/types";
-import {AssignmentTypes, InviteStatuses, Roles} from "../../src/utils/constants";
+import {ApplicantInterface, InviteInterface, UserInterface,} from "../../src/utils/types";
+import {InviteStatuses, Roles} from "../../src/utils/constants";
 
 describe("Interface Compliance", () => {
   it("should match ApplicantInterface structure", () => {
@@ -21,6 +21,7 @@ describe("Interface Compliance", () => {
       status: InviteStatuses.EXPIRED,
       invitedAt: "2024-01-01T12:00:00Z",
       expiresAt: "2024-01-10T12:00:00Z",
+      measuredSecondsPerSection: []
     };
     expect(expectTypeOf(invite).toMatchTypeOf<InviteInterface>()).toBe(true);
   });
@@ -31,6 +32,7 @@ describe("Interface Compliance", () => {
       name: "Jane Doe",
       email: "jane@example.com",
       role: Roles.ADMIN,
+      oid: ""
     };
     expect(expectTypeOf(user).toMatchTypeOf<UserInterface>()).toBe(true);
   });
@@ -52,16 +54,6 @@ describe("Interface Compliance", () => {
   //AssignmentMultipleChoiceSolvedInterface
 
   //AssignmentCodingSolvedInterface
-
-  it("should match AssignmentInterface structure", () => {
-    const assignment: AssignmentInterface = {
-      id: "a1",
-      type: AssignmentTypes.OPEN,
-      isSolved: false,
-      description: "Write a function to reverse a string.",
-    };
-    expect(expectTypeOf(assignment).toMatchTypeOf<AssignmentInterface>()).toBe(true);
-  });
 
   //AssignmentMultipleChoiceInterface
 

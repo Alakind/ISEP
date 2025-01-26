@@ -7,7 +7,7 @@ import {getBarChartStats} from "../../../../utils/apiFunctions.tsx";
 
 function BarChartContainer({inviteId}: Readonly<Props>): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
-  const [barChartData, setBarChartData] = useState<BarChartInterface>({percentage: "-", barGroups: []});
+  const [barChartData, setBarChartData] = useState<BarChartInterface>({percentage: 0, distributionGroups: [], selectedGroup: -1});
 
   useEffect((): void => {
     if (inviteId != "") {
