@@ -32,7 +32,7 @@ class ResultAssignmentReadConverter(
         val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
         return ResultAssignmentCodingReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!),
+            referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!, codingAssignment.startingTest!!),
             scoredPoints = entity.scoredPoints,
             testResults = entity.testResults.map { testResultConverter.toDTO(it) },
         )
