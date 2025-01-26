@@ -1,11 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 import WelcomePage from "../components/WelcomePage";
-import { useEffect } from "react";
+import {useEffect} from "react";
 
 function WelcomePageContainer() {
   const navigate = useNavigate();
-  const { inviteId } = useParams();
+  const {inviteId} = useParams();
 
   useEffect(() => {
     if (inviteId) {
@@ -17,7 +17,7 @@ function WelcomePageContainer() {
     navigate("/assessment");
   };
 
-  return <WelcomePage handleStart={handleStart} />;
+  return <WelcomePage handleStart={handleStart} inviteId={inviteId ?? null}/>;
 }
 
 export default WelcomePageContainer;

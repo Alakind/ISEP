@@ -17,13 +17,13 @@ function Footer({
                   endOfAssessment,
                   setEndOfAssessment,
                 }: Readonly<Props>) {
-  const [isFinishModalVisible, setIsFinishModalVisible] =
-    useState<boolean>(false);
+  const [isFinishModalVisible, setIsFinishModalVisible] = useState<boolean>(false);
+  let inviteId: string | null = null;
 
   const navigate = useNavigate();
 
   async function handleFinish() {
-    const inviteId = localStorage.getItem("inviteId");
+    inviteId = localStorage.getItem("inviteId");
     if (!inviteId) {
       throw new Error("Couldn't get invite Id.");
     }
@@ -74,6 +74,7 @@ function Footer({
       <span className="footer__left">
         <InfoSupportMailSupport
           element={<i className="bi bi-question-circle"></i>}
+          inviteId={inviteId}
         />
         <ThemeSwitch/>
       </span>
