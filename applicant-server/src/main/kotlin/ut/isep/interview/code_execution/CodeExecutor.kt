@@ -1,30 +1,12 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.utils.ContainerAPI
+import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
-import java.nio.file.Files
 
-object CodeExecutor {
-    fun stopContainers(inviteId: String) {
-        val allContainers = ContainerAPI.getAllContainerNames()
-        allContainers.filter { it.contains(inviteId) }.forEach(ContainerAPI::stopContainer)
-    }
+interface CodeExecutor {
 
-    fun createAndReturnTempFiles(inviteId: String,
-                                         codeString: String, testsString: String?,
-                                         codeFileName: String, testsFileName:String): Pair<File, File> {
-        val dir = Files.createTempDirectory(inviteId)
-        val codeFile = dir.resolve(codeFileName).toFile()
-        codeFile.writeText(codeString)
+    fun startContainer(inviteId: String, container: File)
 
-        val testFile = dir.resolve(testsFileName).toFile()
-        if (!testFile.exists() && testsString == null) {
-            throw IllegalArgumentException("A file containing tests should be provided")
-        }
-        if (testsString != null) {
-            testFile.writeText(testsString)
-        }
-        return Pair(codeFile, testFile)
-    }
+    fun runTest(inviteId: String, test: Test): List<TestResult>
 }

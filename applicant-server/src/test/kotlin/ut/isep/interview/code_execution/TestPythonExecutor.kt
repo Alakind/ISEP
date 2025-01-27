@@ -2,6 +2,7 @@ package ut.isep.interview.code_execution
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils
 import java.io.File
 import kotlin.test.assertEquals
 
@@ -11,7 +12,7 @@ class TestPythonExecutor {
 
     @AfterEach
     fun killContainers() {
-        CodeExecutor.stopContainers(ID)
+        CodeExecutorUtils.stopContainers(ID)
     }
 
     @Test
