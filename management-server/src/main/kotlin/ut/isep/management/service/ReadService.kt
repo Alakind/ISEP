@@ -39,6 +39,10 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
         val example = exampleEntity?.let { entity ->
             Example.of(entity, matcher)
         }
+        return getPaginated(example, pageable)
+    }
+
+    open fun getPaginated(example: Example<E>? = null, pageable: Pageable): PaginatedDTO<R> {
         val entities = if (example != null) {
             repository.findAll(example, pageable).map { converter.toDTO(it) }.content
         } else {
