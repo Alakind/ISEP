@@ -12,4 +12,6 @@ import ut.isep.management.service.converter.section.SectionReadConverter
 class SectionReadService(
     repository: SectionRepository,
     converter: SectionReadConverter
-) : ReadService<Section, SectionReadDTO, Long>(repository, converter)
+) : ReadService<Section, SectionReadDTO, Long>(repository, converter) {
+
+}
