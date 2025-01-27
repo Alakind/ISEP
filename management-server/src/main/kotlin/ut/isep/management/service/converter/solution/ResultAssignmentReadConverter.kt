@@ -42,6 +42,7 @@ class ResultAssignmentReadConverter(
                 code = fetchedQuestion.files.referenceCode?.content,
                 test = fetchedQuestion.files.referenceTest?.content
             ),
+            availablePoints = fetchedQuestion.availablePoints,
             scoredPoints = entity.scoredPoints,
             testResults = entity.testResults.map { testResultConverter.toDTO(it) },
         )
@@ -56,6 +57,7 @@ class ResultAssignmentReadConverter(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.MultipleChoice(
                 fetchedQuestion.options.filter { it.isCorrect }.map { it.text }),
+            availablePoints = fetchedQuestion.availablePoints,
             scoredPoints = entity.scoredPoints,
         )
     }
@@ -65,6 +67,7 @@ class ResultAssignmentReadConverter(
         return ResultAssignmentOpenReadDTO(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.Open(fetchedQuestion.referenceAnswer),
+            availablePoints = fetchedQuestion.availablePoints,
             scoredPoints = entity.scoredPoints,
         )
     }
