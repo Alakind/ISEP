@@ -5,10 +5,11 @@ import "../../../styles/coding-diff.css"
 import TestResultBlock from "./TestResultBlock.tsx";
 
 function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCodeChanges, showCodeChanges, showTestResults, handleShowTestResults}: Readonly<Props>) {
+  console.log(assignment)
   return (
     <div className="solved-assignment-coding">
       {
-        (!assignment.startCode && !assignment.answer?.answer) || assignment.answer?.answer == assignment.startCode
+        (!assignment.startCode && !assignment.answer?.answer) || assignment.answer?.answer == assignment.startCode || !assignment.answer?.answer
           ? (
             <p>No changes are made to the original code</p>
           ) : (
@@ -27,7 +28,7 @@ function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCod
                       oldValue={(assignment.startCode) ?? ""}
                       compareMethod={DiffMethod.CHARS}
                       splitView={false}
-                      newValue={(assignment.answer.answer || assignment.answer) ?? ""}
+                      newValue={(assignment.answer?.answer) ?? ""}
                       useDarkTheme={theme === Themes.DARK}
                     />
 

@@ -11,7 +11,6 @@ import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
 import ut.isep.management.service.UpdateService
 import ut.isep.management.service.assignment.AssignmentFetchService
 import ut.isep.management.service.converter.UpdateConverter
-import ut.isep.management.service.converter.assignment.ReferenceAssignmentReadConverter
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -20,7 +19,6 @@ class InviteUpdateService(
     repository: JpaRepository<Invite, UUID>,
     converter: UpdateConverter<Invite, InviteUpdateDTO>,
     val fetchService: AssignmentFetchService,
-    val referenceAssignmentReadConverter: ReferenceAssignmentReadConverter,
     val inviteReadService: InviteReadService,
 ) : UpdateService<Invite, InviteUpdateDTO, UUID>(repository, converter) {
 
@@ -29,8 +27,7 @@ class InviteUpdateService(
         val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite not found") }
         when (status) {
             InviteStatus.not_started -> throw NotAllowedUpdateException("Not started is start state and can't be reset")
-            InviteStatus.app_reminded_once -> throw NotAllowedUpdateException("This is set via /send-email")
-            InviteStatus.app_reminded_twice -> throw NotAllowedUpdateException("This is set via /send-email")
+            InviteStatus.app_reminded_once, InviteStatus.app_reminded_twice -> {}
             InviteStatus.expired -> throw NotAllowedUpdateException("Expiration status change is not allowed")
             InviteStatus.app_started -> throw NotAllowedUpdateException("Start of assessment is done via /{id}/assessment")
             InviteStatus.app_finished -> {
