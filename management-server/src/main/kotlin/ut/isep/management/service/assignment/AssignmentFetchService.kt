@@ -30,9 +30,9 @@ class AssignmentFetchService(val restTemplate: RestTemplate) {
         val fetchedFileContent: String = fetchFile(url)
         val (frontmatter, body) = frontmatterParser.parse(fetchedFileContent, entity.filePathWithId)
         return when (entity.assignmentType!!) {
-            AssignmentType.CODING -> toCodingQuestion(entity, frontmatter as CodingFrontMatter, body, commitHash)
+            AssignmentType.CODING -> toCodingQuestion(entity, frontmatter as CodingFrontmatter, body, commitHash)
             AssignmentType.MULTIPLE_CHOICE -> toMultipleChoiceQuestion(entity, frontmatter, body)
-            AssignmentType.OPEN -> toOpenQuestion(entity, frontmatter as OpenFrontMatter, body)
+            AssignmentType.OPEN -> toOpenQuestion(entity, frontmatter as OpenFrontmatter, body)
         }
     }
 
@@ -44,11 +44,11 @@ class AssignmentFetchService(val restTemplate: RestTemplate) {
         return parser.parseMultipleChoiceQuestion(body, frontmatter)
     }
 
-    fun toOpenQuestion(entity: Assignment, frontmatter: OpenFrontMatter, body: String): OpenQuestion {
+    fun toOpenQuestion(entity: Assignment, frontmatter: OpenFrontmatter, body: String): OpenQuestion {
         return parser.parseOpenQuestion(body, frontmatter)
     }
 
-    fun toCodingQuestion(entity: Assignment, frontmatter: CodingFrontMatter, body: String, commitHash: String): CodingQuestion {
+    fun toCodingQuestion(entity: Assignment, frontmatter: CodingFrontmatter, body: String, commitHash: String): CodingQuestion {
         val parentDirPath = Paths.get(entity.filePathWithId).parent?.toString()
             ?: throw IllegalStateException("All assignment files should have parent directories")
         val parentURL = "$gitHubBaseURL/$commitHash/$parentDirPath/"
