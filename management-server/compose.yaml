@@ -10,5 +10,5 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: demo
     volumes:
-      - ./new_seed.dump:/dump/seed.dump
+      - ./demo_seed.dump:/dump/seed.dump
       - ./init.sh:/docker-entrypoint-initdb.d/init.sh
