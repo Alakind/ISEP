@@ -5,7 +5,6 @@ import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
-import java.util.concurrent.ExecutionException
 
 object PythonExecutor : CodeExecutor {
 
@@ -15,7 +14,7 @@ object PythonExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
-        //FIXME: NO, PLEASE GOD NOOOOO
+        //FIXME: Management server should initialize the container when the applicant logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
         } catch (_: Exception) {}

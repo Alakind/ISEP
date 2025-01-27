@@ -15,9 +15,9 @@ object JavaExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
-        //FIXME: NO, PLEASE GOD NOOOOO
+        //FIXME: Management should initialize the containers when the client logs in
         try {
-            startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
+            SQLExecutor.startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
         } catch (_: Exception) {}
 
         val name = "$inviteId-java"
