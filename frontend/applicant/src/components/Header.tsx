@@ -1,18 +1,27 @@
 import {AssessmentInterface} from "../utils/types";
 import "../styles/header.css";
-import React, {useEffect, useState} from "react";
-import {ToastContainer} from "react-toastify";
+import {useEffect, useState} from "react";
+import {Bounce, toast, ToastContainer} from "react-toastify";
+import {NavigateFunction, useNavigate} from "react-router-dom";
+import {formatTime, getTime} from "../utils/operations.tsx";
 
 function Header({assessment, currentSectionIndex, secondsLeft}: Readonly<Props>) {
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
+  const navigate: NavigateFunction = useNavigate();
 
   useEffect(() => {
-    setHours(Math.floor(secondsLeft / 3600));
-    setMinutes(Math.floor(secondsLeft % 3600 / 60));
-    setSeconds(Math.floor(secondsLeft % 3600 % 60));
-  }, [secondsLeft]);
+    if (secondsLeft > 0) {
+      const {hours, minutes, seconds} = getTime(secondsLeft);
+      setHours(hours);
+      setMinutes(minutes);
+      setSeconds(seconds);
+    } else {
+      toast.info("Assessment has been finished")
+      navigate("/finish")
+    }
+  }, [navigate, secondsLeft]);
 
   return (
     <header className="header">
@@ -21,7 +30,6 @@ function Header({assessment, currentSectionIndex, secondsLeft}: Readonly<Props>)
           Section {currentSectionIndex + 1} of {assessment.sections.length}:
         </div>
         <div>
-          {/* TODO make section types a variable */}
           {assessment.sections[currentSectionIndex].title} Questions
         </div>
       </span>
@@ -37,13 +45,14 @@ function Header({assessment, currentSectionIndex, secondsLeft}: Readonly<Props>)
           draggable
           pauseOnHover
           theme="dark"
-          transition: Bounce
+          transition={Bounce}
         />
       </span>
       <span className="header__right">
         <span>
           <span>Time left: </span>
-          <span className="header__time-text">{hours}:{minutes}:{seconds}</span>
+          <span
+            className="header__time-text">{`${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`}</span>
         </span>
         <span>
           <i className="bi bi-clock"></i>

@@ -11,3 +11,7 @@ export function getTime(startSeconds: number): { hours: number, minutes: number,
   const seconds = Math.floor(startSeconds % 3600 % 60)
   return {hours, minutes, seconds};
 }
+
+export function formatTime(input: number): string {
+  return input < 10 ? `0${input}` : `${input}`
+}
