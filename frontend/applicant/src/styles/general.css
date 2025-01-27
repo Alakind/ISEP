@@ -14,6 +14,7 @@
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
     --assignment-menu-text: #faf9f6;
+    --highlight-hover: #008bbd;
 }
 
 [data-theme="light"] {
@@ -31,6 +32,7 @@
     --scrollbar-thumb: grey;
     --scrollbar-thumb-hover: #555;
     --assignment-menu-text: black;
+    --highlight-hover: #17489b;
 }
 
 :root {
@@ -87,7 +89,6 @@ html {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    margin-right: 15px;
 }
 
 .btn--transparent {
@@ -97,15 +98,22 @@ html {
 }
 
 .btn--mod {
-    margin: 40px 0;
-    background-color: var(--tertiary-color);
-    border-color: var(--transparent);
+    background-color: var(--transparent);
+    border-color: var(--text-primary);
     color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
 }
 
+
 .btn--mod:hover {
-    border-color: var(--transparent);
-    background-color: var(--highlight);
+    border-color: var(--highlight-hover);
+    background-color: var(--secondary-color);
+}
+
+.btn--mod:disabled {
+    border-color: var(--text-primary-disabled);
+    color: var(--text-primary-disabled);
 }
 
 .page--center {

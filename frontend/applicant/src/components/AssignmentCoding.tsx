@@ -14,6 +14,7 @@ import {AssignmentCodingInterface} from "../utils/types.tsx";
 import {LanguageToMode, Themes} from "../utils/constants.tsx";
 import {runTests, sendCodingSolution} from "../utils/apiFunctions.tsx";
 import {useTheme} from "../utils/providers/UseTheme.tsx";
+import Button from "./Button.tsx";
 
 function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnswer,}: Readonly<Props>) {
   const [isCodingOpen, setIsCodingOpen] = useState(true);
@@ -109,26 +110,25 @@ function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnsw
 
   return (
     <div id={assignment.id}>
-      <div>Language: {LanguageToMode[assignment.language.toLowerCase()]}</div>
-      <div>
-        <button
-          className={
-            "btn btn-primary btn-lg " + (isCodingOpen ? "disabled" : "")
-          }
-          onClick={onOpenCoding}
-        >
-          Code
-        </button>
-        <button
-          className={
-            "btn btn-primary btn-lg " + (isCodingOpen ? "" : "disabled")
-          }
-          onClick={onOpenTest}
-        >
-          Tests
-        </button>
+      <div className={"coding__language"}>{LanguageToMode[assignment.language.toLowerCase()]}</div>
+      <div className={"coding__tabs"}>
+        <Button
+          isDisabled={isCodingOpen}
+          btnClasses={`btn--coding__code`}
+          handleClick={onOpenCoding}
+          spanTextClass={""}
+          text={"Code"}
+          iconClass={"bi-file-earmark-code"}
+        />
+        <Button
+          isDisabled={!isCodingOpen}
+          btnClasses={`btn--coding__tests`}
+          handleClick={onOpenTest}
+          spanTextClass={""}
+          text={"Tests"}
+          iconClass={"bi-clipboard2-check"}
+        />
       </div>
-
       <AceEditor
         mode={LanguageToMode[assignment.language.toLowerCase()]}
         theme={themeData.theme === Themes.DARK ? "twilight" : "eclipse"}
@@ -149,29 +149,30 @@ function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnsw
         onFocus={handleOnFocus}
         onBlur={handleBlur}
       />
-
-      <div>
-        <button
-          className="btn btn-primary btn-lg btn--mod"
-          onClick={onRunTests}
-        >
-          Run Tests
-        </button>
-      </div>
-
+      <Button
+        isDisabled={!isCodingOpen}
+        btnClasses={`btn-lg btn--coding btn--coding__run-test`}
+        handleClick={onRunTests}
+        spanTextClass={""}
+        text={"Run Tests"}
+        iconClass={"bi-play"}
+      />
       <div>
         {output !== "" ? (
-          <AceEditor
-            theme={themeData.theme === Themes.DARK ? "twilight" : "eclipse"}
-            name={assignment.id.toString() + " output"}
-            fontSize={fontSize ?? 16}
-            defaultValue={""}
-            editorProps={{$blockScrolling: true}}
-            value={output}
-            height="200px"
-            width="inherit"
-            readOnly={true}
-          />
+          <>
+            <h5 className={"coding__header-test-results"}>Test results</h5>
+            <AceEditor
+              theme={themeData.theme === Themes.DARK ? "twilight" : "eclipse"}
+              name={assignment.id.toString() + " output"}
+              fontSize={fontSize ?? 16}
+              defaultValue={""}
+              editorProps={{$blockScrolling: true}}
+              value={output}
+              height="200px"
+              width="inherit"
+              readOnly={true}
+            />
+          </>
         ) : (
           <></>
         )}

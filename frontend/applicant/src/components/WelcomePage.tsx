@@ -26,7 +26,7 @@ function WelcomePage({handleStart, inviteId, name, availableSeconds}: Readonly<P
         </p>
       </div>
 
-      <button className="btn btn-primary btn-lg btn--mod" onClick={handleStart}>
+      <button className="btn btn-lg btn--mod btn--welcome" onClick={handleStart}>
         Start
       </button>
     </div>
