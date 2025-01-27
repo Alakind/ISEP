@@ -2,6 +2,7 @@ package ut.isep.management.service.assignment
 
 
 
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import parser.*
@@ -11,7 +12,7 @@ import ut.isep.management.util.logger
 import java.nio.file.Paths
 
 @Service
-class AssignmentFetchService(val restTemplate: RestTemplate) {
+class AssignmentFetchService(@Qualifier("githubRestTemplate") val restTemplate: RestTemplate) {
     val parser = QuestionParser()
     val frontmatterParser = FrontmatterParser()
     val logger = logger()
