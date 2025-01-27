@@ -135,16 +135,7 @@ class ResultReadService(
 
     private fun getSelectedDistributionGroup(percentage: Float): Int {
         return when (percentage) {
-            in 0.00..<10.00 -> 0
-            in 10.00..<20.00 -> 1
-            in 20.00..<30.00 -> 2
-            in 30.00..<40.00 -> 3
-            in 40.00..<50.00 -> 4
-            in 50.00..<60.00 -> 5
-            in 60.00..<70.00 -> 6
-            in 70.00..<80.00 -> 7
-            in 80.00..<90.00 -> 8
-            in 90.00..100.00 -> 9
+            in 0.00..100.00 -> (percentage / 10).toInt()
             else -> -1
         }
     }

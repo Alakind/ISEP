@@ -5,12 +5,12 @@ import BarChartContainer from "../../../containers/applicant-personal/results/ba
 import SkillsBlockContainer from "../../../containers/applicant-personal/results/skills/SkillsBlockContainer.tsx";
 
 function AssessmentResultsOverview({assessmentData, inviteId, assessmentScore, setAssessmentScore}: Readonly<Props>): ReactNode {
-
+  const percentageScore = assessmentScore.availablePoints !== 0 ? ((assessmentScore.scoredPoints ?? 0) / assessmentScore.availablePoints * 100).toFixed(0) : 0
   return (
     <div className={"results-overview"} data-testid={"assessment-results-overview"}>
       <div className={"results-overview__score"}>
         <h5>Score</h5>
-        <div className={"results-overview__score__percentage"}>{((assessmentScore.scoredPoints ?? 0) / assessmentScore.availablePoints * 100).toFixed(0)}%</div>
+        <div className={"results-overview__score__percentage"}>{percentageScore}%</div>
         <div className={"results-overview__score__points"}><span>{assessmentScore.scoredPoints ?? 0}</span> of <span>{assessmentScore.availablePoints}</span> points
         </div>
       </div>
