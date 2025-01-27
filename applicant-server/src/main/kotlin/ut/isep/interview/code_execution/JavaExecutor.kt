@@ -1,6 +1,7 @@
 package ut.isep.interview.code_execution
 
 import ut.isep.interview.code_execution.CodeExecutor.createAndReturnTempFiles
+import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
@@ -13,16 +14,13 @@ object JavaExecutor {
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/java"), "/project")
     }
 
-    fun runTest(inviteId: String, code: String, tests: String?): List<TestResult> {
+    fun runTest(inviteId: String, test: Test): List<TestResult> {
         val name = "$inviteId-java"
-        val files = createAndReturnTempFiles(inviteId, code, tests, "Code.java", "TestCode.java")
+        val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.java", test.testFileName ?: "TestCode.java")
         ContainerAPI.copyToContainerByName(name, files.first, "/project/java/src/main/java/infoSupport")
         ContainerAPI.copyToContainerByName(name, files.second, "/project/java/src/test/java/infoSupport")
         val testOutput = ContainerAPI.runCommandInContainerByName(name, "cd /project/java ; mvn -B test")
-        if (tests == null) {
-            return getTestResult(files.second.readText(), testOutput.output)
-        }
-        return getTestResult(tests, testOutput.output);
+        return getTestResult(test.test ?: files.second.readText(), testOutput.output)
     }
 
     private fun getTestResult(testsString: String, output: String): List<TestResult> {

@@ -21,7 +21,9 @@ class TestPythonExecutor {
         val test = File("src/test/resources/codeExecutor/pythonGood/TestCode.py")
 
         PythonExecutor.startContainer(ID, container)
-        val result = PythonExecutor.runTest(ID, code.readText(), test.readText())
+        val result = PythonExecutor.runTest(ID,
+            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+        )
 
         assertEquals(1, result.count { it.passed })
         assertEquals(1, result.size)
@@ -34,8 +36,9 @@ class TestPythonExecutor {
         val test = File("src/test/resources/codeExecutor/pythonBad/TestCode.py")
 
         PythonExecutor.startContainer(ID, container)
-        val result = PythonExecutor.runTest(ID, code.readText(), test.readText())
-
+        val result = PythonExecutor.runTest(ID,
+            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+        )
         assertEquals(1, result.count { !it.passed })
         assertEquals(1, result.count { it.passed })
     }
