@@ -16,7 +16,7 @@ object PythonExecutor : CodeExecutor {
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
         //FIXME: NO, PLEASE GOD NOOOOO
         try {
-            SQLExecutor.startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
+            startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
         } catch (_: Exception) {}
 
         val name = "$inviteId-python"
