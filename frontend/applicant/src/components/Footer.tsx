@@ -2,11 +2,12 @@ import InfoSupportMailSupport from "./InfoSupportMailSupport";
 import "../styles/footer.css";
 import {AssessmentInterface} from "../utils/types.tsx";
 import SectionMenu from "./SectionMenu.tsx";
-import React, {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect} from "react";
 import {toast} from "react-toastify";
 import ThemeSwitch from "./ThemeSwitch.tsx";
 import {finishAssessment} from "../utils/apiFunctions.tsx";
 import {useNavigate} from "react-router-dom";
+import CustomWarnToast from "./CustomWarnToast.tsx";
 
 function Footer({
                   assessment,
@@ -17,7 +18,6 @@ function Footer({
                   endOfAssessment,
                   setEndOfAssessment,
                 }: Readonly<Props>) {
-  const [isFinishModalVisible, setIsFinishModalVisible] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -31,12 +31,14 @@ function Footer({
     navigate("/finish");
   }
 
+  async function handleCancelFinish() {
+    toast.info("Cancelled closing the assessment.");
+    setEndOfAssessment(false);
+  }
+
   useEffect(() => {
     if (endOfAssessment) {
-      toast(
-        "You reached the end of the assessment, but there are still questions open to be filled in: ..."
-      );
-      setEndOfAssessment(false);
+      toast.warn(<CustomWarnToast proceedAction={handleFinish} cancelAction={handleCancelFinish} message={"Are you sure you want to finish the assessment?"}/>);
     }
   }, [endOfAssessment]);
 
@@ -53,17 +55,19 @@ function Footer({
         );
       } else if (currentSectionIndex < assessment.sections.length - 1) {
         // Move to the first assignment of the next section
-        changeSectionIndex(currentSectionIndex + 1);
+        changeSectionIndex(currentSectionIndex + 1).then();
         return prevIndexes.map((index: number, mapIndex: number): number =>
           mapIndex === currentSectionIndex + 1 ? 0 : index
         );
       } else if (currentSectionIndex + 1 >= assessment.sections.length - 1) {
         // Loop back to the first section and assignment
         setEndOfAssessment(true);
-        changeSectionIndex(0);
+        changeSectionIndex(0).then();
         return prevIndexes.map((_: number, mapIndex: number): number =>
           mapIndex === 0 ? 0 : prevIndexes[mapIndex]
         );
+      } else {
+        return prevIndexes
       }
     });
   };
@@ -97,20 +101,8 @@ function Footer({
           </button>
         </span>
         <span className="footer__right__finish-assessment">
-          <button className={"btn--transparent"} onClick={() => setIsFinishModalVisible(true)}>
+          <button className={"btn--transparent"} onClick={() => setEndOfAssessment(!endOfAssessment)}>
             <span>Finish</span>
-            {/* TODO: Add modal window */}
-            {isFinishModalVisible && (
-              <div>
-                Are you sure you want to finish the assessment?
-                <div>
-                  <button onClick={handleFinish}>Yes</button>
-                  <button onClick={() => setIsFinishModalVisible(false)}>
-                    No
-                  </button>
-                </div>
-              </div>
-            )}
             <i className="bi bi-flag"></i>
           </button>
         </span>
@@ -124,9 +116,9 @@ interface Props {
   currentSectionIndex: number;
   changeSectionIndex: (sectionIndex: number) => Promise<void>;
   currentAssignmentIndex: number[];
-  setCurrentAssignmentIndex: React.Dispatch<React.SetStateAction<number[]>>;
+  setCurrentAssignmentIndex: Dispatch<SetStateAction<number[]>>;
   endOfAssessment: boolean;
-  setEndOfAssessment: React.Dispatch<React.SetStateAction<boolean>>;
+  setEndOfAssessment: Dispatch<SetStateAction<boolean>>;
 }
 
 export default Footer;

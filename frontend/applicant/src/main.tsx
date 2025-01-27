@@ -8,6 +8,7 @@ import WelcomePageContainer from "./containers/WelcomePageContainer.tsx";
 import AssessmentPageContainer from "./containers/AssessmentPageContainer.tsx";
 import PageNotFoundContainer from "./containers/PageNotFoundContainer.tsx";
 import {ThemeProvider} from "./utils/providers/ThemeProvider.tsx";
+import FinishPageContainer from "./containers/FinishPageContainer.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "assessment",
     element: <AssessmentPageContainer/>,
+  },
+  {
+    path: "finish",
+    element: <FinishPageContainer/>,
   },
   {
     path: "*",
