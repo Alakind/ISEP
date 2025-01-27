@@ -12,6 +12,7 @@ import ut.isep.management.util.logger
 import java.net.URI
 import kotlin.time.Duration.Companion.minutes
 
+@Transactional
 @Component
 class DummyDataLoader(
         private val applicantRepository: ApplicantRepository,
