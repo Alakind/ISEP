@@ -15,6 +15,11 @@ object JavaExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: NO, PLEASE GOD NOOOOO
+        try {
+            SQLExecutor.startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-java"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.java", test.testFileName ?: "TestCode.java")
         ContainerAPI.copyToContainerByName(name, files.first, "/project/java/src/main/java/infoSupport")

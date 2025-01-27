@@ -14,6 +14,11 @@ object PythonExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: NO, PLEASE GOD NOOOOO
+        try {
+            SQLExecutor.startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-python"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.py", test.testFileName ?: "Test.py")
         ContainerAPI.copyToContainerByName(name, files.first, "/project")
