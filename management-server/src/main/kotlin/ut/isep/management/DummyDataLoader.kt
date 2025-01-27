@@ -1,16 +1,12 @@
 package ut.isep.management
 
-import enumerable.InviteStatus
 import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
-import org.springframework.data.domain.Example
-import org.springframework.data.domain.ExampleMatcher
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.*
 import ut.isep.management.util.logger
-import java.net.URI
-import kotlin.time.Duration.Companion.minutes
 
 @Transactional
 @Component
@@ -18,12 +14,12 @@ class DummyDataLoader(
         private val applicantRepository: ApplicantRepository,
         private val assessmentRepository: AssessmentRepository,
         private val inviteRepository: InviteRepository,
-        private val sectionRepository: SectionRepository,
-        private val assignmentRepository: AssignmentRepository,
-        private val solvedAssignmentRepository: SolvedAssignmentRepository,
+//        private val sectionRepository: SectionRepository,
+//        private val assignmentRepository: AssignmentRepository,
+//        private val solvedAssignmentRepository: SolvedAssignmentRepository,
         private val userRepository: UserRepository,
-        private val timingPerSectionRepository: TimingPerSectionRepository,
-        private val testResultRepository: TestResultRepository
+//        private val timingPerSectionRepository: TimingPerSectionRepository,
+//        private val testResultRepository: TestResultRepository
 ) : CommandLineRunner {
 
     private val log = logger()
@@ -226,7 +222,7 @@ class DummyDataLoader(
 //        sectionRepository.save(section4)
 
         val user1 = User(name = "Default admin", oid = "jdkc39e4-3453-345g-8360-dfg24d45dg56", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
-        val user2 = User(name = "J S", oid = "3f0dcb34-5638-4f90-8767-cdf4f0bc8b29", email = "j.e.sweers@student.utwente.nl")
+        val user2 = User(name = "J S", oid = "3f0dcb34-5638-4f90-8767-cdf4f0bc8b29", email = "j.e.sweers@student.utwente.nl", role = UserRole.Admin)
         val user3 = User(name = "SuperUser", oid = "sdf45df4-4574-34r5-3465-xgvrf345fg44", email = "su@sudo.com", role = UserRole.Admin)
         val user4 = User(name = "Inge Interviewer", oid = "fggsf34f-4535-dg5d-5273-dfg54bg5tg54", email = "inge@infosupport.nl", role = UserRole.Interviewer)
         val user5 = User(name = "Zacharias poef", oid = "cb5yd545-7534-3f5v-3471-xbf45xcb4c4b", email = "z@hotmail.com", role = UserRole.Recruiter)
@@ -336,18 +332,13 @@ class DummyDataLoader(
 
         applicants.forEach { applicantRepository.save(it) }
 
-//        val inviteApplicant0Assessment1 = Invite.createInvite(applicant = applicants[0], assessment = assessment1)
-//        inviteApplicant0Assessment1.status = InviteStatus.app_finished
-//        val inviteApplicant0Assessment2 = Invite.createInvite(applicant = applicants[0], assessment = assessment2)
-//        inviteApplicant0Assessment2.status = InviteStatus.not_started
-//        val inviteApplicant1Assessment1 = Invite.createInvite(applicant = applicants[1], assessment = assessment1)
-//        inviteApplicant1Assessment1.status = InviteStatus.app_finished
-//
-//        inviteRepository.save(inviteApplicant0Assessment1)
-//        inviteRepository.save(inviteApplicant0Assessment2)
-//        inviteRepository.save(inviteApplicant1Assessment1)
-//
-//        // set solved answer for coding question
+        val assessments = assessmentRepository.findAllByLatestTrue()
+        val invites: List<Invite> = assessments.mapIndexed {index, assessment ->
+            Invite.createInvite(applicants[index], assessment)
+        }
+        inviteRepository.saveAll(invites)
+
+//         set solved answer for coding question
 //        val matcher: ExampleMatcher = ExampleMatcher.matching()
 //            .withIgnoreNullValues()
 //            .withMatcher("applicant", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
@@ -403,7 +394,7 @@ class DummyDataLoader(
 //        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
 //            testResult1.solvedAssignmentCoding = solvedAssignmentCoding
 //            testResult2.solvedAssignmentCoding = solvedAssignmentCoding
-//            testResultRepoAssessmentsitory.saveAll(listOf(testResult1, testResult2))
+//            testResultRepository.saveAll(listOf(testResult1, testResult2))
 //        }
 //
 //        if (solvedAssignmentCoding is SolvedAssignmentCoding) {
