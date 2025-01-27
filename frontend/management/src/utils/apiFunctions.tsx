@@ -214,7 +214,7 @@ export async function addInvite(applicantId: string, assessmentId: string, expir
     body: JSON.stringify({
       applicantId: applicantId,
       assessmentId: assessmentId,
-      expiresAt: expiresAt
+      expiresAt: new Date(expiresAt)
     }),
   });
 
