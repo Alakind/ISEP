@@ -2,6 +2,7 @@ package ut.isep.interview.code_execution
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import ut.isep.interview.code_execution.dto.Test as codeStrings
 import java.io.File
 import kotlin.test.assertEquals
 
@@ -21,7 +22,7 @@ class TestJavaExecutor {
         val test = File("src/test/resources/codeExecutor/javaGood/TestCode.java")
 
         JavaExecutor.startContainer(ID, container)
-        val result = JavaExecutor.runTest(ID, code.readText(), test.readText())
+        val result = JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
 
         assertEquals(1, result.count { it.passed })
         assertEquals(1, result.size)
@@ -34,7 +35,7 @@ class TestJavaExecutor {
         val test = File("src/test/resources/codeExecutor/javaBad/TestCode.java")
 
         JavaExecutor.startContainer(ID, container)
-        val result = JavaExecutor.runTest(ID, code.readText(), test.readText())
+        val result = JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
 
         assertEquals(1, result.count { !it.passed })
         assertEquals(1, result.count { it.passed })

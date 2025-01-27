@@ -6,9 +6,11 @@ import "../../styles/form.css";
 import {ChangeEvent, MouseEvent, ReactNode} from "react";
 import Button from "../Button.tsx";
 import {canCancelInvite, canDeleteInvite, canRemindInvite} from "../../utils/general.tsx";
-import {InviteStatuses} from "../../utils/constants.tsx";
+import {InviteStatuses, Roles} from "../../utils/constants.tsx";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
 function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDate, expirationDates, handleCancel, handleDelete, handleRemind}: Readonly<Props>) {
+  const user = useUserData();
   return (
     <span className="invites-overview card-page__body--col2" data-testid={"invites-overview"}>
       <h4>Invites overview</h4>
@@ -39,7 +41,7 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                                 onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e, index)}
                                 value={expirationDates[index]}
                                 autoComplete="off"
-                                disabled={!canRemindInvite(mapStatus(invite.status))}
+                                disabled={user.role === Roles.ADMIN || user.role === Roles.RECRUITER ? !canRemindInvite(mapStatus(invite.status)) : true}
                                 required
                               />
                             </div>
@@ -66,37 +68,41 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                           </>
                         )
                     }
-                    <div className="invites-overview__body__item__btns">
-                      <Button
-                        handleClick={(e: MouseEvent<HTMLButtonElement>): void => handleCancel(e, invite.id)}
-                        iconClass={"bi-x"}
-                        spanTextClass={"invites-overview__body__item__btn__text"}
-                        btnClasses={"invites-overview__body__item__btn"}
-                        text={"Cancel"}
-                        activeTooltip={true}
-                        isDisabled={!canCancelInvite(mapStatus(invite.status))}
-                      />
-                      <Button
-                        handleClick={(e: MouseEvent<HTMLButtonElement>) => handleDelete(e, invite.id)}
-                        iconClass={"bi-trash"}
-                        spanTextClass={"invites-overview__body__item__btn__text"}
-                        btnClasses={"invites-overview__body__item__btn"}
-                        text={"Delete"}
-                        activeTooltip={true}
-                        isDisabled={!canDeleteInvite(mapStatus(invite.status))}
-                      />
-                      <Button
-                        handleClick={(e: MouseEvent<HTMLButtonElement>): void => handleRemind(e, invite.id)}
-                        iconClass={"bi-envelope"}
-                        spanTextClass={"invites-overview__body__item__btn__text"}
-                        btnClasses={"invites-overview__body__item__btn"}
-                        text={"Remind"}
-                        activeTooltip={true}
-                        isDisabled={!canRemindInvite(mapStatus(invite.status))}
-                      />
-                    </div>
+                    {
+                      user.role === Roles.ADMIN || user.role === Roles.RECRUITER
+                        ? (
+                          <div className="invites-overview__body__item__btns">
+                            <Button
+                              handleClick={(e: MouseEvent<HTMLButtonElement>): void => handleCancel(e, invite.id)}
+                              iconClass={"bi-x"}
+                              spanTextClass={"invites-overview__body__item__btn__text"}
+                              btnClasses={"invites-overview__body__item__btn"}
+                              text={"Cancel"}
+                              activeTooltip={true}
+                              isDisabled={!canCancelInvite(mapStatus(invite.status))}
+                            />
+                            <Button
+                              handleClick={(e: MouseEvent<HTMLButtonElement>) => handleDelete(e, invite.id)}
+                              iconClass={"bi-trash"}
+                              spanTextClass={"invites-overview__body__item__btn__text"}
+                              btnClasses={"invites-overview__body__item__btn"}
+                              text={"Delete"}
+                              activeTooltip={true}
+                              isDisabled={!canDeleteInvite(mapStatus(invite.status))}
+                            />
+                            <Button
+                              handleClick={(e: MouseEvent<HTMLButtonElement>): void => handleRemind(e, invite.id)}
+                              iconClass={"bi-envelope"}
+                              spanTextClass={"invites-overview__body__item__btn__text"}
+                              btnClasses={"invites-overview__body__item__btn"}
+                              text={"Remind"}
+                              activeTooltip={true}
+                              isDisabled={!canRemindInvite(mapStatus(invite.status))}
+                            />
+                          </div>
+                        ) : null
+                    }
                   </div>
-
                 </div>
               )
             }) :

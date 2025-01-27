@@ -1,3 +1,11 @@
+import {fireEvent, render, screen, waitFor} from '@testing-library/react';
+import {toast} from 'react-toastify';
+import SolvedAssignmentContainer from "../../../../src/containers/applicant-personal/results/SolvedAssignmentContainer.tsx";
+import {AssignmentSolvedInterface} from "../../../../src/utils/types.tsx";
+import {AssignmentTypes, Roles} from "../../../../src/utils/constants.tsx";
+import {updateScoredPointsAssignment} from "../../../../src/utils/apiFunctions.tsx";
+import {useUserData} from "../../../../src/utils/msal/UseUserData.tsx";
+
 vi.mock('react-toastify', () => ({
   toast: {
     warning: vi.fn(),
@@ -9,13 +17,9 @@ vi.mock('../../../../src/utils/apiFunctions.tsx', () => ({
   updateScoredPointsAssignment: vi.fn(),
 }));
 
-import {fireEvent, render, screen, waitFor} from '@testing-library/react';
-import {toast} from 'react-toastify';
-import SolvedAssignmentContainer from "../../../../src/containers/applicant-personal/results/SolvedAssignmentContainer.tsx";
-import {AssignmentSolvedInterface} from "../../../../src/utils/types.tsx";
-import {AssignmentTypes} from "../../../../src/utils/constants.tsx";
-import {updateScoredPointsAssignment} from "../../../../src/utils/apiFunctions.tsx";
-import {vi} from "vitest";
+vi.mock("../../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 const mockAssignment: AssignmentSolvedInterface = {
   type: AssignmentTypes.OPEN,
@@ -153,5 +157,54 @@ describe('SolvedAssignmentContainer', () => {
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith('Unknown error occurred.');
     });
+  });
+
+  it('should not render score update field with Recruiter role', () => {
+    vi.mocked(useUserData).mockReturnValueOnce({id: "", name: "", oid: "", role: Roles.RECRUITER, email: ""})
+    render(
+      <SolvedAssignmentContainer
+        assignment={mockAssignment}
+        assignmentIndex={0}
+        sectionIndex={0}
+        inviteId={'invite123'}
+      >
+        <div>Child Component</div>
+      </SolvedAssignmentContainer>
+    );
+
+    expect(screen.queryByRole('spinbutton')).not.toBeInTheDocument();
+  });
+
+
+  it('should render score update field with Interviewer role', () => {
+    vi.mocked(useUserData).mockReturnValueOnce({id: "", name: "", oid: "", role: Roles.INTERVIEWER, email: ""})
+    render(
+      <SolvedAssignmentContainer
+        assignment={mockAssignment}
+        assignmentIndex={0}
+        sectionIndex={0}
+        inviteId={'invite123'}
+      >
+        <div>Child Component</div>
+      </SolvedAssignmentContainer>
+    );
+
+    expect(screen.queryByRole('spinbutton')).toBeInTheDocument();
+  });
+
+  it('should render score update field with Admin role', () => {
+    vi.mocked(useUserData).mockReturnValueOnce({id: "", name: "", oid: "", role: Roles.ADMIN, email: ""})
+    render(
+      <SolvedAssignmentContainer
+        assignment={mockAssignment}
+        assignmentIndex={0}
+        sectionIndex={0}
+        inviteId={'invite123'}
+      >
+        <div>Child Component</div>
+      </SolvedAssignmentContainer>
+    );
+
+    expect(screen.queryByRole('spinbutton')).toBeInTheDocument();
   });
 });

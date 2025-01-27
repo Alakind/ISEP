@@ -17,6 +17,7 @@ describe('TableRowApplicants Component', () => {
     id: '1',
     name: 'John Doe',
     scores: [75],
+    availablePoints: [124],
     preferredLanguage: "Kotlin",
     statuses: ['not_started', 'expired'],
     invites: ['invite_1', 'invite_2'],
@@ -57,7 +58,7 @@ describe('TableRowApplicants Component', () => {
       </table>
     );
 
-    const scoreCell = screen.getByText('75/100');
+    const scoreCell = screen.getByText('75/124');
     expect(scoreCell).toBeInTheDocument();
 
     const progressBar = screen.getByTestId('progressbar');

@@ -20,6 +20,7 @@ describe("TableRowInvites", () => {
     applicantId: "1",
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
+    availablePoints: 124,
     status: "app_finished",
     assessmentStartedAt: "2025-01-14T00:00:00Z",
     assessmentFinishedAt: "2025-01-15T00:00:00Z",
@@ -34,6 +35,7 @@ describe("TableRowInvites", () => {
     applicantId: "1",
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
+    availablePoints: 124,
     status: "expired",
     assessmentStartedAt: "2025-01-14T00:00:00Z",
     assessmentFinishedAt: "2025-01-15T00:00:00Z",
@@ -47,6 +49,7 @@ describe("TableRowInvites", () => {
     applicantId: "1",
     invitedAt: "2025-01-10T00:00:00Z",
     scoredPoints: 75,
+    availablePoints: 124,
     status: "reminder_once",
     assessmentStartedAt: "2025-01-14T00:00:00Z",
     assessmentFinishedAt: "2025-01-15T00:00:00Z",
@@ -92,7 +95,7 @@ describe("TableRowInvites", () => {
 
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("john.doe@example.com")).toBeInTheDocument();
-    expect(screen.getByText("75/100")).toBeInTheDocument();
+    expect(screen.getByText("75/124")).toBeInTheDocument();
     expect(screen.getByText("Wed, 15 Jan 2025 00:00:00 GMT")).toBeInTheDocument();
   });
 

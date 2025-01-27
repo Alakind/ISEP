@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { AssignmentInterface } from "../utils/types";
-import { sendOpenSolution } from "../utils/apiFunctions";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
+import {AssignmentOpenInterface} from "../utils/types";
+import {sendSimpleSolution} from "../utils/apiFunctions";
 
-function AssignmentOpen({ assignment }: Props) {
+function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
   const [value, setValue] = useState("");
   const valueRef = useRef(value);
-  const [updateIntervalId, setUpdateIntervalId] = useState(0);
+  const [updateIntervalId, setUpdateIntervalId] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
     valueRef.current = value;
@@ -25,7 +25,7 @@ function AssignmentOpen({ assignment }: Props) {
 
   const handleBlur = async () => {
     clearInterval(updateIntervalId);
-    setUpdateIntervalId(0);
+    setUpdateIntervalId(undefined);
 
     await handleSendSolution(value);
   };
@@ -36,28 +36,28 @@ function AssignmentOpen({ assignment }: Props) {
   };
 
   const handleSendSolution = async (newValue: string) => {
-    await sendOpenSolution(assignment, newValue);
+    setAssignmentAnswer({answer: newValue});
+    await sendSimpleSolution(assignment, newValue);
   };
 
   return (
-    <>
-      <textarea
-        className="assignment__textarea"
-        placeholder="Type here ..."
-        name={assignment.id}
-        onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-          handleTextChange(event)
-        }
-        value={value}
-        onFocus={handleOnFocus}
-        onBlur={handleBlur}
-      />
-    </>
+    <textarea
+      className="assignment__textarea"
+      placeholder="Type here ..."
+      name={assignment.id}
+      onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+        handleTextChange(event)
+      }
+      value={value}
+      onFocus={handleOnFocus}
+      onBlur={handleBlur}
+    />
   );
 }
 
 interface Props {
-  assignment: AssignmentInterface;
+  assignment: AssignmentOpenInterface;
+  setAssignmentAnswer: (arg: object) => void;
 }
 
 export default AssignmentOpen;

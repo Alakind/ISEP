@@ -30,6 +30,7 @@ describe("AssessmentResultsSections Component", () => {
   }
 
   const assignment3: AssignmentCodingSolvedInterface = {
+    testResults: [],
     id: "assignment3",
     type: AssignmentTypes.CODING,
     description: "Write a function",
@@ -38,7 +39,7 @@ describe("AssessmentResultsSections Component", () => {
     codeUri: "afadfadf",
     language: "Kotlin",
     answer: {type: AssignmentTypes.CODING, answer: "function code"},
-    referenceAnswer: {type: AssignmentTypes.CODING, answer: "Reference code"},
+    referenceAnswer: {type: AssignmentTypes.CODING, answer: "Reference code"}
   }
 
   const mockSections: SectionSolvedInterface[] = [

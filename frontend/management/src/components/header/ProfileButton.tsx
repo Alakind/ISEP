@@ -1,19 +1,19 @@
 import "../../styles/profile-button.css";
 import {ReactNode} from "react";
+import {Link} from "react-router-dom";
 
-function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
+function ProfileButton({currentUser, currentRole, handleLogout}: Readonly<Props>): ReactNode {
   return (
     <span className="profile-button" data-testid={"profile-button"}>
       <li className="navbar-nav dropdown">
         <button className={`nav-link btn--transparent`} data-bs-toggle="dropdown" aria-expanded="false">
           <i className="bi bi-person-circle"></i>
-          <span className="profile-button__name">{currentUser}</span>
         </button>
         <ul className="dropdown-menu">
-          <li><a className="dropdown-item" href={`${urlPrefix}/profile`}>My profile</a></li>
-          <li><a className="dropdown-item" href={`${urlPrefix}/settings`}>Settings</a></li>
+          <li className={"dropdown-item"}><b>{currentUser}</b></li>
+          <li className={"dropdown-item"}>Role: {currentRole}</li>
           <li><hr className="dropdown-divider"/></li>
-          <li><a className="dropdown-item" href={`${urlPrefix}/logout`}>Logout</a></li>
+          <li><Link onClick={handleLogout} className="dropdown-item" to={`#`}>Logout</Link></li>
         </ul>
       </li>
     </span>
@@ -21,8 +21,9 @@ function ProfileButton({urlPrefix, currentUser}: Readonly<Props>): ReactNode {
 }
 
 interface Props {
-  urlPrefix: string;
   currentUser: string;
+  currentRole: string;
+  handleLogout: () => void;
 }
 
 export default ProfileButton

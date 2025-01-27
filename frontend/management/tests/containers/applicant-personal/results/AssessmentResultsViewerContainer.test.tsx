@@ -27,7 +27,8 @@ describe('AssessmentResultsViewerContainer', () => {
       assessmentId: "1",
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
-      expiresAt: "2025-01-06T00:28:25.485108Z"
+      expiresAt: "2025-01-06T00:28:25.485108Z",
+      measuredSecondsPerSection: []
     },
     {
       id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
@@ -35,7 +36,8 @@ describe('AssessmentResultsViewerContainer', () => {
       assessmentId: "2",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-06T00:28:25.485638Z"
+      expiresAt: "2025-01-06T00:28:25.485638Z",
+      measuredSecondsPerSection: []
     }
   ];
 

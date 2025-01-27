@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.ExampleMatcher
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification.where
 import ut.isep.management.model.entity.BaseEntity
 import ut.isep.management.repository.BaseRepository
@@ -87,22 +86,5 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
             total = pagedResult.totalElements,
             data = pagedResult.content.map { converter.toDTO(it) }
         )
-    }
-
-    private fun parseSort(sort: String?): Sort {
-        if (sort.isNullOrEmpty()) {
-            return Sort.unsorted()
-        }
-        val orders = sort.split(",").map { field ->
-            val entry = field.split(":")
-            val attribute = entry[0]
-            val direction = if (entry.size == 2) {
-                Sort.Direction.fromString(entry[1])
-            } else {
-                Sort.Direction.ASC
-            }
-            Sort.Order(direction, attribute)
-        }
-        return Sort.by(orders)
     }
 }

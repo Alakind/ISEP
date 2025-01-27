@@ -3,6 +3,9 @@ import {Selection, UserInterface} from "../utils/types";
 import {getUsers} from "../utils/apiFunctions.tsx";
 import {toast} from "react-toastify";
 import {ReactNode, useEffect, useState} from "react";
+import {useUserData} from "../utils/msal/UseUserData.tsx";
+import {Roles} from "../utils/constants.tsx";
+import PageNoAccess from "./PageNoAccess.tsx";
 
 function UsersListPageContainer(): ReactNode {
   const [data, setData] = useState<UserInterface[]>([]);
@@ -13,6 +16,7 @@ function UsersListPageContainer(): ReactNode {
   const [orderBy, setOrderBy] = useState<string>("name,asc");
   const [isSelected, setIsSelected] = useState<Selection[]>([]);
   const [query, setQuery] = useState<string>("");
+  const user = useUserData()
 
   function handleIsSelectedChange(data: UserInterface[]): void {
     const changedState: Selection[] = [];
@@ -42,15 +46,36 @@ function UsersListPageContainer(): ReactNode {
       }
     }
 
-    fetchData().then();
-  }, [currentPage, itemsPerPage, orderBy, query]);
+    if (user.role === Roles.ADMIN) {
+      fetchData().then();
+    }
+  }, [currentPage, itemsPerPage, orderBy, query, user.role]);
 
   function removeUser(id: string): void {
     setData((prev: UserInterface[]): UserInterface[] => prev.filter((user: UserInterface): boolean => user.id !== id));
   }
 
-  return <UsersListPage data={data} totalItems={totalItems} loading={loading} currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} setItemsPerPage={setItemsPerPage}
-                        orderBy={orderBy} setOrderBy={setOrderBy} isSelected={isSelected} setIsSelected={setIsSelected} removeUser={removeUser} setQuery={setQuery}/>;
+  if (user.role === Roles.ADMIN) {
+    return (
+      <UsersListPage
+        data={data}
+        totalItems={totalItems}
+        loading={loading}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+        setItemsPerPage={setItemsPerPage}
+        orderBy={orderBy}
+        setOrderBy={setOrderBy}
+        isSelected={isSelected}
+        setIsSelected={setIsSelected}
+        removeUser={removeUser}
+        setQuery={setQuery}
+      />
+    )
+  } else {
+    return <PageNoAccess/>
+  }
 }
 
 export default UsersListPageContainer;

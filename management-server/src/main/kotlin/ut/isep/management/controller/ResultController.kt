@@ -1,6 +1,7 @@
 package ut.isep.management.controller
 
 import dto.assignment.ResultAssignmentUpdateDTO
+import dto.scorecomparison.ScoreComparisonReadDTO
 import dto.section.ResultSectionReadDTO
 import dto.section.ResultSectionSimpleReadDTO
 import io.swagger.v3.oas.annotations.Operation
@@ -64,6 +65,30 @@ class ResultController(
     ): ResponseEntity<List<ResultSectionSimpleReadDTO>> {
         return try {
             ResponseEntity.ok(resultReadService.getResultByAssessment(inviteId, assessmentId))
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @GetMapping("result/{inviteId}/comparison")
+    @Operation(
+        summary = "Get the test score comparison regarding each other scored invite"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Computed score comparison",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Couldn't compute score comparison",
+            )
+        ]
+    )
+    fun getScoreComparison(@PathVariable inviteId: UUID): ResponseEntity<ScoreComparisonReadDTO> {
+        return try {
+            ResponseEntity.ok(resultReadService.computeScoreComparison(inviteId))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }

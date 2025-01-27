@@ -10,11 +10,9 @@ import {
   getApplicants,
   getAssessment,
   getAssessments,
-  getAssignment,
   getBarChartStats,
   getInvite,
   getInvites,
-  getSection,
   getSectionResult,
   getSkillsStats,
   getUsers,
@@ -25,17 +23,7 @@ import {
   updateUser,
 } from "../../src/utils/apiFunctions";
 import {Mock} from "vitest";
-import {
-  ApplicantInterface,
-  AssessmentInterface,
-  AssignmentInterface,
-  BarChartInterface,
-  InviteInterface,
-  SectionInterface,
-  SectionSolvedInterface,
-  SkillsInterface,
-  UserInterface
-} from "../../src/utils/types.tsx";
+import {ApplicantInterface, AssessmentInterface, BarChartInterface, InviteInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "../../src/utils/types.tsx";
 import {AssignmentTypes, EmailTypes} from "../../src/utils/constants.tsx";
 
 // Mock fetch globally
@@ -799,7 +787,7 @@ describe("API Functions (users)", (): void => {
       ok: true,
     });
 
-    const result = await deleteUser("135");
+    const result = await deleteUser("135", "999");
 
     expect(mockFetch).toHaveBeenCalledWith(
       `${import.meta.env.VITE_API_MANAGEMENT_URL}/user/135`,
@@ -816,19 +804,19 @@ describe("API Functions (users)", (): void => {
     });
 
     await expect(
-      deleteUser("1")
+      deleteUser("1", "999")
     ).rejects.toThrow(`Failed to delete user`);
   });
 
   it("should throw error when deleting an existing user fails when it is the standard admin", async () => {
     await expect(
-      deleteUser(import.meta.env.VITE_DEFAULT_ADMIN_ID)
+      deleteUser(import.meta.env.VITE_DEFAULT_ADMIN_ID, "999")
     ).rejects.toThrow("The standard admin can't be deleted");
   })
 
-  it.skip("should throw error when deleting an existing user fails when it is the current user", async () => {
+  it("should throw error when deleting an existing user fails when it is the current user", async () => {
     await expect(
-      deleteUser("currentUser")
+      deleteUser("999", "999")
     ).rejects.toThrow("Can't delete current user");
   })
 });
@@ -946,45 +934,6 @@ describe("API Functions (assessments)", (): void => {
 });
 
 describe('API Functions (results)', (): void => {
-  it("should fetch a single section by ID", async () => {
-    const mockSection: SectionInterface = {
-      id: "3",
-      title: "data",
-      assignments: [{
-        id: "1",
-        type: AssignmentTypes.OPEN,
-        isSolved: false,
-        description: "How is the hell hound called?"
-      }
-      ]
-    };
-
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: createFetchResponse(mockSection),
-    });
-
-    const result: SectionInterface = await getSection("1");
-
-    expect(mockFetch).toHaveBeenCalledWith(
-      `${import.meta.env.VITE_API_MANAGEMENT_URL}/section/1`,
-      expect.objectContaining({method: "GET"})
-    );
-
-    expect(result).toEqual(mockSection);
-  });
-
-  it("should throw error when fetching single section fails", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      statusText: "Internal Server Error",
-    });
-
-    await expect(
-      getSection("1")
-    ).rejects.toThrow("Failed to retrieve section");
-  });
-
   it("should fetch a single section result by ID", async () => {
     const mockSection: SectionSolvedInterface = {
       id: "3",
@@ -1030,102 +979,24 @@ describe('API Functions (results)', (): void => {
     ).rejects.toThrow("Failed to retrieve result of section");
   });
 
-  it("should fetch a single assignment by ID", async () => {
-    const mockAssignment: AssignmentInterface = {
-      id: "3",
-      type: AssignmentTypes.OPEN,
-      isSolved: false,
-      description: "How is the hell hound called?",
+  it("should fetch a single bar chart statistics by ID", async () => {
+    const mockSection: BarChartInterface = {
+      percentage: 46.17,
+      distributionGroups: [1, 4, 14, 24, 31, 14, 9, 1, 1, 1],
+      selectedGroup: 4
     };
 
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: createFetchResponse(mockAssignment),
+      json: createFetchResponse(mockSection),
     });
-
-    const result: AssignmentInterface = await getAssignment("1");
-
-    expect(mockFetch).toHaveBeenCalledWith(
-      `${import.meta.env.VITE_API_MANAGEMENT_URL}/assignment/1`,
-      expect.objectContaining({method: "GET"})
-    );
-
-    expect(result).toEqual(mockAssignment);
-  });
-
-  it("should throw error when fetching single section result fails", async () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: false,
-      statusText: "Internal Server Error",
-    });
-
-    await expect(
-      getAssignment("1")
-    ).rejects.toThrow("Failed to retrieve assignment");
-  });
-
-  it("should fetch a single bar chart statistics by ID", async () => {
-    const mockSection: BarChartInterface = {
-      percentage: "46.17",
-      barGroups: [
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "4",
-          isSelected: false,
-        },
-        {
-          value: "14",
-          isSelected: false,
-        },
-        {
-          value: "24",
-          isSelected: false,
-        },
-        {
-          value: "31",
-          isSelected: true,
-        },
-        {
-          value: "14",
-          isSelected: false,
-        },
-        {
-          value: "9",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-        {
-          value: "1",
-          isSelected: false,
-        },
-      ]
-    };
-
-    // mockFetch.mockResolvedValueOnce({
-    //   ok: true,
-    //   json: createFetchResponse(mockSection),
-    //   body: JSON.stringify({
-    //     inviteId: "cce487c0-9ff7-47a8-9844-b406e046459b",
-    //   })
-    // });
 
     const result: BarChartInterface = await getBarChartStats("cce487c0-9ff7-47a8-9844-b406e046459b");
 
-    //TODO: uncomment when correctly implemented
-    // expect(mockFetch).toHaveBeenCalledWith(
-    //   `${import.meta.env.VITE_API_MANAGEMENT_URL}/statistics`,
-    //   expect.objectContaining({method: "GET"})
-    // );
+    expect(mockFetch).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_MANAGEMENT_URL}/result/cce487c0-9ff7-47a8-9844-b406e046459b/comparison`,
+      expect.objectContaining({method: "GET"})
+    );
 
     expect(result).toEqual(mockSection);
   });

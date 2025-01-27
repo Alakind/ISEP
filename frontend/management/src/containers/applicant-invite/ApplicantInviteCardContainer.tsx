@@ -17,7 +17,6 @@ function ApplicantInviteCardContainer(): ReactNode {
     assessmentId: "0",
     measuredSecondsPerSection: []
   });
-  //TODO {applicantId: "0", assessmentId: "0", expirationDate: "2024-12-20", sendMail: false, message: ""}
   const [sendMailToggle, setSendMailToggle] = useState<boolean>(false);
   const [message, setMessage] = useState<string>();
 
