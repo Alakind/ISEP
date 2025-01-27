@@ -55,7 +55,6 @@ class DummyDataLoader(
         val applicants = listOf(
             Applicant(name = "Aaron", preferredLanguage = "Kotlin", email = "aaron@example.com"),
             Applicant(name = "Zebediah", preferredLanguage = "F", email = "zebediah1@example.com"),
-            Applicant(name = "Zebediah", preferredLanguage = "C", email = "zebediah2@example.com"),
             Applicant(name = "Henk", preferredLanguage = "Rust", email = "henk@example.com"),
             Applicant(name = "Gerrit", preferredLanguage = "JavaScript", email = "gerrit@example.com"),
             Applicant(name = "Simon", preferredLanguage = "Haskell", email = "simon@example.com"),
@@ -64,7 +63,8 @@ class DummyDataLoader(
             Applicant(name = "Sophia", preferredLanguage = "Swift", email = "sophia@example.com"),
             Applicant(name = "Lucas", preferredLanguage = "Kotlin", email = "lucas@example.com"),
             Applicant(name = "Isabella", preferredLanguage = "Go", email = "isabella@example.com"),
-        )
+            Applicant(name = "Everard", preferredLanguage = "C", email = "everarddevree@gmail.com"),
+            )
 
 
         applicants.forEach { applicantRepository.save(it) }
