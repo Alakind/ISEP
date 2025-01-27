@@ -1,19 +1,19 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.CodeExecutor.createAndReturnTempFiles
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
 
-object PythonExecutor {
+object PythonExecutor : CodeExecutor {
 
-    fun startContainer(inviteId: String, container: File) {
+    override fun startContainer(inviteId: String, container: File) {
         val id = ContainerAPI.startContainer(container, "$inviteId-python")
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
     }
 
-    fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: Test): List<TestResult> {
         val name = "$inviteId-python"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.py", test.testFileName ?: "Test.py")
         ContainerAPI.copyToContainerByName(name, files.first, "/project")

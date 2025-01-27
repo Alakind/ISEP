@@ -1,21 +1,21 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.CodeExecutor.createAndReturnTempFiles
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
 
-object SQLExecutor {
+object SQLExecutor : CodeExecutor {
 
-    fun startContainer(inviteId: String, container: File) {
+    override fun startContainer(inviteId: String, container: File) {
         val id = ContainerAPI.startContainer(container, "$inviteId-sql")
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/sql/cleanDatabase.sql").absoluteFile, "/project")
         ContainerAPI.runCommandInContainerById(id, "export MYSQL_ALLOW_EMPTY_PASSWORD=True && /usr/local/bin/docker-entrypoint.sh mysqld &")
     }
 
-    fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: Test): List<TestResult> {
         val name = "$inviteId-sql"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.sql", test.testFileName ?: "TestCode.py")
         ContainerAPI.runCommandInContainerByName(name, "mysql < /project/cleanDatabase.sql")

@@ -5,7 +5,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import ut.isep.interview.code_execution.CodeExecutor
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils
 import ut.isep.interview.code_execution.JavaExecutor
 import ut.isep.interview.code_execution.PythonExecutor
 import ut.isep.interview.code_execution.SQLExecutor
@@ -69,7 +69,7 @@ class CodeExecution {
 
     @PostMapping("/{uuid}/cleanup")
     fun cleanupContainers(@PathVariable uuid: String): ResponseEntity<Any> {
-        CodeExecutor.stopContainers(uuid)
+        CodeExecutorUtils.stopContainers(uuid)
         return ResponseEntity.ok().build()
     }
 }
