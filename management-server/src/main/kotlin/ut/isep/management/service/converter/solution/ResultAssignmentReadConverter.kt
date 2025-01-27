@@ -39,8 +39,8 @@ class ResultAssignmentReadConverter(
         return ResultAssignmentCodingReadDTO(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.Coding(
-                code = fetchedQuestion.files.referenceCode?.content ?: "",
-                test = fetchedQuestion.files.referenceTest?.content ?: ""
+                code = fetchedQuestion.files.referenceCode?.content,
+                test = fetchedQuestion.files.referenceTest?.content
             ),
             scoredPoints = entity.scoredPoints,
             testResults = entity.testResults.map { testResultConverter.toDTO(it) },
@@ -64,7 +64,7 @@ class ResultAssignmentReadConverter(
         val baseAssignmentDTO = solvedAssignmentConverter.toOpenDTO(entity, fetchedQuestion)
         return ResultAssignmentOpenReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Open(fetchedQuestion.referenceAnswer ?: ""),
+            referenceAnswer = AnswerCreateReadDTO.Open(fetchedQuestion.referenceAnswer),
             scoredPoints = entity.scoredPoints,
         )
     }

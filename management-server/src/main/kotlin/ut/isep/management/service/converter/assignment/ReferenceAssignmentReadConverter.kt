@@ -42,7 +42,7 @@ class ReferenceAssignmentReadConverter() {
             description = question.description,
             availablePoints = question.availablePoints,
             availableSeconds = question.availableSeconds,
-            referenceAnswer = AnswerCreateReadDTO.Open(question.referenceAnswer ?: "")
+            referenceAnswer = AnswerCreateReadDTO.Open(question.referenceAnswer)
         )
     }
 
@@ -57,8 +57,8 @@ class ReferenceAssignmentReadConverter() {
             test = question.files.test.content,
             secretTest = question.files.secretTest.content,
             referenceAnswer = AnswerCreateReadDTO.Coding(
-                code = question.files.referenceCode?.content ?: "",
-                test = question.files.referenceTest?.content ?: ""
+                code = question.files.referenceCode?.content,
+                test = question.files.referenceTest?.content
             )
         )
     }

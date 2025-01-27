@@ -1,10 +1,14 @@
 package ut.isep.management.service.solution
 
+import dto.assignment.SolvedAssignmentCodingReadDTO
 import dto.section.SectionInfo
 import dto.section.SolvedSectionReadDTO
 import jakarta.transaction.Transactional
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import ut.isep.management.model.entity.Section
 import ut.isep.management.model.entity.SolvedAssignment
 import ut.isep.management.model.entity.SolvedAssignmentId
@@ -12,7 +16,6 @@ import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
 import ut.isep.management.service.assignment.AssignmentFetchService
-import ut.isep.management.service.assignment.ReferenceAssignmentReadService
 import ut.isep.management.service.converter.solution.SolvedAssignmentReadConverter
 import java.util.*
 
@@ -21,6 +24,7 @@ import java.util.*
 class SolutionReadService(
     val repository: SolvedAssignmentRepository,
     val converter: SolvedAssignmentReadConverter,
+    @Qualifier("executorRestTemplate") val restTemplate: RestTemplate,
     val fetchService: AssignmentFetchService,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
@@ -52,5 +56,10 @@ class SolutionReadService(
             ),
             assignments = assignmentDTOs
         )
+    }
+
+    fun initializeContainer(uuid: UUID, language: String): ResponseEntity<String?>? {
+        val url = "https://localhost:8080/code-executor/$uuid/$language/initialize"
+        return restTemplate.postForEntity(url, null, String::class.java)
     }
 }

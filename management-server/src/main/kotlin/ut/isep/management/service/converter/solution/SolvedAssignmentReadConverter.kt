@@ -27,7 +27,11 @@ class SolvedAssignmentReadConverter(val assignmentReadConverter: ReferenceAssign
 
     fun toCodingDTO(entity: SolvedAssignmentCoding, question: CodingQuestion): SolvedAssignmentCodingReadDTO {
         return SolvedAssignmentCodingReadDTO(
-            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentCodingReadDTO,
+            id = question.id!!,
+            description = question.description,
+            language = question.language,
+            startCode = question.files.code.content,
+            startTest = question.files.test.content,
             answer = AnswerCreateReadDTO.Coding(entity.userCode, entity.testCode)
         )
     }
@@ -37,7 +41,10 @@ class SolvedAssignmentReadConverter(val assignmentReadConverter: ReferenceAssign
         question: MultipleChoiceQuestion
     ): SolvedAssignmentMultipleChoiceReadDTO {
         return SolvedAssignmentMultipleChoiceReadDTO(
-            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentMultipleChoiceReadDTO,
+            id = question.id!!,
+            description = question.description,
+            isMultipleAnswers = question.options.count {it.isCorrect} > 1,
+            options = question.options.map {it.text},
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
         )
     }
@@ -46,7 +53,8 @@ class SolvedAssignmentReadConverter(val assignmentReadConverter: ReferenceAssign
                   question: OpenQuestion
     ): SolvedAssignmentOpenReadDTO {
         return SolvedAssignmentOpenReadDTO(
-            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentOpenReadDTO,
+            id = question.id!!,
+            description = question.description,
             answer = AnswerCreateReadDTO.Open(entity.userSolution)
         )
     }

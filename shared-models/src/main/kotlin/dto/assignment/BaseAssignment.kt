@@ -11,7 +11,7 @@ abstract class BaseAssignment : ReadDTO {
     abstract val type: AssignmentType
     abstract val availablePoints: Int
     abstract val availableSeconds: Long
-    abstract val referenceAnswer: AnswerCreateReadDTO?
+    abstract val referenceAnswer: AnswerCreateReadDTO
 
     @Schema(enumAsRef = true)
     enum class AssignmentType { Coding, MultipleChoice, Open }

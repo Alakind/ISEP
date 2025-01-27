@@ -14,4 +14,4 @@ import io.swagger.v3.oas.annotations.media.Schema
         DiscriminatorMapping(value = "Open", schema = ReferenceAssignmentOpenReadDTO::class)
     ]
 )
-sealed interface ReferenceAssignmentReadDTO : ReadDTO
+ interface ReferenceAssignmentReadDTO : ReadDTO
