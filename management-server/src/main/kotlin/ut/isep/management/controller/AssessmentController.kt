@@ -42,7 +42,7 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
     }
 
 
-    @GetMapping("{tag}")
+    @GetMapping("{id}")
     @Operation(summary = "Get assessment", description = "Returns an assessment or 404 if not found")
     @ApiResponses(
         value = [
@@ -59,9 +59,9 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
             )
         ]
     )
-    fun getAssessment(@PathVariable tag: String): ResponseEntity<AssessmentReadDTO> {
+    fun getAssessment(@PathVariable id: Long): ResponseEntity<AssessmentReadDTO> {
         return try {
-            ResponseEntity.ok(assessmentReadService.getLatestByTag(tag))
+            ResponseEntity.ok(assessmentReadService.getById(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }
