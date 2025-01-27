@@ -1,9 +1,9 @@
 import {ReactNode} from "react";
 
-function InfoSupportMailSupport({element, inviteId}: Readonly<Props>) {
+function InfoSupportMailSupport({element, inviteId, name}: Readonly<Props>) {
   return (
     <a
-      href={`mailto:recruiter@infosupport.com?subject=Support request for [[NAME]] for assessment (${inviteId ?? "?"})&body=Dear InfoSupport employee,%0D%0A %0D%0A I require support on the assessment, because of the following reason(s):%0D%0A %0D%0A %0D%0A Kind regards, %0D%0A`}>
+      href={`mailto:recruiter@infosupport.com?subject=Support request for ${name ?? "[[NAME]]"} for assessment (${inviteId ?? "?"})&body=Dear InfoSupport employee,%0D%0A %0D%0A I require support on the assessment, because of the following reason(s):%0D%0A %0D%0A %0D%0A Kind regards, %0D%0A ${name ?? "[[NAME]]"}`}>
       {element}
     </a>
   );
@@ -12,6 +12,7 @@ function InfoSupportMailSupport({element, inviteId}: Readonly<Props>) {
 interface Props {
   element: string | ReactNode;
   inviteId: string | null;
+  name: string | null;
 }
 
 export default InfoSupportMailSupport;

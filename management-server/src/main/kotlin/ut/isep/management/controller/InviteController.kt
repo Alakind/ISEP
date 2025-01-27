@@ -5,6 +5,7 @@ import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteCreateDTO
 import dto.invite.InviteReadDTO
 import dto.invite.InviteUpdateDTO
+import dto.invite.PreInfoReadDTO
 import enumerable.AllowedInvitesDateAttributeNames
 import enumerable.InviteStatus
 import io.swagger.v3.oas.annotations.Operation
@@ -224,6 +225,34 @@ class InviteController(
 
             val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
             ResponseEntity.ok(assessment)
+        } catch (e: NoSuchElementException) {
+            ResponseEntity.status(404).build()
+        }
+    }
+
+    @GetMapping("/{id}/info")
+    @Operation(
+        summary = "Get the info regarding the invite pre starting the assessment",
+        description = "Return the available seconds and the name of the assessment"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found the pre info",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Pre info not found",
+                content = [Content(
+                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                )]
+            )
+        ]
+    )
+    fun getPreInfo(@PathVariable id: UUID): ResponseEntity<PreInfoReadDTO> {
+        return try {
+            ResponseEntity.ok(inviteReadService.getPreInfoByInviteId(id))
         } catch (e: NoSuchElementException) {
             ResponseEntity.status(404).build()
         }

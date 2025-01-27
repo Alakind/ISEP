@@ -66,3 +66,9 @@ export interface CodingSolutionInterface extends AssignmentSolutionInterface {
     test: string;
   };
 }
+
+
+export interface PreInfoInterface {
+  name: string;
+  availableSeconds: number;
+}

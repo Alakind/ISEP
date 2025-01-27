@@ -1,5 +1,5 @@
 import {toast} from "react-toastify";
-import {AssessmentInterface, AssignmentInterface, AssignmentMultipleChoiceInterface,} from "./types";
+import {AssessmentInterface, AssignmentInterface, PreInfoInterface} from "./types";
 import {Languages} from "./constants";
 
 const baseUrl = import.meta.env.VITE_API_APPLICANT_URL;
@@ -193,3 +193,21 @@ export async function finishAssessment(inviteId: string): Promise<void> {
     throw new Error(`Failed to finish the assessment: ${response.statusText}`);
   }
 }
+
+export async function getPreInfo(inviteId: string): Promise<PreInfoInterface> {
+  const API_URL = `${baseUrl}/invite/${inviteId}/info`;
+
+  const response: Response = await fetch(API_URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve pre info of the assessment: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+

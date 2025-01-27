@@ -9,7 +9,8 @@ function PageNotFoundContainer() {
       <h2>Page Not Found</h2>
       <p>
         Sorry, the page you are looking for does not exist. <br></br>
-        You can go back to the <Link to={"/"}>welcome page</Link> or <InfoSupportMailSupport element={"request support"}/>.
+        You can go back to the <Link to={"/"}>welcome page</Link> or <InfoSupportMailSupport element={"request support"} inviteId={localStorage.getItem("inviteId")}
+                                                                                             name={localStorage.getItem("name")}/>.
       </p>
     </div>
   )

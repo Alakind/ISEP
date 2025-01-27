@@ -1,6 +1,13 @@
-export default function scrollToAssignment(id: string) {
-  const assignmentElement: HTMLElement = document.getElementById(id);
+export function scrollToAssignment(id: string) {
+  const assignmentElement: HTMLElement | null = document.getElementById(id);
   if (assignmentElement) {
-    assignmentElement.scrollIntoView({ behavior: "instant", block: "start" });
+    assignmentElement.scrollIntoView({behavior: "instant", block: "start"});
   }
+}
+
+export function getTime(startSeconds: number): { hours: number, minutes: number, seconds: number } {
+  const hours = Math.floor(startSeconds / 3600)
+  const minutes = Math.floor(startSeconds % 3600 / 60)
+  const seconds = Math.floor(startSeconds % 3600 % 60)
+  return {hours, minutes, seconds};
 }
