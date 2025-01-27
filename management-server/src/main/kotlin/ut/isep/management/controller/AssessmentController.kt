@@ -27,7 +27,7 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
 
 
     @GetMapping
-    @Operation(summary = "Get all assessments", description = "Returns a list of all assessments")
+    @Operation(summary = "Get all latest assessments", description = "Returns a list of all active assessments")
     @ApiResponse(
         responseCode = "200",
         description = "Returns a list of all assessments",
@@ -38,7 +38,7 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
             direction = Sort.Direction.ASC
         ) pageable: Pageable,
     ): PaginatedDTO<AssessmentReadDTO> {
-        return assessmentReadService.getPaginated(pageable = pageable)
+        return assessmentReadService.getLatestPaginated(pageable = pageable)
     }
 
 

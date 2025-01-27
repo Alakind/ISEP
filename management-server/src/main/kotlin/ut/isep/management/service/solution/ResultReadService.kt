@@ -1,6 +1,5 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.ResultAssignmentReadDTO
 import dto.scorecomparison.ScoreComparisonReadDTO
 import dto.section.ResultSectionReadDTO
 import dto.section.ResultSectionSimpleReadDTO
@@ -8,6 +7,7 @@ import dto.section.SectionInfo
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import parser.question.Question
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.model.entity.Section
 import ut.isep.management.model.entity.SolvedAssignment
@@ -16,21 +16,20 @@ import ut.isep.management.repository.AssessmentRepository
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.ReadService
+import ut.isep.management.service.assignment.AssignmentFetchService
 import ut.isep.management.service.converter.solution.ResultAssignmentReadConverter
-import ut.isep.management.service.invite.InviteReadService
 import java.util.*
 
 @Transactional
 @Service
 class ResultReadService(
-    repository: SolvedAssignmentRepository,
-    converter: ResultAssignmentReadConverter,
+    val repository: SolvedAssignmentRepository,
+    val converter: ResultAssignmentReadConverter,
+    val fetchService: AssignmentFetchService,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
     val assessmentRepository: AssessmentRepository,
-    private val inviteReadService: InviteReadService
-) : ReadService<SolvedAssignment, ResultAssignmentReadDTO, SolvedAssignmentId>(repository, converter) {
+)  {
 
     fun getResultSection(inviteId: UUID, sectionId: Long): ResultSectionReadDTO {
         val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
@@ -50,7 +49,10 @@ class ResultReadService(
 
     private fun createResultDTO(assignments: List<SolvedAssignment>, section: Section, invite: Invite): ResultSectionReadDTO {
         // Look for solved versions of all assignments of the section
-        val assignmentDTOs = assignments.map { converter.toDTO(it) }
+        val solvedAssignmentToFetchedQuestion: Map<SolvedAssignment, Question> = assignments.associateWith { solvedAssignment ->
+            fetchService.fetchAssignment(solvedAssignment.assignment!!, invite.assessment!!.gitCommitHash!!)
+        }
+        val assignmentDTOs = solvedAssignmentToFetchedQuestion.map { (solvedAssignment, fetchedQuestion) -> converter.toDTO(solvedAssignment, fetchedQuestion) }
         return ResultSectionReadDTO(
             SectionInfo(
                 id = section.id,
@@ -66,11 +68,10 @@ class ResultReadService(
 
     private fun createSimpleResultDTO(assignments: List<SolvedAssignment>, section: Section, invite: Invite): ResultSectionSimpleReadDTO {
         // Look for solved versions of all assignments of the section
-        val assignmentDTOs = assignments.map { converter.toDTO(it) }
         return ResultSectionSimpleReadDTO(
             title = section.title!!,
             availablePoints = section.availablePoints,
-            scoredPoints = assignmentDTOs.mapNotNull { it.scoredPoints }.ifEmpty { null }?.sum(),
+            scoredPoints = assignments.mapNotNull { it.scoredPoints }.ifEmpty { null }?.sum(),
             availableSeconds = section.availableSeconds,
             measuredSeconds = invite.measuredSecondsPerSection.find { measuredTimeSection -> measuredTimeSection.section == section }?.seconds
         )
@@ -135,16 +136,7 @@ class ResultReadService(
 
     private fun getSelectedDistributionGroup(percentage: Float): Int {
         return when (percentage) {
-            in 0.00..<10.00 -> 0
-            in 10.00..<20.00 -> 1
-            in 20.00..<30.00 -> 2
-            in 30.00..<40.00 -> 3
-            in 40.00..<50.00 -> 4
-            in 50.00..<60.00 -> 5
-            in 60.00..<70.00 -> 6
-            in 70.00..<80.00 -> 7
-            in 80.00..<90.00 -> 8
-            in 90.00..100.00 -> 9
+            in 0.00..100.00 -> (percentage / 10).toInt()
             else -> -1
         }
     }

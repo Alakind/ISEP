@@ -45,7 +45,7 @@ function SkillsBlockContainer({assessmentId, inviteId, setAssessmentScore}: Read
 
   if (loading) {
     return (
-      <LoadingPage additionalClasses={"page--barchart"} size={30}/>
+      <LoadingPage additionalClasses={"page--barchart page--mod"} size={30}/>
     )
 
   } else {

@@ -35,8 +35,6 @@ function Pagination({pageNumbers, itemsPerPage, lastPage, currentPage, handleCli
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination justify-content-end">
-        {/*TODO add 10 previous and 10 next*/}
-        {/*TODO Add go to specific page box*/}
         <li className={`page-item ${currentPage === 0 ? "disabled" : ""}`}>
           <button onClick={(e: MouseEvent<HTMLButtonElement>): void => handleClick(e, currentPage - 1)} className="page-link page-link--mod">
             <i className="bi bi-caret-left"></i>

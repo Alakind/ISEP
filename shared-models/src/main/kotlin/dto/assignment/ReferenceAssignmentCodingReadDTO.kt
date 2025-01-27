@@ -1,17 +1,19 @@
 package dto.assignment
 
+import dto.solution.AnswerCreateReadDTO
 import io.swagger.v3.oas.annotations.media.Schema
-import java.net.URI
 
 @Schema(description = "Coding assignment")
-data class AssignmentCodingReadDTO(
+data class ReferenceAssignmentCodingReadDTO(
     override val id: Long,
     override val description: String,
     override val availablePoints: Int,
     override val availableSeconds: Long,
-    val codeUri: URI,
     val language: String,
-    val startCode: String?,
-) : BaseAssignment(), AssignmentReadDTO {
+    val code: String,
+    val test: String,
+    val secretTest: String,
+    override val referenceAnswer: AnswerCreateReadDTO.Coding,
+    ) : BaseAssignment(), ReferenceAssignmentReadDTO {
     override val type: AssignmentType = AssignmentType.Coding
 }

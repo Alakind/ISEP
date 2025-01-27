@@ -1,5 +1,5 @@
 import {ApplicantInterface, AssessmentInterface, BarChartInterface, InviteInterface, SectionSolvedInterface, SkillsInterface, UserInterface} from "./types.tsx";
-import {EmailTypes, InviteDateAttributes, InviteStatuses} from "./constants.tsx";
+import {EmailTypes, InviteDateAttributes, InviteStatuses, Roles} from "./constants.tsx";
 import {testUuidValidity} from "./general.tsx";
 
 // ------------------------------ URL ---------------------------------//
@@ -359,6 +359,7 @@ export async function updateUser(id: string, data: Partial<UserInterface>): Prom
     body: JSON.stringify({
       id: id,
       ...data,
+      role: data.role === Roles.NO_ACCESS ? "NoAccess" : data.role,
     }),
   });
 

@@ -1,9 +1,28 @@
-import { AssessmentInterface } from "../utils/types";
+import {AssessmentInterface} from "../utils/types";
 import "../styles/header.css";
-import React from "react";
-import {ToastContainer} from "react-toastify";
+import {useEffect, useState} from "react";
+import {Bounce, toast, ToastContainer} from "react-toastify";
+import {NavigateFunction, useNavigate} from "react-router-dom";
+import {formatTime, getTime} from "../utils/operations.tsx";
 
-function Header({ assessment, currentSectionIndex }: Props) {
+function Header({assessment, currentSectionIndex, secondsLeft}: Readonly<Props>) {
+  const [hours, setHours] = useState<number>(0);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [seconds, setSeconds] = useState<number>(0);
+  const navigate: NavigateFunction = useNavigate();
+
+  useEffect(() => {
+    if (secondsLeft > 0) {
+      const {hours, minutes, seconds} = getTime(secondsLeft);
+      setHours(hours);
+      setMinutes(minutes);
+      setSeconds(seconds);
+    } else {
+      toast.info("Assessment has been finished")
+      navigate("/finish")
+    }
+  }, [navigate, secondsLeft]);
+
   return (
     <header className="header">
       <span className="header__left">
@@ -11,29 +30,29 @@ function Header({ assessment, currentSectionIndex }: Props) {
           Section {currentSectionIndex + 1} of {assessment.sections.length}:
         </div>
         <div>
-          {/* TODO make section types a variable */}
           {assessment.sections[currentSectionIndex].title} Questions
         </div>
       </span>
       <span className="header__center">
         <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            transition: Bounce
-          />
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+        />
       </span>
       <span className="header__right">
         <span>
           <span>Time left: </span>
-          <span className="header__time-text">00:12:34</span>
+          <span
+            className="header__time-text">{`${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`}</span>
         </span>
         <span>
           <i className="bi bi-clock"></i>
@@ -46,6 +65,7 @@ function Header({ assessment, currentSectionIndex }: Props) {
 interface Props {
   assessment: AssessmentInterface;
   currentSectionIndex: number;
+  secondsLeft: number;
 }
 
 export default Header;

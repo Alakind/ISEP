@@ -3,13 +3,17 @@ package ut.isep.management.service.solution
 import dto.solution.AnswerCreateReadDTO
 import dto.solution.SolutionsUpdateDTO
 import org.springframework.stereotype.Service
+import parser.question.MultipleChoiceQuestion
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
+import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.converter.assignment.ReferenceAssignmentReadConverter
 import java.util.*
 
 @Service
 class SolutionUpdateService(
     private val repository: SolvedAssignmentRepository,
+    private val fetchService: AssignmentFetchService,
 ) {
 
     fun updateSolutions(inviteId: UUID, createDTO: SolutionsUpdateDTO) {
@@ -36,19 +40,21 @@ class SolutionUpdateService(
     }
 
     private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
-        val assignment = solution.assignment as AssignmentMultipleChoice
-        require(!(assignment.optionToSolution.values.count { it } == 1 && answerDto.answer.size > 1)) {
-            throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${assignment.id}")
+        val fetchedQuestion = fetchService.fetchAssignment(solution.assignment!!, solution.invite!!.assessment!!.gitCommitHash!!) as MultipleChoiceQuestion
+        require(!(fetchedQuestion.options.count { it.isCorrect } == 1 && answerDto.answer.size > 1)) {
+            throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${solution.assignment!!.id}")
         }
-        require(answerDto.answer.all { it in assignment.optionToSolution.keys }) {
+        require(answerDto.answer.all { it in fetchedQuestion.options.map {it.text} }) {
             throw IllegalArgumentException("Provided an answer which is not possible")
         }
+        solution.userOptionsMarkedCorrect = answerDto.answer
         solution.userOptionsMarkedCorrect = answerDto.answer
         repository.save(solution)
     }
 
     private fun updateCodingSolution(solution: SolvedAssignmentCoding, answerDto: AnswerCreateReadDTO.Coding) {
-        solution.userCode = answerDto.answer
+        solution.userCode = answerDto.code
+        solution.testCode = answerDto.test
         repository.save(solution)
 
     }
