@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { AssignmentInterface } from "../utils/types";
-import { sendOpenSolution } from "../utils/apiFunctions";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
+import {AssignmentOpenInterface} from "../utils/types";
+import {sendSimpleSolution} from "../utils/apiFunctions";
 
 function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
   const [value, setValue] = useState("");
   const valueRef = useRef(value);
-  const [updateIntervalId, setUpdateIntervalId] = useState(0);
+  const [updateIntervalId, setUpdateIntervalId] = useState<NodeJS.Timeout>();
 
   useEffect(() => {
     valueRef.current = value;
@@ -25,7 +25,7 @@ function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
 
   const handleBlur = async () => {
     clearInterval(updateIntervalId);
-    setUpdateIntervalId(0);
+    setUpdateIntervalId(undefined);
 
     await handleSendSolution(value);
   };
@@ -37,7 +37,7 @@ function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
 
   const handleSendSolution = async (newValue: string) => {
     setAssignmentAnswer({answer: newValue});
-    await sendOpenSolution(assignment, newValue);
+    await sendSimpleSolution(assignment, newValue);
   };
 
   return (
@@ -56,7 +56,7 @@ function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
 }
 
 interface Props {
-  assignment: AssignmentInterface;
+  assignment: AssignmentOpenInterface;
   setAssignmentAnswer: (arg: object) => void;
 }
 

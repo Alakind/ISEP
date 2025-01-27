@@ -1,9 +1,5 @@
-import { AssignmentTypes } from "../utils/constants";
-import {
-  AssignmentCodingInterface,
-  AssignmentInterface,
-  AssignmentMultipleChoiceInterface,
-} from "../utils/types";
+import {AssignmentTypes} from "../utils/constants";
+import {AssignmentCodingInterface, AssignmentInterface, AssignmentMultipleChoiceInterface, AssignmentOpenInterface,} from "../utils/types";
 import AssignmentMultipleChoice from "./AssignmentMultipleChoice";
 import AssignmentCoding from "./AssignmentCoding.tsx";
 import AssignmentOpen from "./AssignmentOpen";
@@ -24,7 +20,7 @@ function Assignment({index, assignment, setAssignmentAnswer}: Readonly<Props>) {
         )}
         {assignment.type == AssignmentTypes.OPEN && (
           <AssignmentOpen
-            assignment={assignment as AssignmentInterface}
+            assignment={assignment as AssignmentOpenInterface}
             setAssignmentAnswer={setAssignmentAnswer}
           />
         )}

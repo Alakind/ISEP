@@ -1,4 +1,4 @@
-import { AssignmentTypes } from "./constants";
+import {AssignmentTypes} from "./constants";
 
 export interface AssessmentInterface {
   sections: SectionInterface[];
@@ -16,12 +16,22 @@ export interface AssignmentInterface {
   type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
   isSolved: boolean;
   description: string;
-  answer?: object;
+}
+
+export interface AssignmentOpenInterface extends AssignmentInterface {
+  answer: {
+    type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+    answer: string
+  };
 }
 
 export interface AssignmentMultipleChoiceInterface extends AssignmentInterface {
   options: string[];
   isMultipleAnswers: boolean;
+  answer: {
+    type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
+    answer: string[]
+  };
 }
 
 export interface AssignmentCodingInterface extends AssignmentInterface {
@@ -35,40 +45,20 @@ export interface AssignmentCodingInterface extends AssignmentInterface {
   startCode?: string;
   startTest?: string;
   answer: {
+    type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
     code: string;
     test: string;
   };
 }
 
-export interface AssignmentSolutionInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-}
-
-export interface MultipleChoiceSolutionInterface
-  extends AssignmentSolutionInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  answer: number[];
-}
-
-export interface OpenSolutionInterface extends AssignmentSolutionInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  answer: string;
-}
-
-export interface CodingSolutionInterface extends AssignmentSolutionInterface {
-  id: string;
-  type: (typeof AssignmentTypes)[keyof typeof AssignmentTypes];
-  answer: {
-    main: string;
-    test: string;
-  };
-}
-
-
 export interface PreInfoInterface {
   name: string;
   availableSeconds: number;
+}
+
+export interface TestResultsInterface {
+  name: string;
+  result?: string;
+  passed: boolean;
+  code?: string;
 }

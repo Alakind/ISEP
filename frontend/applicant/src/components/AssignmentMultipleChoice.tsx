@@ -1,4 +1,4 @@
-import {sendMultipleChoiceSolution} from "../utils/apiFunctions";
+import {sendSimpleSolution} from "../utils/apiFunctions";
 import {AssignmentMultipleChoiceInterface} from "../utils/types";
 import {useEffect, useState} from "react";
 
@@ -8,11 +8,7 @@ function AssignmentMultipleChoice({assignment, setAssignmentAnswer}: Readonly<Pr
   useEffect(() => {
     setCheckedAnswers(() => {
       const answers: Set<string> = new Set();
-      if (
-        assignment === undefined ||
-        assignment.answer === undefined ||
-        assignment.answer.answer === undefined
-      ) {
+      if (assignment?.answer?.answer === undefined) {
         return new Set();
       }
 
@@ -43,13 +39,13 @@ function AssignmentMultipleChoice({assignment, setAssignmentAnswer}: Readonly<Pr
 
     setAssignmentAnswer({answer: [...newAnswers]});
 
-    await sendMultipleChoiceSolution(assignment, [...newAnswers]);
+    await sendSimpleSolution(assignment, [...newAnswers]);
   };
 
   return (
     <>
       {assignment.options.map((option, i) => (
-        <span key={i} className="assignment__option-wrapper">
+        <span key={option.replace(" ", "") + "_" + i} className="assignment__option-wrapper">
           <input
             className={`assignment__input ${
               checkedAnswers.has(option) ? "assignment__input--checked" : ""

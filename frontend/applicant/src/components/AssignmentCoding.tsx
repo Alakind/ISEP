@@ -1,10 +1,5 @@
 import {useEffect, useState} from "react";
 import AceEditor from "react-ace";
-// import "ace-builds/webpack-resolver.js";
-// import brace from 'brace';
-// import 'brace/mode/java';
-// import 'brace/mode/javascript';
-// import 'brace/theme/
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
@@ -12,26 +7,24 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-csharp";
 import "ace-builds/src-noconflict/mode-mysql";
 import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-eclipse";
 import "ace-builds/src-noconflict/snippets/java.js";
 import "ace-builds/src-noconflict/ext-language_tools";
 import {AssignmentCodingInterface} from "../utils/types.tsx";
-import {LanguageToMode} from "../utils/constants.tsx";
+import {LanguageToMode, Themes} from "../utils/constants.tsx";
 import {runTests, sendCodingSolution} from "../utils/apiFunctions.tsx";
+import {useTheme} from "../utils/providers/UseTheme.tsx";
 
-function AssignmentCoding({
-                            assignment,
-                            theme,
-                            fontSize,
-                            defaultValue,
-                            setAssignmentAnswer,
-                          }: Readonly<Props>) {
+function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnswer,}: Readonly<Props>) {
   const [isCodingOpen, setIsCodingOpen] = useState(true);
   const [output, setOutput] = useState("");
   const [isError, setIsError] = useState(false);
-  const [updateIntervalId, setUpdateIntervalId] = useState(0);
+  const [updateIntervalId, setUpdateIntervalId] = useState<NodeJS.Timeout>();
 
   const [codeValue, setCodeValue] = useState("");
   const [testValue, setTestValue] = useState("");
+
+  const themeData = useTheme();
 
   useEffect(() => {
     setCodeValue(assignment.answer.code ?? assignment.startCode ?? "Code stub");
@@ -63,7 +56,7 @@ function AssignmentCoding({
   }
 
   const handleOnFocus = () => {
-    const intervalId = setInterval(async () => {
+    const intervalId: NodeJS.Timeout = setInterval(async () => {
       await sendCodingSolution(assignment, codeValue, testValue);
     }, 5000);
 
@@ -72,42 +65,46 @@ function AssignmentCoding({
 
   const handleBlur = async () => {
     clearInterval(updateIntervalId);
-    setUpdateIntervalId(0);
+    setUpdateIntervalId(undefined);
 
     await sendCodingSolution(assignment, codeValue, testValue);
   };
 
   async function onRunTests() {
     const inviteId = localStorage.getItem("inviteId") ?? "";
-
+    let testResults;
     try {
-      const testResults = await runTests(
+      testResults = await runTests(
         LanguageToMode[assignment.language.toLowerCase()],
         inviteId,
         codeValue,
         testValue
       );
     } catch (error) {
-      setIsError(true);
-      setOutput("Error");
+      if (error instanceof Error) {
+        setIsError(true);
+        setOutput("Unknown error occurred");
+      }
     }
 
     await sendCodingSolution(assignment, codeValue, testValue);
 
-    const resultsString = testResults
-      .map((result) => {
-        return (
-          result.name +
-          ": " +
-          (result.passed ? "passed" : "failed") +
-          "\n" +
-          result.result +
-          "\n"
-        );
-      })
-      .join("\n");
+    if (testResults) {
+      const resultsString = testResults
+        .map((result) => {
+          return (
+            result.name +
+            ": " +
+            (result.passed ? "passed" : "failed") +
+            "\n" +
+            result.result +
+            "\n"
+          );
+        })
+        .join("\n");
 
-    setOutput(resultsString);
+      setOutput(resultsString);
+    }
   }
 
   return (
@@ -134,10 +131,10 @@ function AssignmentCoding({
 
       <AceEditor
         mode={LanguageToMode[assignment.language.toLowerCase()]}
-        theme={theme == undefined ? "twilight" : theme}
+        theme={themeData.theme === Themes.DARK ? "twilight" : "eclipse"}
         name={assignment.id.toString()}
-        fontSize={fontSize == undefined ? 16 : fontSize}
-        defaultValue={defaultValue == undefined ? "" : defaultValue}
+        fontSize={fontSize ?? 16}
+        defaultValue={defaultValue ?? ""}
         editorProps={{$blockScrolling: true}}
         setOptions={{
           enableBasicAutocompletion: true,
@@ -165,9 +162,9 @@ function AssignmentCoding({
       <div>
         {output !== "" ? (
           <AceEditor
-            theme={theme == undefined ? "twilight" : theme}
+            theme={themeData.theme === Themes.DARK ? "twilight" : "eclipse"}
             name={assignment.id.toString() + " output"}
-            fontSize={fontSize == undefined ? 16 : fontSize}
+            fontSize={fontSize ?? 16}
             defaultValue={""}
             editorProps={{$blockScrolling: true}}
             value={output}
@@ -185,7 +182,6 @@ function AssignmentCoding({
 
 interface Props {
   assignment: AssignmentCodingInterface;
-  theme?: string;
   fontSize?: number;
   defaultValue?: string;
   setAssignmentAnswer: (arg: object) => void;

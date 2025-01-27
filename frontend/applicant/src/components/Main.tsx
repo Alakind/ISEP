@@ -5,27 +5,18 @@ import {scrollToAssignment} from "../utils/operations.tsx";
 import {useEffect, useState} from "react";
 import {AssignmentTypes} from "../utils/constants.tsx";
 
-function Main({
-                assessment,
-                currentSectionIndex,
-                currentAssignmentIndex,
-                setAssignmentAnswer,
-              }: Readonly<Props>) {
+function Main({assessment, currentSectionIndex, currentAssignmentIndex, setAssignmentAnswer}: Readonly<Props>) {
   useEffect(() => {
     scrollToAssignment(
-      assessment.sections[currentSectionIndex].assignments[
-        currentAssignmentIndex[currentSectionIndex]
-        ].id
+      assessment.sections[currentSectionIndex].assignments[currentAssignmentIndex[currentSectionIndex]].id
     );
-  }, [currentSectionIndex, currentAssignmentIndex]);
+  }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
 
   const [isCurrentCoding, setIsCurrentCoding] = useState(false);
 
   useEffect(() => {
     setIsCurrentCoding(
-      assessment.sections[currentSectionIndex].assignments[
-        currentAssignmentIndex[currentSectionIndex]
-        ].type === AssignmentTypes.CODING
+      assessment.sections[currentSectionIndex].assignments[currentAssignmentIndex[currentSectionIndex]].type === AssignmentTypes.CODING
     );
   }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
 
@@ -37,11 +28,7 @@ function Main({
             if (assignment.type === AssignmentTypes.CODING) {
               if (i === currentAssignmentIndex[currentSectionIndex]) {
                 return (
-                  <div
-                    className="assignment"
-                    key={assignment.id}
-                    id={assignment.id}
-                  >
+                  <div className="assignment" key={assignment.id} id={assignment.id}>
                     <Assignment
                       index={i}
                       assignment={assignment}
@@ -58,11 +45,7 @@ function Main({
                 return null;
               }
               return (
-                <div
-                  className="assignment"
-                  key={assignment.id}
-                  id={assignment.id}
-                >
+                <div className="assignment" key={assignment.id} id={assignment.id}>
                   <Assignment
                     index={i}
                     assignment={assignment}

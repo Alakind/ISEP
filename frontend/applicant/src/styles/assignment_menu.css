@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: row;
     max-width: 180px;
-    gap: 5px;
     padding: 5px;
     margin-bottom: 13px;
     background-color: var(--assignment-menu);

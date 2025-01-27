@@ -12,11 +12,9 @@ function AssignmentMenu({
                           onMouseEnter,
                           onMouseLeave,
                         }: Readonly<Props>) {
-  const handleAssignmentClick = (assignment: AssignmentInterface, assignmentIndex: number): void => {
-    //TODO save the state of the question(s)
-
+  const handleAssignmentClick = (assignmentIndex: number): void => {
     if (currentSectionIndex !== assignmentSectionIndex) {
-      changeSectionIndex(assignmentSectionIndex);
+      changeSectionIndex(assignmentSectionIndex).then();
     }
 
     setCurrentAssignmentIndex((prevIndexes: number[]) =>
@@ -27,27 +25,21 @@ function AssignmentMenu({
   };
 
   return (
-    <div
-      className="assignment-menu"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+    <div role={"tooltip"} className="assignment-menu" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {section.assignments.map((assignment: AssignmentInterface, i: number) => (
-        <a
-          key={assignment.id}
-          onClick={() => handleAssignmentClick(assignment, i)}
-        >
+        <button className={"btn--transparent"} key={assignment.id} onClick={() => handleAssignmentClick(i)}>
           <span
             className={`assignment-menu__tile ${
               currentAssignmentIndex[currentSectionIndex] === i &&
               currentSectionIndex == assignmentSectionIndex
                 ? "assignment-menu__tile--selected"
                 : ""
-            }`}
+            }`
+            }
           >
             {i + 1}
           </span>
-        </a>
+        </button>
       ))}
     </div>
   );
