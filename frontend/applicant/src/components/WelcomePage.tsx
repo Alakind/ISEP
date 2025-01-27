@@ -2,7 +2,7 @@ import InfoSupportLogo from "../components/InfoSupportLogo";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
 import "../styles/general.css";
 import "../styles/welcome.css";
-import {getTime} from "../utils/operations.tsx";
+import {formatTime, getTime} from "../utils/operations.tsx";
 
 function WelcomePage({handleStart, inviteId, name, availableSeconds}: Readonly<Props>) {
   const {hours, minutes, seconds} = getTime(availableSeconds);
@@ -16,7 +16,7 @@ function WelcomePage({handleStart, inviteId, name, availableSeconds}: Readonly<P
         <p>
           to InfoSupport<sup>&reg;</sup> assessment. In this assessment you will
           answer multiple-choice and coding questions. You will have a maximum
-          time of {hours}:{minutes}:{seconds} to complete these. Once you are ready to begin, press
+          time of {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)} to complete these. Once you are ready to begin, press
           the 'Start' button.
         </p>
         <p>
