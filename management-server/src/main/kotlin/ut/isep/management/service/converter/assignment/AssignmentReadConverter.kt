@@ -21,7 +21,7 @@ class AssignmentReadConverter(val restTemplate: RestTemplate) {
     val parser = QuestionParser()
     val frontmatterParser = FrontmatterParser()
     val logger = logger()
-    val gitHubBaseURL = "https://raw.githubusercontent.com/eefscheef/ISEP-questions"
+    val gitHubBaseURL = "https://raw.githubusercontent.com/eefscheef/ISEP-questions-demo"
 
     fun fetchFile(url: String): String {
         logger.info("Sending HTTP request to url: $url")
