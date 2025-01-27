@@ -7,6 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "Solved multiple-choice assignment")
 data class SolvedAssignmentMultipleChoiceReadDTO(
     @field: JsonUnwrapped
-    override val unsolvedAssignment: AssignmentMultipleChoiceReadDTO,
+    override val unsolvedAssignment: ReferenceAssignmentMultipleChoiceReadDTO,
     override val answer: AnswerCreateReadDTO.MultipleChoice
 ) : SolvedAssignmentReadDTO

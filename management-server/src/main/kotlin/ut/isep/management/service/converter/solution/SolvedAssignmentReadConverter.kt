@@ -3,59 +3,50 @@ package ut.isep.management.service.converter.solution
 import dto.assignment.*
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
+import parser.question.CodingQuestion
+import parser.question.MultipleChoiceQuestion
+import parser.question.OpenQuestion
+import parser.question.Question
 import ut.isep.management.model.entity.SolvedAssignment
 import ut.isep.management.model.entity.SolvedAssignmentCoding
 import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
 import ut.isep.management.model.entity.SolvedAssignmentOpen
-import ut.isep.management.service.converter.ReadConverter
-import ut.isep.management.service.converter.assignment.AssignmentReadConverter
+import ut.isep.management.service.converter.assignment.ReferenceAssignmentReadConverter
 
 @Component
-class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentReadConverter) :
-    ReadConverter<SolvedAssignment, SolvedAssignmentReadDTO> {
-
-    override fun toDTO(entity: SolvedAssignment): SolvedAssignmentReadDTO {
+class SolvedAssignmentReadConverter(val assignmentReadConverter: ReferenceAssignmentReadConverter
+) {
+    fun toDTO(entity: SolvedAssignment, question: Question): SolvedAssignmentReadDTO {
         return when (entity) {
-            is SolvedAssignmentCoding -> toDTO(entity)
-            is SolvedAssignmentMultipleChoice -> toDTO(entity)
-            is SolvedAssignmentOpen -> toDTO(entity)
+            is SolvedAssignmentCoding -> toCodingDTO(entity, question as CodingQuestion)
+            is SolvedAssignmentMultipleChoice -> toMultipleChoiceDTO(entity, question as MultipleChoiceQuestion)
+            is SolvedAssignmentOpen -> toOpenDTO(entity, question as OpenQuestion)
             else -> throw UnsupportedOperationException("Unsupported assignment type")
         }
     }
 
-    fun toDTO(entity: SolvedAssignmentCoding): SolvedAssignmentCodingReadDTO {
-        val codingAssignment = entity.assignment!!
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(
-            codingAssignment,
-            entity.invite!!.assessment!!.gitCommitHash!!
-        ) as AssignmentCodingReadDTO
+    fun toCodingDTO(entity: SolvedAssignmentCoding, question: CodingQuestion): SolvedAssignmentCodingReadDTO {
         return SolvedAssignmentCodingReadDTO(
-            unsolvedAssignment = unsolvedAssignment,
+            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentCodingReadDTO,
             answer = AnswerCreateReadDTO.Coding(entity.userCode, entity.testCode)
         )
     }
 
-    fun toDTO(entity: SolvedAssignmentMultipleChoice): SolvedAssignmentMultipleChoiceReadDTO {
-        val multipleChoiceAssignment = entity.assignment!!
-        val unsolvedAssignment =
-            unsolvedAssignmentConverter.toDTO(
-                multipleChoiceAssignment,
-                entity.invite!!.assessment!!.gitCommitHash!!
-            ) as AssignmentMultipleChoiceReadDTO
+    fun toMultipleChoiceDTO(
+        entity: SolvedAssignmentMultipleChoice,
+        question: MultipleChoiceQuestion
+    ): SolvedAssignmentMultipleChoiceReadDTO {
         return SolvedAssignmentMultipleChoiceReadDTO(
-            unsolvedAssignment = unsolvedAssignment,
+            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentMultipleChoiceReadDTO,
             answer = AnswerCreateReadDTO.MultipleChoice(entity.userOptionsMarkedCorrect)
         )
     }
 
-    fun toDTO(entity: SolvedAssignmentOpen): SolvedAssignmentOpenReadDTO {
-        val openAssignment = entity.assignment!!
-        val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(
-            openAssignment,
-            entity.invite!!.assessment!!.gitCommitHash!!
-        ) as AssignmentOpenReadDTO
+    fun toOpenDTO(entity: SolvedAssignmentOpen,
+                  question: OpenQuestion
+    ): SolvedAssignmentOpenReadDTO {
         return SolvedAssignmentOpenReadDTO(
-            unsolvedAssignment = unsolvedAssignment,
+            unsolvedAssignment = assignmentReadConverter.toDTO(question) as ReferenceAssignmentOpenReadDTO,
             answer = AnswerCreateReadDTO.Open(entity.userSolution)
         )
     }
