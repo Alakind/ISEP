@@ -15,6 +15,8 @@ import {LanguageToMode, Themes} from "../utils/constants.tsx";
 import {runTests, sendCodingSolution} from "../utils/apiFunctions.tsx";
 import {useTheme} from "../utils/providers/UseTheme.tsx";
 import Button from "./Button.tsx";
+import {toast} from "react-toastify";
+import CustomWarnToast from "./CustomWarnToast.tsx";
 
 function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnswer,}: Readonly<Props>) {
   const [isCodingOpen, setIsCodingOpen] = useState(true);
@@ -108,6 +110,24 @@ function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnsw
     }
   }
 
+
+  function handleReset(): void {
+    const typeReset = isCodingOpen ? "code" : "tests";
+    toast.warn(<CustomWarnToast proceedAction={handleResetProceed} cancelAction={handleResetCancel} message={`Are you sure you want to reset the code in the ${typeReset} tab`}/>)
+  }
+
+  function handleResetProceed(): void {
+    if (isCodingOpen) {
+      setCodeValue(assignment.startCode ?? "");
+    } else {
+      setTestValue(assignment.startTest ?? "");
+    }
+  }
+
+  function handleResetCancel(): void {
+    toast.info("Code not restored")
+  }
+
   return (
     <div id={assignment.id}>
       <div className={"coding__language"}>{LanguageToMode[assignment.language.toLowerCase()]}</div>
@@ -127,6 +147,13 @@ function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnsw
           spanTextClass={""}
           text={"Tests"}
           iconClass={"bi-clipboard2-check"}
+        />
+        <Button
+          btnClasses={`btn--reset`}
+          handleClick={handleReset}
+          spanTextClass={""}
+          text={"Reset"}
+          iconClass={"bi-arrow-counterclockwise"}
         />
       </div>
       <AceEditor

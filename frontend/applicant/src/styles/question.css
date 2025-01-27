@@ -83,11 +83,11 @@
 }
 
 .btn--coding__code {
-    margin: 0 10px 0 0;
+    margin: 0 5px 0 0;
 }
 
 .btn--coding__tests {
-    margin: 5px 10px;
+    margin: 0 0 0 5px;
 }
 
 .btn--coding__run-test {
@@ -96,7 +96,11 @@
     margin-bottom: 10px;
 }
 
-.bi-play, .bi-file-earmark-code, .bi-clipboard2-check {
+.btn--reset {
+    margin-left: 60px;
+}
+
+.bi-play, .bi-file-earmark-code, .bi-clipboard2-check, .bi-arrow-counterclockwise {
     margin-right: 10px;
 }
 
