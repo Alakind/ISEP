@@ -48,9 +48,9 @@ class SolutionUpdateService(
     }
 
     private fun updateCodingSolution(solution: SolvedAssignmentCoding, answerDto: AnswerCreateReadDTO.Coding) {
-        solution.userCode = answerDto.answer
+        solution.userCode = answerDto.code
+        solution.testCode = answerDto.test
         repository.save(solution)
-
     }
 
     private fun updateOpenSolution(solution: SolvedAssignmentOpen, answerDto: AnswerCreateReadDTO.Open) {

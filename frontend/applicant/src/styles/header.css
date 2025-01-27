@@ -5,7 +5,7 @@
     justify-content: space-between;
     color: var(--text-secondary);
     align-items: center;
-  }
+}
 
 .bi-clock, .bi-arrow-right-circle, .bi-moon, .bi-sun, .bi-question-circle, .bi-flag {
     font-size: 35px;
@@ -22,7 +22,7 @@
     padding-right: 10px;
 }
 
-.header__right, .footer__right>span>a {
+.header__right, .footer__right > span > button {
     display: flex;
     align-items: center;
 }

@@ -29,7 +29,7 @@ class SolvedAssignmentReadConverter(val unsolvedAssignmentConverter: AssignmentR
         val unsolvedAssignment = unsolvedAssignmentConverter.toDTO(codingAssignment)
         return SolvedAssignmentCodingReadDTO(
             unsolvedAssignment = unsolvedAssignment,
-            answer = AnswerCreateReadDTO.Coding(entity.userCode)
+            answer = AnswerCreateReadDTO.Coding(entity.userCode, entity.testCode)
         )
     }
 

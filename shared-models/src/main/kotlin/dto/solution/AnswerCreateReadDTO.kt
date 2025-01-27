@@ -28,6 +28,7 @@ sealed class AnswerCreateReadDTO : CreateDTO, ReadDTO {
     ) : AnswerCreateReadDTO()
 
     data class Coding @JsonCreator constructor(
-        @JsonProperty("answer") val answer: String
+        @JsonProperty("code") val code: String,
+        @JsonProperty("test") val test: String
     ) : AnswerCreateReadDTO()
 }

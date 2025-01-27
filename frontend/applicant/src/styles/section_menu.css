@@ -9,6 +9,7 @@
     justify-content: center;
     padding: 26px 0 0 0;
     transform: translateY(-13px);
+    z-index: 10;
 }
 
 .section-menu__tile {

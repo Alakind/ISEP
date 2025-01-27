@@ -13,10 +13,6 @@
     margin: 0 15px;
 }
 
-.assignment__input {
-    margin: 0 15px 10px 5px;
-}
-
 .assignment__label {
     display: inline;
     white-space: pre-line;
@@ -74,4 +70,40 @@
 
 .assignment__option-wrapper:last-child {
     padding-bottom: 10px;
+}
+
+.coding__language {
+    text-align: end;
+    text-transform: uppercase;
+}
+
+.coding__tabs {
+    margin-top: -25px;
+    margin-bottom: 20px;
+}
+
+.btn--coding__code {
+    margin: 0 5px 0 0;
+}
+
+.btn--coding__tests {
+    margin: 0 0 0 5px;
+}
+
+.btn--coding__run-test {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.btn--reset {
+    margin-left: 60px;
+}
+
+.bi-play, .bi-file-earmark-code, .bi-clipboard2-check, .bi-arrow-counterclockwise {
+    margin-right: 10px;
+}
+
+.coding__header-test-results {
+    margin-top: 55px;
 }
