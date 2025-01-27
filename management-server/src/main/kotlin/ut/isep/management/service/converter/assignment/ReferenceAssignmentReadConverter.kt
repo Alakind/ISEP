@@ -7,7 +7,10 @@ import dto.assignment.ReferenceAssignmentOpenReadDTO
 import dto.assignment.ReferenceAssignmentReadDTO
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
-import parser.question.*
+import parser.question.CodingQuestion
+import parser.question.MultipleChoiceQuestion
+import parser.question.OpenQuestion
+import parser.question.Question
 
 @Component
 class ReferenceAssignmentReadConverter() {
@@ -27,8 +30,9 @@ class ReferenceAssignmentReadConverter() {
             description = question.description,
             availablePoints = question.availablePoints,
             availableSeconds = question.availableSeconds,
-            options = question.options.map {it.text},
-            referenceAnswer = AnswerCreateReadDTO.MultipleChoice(question.options.filter {it.isCorrect}.map {it.text})
+            options = question.options.map { it.text },
+            referenceAnswer = AnswerCreateReadDTO.MultipleChoice(question.options.filter { it.isCorrect }
+                .map { it.text })
         )
     }
 
@@ -38,16 +42,11 @@ class ReferenceAssignmentReadConverter() {
             description = question.description,
             availablePoints = question.availablePoints,
             availableSeconds = question.availableSeconds,
-            referenceAnswer = question.referenceAnswer?.let { AnswerCreateReadDTO.Open(it) }
+            referenceAnswer = AnswerCreateReadDTO.Open(question.referenceAnswer ?: "")
         )
     }
 
     fun toCodingDTO(question: CodingQuestion): ReferenceAssignmentCodingReadDTO {
-        val referenceAnswer = if (question.files.referenceCode != null && question.files.referenceTest != null) {
-            AnswerCreateReadDTO.Coding(code = question.files.referenceCode!!.content, test = question.files.referenceTest!!.content)
-        } else {
-            null
-        }
         return ReferenceAssignmentCodingReadDTO(
             id = question.id!!,
             description = question.description,
@@ -57,7 +56,10 @@ class ReferenceAssignmentReadConverter() {
             code = question.files.code.content,
             test = question.files.test.content,
             secretTest = question.files.secretTest.content,
-            referenceAnswer = referenceAnswer
+            referenceAnswer = AnswerCreateReadDTO.Coding(
+                code = question.files.referenceCode?.content ?: "",
+                test = question.files.referenceTest?.content ?: ""
+            )
         )
     }
 }
