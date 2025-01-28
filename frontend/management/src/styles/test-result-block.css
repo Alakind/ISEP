@@ -18,6 +18,7 @@
     background: var(--transparent);
     display: flex;
     justify-content: space-between;
+    padding-top: 20px;
 }
 
 .test-result-block {

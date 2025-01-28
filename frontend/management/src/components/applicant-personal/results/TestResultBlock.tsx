@@ -13,21 +13,40 @@ function TestResultBlock({testResults, showTestResults, handleShowTestResults, t
         </span>
       </button>
       {
-        showTestResults
-          ? (
-            <>
-              {
-                testResults.map((testResult, index) => {
-                  return (
-                    <TestResultRow key={testResult.name + index} testResult={testResult} theme={theme}/>
-                  )
-                })
-              }
-            </>
-          ) : (
-            <></>
-          )
+        testResults && testResults.length > 0
+        ? (
+          <>
+            {
+              showTestResults
+                ? (
+                  <>
+                    {
+                      testResults.map((testResult, index) => {
+                        return (
+                            <TestResultRow key={testResult.name + index} testResult={testResult} theme={theme}/>
+                        )
+                      })
+                    }
+                  </>
+                ) : (
+                  <></>
+                )
+            }
+          </>
+        ) : (
+          <>
+            {
+              showTestResults
+                ? (
+                  <p className="test-result-block">No test results available</p>
+                ) : (
+                  <></>
+                )
+            }
+          </>
+        )
       }
+
 
     </div>
   )

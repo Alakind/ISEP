@@ -4,12 +4,11 @@ import {AssignmentCodingSolvedInterface} from "../../../utils/types.tsx";
 import "../../../styles/coding-diff.css"
 import TestResultBlock from "./TestResultBlock.tsx";
 
-function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCodeChanges, showCodeChanges, showTestResults, handleShowTestResults}: Readonly<Props>) {
-  console.log(assignment)
+function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCodeChanges, showCodeChanges, showTestResults, handleShowTestResults, showTestCode, handleShowTestCode}: Readonly<Props>) {
   return (
     <div className="solved-assignment-coding">
       {
-        (!assignment.startCode && !assignment.answer?.answer) || assignment.answer?.answer == assignment.startCode || !assignment.answer?.answer
+        (!assignment.startCode && !assignment.answer?.code) || assignment.answer?.code == assignment.startCode || !assignment.answer?.code
           ? (
             <p>No changes are made to the original code</p>
           ) : (
@@ -28,25 +27,38 @@ function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCod
                       oldValue={(assignment.startCode) ?? ""}
                       compareMethod={DiffMethod.CHARS}
                       splitView={false}
-                      newValue={(assignment.answer?.answer) ?? ""}
+                      newValue={(assignment.answer?.code) ?? ""}
                       useDarkTheme={theme === Themes.DARK}
                     />
-
                   </div>
                 )
               }
+              <TestResultBlock
+                testResults={assignment.testResults}
+                showTestResults={showTestResults}
+                handleShowTestResults={handleShowTestResults}
+                theme={theme}
+              />
+              <button className="test-result-block__header" onClick={handleShowTestCode}>
+                Test code diff{" "}
+                <span>
+                  <i className={`bi ${showTestCode ? "bi-arrows-collapse" : "bi-arrows-expand"}`}></i>
+                </span>
+              </button>
               {
-                assignment.testResults && assignment.testResults.length > 0
-                  ? (
-                    <TestResultBlock
-                      testResults={assignment.testResults}
-                      showTestResults={showTestResults}
-                      handleShowTestResults={handleShowTestResults}
-                      theme={theme}
-                    />
-                  ) : (
-                    <p>No test results available</p>
-                  )
+                showTestCode
+                    ? (
+                        <ReactDiffViewer
+                            extraLinesSurroundingDiff={2}
+                            oldValue={assignment.startTest ?? ""}
+                            compareMethod={DiffMethod.CHARS}
+                            splitView={false}
+                            newValue={assignment.answer.test ?? ""}
+                            useDarkTheme={theme === Themes.DARK}
+                        />
+                    ) : (
+                        <></>
+                    )
               }
             </>
           )
@@ -62,6 +74,8 @@ interface Props {
   showCodeChanges: boolean;
   showTestResults: boolean;
   handleShowTestResults: () => void;
+  showTestCode: boolean;
+  handleShowTestCode: () => void;
 }
 
 export default SolvedAssignmentCoding

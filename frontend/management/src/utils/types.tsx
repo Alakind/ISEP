@@ -88,10 +88,11 @@ export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterfa
   image?: string;
   codeUri: string;
   language: string;
-  answer: { type: string; answer: string };
-  referenceAnswer: { type: string; answer: string };
+  answer: { type: string; code: string; test: string };
+  referenceAnswer: { type: string; code: string; test: string };
   testResults: TestResultsInterface[];
   startCode?: string;
+  startTest?: string;
 }
 
 export interface TestResultsInterface {
