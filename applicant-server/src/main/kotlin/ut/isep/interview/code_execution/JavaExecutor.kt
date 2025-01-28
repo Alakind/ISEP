@@ -58,7 +58,7 @@ object JavaExecutor : CodeExecutor {
                     "[INFO] -------------------------------------------------------\n"
         )
         if (tests.size == 1) {
-            throw RuntimeException("Something failed before the tests could be executed!")
+            throw RuntimeException("Something failed before the tests could be executed!\n\n$output")
         }
         val result = tests[1].split("[ERROR] Failures:")
         if (result.size == 1) {
