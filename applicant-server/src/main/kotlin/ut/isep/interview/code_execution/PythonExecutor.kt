@@ -5,6 +5,7 @@ import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
+import java.util.concurrent.ExecutionException
 
 object PythonExecutor : CodeExecutor {
 
