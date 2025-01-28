@@ -5,6 +5,7 @@ import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
+import java.util.concurrent.ExecutionException
 
 object PythonExecutor : CodeExecutor {
 
@@ -54,7 +55,11 @@ object PythonExecutor : CodeExecutor {
 
     private fun parseTestOutput(output: String): List<TestResult> {
         val result: MutableList<TestResult> = mutableListOf()
-        val tests = output.split("={10,}".toRegex()).drop(1)
+        var tests = output.split("={10,}".toRegex())
+        if (output.equals("") || (tests.size == 1 && !tests[0].contains("OK"))) {
+            throw RuntimeException("Something failed before the tests could be executed:\n\n$output")
+        }
+        tests = tests.drop(1)
         if (tests.isNotEmpty() && tests.first().startsWith("\nERROR:")) {
             throw RuntimeException("Build failed:\n\n$output")
         }
