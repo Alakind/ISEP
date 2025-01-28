@@ -28,7 +28,8 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     }
 
     open fun delete(id: ID) {
-        repository.deleteById(id)
+        val entity = repository.findById(id).orElseThrow { NoSuchElementException("Entity not found") }
+        repository.deleteById(entity.id)
     }
 
     open fun getAll(): List<R> {
