@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils
 import java.io.File
 import java.lang.Thread.sleep
+import java.time.Duration
+import java.time.Instant
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class TestSQLExecutor {
 
@@ -48,5 +51,18 @@ class TestSQLExecutor {
 
         assertEquals(1, result.count { !it.passed })
         assertEquals(3, result.count { it.passed })
+    }
+
+    @Test
+    fun testSQLTestWithin2seconds() {
+        val code = File("src/test/resources/codeExecutor/sqlBad/Code.sql")
+        val test = File("src/test/resources/codeExecutor/sqlBad/TestCode.py")
+
+        val start = Instant.now()
+        SQLExecutor.runTest(ID,
+            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+        )
+        val end = Instant.now()
+        assertTrue(Duration.between(start, end) < Duration.ofSeconds(2))
     }
 }
