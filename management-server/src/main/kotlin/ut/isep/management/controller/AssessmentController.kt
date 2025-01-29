@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -27,14 +27,30 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
 
 
     @GetMapping
-    @Operation(summary = "Get all latest assessments", description = "Returns a list of all active assessments")
-    @ApiResponse(
-        responseCode = "200",
-        description = "Returns a list of all assessments",
+    @Operation(
+        summary = "Get all latest assessments",
+        description = "Returns a list of all active assessments for the given pagination variables"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Returns a list of all assessments",
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Returns when sorting attribute name or ASC/DESC are incorrectly spelled",
+                content = [Content(
+                    schema = Schema(implementation = String::class)
+                )]
+            )
+        ]
     )
     fun getAssessments(
+        @ParameterObject
         @PageableDefault(
-            size = Int.MAX_VALUE, sort = ["tag"],
+            size = Int.MAX_VALUE,
+            sort = ["tag"],
             direction = Sort.Direction.ASC
         ) pageable: Pageable,
     ): PaginatedDTO<AssessmentReadDTO> {
@@ -43,7 +59,10 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
 
 
     @GetMapping("{id}")
-    @Operation(summary = "Get assessment", description = "Returns an assessment or 404 if not found")
+    @Operation(
+        summary = "Get assessment",
+        description = "Returns an assessment or 404 if not found"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -54,7 +73,7 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
                 responseCode = "404",
                 description = "Assessment not found",
                 content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                    schema = Schema(implementation = String::class)
                 )]
             )
         ]

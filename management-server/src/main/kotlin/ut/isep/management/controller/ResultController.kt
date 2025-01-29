@@ -21,15 +21,24 @@ class ResultController(
     val resultUpdateService: ResultUpdateService,
 ) {
     @GetMapping("section/{sectionId}/result/{inviteId}")
-    fun getResultsBySection(
-        @PathVariable sectionId: Long,
-        @PathVariable inviteId: UUID
-    ): ResponseEntity<ResultSectionReadDTO> {
-        return try {
-            ResponseEntity.ok(resultReadService.getResultSection(inviteId, sectionId))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+    @Operation(
+        summary = "Get results for the given section",
+        description = "Get results for the given section from the PostGreSQL Management database",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found results for the given section",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Not found results for the given section or not found the invite for the given invite id",
+            )
+        ]
+    )
+    fun getResultsBySection(@PathVariable sectionId: Long, @PathVariable inviteId: UUID): ResponseEntity<ResultSectionReadDTO> {
+        return ResponseEntity.ok(resultReadService.getResultSection(inviteId, sectionId))
     }
 
     @PutMapping("assignment/{assignmentId}/result/{inviteId}")
@@ -44,35 +53,45 @@ class ResultController(
                 description = "Updated the assignment of the result",
             ),
             ApiResponse(
+                responseCode = "403",
+                description = "System tried to update assignments not belonging to the found invite",
+            ),
+            ApiResponse(
                 responseCode = "404",
                 description = "Assignment of the result couldn't be found",
             )
         ]
     )
     fun putResultsPerAssignment(@RequestBody resultAssignmentDTO: ResultAssignmentUpdateDTO, @PathVariable assignmentId: String, @PathVariable inviteId: UUID): ResponseEntity<String> {
-        return try {
-            resultUpdateService.updateAssignment(inviteId, resultAssignmentDTO)
-            ResponseEntity.ok("Updated an assignment")
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        resultUpdateService.updateAssignment(inviteId, resultAssignmentDTO)
+        return ResponseEntity.ok("Updated an assignment")
     }
 
     @GetMapping("assessment/{assessmentId}/result/{inviteId}")
-    fun getResultByAssessment(
-        @PathVariable assessmentId: Long,
-        @PathVariable inviteId: UUID
-    ): ResponseEntity<List<ResultSectionSimpleReadDTO>> {
-        return try {
-            ResponseEntity.ok(resultReadService.getResultByAssessment(inviteId, assessmentId))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+    @Operation(
+        summary = "Get results for the given assessment",
+        description = "Get results for the given assessment from the PostGreSQL Management database",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found results for the given assessment",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Assessment for the given assessment id not found or invite not found for the given invite id",
+            )
+        ]
+    )
+    fun getResultByAssessment(@PathVariable assessmentId: Long, @PathVariable inviteId: UUID): ResponseEntity<List<ResultSectionSimpleReadDTO>> {
+        return ResponseEntity.ok(resultReadService.getResultByAssessment(inviteId, assessmentId))
     }
 
     @GetMapping("result/{inviteId}/comparison")
     @Operation(
-        summary = "Get the test score comparison regarding each other scored invite"
+        summary = "Get the test score comparison regarding each other scored invite",
+        description = "Get the test score comparison regarding each other scored invite from the PostGreSQL Management database",
     )
     @ApiResponses(
         value = [
@@ -82,15 +101,11 @@ class ResultController(
             ),
             ApiResponse(
                 responseCode = "404",
-                description = "Couldn't compute score comparison",
+                description = "Invite not found for given invite id",
             )
         ]
     )
     fun getScoreComparison(@PathVariable inviteId: UUID): ResponseEntity<ScoreComparisonReadDTO> {
-        return try {
-            ResponseEntity.ok(resultReadService.computeScoreComparison(inviteId))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        return ResponseEntity.ok(resultReadService.computeScoreComparison(inviteId))
     }
 }

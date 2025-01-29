@@ -47,7 +47,6 @@ class TimingPerSectionUpdateService(
 
         val measuredTimeSectionPrevious = measuredTimeSectionsPrevious[0]
 
-
         val duration = Duration.between(measuredTimeSectionPrevious.visitedAt, currentTime)
         measuredTimeSectionPrevious.seconds += duration.seconds
         measuredTimeSectionPrevious.visitedAt = null

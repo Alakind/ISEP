@@ -13,8 +13,7 @@ class ReferenceAssignmentReadService(
     val converter: ReferenceAssignmentReadConverter,
 ) {
     fun getById(id: Long, commitHash: String): ReferenceAssignmentReadDTO {
-        val assignmentEntity = repository.findById(id).orElseThrow { NoSuchElementException("No assignment with ID $id")
-        }
+        val assignmentEntity = repository.findById(id).orElseThrow { NoSuchElementException("No assignment with ID $id") }
         val fetchedQuestion = fetchService.fetchAssignment(assignmentEntity, commitHash)
         return converter.toDTO(fetchedQuestion)
     }

@@ -7,7 +7,6 @@ import parser.question.MultipleChoiceQuestion
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
 import ut.isep.management.service.assignment.AssignmentFetchService
-import ut.isep.management.service.converter.assignment.ReferenceAssignmentReadConverter
 import java.util.*
 
 @Service
@@ -44,7 +43,7 @@ class SolutionUpdateService(
         require(!(fetchedQuestion.options.count { it.isCorrect } == 1 && answerDto.answer.size > 1)) {
             throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${solution.assignment!!.id}")
         }
-        require(answerDto.answer.all { it in fetchedQuestion.options.map {it.text} }) {
+        require(answerDto.answer.all { it in fetchedQuestion.options.map { it.text } }) {
             throw IllegalArgumentException("Provided an answer which is not possible")
         }
         solution.userOptionsMarkedCorrect = answerDto.answer

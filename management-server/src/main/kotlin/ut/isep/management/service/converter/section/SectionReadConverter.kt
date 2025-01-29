@@ -23,8 +23,7 @@ class SectionReadConverter(
                 availableSeconds = entity.availableSeconds,
             ),
             assignments = entity.assignments.map { assignment ->
-                val fetchedAssignment =
-                    assignmentFetchService.fetchAssignment(assignment, entity.assessment!!.gitCommitHash!!)
+                val fetchedAssignment = assignmentFetchService.fetchAssignment(assignment, entity.assessment!!.gitCommitHash!!)
                 assignmentReadConverter.toDTO(fetchedAssignment)
             }
         )
