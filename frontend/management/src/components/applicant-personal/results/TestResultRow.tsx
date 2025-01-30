@@ -39,7 +39,7 @@ function TestResultRow({testResult, theme}: Readonly<Props>) {
             ? (
               <ReactDiffViewer
                 extraLinesSurroundingDiff={2}
-                newValue={(testResult.code) ?? "sdfsdf"}
+                newValue={(testResult.code) ?? ""}
                 compareMethod={DiffMethod.CHARS}
                 splitView={false}
                 useDarkTheme={theme === Themes.DARK}

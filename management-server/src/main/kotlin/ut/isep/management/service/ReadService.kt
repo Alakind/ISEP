@@ -15,7 +15,7 @@ import java.time.LocalDate
 
 @Transactional
 abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
-    protected val repository: BaseRepository<E, ID>,
+    protected open val repository: BaseRepository<E, ID>,
     protected val converter: ReadConverter<E, R>
 ) {
     // override this for custom matcher, this should perhaps be split into searchable and non-searchable ReadService
@@ -28,7 +28,8 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     }
 
     open fun delete(id: ID) {
-        repository.deleteById(id)
+        val entity = repository.findById(id).orElseThrow { NoSuchElementException("Entity not found") }
+        repository.deleteById(entity.id)
     }
 
     open fun getAll(): List<R> {
@@ -39,6 +40,10 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
         val example = exampleEntity?.let { entity ->
             Example.of(entity, matcher)
         }
+        return getPaginated(example, pageable)
+    }
+
+    open fun getPaginated(example: Example<E>? = null, pageable: Pageable): PaginatedDTO<R> {
         val entities = if (example != null) {
             repository.findAll(example, pageable).map { converter.toDTO(it) }.content
         } else {

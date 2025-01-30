@@ -5,6 +5,7 @@ import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
+import java.util.concurrent.ExecutionException
 
 object PythonExecutor : CodeExecutor {
 
@@ -14,6 +15,11 @@ object PythonExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: NO, PLEASE GOD NOOOOO
+        try {
+            startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-python"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.py", test.testFileName ?: "Test.py")
         ContainerAPI.copyToContainerByName(name, files.first, "/project")
@@ -49,7 +55,11 @@ object PythonExecutor : CodeExecutor {
 
     private fun parseTestOutput(output: String): List<TestResult> {
         val result: MutableList<TestResult> = mutableListOf()
-        val tests = output.split("={10,}".toRegex()).drop(1)
+        var tests = output.split("={10,}".toRegex())
+        if (output.equals("") || (tests.size == 1 && !tests[0].contains("OK"))) {
+            throw RuntimeException("Something failed before the tests could be executed:\n\n$output")
+        }
+        tests = tests.drop(1)
         if (tests.isNotEmpty() && tests.first().startsWith("\nERROR:")) {
             throw RuntimeException("Build failed:\n\n$output")
         }

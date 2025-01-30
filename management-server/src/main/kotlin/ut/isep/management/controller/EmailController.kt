@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,7 +24,9 @@ class EmailController(
     @PostMapping
     @Operation(
         summary = "Send an email message",
-        description = "Send an email message via Gmail account"
+        description = "Send an email message via Gmail account" +
+                "\nExtra info:" +
+                "\n- Handles sending the email asynchronously"
     )
     @ApiResponses(
         value = [
@@ -34,21 +35,24 @@ class EmailController(
                 description = "Email has been submitted for queueing",
             ),
             ApiResponse(
-                responseCode = "404",
-                description = "Email hasn't been submitted for queueing",
+                responseCode = "400",
+                description = "Email type is invalid",
                 content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                    schema = Schema(implementation = String::class)
+                )]
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Email hasn't been submitted for queueing, because applicant or invite not found or Provided invite does not belong to applicant",
+                content = [Content(
+                    schema = Schema(implementation = String::class)
                 )]
             )
         ]
     )
     fun sendMail(@RequestBody emailCreateDTO: EmailCreateDTO): ResponseEntity<String> {
-        return try {
-            val (applicant, invite) = emailService.checkData(emailCreateDTO)
-            emailService.sendMail(emailCreateDTO, applicant, invite)
-            return ResponseEntity.ok("Email request has been received")
-        } catch (e: Exception) {
-            ResponseEntity.status(404).body(e.message)
-        }
+        val (applicant, invite) = emailService.checkData(emailCreateDTO)
+        emailService.sendMail(emailCreateDTO, applicant, invite)
+        return ResponseEntity.ok("Email request has been received")
     }
 }

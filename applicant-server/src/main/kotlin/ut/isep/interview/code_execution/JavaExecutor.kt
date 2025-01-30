@@ -15,6 +15,11 @@ object JavaExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: NO, PLEASE GOD NOOOOO
+        try {
+            startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-java"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.java", test.testFileName ?: "TestCode.java")
         ContainerAPI.copyToContainerByName(name, files.first, "/project/java/src/main/java/infoSupport")
@@ -53,7 +58,7 @@ object JavaExecutor : CodeExecutor {
                     "[INFO] -------------------------------------------------------\n"
         )
         if (tests.size == 1) {
-            throw RuntimeException("Something failed before the tests could be executed!")
+            throw RuntimeException("Something failed before the tests could be executed!\n\n$output")
         }
         val result = tests[1].split("[ERROR] Failures:")
         if (result.size == 1) {

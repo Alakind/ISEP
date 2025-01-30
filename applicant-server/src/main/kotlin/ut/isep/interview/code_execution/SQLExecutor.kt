@@ -16,6 +16,11 @@ object SQLExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: NO, PLEASE GOD NOOOOO
+        try {
+            startContainer(inviteId, File("src/main/resources/defaultContainers/SQLDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-sql"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.sql", test.testFileName ?: "TestCode.py")
         ContainerAPI.runCommandInContainerByName(name, "mysql < /project/cleanDatabase.sql")

@@ -4,8 +4,8 @@ function SolvedAssignmentMultipleChoice({assignment}: Readonly<Props>) {
   return (
     <>
       {assignment.options.map((option: string, index: number) => {
-        const inAnswer: boolean = assignment.answer.answer.includes(index);
-        const inSolution: boolean = assignment.referenceAnswer?.answer?.includes(index)
+        const inAnswer: boolean = assignment.answer.answer.includes(option);
+        const inSolution: boolean = assignment.referenceAnswer.answer.includes(option)
         return (
           <span key={"mc-" + assignment.id + "-" + index} className={`assignment__option-wrapper ${inSolution ? "assignment__option-wrapper--correct" : ""}`}>
             <input

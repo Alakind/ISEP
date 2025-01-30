@@ -11,7 +11,7 @@ import {AssignmentTypes} from "../utils/constants.tsx";
 
 function AssessmentPageContainer() {
   const navigate = useNavigate();
-  const [assessment, setAssessment] = useState<{ sections: SectionInterface[]; availableSeconds: number; }>({sections: [], availableSeconds: 0});
+  const [assessment, setAssessment] = useState<{ sections: SectionInterface[]; availableSeconds: number; }>({sections: [], availableSeconds: 7200});
   const [isLoading, setIsLoading] = useState(true);
   const [currentSectionIndex, setCurrentSectionIndex] = useState<number>(0);
   const [endOfAssessment, setEndOfAssessment] = useState<boolean>(false);

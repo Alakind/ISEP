@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -34,12 +34,27 @@ class ApplicantController(
 ) {
 
     @GetMapping
-    @Operation(summary = "Get all applicants", description = "Returns a list of all applicants")
-    @ApiResponse(
-        responseCode = "200",
-        description = "Returns a list of all applicants",
+    @Operation(
+        summary = "Get all applicants",
+        description = "Returns a list of all applicants for the given search term(s) and pagination variables",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Returns a list of all applicants",
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Returns when sorting attribute name or ASC/DESC are incorrectly spelled",
+                content = [Content(
+                    schema = Schema(implementation = String::class)
+                )]
+            )
+        ]
     )
     fun getApplicants(
+        @ParameterObject
         @PageableDefault(
             size = Int.MAX_VALUE, sort = ["name"],
             direction = Sort.Direction.ASC
@@ -57,7 +72,10 @@ class ApplicantController(
 
 
     @GetMapping("{id}")
-    @Operation(summary = "Get applicant", description = "Returns an applicant or 404 if not found")
+    @Operation(
+        summary = "Get applicant",
+        description = "Returns an applicant or 404 if not found"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -68,17 +86,13 @@ class ApplicantController(
                 responseCode = "404",
                 description = "Applicant not found",
                 content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                    schema = Schema(implementation = String::class)
                 )]
             )
         ]
     )
     fun getApplicant(@PathVariable id: Long): ResponseEntity<ApplicantReadDTO> {
-        return try {
-            ResponseEntity.ok(applicantReadService.getById(id))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        return ResponseEntity.ok(applicantReadService.getById(id))
     }
 
     @PostMapping
@@ -89,8 +103,12 @@ class ApplicantController(
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Added the applicant",
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Failed to add applicant",
             )
         ]
     )
@@ -119,16 +137,16 @@ class ApplicantController(
             ApiResponse(
                 responseCode = "404",
                 description = "Applicant not found",
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Failed to update an applicant",
             )
         ]
     )
     fun putApplicant(@RequestBody applicantDTO: ApplicantUpdateDTO): ResponseEntity<String> {
-        return try {
-            applicantUpdateService.update(applicantDTO)
-            ResponseEntity.ok("Updated an applicant")
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        applicantUpdateService.update(applicantDTO)
+        return ResponseEntity.ok("Updated an applicant")
     }
 
     @DeleteMapping("{id}")
@@ -149,26 +167,22 @@ class ApplicantController(
         ]
     )
     fun deleteApplicant(@PathVariable id: Long): ResponseEntity<String> {
-        return try {
-            applicantReadService.delete(id)
-            ResponseEntity.noContent().build()
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        applicantReadService.delete(id)
+        return ResponseEntity.noContent().build()
     }
 
 
     @GetMapping("/{id}/invite")
     @Tag(name = "Invite")
     @Operation(
-        summary = "Get the invite of an applicant",
-        description = "Return the assessment ID if applicant has been invited"
+        summary = "Get the invites of an applicant",
+        description = "Returns invites belonging to applicant if applicant has been invited"
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Returns assessment ID if applicant has been invited",
+                description = "Returns invites belonging to applicant if applicant has been invited",
             ),
             ApiResponse(
                 responseCode = "404",
@@ -177,11 +191,7 @@ class ApplicantController(
         ]
     )
     fun getApplicantInvites(@PathVariable id: Long): ResponseEntity<List<InviteReadDTO>> {
-        return try {
-            val invites: List<InviteReadDTO> = applicantReadService.getInvitesByApplicantId(id)
-            ResponseEntity.ok(invites)
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        val invites: List<InviteReadDTO> = applicantReadService.getInvitesByApplicantId(id)
+        return ResponseEntity.ok(invites)
     }
 }

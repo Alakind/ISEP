@@ -12,7 +12,7 @@ function AssignmentOpen({assignment, setAssignmentAnswer}: Readonly<Props>) {
   }, [value]);
 
   useEffect(() => {
-    setValue(assignment.answer.answer);
+    setValue(assignment.answer.answer ?? "");
   }, []);
 
   const handleOnFocus = () => {

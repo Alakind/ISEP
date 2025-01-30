@@ -80,18 +80,19 @@ export interface AssignmentOpenSolvedInterface extends AssignmentSolvedInterface
 export interface AssignmentMultipleChoiceSolvedInterface extends AssignmentSolvedInterface {
   options: string[];
   isMultipleAnswers: boolean;
-  answer: { type: string; answer: number[] };
-  referenceAnswer: { type: string; answer: number[] };
+  answer: { type: string; answer: string[] };
+  referenceAnswer: { type: string; answer: string[] };
 }
 
 export interface AssignmentCodingSolvedInterface extends AssignmentSolvedInterface {
   image?: string;
   codeUri: string;
   language: string;
-  answer: { type: string; answer: string };
-  referenceAnswer: { type: string; answer: string };
+  answer: { type: string; code: string; test: string };
+  referenceAnswer: { type: string; code: string; test: string };
   testResults: TestResultsInterface[];
   startCode?: string;
+  startTest?: string;
 }
 
 export interface TestResultsInterface {
