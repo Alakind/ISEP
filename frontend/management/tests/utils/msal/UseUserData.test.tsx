@@ -3,6 +3,8 @@ import {vi} from "vitest";
 import {ReactNode} from "react";
 import {UserProvider} from "../../../src/utils/msal/UserProvider.tsx";
 import {useUserData} from "../../../src/utils/msal/UseUserData.tsx";
+import {MsUserProvider} from "../../../src/utils/msal/MsUserProvider.tsx";
+import {AccountInfo, IPublicClientApplication} from "@azure/msal-browser";
 
 vi.mock("jwt-decode", () => ({
   jwtDecode: vi.fn(() => ({
@@ -24,25 +26,33 @@ vi.mock("@azure/msal-react", () => ({
   })),
 }));
 
+vi.mock("react", () => ({
+  ...vi.importActual("react"),
+  useContext: vi.fn(() => undefined),
+  createContext: vi.fn(),
+}))
+
 describe("useUserData", () => {
-  it.skip("throws an error when used outside UserProvider", () => { //path can never be taken
+  it("throws an error when used outside UserProvider", () => { //path can never be taken
     const TestComponent = () => {
       try {
         useUserData();
-      } catch (error: unknown) {
-        return <div data-testid="error">{(error as Error).message}</div>;
+      } catch (error) {
+        if (error instanceof Error) {
+          return <div data-testid="error">{(error as Error).message}</div>;
+        }
       }
       return null;
     };
 
     render(<TestComponent/>);
 
-    expect(screen.getByTestId("error")).toHaveTextContent(
+    expect(screen.queryByTestId("error")).toHaveTextContent(
       "useUserData must be used within a UserProvider"
     );
   });
 
-  it.skip("provides context values within UserProvider", async () => {
+  it("provides context values within UserProvider", async () => {
     const TestComponent = () => {
       const {name, email, role, id, oid} = useUserData();
       return (
@@ -55,11 +65,26 @@ describe("useUserData", () => {
         </div>
       );
     };
+    const mockInstance = {
+      acquireTokenSilent: vi.fn(() =>
+        Promise.resolve({accessToken: "mockAccessToken"})
+      ),
+    } as unknown as IPublicClientApplication;
+
+    const mockActiveAccount = {
+      homeAccountId: "mockHomeAccountId",
+      environment: "mockEnvironment",
+      tenantId: "mockTenantId",
+      username: "mockUsername",
+    } as AccountInfo;
 
     render(
-      <UserProvider>
-        <TestComponent/>
-      </UserProvider>
+      <MsUserProvider instance={mockInstance} activeAccount={mockActiveAccount}>
+        <UserProvider>
+          <TestComponent/>
+        </UserProvider>
+
+      </MsUserProvider>
     );
 
     await waitFor(() => {

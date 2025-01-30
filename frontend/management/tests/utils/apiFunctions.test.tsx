@@ -1001,7 +1001,7 @@ describe('API Functions (results)', (): void => {
     expect(result).toEqual(mockSection);
   });
 
-  it.skip("should throw error when fetching single bar chart statistics fails", async () => {
+  it("should throw error when fetching single bar chart statistics fails", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       statusText: "Internal Server Error",
