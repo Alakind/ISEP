@@ -99,7 +99,6 @@ export interface TestResultsInterface {
   name: string;
   message?: string;
   passed: boolean;
-  code?: string;
 }
 
 export interface AssignmentInterface {

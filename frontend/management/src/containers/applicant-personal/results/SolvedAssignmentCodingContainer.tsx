@@ -7,6 +7,8 @@ function SolvedAssignmentCodingContainer({theme = Themes.LIGHT, assignment}: Rea
   const [showCodeChanges, setShowCodeChanges] = useState<boolean>(false);
   const [showTestResults, setShowTestResults] = useState<boolean>(false);
   const [showTestCode, setShowTestCode] = useState<boolean>(false);
+  const [showReferenceTestCode, setShowReferenceTestCode] = useState<boolean>(false);
+  const [showReferenceCode, setShowReferenceCode] = useState<boolean>(false);
 
   function handleShowCodeChanges(): void {
     setShowCodeChanges((prevState: boolean) => !prevState);
@@ -20,6 +22,14 @@ function SolvedAssignmentCodingContainer({theme = Themes.LIGHT, assignment}: Rea
     setShowTestCode((prevState: boolean) => !prevState);
   }
 
+  function handleShowReferenceTestCode(): void {
+    setShowReferenceTestCode((prevState: boolean) => !prevState);
+  }
+
+  function handleShowReferenceCode(): void {
+    setShowReferenceCode((prevState: boolean) => !prevState);
+  }
+
   return (
     <SolvedAssignmentCoding
       assignment={assignment}
@@ -30,6 +40,10 @@ function SolvedAssignmentCodingContainer({theme = Themes.LIGHT, assignment}: Rea
       theme={theme}
       handleShowTestCode={handleShowTestCode}
       showTestCode={showTestCode}
+      showReferenceCode={showReferenceCode}
+      handleShowReferenceCode={handleShowReferenceCode}
+      showReferenceTestCode={showReferenceTestCode}
+      handleShowReferenceTestCode={handleShowReferenceTestCode}
     />
   )
 }

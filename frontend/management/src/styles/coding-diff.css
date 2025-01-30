@@ -2,12 +2,17 @@
     border-radius: 2px;
     white-space: nowrap;
     border: 1px solid black;
+    margin-top: 15px;
 }
 
 .solved-assignment-coding .btn.btn--mod {
     border: none !important;
     margin: 0 !important;
     padding: 0 !important;
+}
+
+.solved-assignment-coding {
+    margin-bottom: 15px;
 }
 
 .solved-assignment-coding__header {
@@ -17,4 +22,8 @@
     background: var(--transparent);
     display: flex;
     justify-content: space-between;
+}
+
+.solved-assignment-coding__sub {
+    padding-top: 15px;
 }

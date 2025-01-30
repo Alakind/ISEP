@@ -1,67 +1,63 @@
-import ReactDiffViewer, {DiffMethod} from "react-diff-viewer-continued";
 import {Themes} from "../../../utils/constants.tsx";
 import {AssignmentCodingSolvedInterface} from "../../../utils/types.tsx";
 import "../../../styles/coding-diff.css"
 import TestResultBlock from "./TestResultBlock.tsx";
+import CodeBlock from "./CodeBlock.tsx";
+import TestCodeBlock from "./TestCodeBlock.tsx";
+import ReferenceTestCodeBlock from "./ReferenceTestCodeBlock.tsx";
+import ReferenceCodeBlock from "./ReferenceCodeBlock.tsx";
 
-function SolvedAssignmentCoding({theme = Themes.LIGHT, assignment, handleShowCodeChanges, showCodeChanges, showTestResults, handleShowTestResults, showTestCode, handleShowTestCode}: Readonly<Props>) {
+function SolvedAssignmentCoding({
+                                  theme = Themes.LIGHT,
+                                  assignment,
+                                  handleShowCodeChanges,
+                                  showCodeChanges,
+                                  showTestResults,
+                                  handleShowTestResults,
+                                  showTestCode,
+                                  handleShowTestCode,
+                                  showReferenceCode,
+                                  handleShowReferenceCode,
+                                  showReferenceTestCode,
+                                  handleShowReferenceTestCode
+                                }: Readonly<Props>) {
   return (
     <div className="solved-assignment-coding">
       {
-        (!assignment.startCode && !assignment.answer?.code) || assignment.answer?.code == assignment.startCode || !assignment.answer?.code
-          ? (
-            <p>No changes are made to the original code</p>
-          ) : (
-            <>
-              <button className="solved-assignment-coding__header" onClick={handleShowCodeChanges}>
-                Code changes{" "}
-                <span>
-                  <i className={`bi ${showCodeChanges ? "bi-arrows-collapse" : "bi-arrows-expand"}`}></i>
-                </span>
-              </button>
-              {
-                showCodeChanges && (
-                  <div className={"coding__diff-viewer"}>
-                    <ReactDiffViewer
-                      extraLinesSurroundingDiff={2}
-                      oldValue={(assignment.startCode) ?? ""}
-                      compareMethod={DiffMethod.CHARS}
-                      splitView={false}
-                      newValue={(assignment.answer?.code) ?? ""}
-                      useDarkTheme={theme === Themes.DARK}
-                    />
-                  </div>
-                )
-              }
-              <TestResultBlock
-                testResults={assignment.testResults}
-                showTestResults={showTestResults}
-                handleShowTestResults={handleShowTestResults}
-                theme={theme}
-              />
-              <button className="test-result-block__header" onClick={handleShowTestCode}>
-                Test code diff{" "}
-                <span>
-                  <i className={`bi ${showTestCode ? "bi-arrows-collapse" : "bi-arrows-expand"}`}></i>
-                </span>
-              </button>
-              {
-                showTestCode
-                    ? (
-                        <ReactDiffViewer
-                            extraLinesSurroundingDiff={2}
-                            oldValue={assignment.startTest ?? ""}
-                            compareMethod={DiffMethod.CHARS}
-                            splitView={false}
-                            newValue={assignment.answer.test ?? ""}
-                            useDarkTheme={theme === Themes.DARK}
-                        />
-                    ) : (
-                        <></>
-                    )
-              }
-            </>
-          )
+        <>
+          <h6><b><u>Code</u></b></h6>
+          <CodeBlock
+            assignment={assignment}
+            showCodeChanges={showCodeChanges}
+            handleShowCodeChanges={handleShowCodeChanges}
+            theme={theme}
+          />
+          <ReferenceCodeBlock
+            assignment={assignment}
+            showReferenceCode={showReferenceCode}
+            handleShowReferenceCode={handleShowReferenceCode}
+            theme={theme}
+          />
+          <h6 className={"solved-assignment-coding__sub"}><b><u>Test</u></b></h6>
+          <TestCodeBlock
+            assignment={assignment}
+            showTestCode={showTestCode}
+            handleShowTestCode={handleShowTestCode}
+            theme={theme}
+          />
+          <ReferenceTestCodeBlock
+            assignment={assignment}
+            showReferenceTestCode={showReferenceTestCode}
+            handleShowReferenceTestCode={handleShowReferenceTestCode}
+            theme={theme}
+          />
+          <TestResultBlock
+            testResults={assignment.testResults}
+            showTestResults={showTestResults}
+            handleShowTestResults={handleShowTestResults}
+            theme={theme}
+          />
+        </>
       }
     </div>
   )
@@ -76,6 +72,10 @@ interface Props {
   handleShowTestResults: () => void;
   showTestCode: boolean;
   handleShowTestCode: () => void;
+  showReferenceCode: boolean;
+  handleShowReferenceCode: () => void;
+  showReferenceTestCode: boolean;
+  handleShowReferenceTestCode: () => void;
 }
 
 export default SolvedAssignmentCoding
