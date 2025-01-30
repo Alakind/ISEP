@@ -69,6 +69,7 @@ class TestResultController(
             )
         ]
     )
+    //TODO: find out if this endpoint is necessary
     fun putTestResult(@RequestBody testResultDTO: TestResultUpdateDTO): ResponseEntity<String> {
         testResultUpdateService.update(testResultDTO)
         return ResponseEntity.ok("Updated a test result")
