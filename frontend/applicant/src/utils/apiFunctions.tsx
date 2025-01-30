@@ -71,7 +71,7 @@ export async function fetchAssessment(inviteId: string): Promise<AssessmentInter
   const response = await fetch(API_SECTIONS_URL);
 
   if (!response.ok) {
-    throw new Error("Couldn't connect to the server, please try again or email InfoSupport!");
+    throw new Error("Couldn't retrieve the assessment, please try again or email InfoSupport!");
   }
 
   const data = await response.json();

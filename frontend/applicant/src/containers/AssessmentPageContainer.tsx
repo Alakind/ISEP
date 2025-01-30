@@ -46,6 +46,7 @@ function AssessmentPageContainer() {
         }
 
         setIsLoading(true);
+        navigate("/error")
       }
     };
 
@@ -75,7 +76,7 @@ function AssessmentPageContainer() {
     setTimeout(async () => {
       const secondsLeft = await getSecondsLeft(inviteId);
       setSecondsLeft(secondsLeft);
-    }, 0);
+    }, 1000);
 
     const syncIntervalId = setInterval(async () => {
       const secondsLeft = await getSecondsLeft(inviteId);
@@ -83,7 +84,7 @@ function AssessmentPageContainer() {
 
       if (secondsLeft <= 0) {
         await finishAssessment(inviteId);
-        navigate("/assessment");
+        navigate("/finish");
       }
     }, 10000);
 
