@@ -9,5 +9,4 @@ data class ApplicantUpdateDTO(
     val name: String?,
     val email: String?,
     val preferredLanguage: String?,
-    val score: Int?
 ) : UpdateDTO<Long>

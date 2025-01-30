@@ -79,10 +79,6 @@ class AssessmentController(val assessmentReadService: AssessmentReadService) {
         ]
     )
     fun getAssessment(@PathVariable id: Long): ResponseEntity<AssessmentReadDTO> {
-        return try {
-            ResponseEntity.ok(assessmentReadService.getById(id))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        return ResponseEntity.ok(assessmentReadService.getById(id))
     }
 }

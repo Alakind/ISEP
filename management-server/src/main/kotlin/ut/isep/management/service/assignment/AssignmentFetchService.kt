@@ -12,8 +12,8 @@ import java.nio.file.Paths
 
 @Service
 class AssignmentFetchService(@Qualifier("githubRestTemplate") val restTemplate: RestTemplate) {
-    val parser = QuestionParser()
-    val frontmatterParser = FrontmatterParser()
+    var parser = QuestionParser()
+    var frontmatterParser = FrontmatterParser()
     val logger = logger()
     val gitHubBaseURL = "https://raw.githubusercontent.com/eefscheef/ISEP-questions-demo"
 
