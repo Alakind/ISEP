@@ -40,12 +40,13 @@ describe('SolvedAssignmentCoding Component', () => {
 
   it("should render without crashing", () => {
     render(<SolvedAssignmentCoding {...defaultProps} />);
-    expect(screen.getByText(/Code changes/i)).toBeInTheDocument();
+    expect(screen.getByText("Code changes", {exact: true})).toBeInTheDocument();
   });
 
   it("should display 'No changes are made' if startCode and answer are the same", () => {
     const props = {
       ...defaultProps,
+      showCodeChanges: true,
       assignment: {
         ...defaultProps.assignment,
         startCode: "console.log('Code');",
@@ -75,6 +76,7 @@ describe('SolvedAssignmentCoding Component', () => {
   it("should render 'No test results available' when there are no test results", () => {
     const props = {
       ...defaultProps,
+      showTestResults: true,
       assignment: {...mockAssignment, testResults: []},
     };
     render(<SolvedAssignmentCoding {...props} />);
@@ -95,7 +97,7 @@ describe('SolvedAssignmentCoding Component', () => {
       />
     );
 
-    fireEvent.click(screen.getByText(/Code changes/i));
+    fireEvent.click(screen.getByText("Code changes", {exact: true}));
     expect(handleShowCodeChangesMock).toHaveBeenCalledTimes(1);
   });
 

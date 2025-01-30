@@ -345,7 +345,7 @@ describe('API Functions (invites)', (): void => {
         body: JSON.stringify({
           applicantId: "1",
           assessmentId: "1",
-          expiresAt: "2025-01-16T15:13:45.432862Z"
+          expiresAt: "2025-01-16T15:13:45.432Z"
         }),
       })
     );
