@@ -17,8 +17,8 @@ describe('SolvedAssignmentCoding Component', () => {
     availablePoints: 10,
     codeUri: "a1b2c3d4e5f6g7h8i9j0",
     language: "javascript",
-    answer: {type: AssignmentTypes.CODING, answer: 'console.log("Hello, World!");'},
-    referenceAnswer: {type: AssignmentTypes.CODING, answer: 'console.log("Expected Output");'},
+    answer: {type: AssignmentTypes.CODING, code: 'console.log("Hello, World!");', test: ""},
+    referenceAnswer: {type: AssignmentTypes.CODING, code: 'console.log("Expected Output");', test: ""},
     testResults: [{name: "null test", passed: true}],
     startCode: "console.log(\"Hello!\");",
   };
@@ -30,6 +30,12 @@ describe('SolvedAssignmentCoding Component', () => {
     showCodeChanges: false,
     showTestResults: false,
     handleShowTestResults: vi.fn(),
+    showTestCode: false,
+    handleShowTestCode: vi.fn(),
+    showReferenceCode: false,
+    handleShowReferenceCode: vi.fn(),
+    showReferenceTestCode: false,
+    handleShowReferenceTestCode: vi.fn(),
   };
 
   it("should render without crashing", () => {
@@ -45,7 +51,8 @@ describe('SolvedAssignmentCoding Component', () => {
         startCode: "console.log('Code');",
         answer: {
           type: AssignmentTypes.CODING,
-          answer: "console.log('Code');"
+          code: "console.log('Code');",
+          test: ""
         }
       },
     };

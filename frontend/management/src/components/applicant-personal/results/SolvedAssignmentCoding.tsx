@@ -55,7 +55,6 @@ function SolvedAssignmentCoding({
             testResults={assignment.testResults}
             showTestResults={showTestResults}
             handleShowTestResults={handleShowTestResults}
-            theme={theme}
           />
         </>
       }

@@ -20,8 +20,8 @@ describe("SolvedAssignmentCodingContainer", () => {
   const mockAssignment: AssignmentCodingSolvedInterface = {
     scoredPoints: null,
     id: "1",
-    referenceAnswer: {answer: "", type: AssignmentTypes.CODING},
-    answer: {answer: "", type: AssignmentTypes.CODING},
+    referenceAnswer: {code: "", type: AssignmentTypes.CODING, test: ""},
+    answer: {code: "", type: AssignmentTypes.CODING, test: ""},
     testResults: [],
     startCode: "",
     type: AssignmentTypes.CODING,

@@ -1,14 +1,6 @@
-import ReactDiffViewer, {DiffMethod} from "react-diff-viewer-continued";
-import {Themes} from "../../../utils/constants.tsx";
 import {TestResultsInterface} from "../../../utils/types.tsx";
-import {useState} from "react";
 
-function TestResultRow({testResult, theme}: Readonly<Props>) {
-  const [showTestCode, setShowTestCode] = useState<boolean>(false);
-
-  function handleShowTestCode() {
-    setShowTestCode((prev) => !prev);
-  }
+function TestResultRow({testResult}: Readonly<Props>) {
 
   return (
     <div>
@@ -26,27 +18,6 @@ function TestResultRow({testResult, theme}: Readonly<Props>) {
             ? <span>: {testResult.message}</span>
             : <></>
         }
-        <span>
-          <button className={"btn btn--transparent"} onClick={handleShowTestCode}>
-            <i className={`bi ${showTestCode ? "bi-eye-slash" : "bi-eye"}`}></i>
-          </button>
-        </span>
-      </div>
-      <div className={`${showTestCode ? "test-result-block__code" : ""}`}>
-        <span>
-        {
-          showTestCode
-            ? (
-              <ReactDiffViewer
-                extraLinesSurroundingDiff={2}
-                newValue={(testResult.code) ?? ""}
-                compareMethod={DiffMethod.CHARS}
-                splitView={false}
-                useDarkTheme={theme === Themes.DARK}
-              />
-            ) : null
-        }
-        </span>
       </div>
     </div>
   )
@@ -54,7 +25,6 @@ function TestResultRow({testResult, theme}: Readonly<Props>) {
 
 interface Props {
   testResult: TestResultsInterface;
-  theme?: (typeof Themes)[keyof typeof Themes];
 }
 
 export default TestResultRow

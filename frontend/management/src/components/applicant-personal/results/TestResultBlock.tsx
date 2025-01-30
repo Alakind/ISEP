@@ -1,9 +1,8 @@
 import {TestResultsInterface} from "../../../utils/types.tsx";
 import "../../../styles/test-result-block.css"
 import TestResultRow from "./TestResultRow.tsx";
-import {Themes} from "../../../utils/constants.tsx";
 
-function TestResultBlock({testResults, showTestResults, handleShowTestResults, theme}: Readonly<Props>) {
+function TestResultBlock({testResults, showTestResults, handleShowTestResults}: Readonly<Props>) {
   return (
     <div className="solved-assignment-coding">
       <button className="solved-assignment-coding__header" onClick={handleShowTestResults}>
@@ -23,7 +22,7 @@ function TestResultBlock({testResults, showTestResults, handleShowTestResults, t
                       {
                         testResults.map((testResult, index) => {
                           return (
-                            <TestResultRow key={testResult.name + index} testResult={testResult} theme={theme}/>
+                            <TestResultRow key={testResult.name + index} testResult={testResult}/>
                           )
                         })
                       }
@@ -56,7 +55,6 @@ interface Props {
   testResults: TestResultsInterface[];
   showTestResults: boolean;
   handleShowTestResults: () => void;
-  theme?: (typeof Themes)[keyof typeof Themes];
 }
 
 export default TestResultBlock
