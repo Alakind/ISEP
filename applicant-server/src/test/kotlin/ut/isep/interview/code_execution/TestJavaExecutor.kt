@@ -4,12 +4,12 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils
-import ut.isep.interview.code_execution.dto.Test as codeStrings
 import java.io.File
 import java.time.Duration
 import java.time.Instant
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import ut.isep.interview.code_execution.dto.Test as codeStrings
 
 class TestJavaExecutor {
 
@@ -54,7 +54,8 @@ class TestJavaExecutor {
 
         JavaExecutor.startContainer(ID, container)
         assertThrows<RuntimeException> {
-            JavaExecutor.runTest(ID,
+            JavaExecutor.runTest(
+                ID,
                 ut.isep.interview.code_execution.dto.Test("Wait, I can't compile this", null, test.readText(), null)
             )
         }
@@ -74,6 +75,10 @@ class TestJavaExecutor {
         val start = Instant.now()
         JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
         val end = Instant.now()
-        assertTrue(Duration.between(start, end) < Duration.ofSeconds(2))
+
+        assertTrue(
+            Duration.between(start, end) < Duration.ofSeconds(2),
+            "Computed difference: ${Duration.between(start, end).toMillis()} milliseconds"
+        ) //Windows will take 8/9 seconds with Docker WSL subsystem running
     }
 }

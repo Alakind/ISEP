@@ -1,11 +1,10 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.dto.Test
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
-import java.util.concurrent.ExecutionException
 
 object PythonExecutor : CodeExecutor {
 
@@ -18,7 +17,8 @@ object PythonExecutor : CodeExecutor {
         //FIXME: Management server should initialize the container when the applicant logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
 
         val name = "$inviteId-python"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.py", test.testFileName ?: "Test.py")
@@ -33,8 +33,8 @@ object PythonExecutor : CodeExecutor {
         val failedTests = result.map { it.name }
         result.addAll(
             parseTests(testsString)
-            .filter { it !in failedTests }
-            .map { TestResult(it, "", true) })
+                .filter { it !in failedTests }
+                .map { TestResult(it, "", true) })
         return result
     }
 
@@ -64,9 +64,13 @@ object PythonExecutor : CodeExecutor {
             throw RuntimeException("Build failed:\n\n$output")
         }
         for (test in tests) {
-            result.add(TestResult("FAIL: (\\w+)".toRegex().find(test)!!.groupValues[1],
-                test.split("-{10,}".toRegex())[1],
-                false))
+            result.add(
+                TestResult(
+                    "FAIL: (\\w+)".toRegex().find(test)!!.groupValues[1],
+                    test.split("-{10,}".toRegex())[1],
+                    false
+                )
+            )
         }
         return result
     }

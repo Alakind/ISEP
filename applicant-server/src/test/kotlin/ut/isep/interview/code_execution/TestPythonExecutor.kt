@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils
+import ut.isep.interview.code_execution.utils.ContainerAPI
 import java.io.File
 import java.time.Duration
 import java.time.Instant
@@ -18,6 +19,7 @@ class TestPythonExecutor {
     @AfterEach
     fun killContainers() {
         CodeExecutorUtils.stopContainers(ID)
+        ContainerAPI.getAllContainerNames()
     }
 
     @Test
@@ -27,7 +29,8 @@ class TestPythonExecutor {
         val test = File("src/test/resources/codeExecutor/pythonGood/TestCode.py")
 
         PythonExecutor.startContainer(ID, container)
-        val result = PythonExecutor.runTest(ID,
+        val result = PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
         )
 
@@ -42,7 +45,8 @@ class TestPythonExecutor {
         val test = File("src/test/resources/codeExecutor/pythonBad/TestCode.py")
 
         PythonExecutor.startContainer(ID, container)
-        val result = PythonExecutor.runTest(ID,
+        val result = PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
         )
         assertEquals(1, result.count { !it.passed })
@@ -58,19 +62,22 @@ class TestPythonExecutor {
         val test2 = File("src/test/resources/codeExecutor/pythonBad/TestCode.py")
 
         PythonExecutor.startContainer(ID, container)
-        val result1 = PythonExecutor.runTest(ID,
+        val result1 = PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code1.readText(), null, test1.readText(), null)
         )
         assertEquals(0, result1.count { !it.passed })
         assertEquals(1, result1.count { it.passed })
 
-        val result2 = PythonExecutor.runTest(ID,
+        val result2 = PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code2.readText(), null, test2.readText(), null)
         )
         assertEquals(1, result2.count { !it.passed })
         assertEquals(1, result2.count { it.passed })
 
-        val result3 = PythonExecutor.runTest(ID,
+        val result3 = PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code1.readText(), null, test1.readText(), null)
         )
         assertEquals(0, result3.count { !it.passed })
@@ -84,7 +91,8 @@ class TestPythonExecutor {
 
         PythonExecutor.startContainer(ID, container)
         assertThrows<RuntimeException> {
-            PythonExecutor.runTest(ID,
+            PythonExecutor.runTest(
+                ID,
                 ut.isep.interview.code_execution.dto.Test("Wait, I can't compile this", null, test.readText(), null)
             )
         }
@@ -99,10 +107,15 @@ class TestPythonExecutor {
         PythonExecutor.startContainer(ID, container)
 
         val start = Instant.now()
-        PythonExecutor.runTest(ID,
+        PythonExecutor.runTest(
+            ID,
             ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
         )
         val end = Instant.now()
-        assertTrue(Duration.between(start, end) < Duration.ofSeconds(2))
+
+        assertTrue(
+            Duration.between(start, end) < Duration.ofSeconds(2),
+            "Computed difference: ${Duration.between(start, end).toMillis()} milliseconds"
+        ) //Windows will take 5/6 seconds with Docker WSL subsystem running
     }
 }

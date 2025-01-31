@@ -1,7 +1,7 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.dto.Test
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
@@ -12,14 +12,15 @@ object SQLExecutor : CodeExecutor {
         val id = ContainerAPI.startContainer(container, "$inviteId-sql")
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/sql/cleanDatabase.sql").absoluteFile, "/project")
-        ContainerAPI.runCommandInContainerById(id, "export MYSQL_ALLOW_EMPTY_PASSWORD=True && /usr/local/bin/docker-entrypoint.sh mysqld &")
+        ContainerAPI.runCommandInContainerById(id, "export MYSQL_ALLOW_EMPTY_PASSWORD=True && touch /log.txt && /usr/local/bin/docker-entrypoint.sh mysqld > /log.txt &")
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
         //FIXME: NO, PLEASE GOD NOOOOO
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/SQLDockerfile"))
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
 
         val name = "$inviteId-sql"
         val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.sql", test.testFileName ?: "TestCode.py")

@@ -2,9 +2,9 @@ package ut.isep.interview.code_execution.utils
 
 import kotlinx.serialization.json.*
 import java.io.File
+import java.time.Instant
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.time.Instant
 
 object ContainerAPI {
     val PREFIX = "applicant_server"
@@ -87,7 +87,7 @@ object ContainerAPI {
         timeoutAmount: Long = 60,
         timeoutUnit: TimeUnit = TimeUnit.SECONDS,
     ): Command {
-        val command = "docker exec $containerId /bin/bash -c \"$containerCommand\""
+        val command = "docker exec $containerId /bin/bash -c '$containerCommand'"
         return Command.CommandBuilder(command, timeoutAmount, timeoutUnit).execute()
     }
 
@@ -104,7 +104,7 @@ object ContainerAPI {
         timeoutAmount: Long = 60,
         timeoutUnit: TimeUnit = TimeUnit.SECONDS,
     ): Command {
-        val command = "docker exec $PREFIX-$name /bin/bash -c \"$containerCommand\""
+        val command = "docker exec $PREFIX-$name /bin/bash -c '$containerCommand'"
         return Command.CommandBuilder(command, timeoutAmount, timeoutUnit).execute()
     }
 
@@ -116,7 +116,7 @@ object ContainerAPI {
      * @param dst The location inside the container where the file or folder should be copied to.
      */
     fun copyToContainerById(id: String, src: File, dst: String) {
-        val command = "docker cp \"${src.absolutePath}\" ${id}:${dst}"
+        val command = "docker cp '${src.absolutePath}' ${id}:${dst}"
         val result = Command.CommandBuilder(command).execute()
         if (result.returnCode != 0) throw RuntimeException("Copying the file failed with the following error message:\n${result.error}")
     }
@@ -129,7 +129,7 @@ object ContainerAPI {
      * @param dst The location inside the container where the file or folder should be copied to.
      */
     fun copyToContainerByName(name: String, src: File, dst: String) {
-        val command = "docker cp \"${src.absolutePath}\" $PREFIX-${name}:${dst}"
+        val command = "docker cp '${src.absolutePath}' $PREFIX-${name}:${dst}"
         val result = Command.CommandBuilder(command).execute()
         if (result.returnCode != 0) throw RuntimeException("Copying the file failed with the following error message:\n${result.error}")
     }
@@ -138,13 +138,13 @@ object ContainerAPI {
      * Returns a list of all container names started by this API
      */
     fun getAllContainerNames(): List<String> {
-        val command = "docker container ls --format=\"{{.Names}}\""
+        val command = "docker container ls --format='{{.Names}}'"
         val namesList = Command.CommandBuilder(command).execute().output
         return namesList.split("\n").filter { it.startsWith(PREFIX) }
     }
 
     private fun buildImage(container: File, tag: String? = null): String {
-        val options: MutableList<String> = mutableListOf("-f=${container.absolutePath}")
+        val options: MutableList<String> = mutableListOf("-f='${container.absolutePath}'")
         options.add("-t=$PREFIX-$tag")
         val buildCommand = "docker build ${options.joinToString(" ")} ."
         val build = Command.CommandBuilder(buildCommand).execute()
@@ -160,7 +160,7 @@ object ContainerAPI {
     }
 
     private fun getDetailedContainerInfo(): JsonArray {
-        val command = "docker container inspect $(docker container ls --format=\"{{.Names}}\")"
+        val command = "docker container inspect $(docker container ls --format='{{.Names}}')"
         val result = Command.CommandBuilder(command).execute()
         if (result.returnCode == 123) return Json.parseToJsonElement("").jsonArray
         if (result.returnCode != 0) throw RuntimeException("Could not inspect the docker containers.")
