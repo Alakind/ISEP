@@ -11,10 +11,11 @@ class RestTemplateConfig {
     @Bean(name = ["githubRestTemplate"])
     fun githubRestTemplate(): RestTemplate {
         val githubToken = System.getenv("GITHUB_TOKEN")
-            ?: throw IllegalArgumentException("Please provide a GitHub token")
         val restTemplate = RestTemplate()
         val interceptor = ClientHttpRequestInterceptor { request, body, execution ->
-            request.headers.add("Authorization", "Bearer $githubToken")
+            githubToken?.let {
+                request.headers.add("Authorization", "Bearer $it")
+            }
             execution.execute(request, body)
         }
         restTemplate.interceptors = listOf(interceptor)
