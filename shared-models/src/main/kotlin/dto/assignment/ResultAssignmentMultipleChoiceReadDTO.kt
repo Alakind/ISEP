@@ -9,5 +9,6 @@ data class ResultAssignmentMultipleChoiceReadDTO(
     @field: JsonUnwrapped
     override val solvedAssignment: SolvedAssignmentMultipleChoiceReadDTO,
     override val referenceAnswer: AnswerCreateReadDTO.MultipleChoice,
-    override val scoredPoints: Int?
+    override val scoredPoints: Int?,
+    override val availablePoints: Int,
 ) : ResultAssignmentReadDTO

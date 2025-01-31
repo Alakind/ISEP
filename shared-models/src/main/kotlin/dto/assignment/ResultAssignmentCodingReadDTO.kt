@@ -9,5 +9,8 @@ data class ResultAssignmentCodingReadDTO(
     @field: JsonUnwrapped
     override val solvedAssignment: SolvedAssignmentCodingReadDTO,
     override val referenceAnswer: AnswerCreateReadDTO.Coding,
-    override val scoredPoints: Int?
+    override val scoredPoints: Int?,
+    val testResults: List<TestResultReadDTO>,
+    val secretTestResults: List<TestResultReadDTO>,
+    override val availablePoints: Int,
 ) : ResultAssignmentReadDTO

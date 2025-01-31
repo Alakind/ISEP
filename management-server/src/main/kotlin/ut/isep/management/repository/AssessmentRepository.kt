@@ -1,6 +1,10 @@
 package ut.isep.management.repository
 
-import org.springframework.data.jpa.repository.JpaRepository
 import ut.isep.management.model.entity.Assessment
 
-interface AssessmentRepository : JpaRepository<Assessment, Long>
+interface AssessmentRepository : BaseRepository<Assessment, Long> {
+
+    fun findByTagAndLatestTrue(tag: String): Assessment?
+
+    fun findAllByLatestTrue(): List<Assessment>
+}

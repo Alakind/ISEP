@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class ResultSectionSimpleReadDTO(
     val title: String,
     val availablePoints: Int,
-    val scoredPoints: Int?
+    val scoredPoints: Int?,
+    val availableSeconds: Long,
+    val measuredSeconds: Long?,
 )
 

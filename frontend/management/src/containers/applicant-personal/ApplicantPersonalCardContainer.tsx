@@ -6,7 +6,7 @@ import {deleteApplicant, updateApplicant} from "../../utils/apiFunctions.tsx";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import CustomWarnToast from "../../components/CustomWarnToast.tsx";
 
-function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): ReactNode {
+function ApplicantPersonalCardContainer({applicant, setApplicant}: Readonly<Props>): ReactNode {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [prevApplicantData, setPrevApplicantData] = useState<ApplicantInterface>(applicant);
   const navigate: NavigateFunction = useNavigate();
@@ -16,8 +16,14 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
   }
 
   async function handleDelete(): Promise<void> {
-    toast.warn(<CustomWarnToast proceedAction={proceedHandleDelete} cancelAction={cancelHandleDelete}
-                                message={"Are you sure you want to delete this applicant? The applicant can't be restored!"}/>, {hideProgressBar: true, autoClose: false,});
+    toast.warn(
+      <CustomWarnToast
+        proceedAction={proceedHandleDelete}
+        cancelAction={cancelHandleDelete}
+        message={"Are you sure you want to delete this applicant? The applicant can't be restored!"}
+      />,
+      {hideProgressBar: true, autoClose: false,}
+    );
   }
 
   async function proceedHandleDelete(): Promise<void> {
@@ -31,8 +37,8 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
         toast.error("Unknown error occurred.");
       }
     } finally {
-      setPrevApplicantData({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
-      setApplicant({score: 0, statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
+      setPrevApplicantData({createdAt: undefined, scores: [], statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
+      setApplicant({createdAt: undefined, scores: [], statuses: [], id: "", name: "", email: "", preferredLanguage: "", invites: []});
       navigate(`/applicants`);
     }
   }
@@ -50,8 +56,7 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
     }
   }
 
-  function handleReInvite(): void {
-    //TODO implement mail resend invite
+  function handleInvite(): void {
     navigate(`/applicants/${applicant.id}/invite/add`);
   }
 
@@ -96,7 +101,7 @@ function ApplicantPersonalCardContainer({applicant, setApplicant}: Props): React
       isEditing={isEditing}
       applicant={applicant}
       handleEdit={handleEdit}
-      handleReInvite={handleReInvite}
+      handleInvite={handleInvite}
       handleDelete={handleDelete}
       handleCancel={handleCancel}
       handleSave={handleSave}

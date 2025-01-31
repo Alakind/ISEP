@@ -42,15 +42,21 @@
     overflow-x: scroll;
 }
 
-.results__container__assessment-select > a {
+.results__container__assessment-select > button {
     min-width: max-content;
     margin: 15px;
 }
 
-.results__container__assessment-select__active > span {
+.results__container__assessment-select--active > span {
     border: white solid 2px;
     box-shadow: 0 0 3px 1px var(--icons);
     cursor: default;
+}
+
+.results__container__assessment-select--disabled > span {
+    background-color: var(--status-item--disabled);
+    color: var(--text-primary-disabled);
+    cursor: auto;
 }
 
 .section__header {
@@ -61,6 +67,10 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.section__header__meas-time--exceeded {
+    color: var(--status-item--error)
 }
 
 .section__header__sug-time {
@@ -90,6 +100,10 @@ input[type=number].assignment__header__score__scored-points::-webkit-outer-spin-
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
+}
+
+input[type=number].assignment__header__score__scored-points {
+    -moz-appearance: textfield;
 }
 
 .assignment__block {

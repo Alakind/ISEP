@@ -6,56 +6,70 @@ import dto.assignment.ResultAssignmentOpenReadDTO
 import dto.assignment.ResultAssignmentReadDTO
 import dto.solution.AnswerCreateReadDTO
 import org.springframework.stereotype.Component
-import ut.isep.management.model.entity.*
-import ut.isep.management.service.converter.ReadConverter
+import parser.question.CodingQuestion
+import parser.question.MultipleChoiceQuestion
+import parser.question.OpenQuestion
+import parser.question.Question
+import ut.isep.management.model.entity.SolvedAssignment
+import ut.isep.management.model.entity.SolvedAssignmentCoding
+import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
+import ut.isep.management.model.entity.SolvedAssignmentOpen
+import ut.isep.management.service.converter.testresult.TestResultReadConverter
 
 @Component
-class ResultAssignmentReadConverter(val solvedAssignmentConverter: SolvedAssignmentReadConverter) :
-    ReadConverter<SolvedAssignment, ResultAssignmentReadDTO> {
+class ResultAssignmentReadConverter(
+    val solvedAssignmentConverter: SolvedAssignmentReadConverter,
+    val testResultConverter: TestResultReadConverter
+) {
 
-    override fun toDTO(entity: SolvedAssignment): ResultAssignmentReadDTO {
+    fun toDTO(entity: SolvedAssignment, question: Question): ResultAssignmentReadDTO {
         return when (entity) {
-            is SolvedAssignmentCoding -> toDTO(entity)
-            is SolvedAssignmentMultipleChoice -> toDTO(entity)
-            is SolvedAssignmentOpen -> toDTO(entity)
+            is SolvedAssignmentCoding -> toCodingDTO(entity, question as CodingQuestion)
+            is SolvedAssignmentMultipleChoice -> toMultipleChoiceDTO(entity, question as MultipleChoiceQuestion)
+            is SolvedAssignmentOpen -> toOpenDTO(entity, question as OpenQuestion)
             else -> throw UnsupportedOperationException("Unsupported assignment type")
         }
     }
 
-    private fun toDTO(entity: SolvedAssignmentCoding): ResultAssignmentCodingReadDTO {
-        val codingAssignment = entity.assignment as? AssignmentCoding
-            ?: throw IllegalStateException("SolvedAssignmentCoding ${entity.id} has an assignment field that is null")
-        val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
+    private fun toCodingDTO(
+        entity: SolvedAssignmentCoding,
+        fetchedQuestion: CodingQuestion
+    ): ResultAssignmentCodingReadDTO {
+        val baseAssignmentDTO = solvedAssignmentConverter.toCodingDTO(entity, fetchedQuestion)
         return ResultAssignmentCodingReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Coding(codingAssignment.referenceAnswer!!),
-            scoredPoints = entity.scoredPoints
+            referenceAnswer = AnswerCreateReadDTO.Coding(
+                code = fetchedQuestion.files.referenceCode?.content,
+                test = fetchedQuestion.files.referenceTest?.content
+            ),
+            availablePoints = fetchedQuestion.availablePoints,
+            scoredPoints = entity.scoredPoints,
+            testResults = entity.testResults.map { testResultConverter.toDTO(it) },
+            secretTestResults = entity.secretTestResults.map { testResultConverter.toDTO(it) },
         )
     }
 
-    private fun toDTO(entity: SolvedAssignmentMultipleChoice): ResultAssignmentMultipleChoiceReadDTO {
-        val multipleChoiceAssignment = entity.assignment as? AssignmentMultipleChoice
-            ?: throw IllegalStateException("SolvedAssignmentMultipleChoice ${entity.id} has an assignment field that is null")
-        val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
+    private fun toMultipleChoiceDTO(
+        entity: SolvedAssignmentMultipleChoice,
+        fetchedQuestion: MultipleChoiceQuestion
+    ): ResultAssignmentMultipleChoiceReadDTO {
+        val baseAssignmentDTO = solvedAssignmentConverter.toMultipleChoiceDTO(entity, fetchedQuestion)
         return ResultAssignmentMultipleChoiceReadDTO(
             solvedAssignment = baseAssignmentDTO,
             referenceAnswer = AnswerCreateReadDTO.MultipleChoice(
-                multipleChoiceAssignment.optionToSolution.entries
-                    .withIndex()
-                    .filter { (_, key) -> key.value == true }
-                    .map { it.index }),
-            scoredPoints = entity.scoredPoints
+                fetchedQuestion.options.filter { it.isCorrect }.map { it.text }),
+            availablePoints = fetchedQuestion.availablePoints,
+            scoredPoints = entity.scoredPoints,
         )
     }
 
-    private fun toDTO(entity: SolvedAssignmentOpen): ResultAssignmentOpenReadDTO {
-        val openAssignment = entity.assignment as? AssignmentOpen
-            ?: throw IllegalStateException("SolvedAssignmentOpen ${entity.id} has an assignment field that is null")
-        val baseAssignmentDTO = solvedAssignmentConverter.toDTO(entity)
+    private fun toOpenDTO(entity: SolvedAssignmentOpen, fetchedQuestion: OpenQuestion): ResultAssignmentOpenReadDTO {
+        val baseAssignmentDTO = solvedAssignmentConverter.toOpenDTO(entity, fetchedQuestion)
         return ResultAssignmentOpenReadDTO(
             solvedAssignment = baseAssignmentDTO,
-            referenceAnswer = AnswerCreateReadDTO.Open(openAssignment.referenceAnswer!!),
-            scoredPoints = entity.scoredPoints
+            referenceAnswer = AnswerCreateReadDTO.Open(fetchedQuestion.referenceAnswer),
+            availablePoints = fetchedQuestion.availablePoints,
+            scoredPoints = entity.scoredPoints,
         )
     }
 }

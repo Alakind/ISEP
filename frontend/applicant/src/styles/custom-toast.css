@@ -1,0 +1,32 @@
+.custom-warn-toast__container {
+    text-align: center;
+}
+
+.custom-warn-toast__btn-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.Toastify__toast-container {
+    width: 350px;
+}
+
+.btn--toast {
+    margin: 10px 0;
+    border-color: var(--transparent);
+}
+
+.btn--toast--cancel {
+    background-color: grey;
+    color: white;
+}
+
+.btn--toast--proceed {
+    background-color: white;
+    color: black;
+}
+
+.btn--toast:hover {
+    border-color: var(--transparent);
+    background-color: var(--tertiary-color);
+}

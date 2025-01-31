@@ -1,7 +1,7 @@
 import CheckboxLoading from "../components/CheckboxLoading.tsx";
 import {ReactNode} from "react";
 
-function CheckboxLoadingContainer({id}: Props): ReactNode {
+function CheckboxLoadingContainer({id}: Readonly<Props>): ReactNode {
   return (
     <CheckboxLoading id={id}/>
   )

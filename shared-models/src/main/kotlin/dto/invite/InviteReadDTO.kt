@@ -13,5 +13,10 @@ data class InviteReadDTO(
     val assessmentId: Long,
     val status: InviteStatus,
     val invitedAt: OffsetDateTime,
-    val expiresAt: OffsetDateTime
+    val expiresAt: OffsetDateTime,
+    val measuredSecondsPerSection: List<Long>,
+    val assessmentStartedAt: OffsetDateTime? = null,
+    val assessmentFinishedAt: OffsetDateTime? = null,
+    val scoredPoints: Int?,
+    val availablePoints: Int?,
 ) : ReadDTO

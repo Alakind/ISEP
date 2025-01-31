@@ -12,7 +12,9 @@ class AssessmentReadConverter : ReadConverter<Assessment, AssessmentReadDTO> {
         return AssessmentReadDTO(
             id = entity.id,
             tag = entity.tag!!,
-            sections = entity.sections.map {it.id}
+            commit = entity.gitCommitHash!!,
+            availableSeconds = entity.availableSeconds,
+            sections = entity.sections.map { it.id }
         )
     }
 }

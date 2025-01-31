@@ -2,11 +2,20 @@ package enumerable
 
 
 enum class InviteStatus {
-    app_finished,
-    app_started,
+    not_started,
     app_reminded_once,
     app_reminded_twice,
-    cancelled,
     expired,
-    not_started,
+    app_started,
+    app_finished,
+    cancelled;
+
+    companion object {
+        fun fromString(value: String): InviteStatus {
+            return entries.find { it.name.equals(value, ignoreCase = true) }
+                ?: throw IllegalArgumentException("No enum constant for value: $value")
+        }
+    }
 }
+
+

@@ -1,22 +1,24 @@
 import Assignment from "../components/Assignment";
-import { AssessmentInterface, AssignmentInterface } from "../utils/types";
+import {AssessmentInterface, AssignmentInterface} from "../utils/types";
 import "../styles/main.css";
-import scrollToAssignment from "../utils/operations.tsx";
-import { useEffect } from "react";
-import { AssignmentTypes } from "../utils/constants.tsx";
+import {scrollToAssignment} from "../utils/operations.tsx";
+import {useEffect, useState} from "react";
+import {AssignmentTypes} from "../utils/constants.tsx";
 
-function Main({
-  assessment,
-  currentSectionIndex,
-  currentAssignmentIndex,
-}: Props) {
+function Main({assessment, currentSectionIndex, currentAssignmentIndex, setAssignmentAnswer}: Readonly<Props>) {
   useEffect(() => {
     scrollToAssignment(
-      assessment.sections[currentSectionIndex].assignments[
-        currentAssignmentIndex[currentSectionIndex]
-      ].id
+      assessment.sections[currentSectionIndex].assignments[currentAssignmentIndex[currentSectionIndex]].id
     );
-  }, [currentSectionIndex, currentAssignmentIndex]);
+  }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
+
+  const [isCurrentCoding, setIsCurrentCoding] = useState(false);
+
+  useEffect(() => {
+    setIsCurrentCoding(
+      assessment.sections[currentSectionIndex].assignments[currentAssignmentIndex[currentSectionIndex]].type === AssignmentTypes.CODING
+    );
+  }, [currentSectionIndex, currentAssignmentIndex, assessment.sections]);
 
   return (
     <main>
@@ -26,25 +28,31 @@ function Main({
             if (assignment.type === AssignmentTypes.CODING) {
               if (i === currentAssignmentIndex[currentSectionIndex]) {
                 return (
-                  <div
-                    className="assignment"
-                    key={assignment.id}
-                    id={assignment.id}
-                  >
-                    <Assignment index={i} assignment={assignment} />
+                  <div className="assignment" key={assignment.id} id={assignment.id}>
+                    <Assignment
+                      index={i}
+                      assignment={assignment}
+                      setAssignmentAnswer={(answer: object) => {
+                        setAssignmentAnswer(currentSectionIndex, i, answer);
+                      }}
+                    />
                   </div>
                 );
-              } else {
+              }
+              return null;
+            } else {
+              if (isCurrentCoding) {
                 return null;
               }
-            } else {
               return (
-                <div
-                  className="assignment"
-                  key={assignment.id}
-                  id={assignment.id}
-                >
-                  <Assignment index={i} assignment={assignment} />
+                <div className="assignment" key={assignment.id} id={assignment.id}>
+                  <Assignment
+                    index={i}
+                    assignment={assignment}
+                    setAssignmentAnswer={(answer: object) => {
+                      setAssignmentAnswer(currentSectionIndex, i, answer);
+                    }}
+                  />
                 </div>
               );
             }
@@ -59,6 +67,7 @@ interface Props {
   assessment: AssessmentInterface;
   currentSectionIndex: number;
   currentAssignmentIndex: number[];
+  setAssignmentAnswer: (arg1: number, arg2: number, arg3: object) => void;
 }
 
 export default Main;

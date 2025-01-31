@@ -5,9 +5,9 @@ import LoadingPage from "../../../../components/LoadingPage.tsx";
 import {BarChartInterface} from "../../../../utils/types.tsx";
 import {getBarChartStats} from "../../../../utils/apiFunctions.tsx";
 
-function BarChartContainer({inviteId}: Props): ReactNode {
+function BarChartContainer({inviteId}: Readonly<Props>): ReactNode {
   const [loading, setLoading] = useState<boolean>(false);
-  const [barChartData, setBarChartData] = useState<BarChartInterface>({percentage: "-", barGroups: []});
+  const [barChartData, setBarChartData] = useState<BarChartInterface>({percentage: 0, distributionGroups: [], selectedGroup: -1});
 
   useEffect((): void => {
     if (inviteId != "") {
@@ -34,7 +34,7 @@ function BarChartContainer({inviteId}: Props): ReactNode {
 
   if (loading) {
     return (
-      <LoadingPage additionalClasses={"page--barchart"} size={30}/>
+      <LoadingPage additionalClasses={"page--barchart page--mod"} size={30}/>
     )
 
   } else {

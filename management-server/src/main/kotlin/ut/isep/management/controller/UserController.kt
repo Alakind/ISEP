@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
+import org.springdoc.core.annotations.ParameterObject
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -34,12 +34,27 @@ class UserController(
 
 
     @GetMapping
-    @Operation(summary = "Get all users", description = "Returns a list of all users")
-    @ApiResponse(
-        responseCode = "200",
-        description = "Returns a list of all users",
+    @Operation(
+        summary = "Get all users",
+        description = "Returns a list of all users with the given search terms(s) and pagination parameters"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Returns a list of all users",
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description = "Returns when sorting attribute name or ASC/DESC are incorrectly spelled",
+                content = [Content(
+                    schema = Schema(implementation = String::class)
+                )]
+            )
+        ]
     )
     fun getUsers(
+        @ParameterObject
         @PageableDefault(
             size = Int.MAX_VALUE, sort = ["name"],
             direction = Sort.Direction.ASC
@@ -57,7 +72,10 @@ class UserController(
 
 
     @GetMapping("{id}")
-    @Operation(summary = "Get user", description = "Returns an user or 404 if not found")
+    @Operation(
+        summary = "Get user",
+        description = "Returns an user or 404 if not found"
+    )
     @ApiResponses(
         value = [
             ApiResponse(
@@ -68,17 +86,38 @@ class UserController(
                 responseCode = "404",
                 description = "User not found",
                 content = [Content(
-                    schema = Schema(implementation = DefaultErrorAttributes::class)
+                    schema = Schema(implementation = String::class)
                 )]
             )
         ]
     )
     fun getUser(@PathVariable id: Long): ResponseEntity<UserReadDTO> {
-        return try {
-            ResponseEntity.ok(userReadService.getById(id))
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        return ResponseEntity.ok(userReadService.getById(id))
+    }
+
+
+    @GetMapping("/oid/{oid}")
+    @Operation(
+        summary = "Get user based on oid",
+        description = "Returns an user or 404 if not found"
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Found the user",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "User not found with given oid",
+                content = [Content(
+                    schema = Schema(implementation = String::class)
+                )]
+            )
+        ]
+    )
+    fun getUserOid(@PathVariable oid: String): ResponseEntity<UserReadDTO> {
+        return ResponseEntity.ok(userReadService.getByOid(oid, User(oid = oid)))
     }
 
     @PostMapping
@@ -89,8 +128,12 @@ class UserController(
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Added the user",
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Failed to add a user",
             )
         ]
     )
@@ -119,16 +162,16 @@ class UserController(
             ApiResponse(
                 responseCode = "404",
                 description = "User not found",
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Failed to update an user",
             )
         ]
     )
     fun putUser(@RequestBody userDTO: UserUpdateDTO): ResponseEntity<String> {
-        return try {
-            userUpdateService.update(userDTO)
-            ResponseEntity.ok("Updated an user")
-        } catch (e: NoSuchElementException) {
-            ResponseEntity.status(404).build()
-        }
+        userUpdateService.update(userDTO)
+        return ResponseEntity.ok("Updated an user")
     }
 
     @DeleteMapping("{id}")

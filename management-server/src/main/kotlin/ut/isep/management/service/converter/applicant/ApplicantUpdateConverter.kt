@@ -12,7 +12,6 @@ class ApplicantUpdateConverter : UpdateConverter<Applicant, ApplicantUpdateDTO> 
             updateDTO.name?.let { this.name = it }
             updateDTO.email?.let { this.email = it }
             updateDTO.preferredLanguage?.let { this.preferredLanguage = it }
-            updateDTO.score?.let { this.score = it }
         }
     }
 }
