@@ -1,31 +1,32 @@
-import InfoSupportLogo from "../components/infoSupportLogo";
+import InfoSupportLogo from "../components/InfoSupportLogo";
 import InfoSupportMailSupport from "../components/InfoSupportMailSupport";
-import "../styles/dark_mode.css";
-import "../styles/dark_mode-welcome.css";
+import "../styles/general.css";
+import "../styles/welcome.css";
+import {formatTime, getTime} from "../utils/operations.tsx";
 
-function WelcomePage({ handleStart }: Props) {
+function WelcomePage({handleStart, inviteId, name, availableSeconds}: Readonly<Props>) {
+  const {hours, minutes, seconds} = getTime(availableSeconds);
   return (
     <div className="welcomePage">
-      {/* TODO put name of user here. */}
       <div className="logoContainer">
-        <InfoSupportLogo />
+        <InfoSupportLogo/>
       </div>
-      <h2>Welcome, Claire!</h2>
+      <h2>Welcome{name !== "" ? `, ${name}` : ""}!</h2>
       <div className="infoTextContainer">
         <p>
-          to InfoSupport<sup>&reg;</sup> assessment. In this
-          assessment you will answer multiple-choice and coding questions.
-          You will have a maximum time of 02:00:00 to complete these. Once you
-          are ready to begin, press the 'Start' button.
+          to InfoSupport<sup>&reg;</sup> assessment. In this assessment you will
+          answer multiple-choice and coding questions. You will have a maximum
+          time of {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)} to complete these. Once you are ready to begin, press
+          the 'Start' button.
         </p>
         <p>
           In case of any problems, please contact{" "}
-          <InfoSupportMailSupport element={"InfoSupport"} />. <br></br>During
+          <InfoSupportMailSupport element={"InfoSupport"} inviteId={inviteId} name={name}/>. <br></br>During
           the questionnaire, you can press the ? button to request support.
         </p>
       </div>
 
-      <button className="btn btn-primary btn-lg btn--mod" onClick={handleStart}>
+      <button className="btn btn-lg btn--mod btn--welcome" onClick={handleStart}>
         Start
       </button>
     </div>
@@ -34,6 +35,9 @@ function WelcomePage({ handleStart }: Props) {
 
 interface Props {
   handleStart: () => void;
+  inviteId: string | null;
+  name: string;
+  availableSeconds: number;
 }
 
 export default WelcomePage;

@@ -1,0 +1,10 @@
+.dashboard-statistics-blocks {
+    text-align: center;
+    width: 33%;
+    height: 70%;
+}
+
+.dashboard-statistics-bottom {
+    opacity: 80%;
+    padding: 0 20px;
+}

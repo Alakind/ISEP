@@ -1,37 +1,66 @@
-import { AssignmentMultipleChoiceInterface } from "../utils/types";
-import {useState} from "react";
+import {sendSimpleSolution} from "../utils/apiFunctions";
+import {AssignmentMultipleChoiceInterface} from "../utils/types";
+import {useEffect, useState} from "react";
 
-function AssignmentMultipleChoice({ assignment }: Props) {
-  const [isChecked, setIsChecked] = useState(
-      Array(assignment.options.length).fill(false)
-  );
+function AssignmentMultipleChoice({assignment, setAssignmentAnswer}: Readonly<Props>) {
+  const [checkedAnswers, setCheckedAnswers] = useState<Set<string>>(new Set());
 
-  const handleOptionChange = (index: number) => {
-    setIsChecked((prev) => {
-      if (assignment.isMultipleAnswers) {
-        // For checkboxes: toggle the individual option
-        return prev.map((checked, i) => (i === index ? !checked : checked));
-      } else {
-        // For radio buttons: uncheck all others and check the selected one
-        return prev.map((_, i) => i === index);
+  useEffect(() => {
+    setCheckedAnswers(() => {
+      const answers: Set<string> = new Set();
+      if (assignment?.answer?.answer === undefined) {
+        return new Set();
       }
+
+      for (const currentAnswer of assignment.answer.answer) {
+        answers.add(currentAnswer);
+      }
+
+      return answers;
     });
+  }, []);
+
+  const handleOptionChange = async (option: string) => {
+    let newAnswers: Set<string> = new Set();
+
+    if (assignment.isMultipleAnswers) {
+      newAnswers = new Set(checkedAnswers);
+
+      if (newAnswers.has(option)) {
+        newAnswers.delete(option);
+      } else {
+        newAnswers.add(option);
+      }
+    } else {
+      newAnswers.add(option);
+    }
+
+    setCheckedAnswers(newAnswers);
+
+    setAssignmentAnswer({answer: [...newAnswers]});
+
+    await sendSimpleSolution(assignment, [...newAnswers]);
   };
 
   return (
     <>
       {assignment.options.map((option, i) => (
-        <span key={i} className="assignment__option-wrapper">
+        <span key={option.replace(" ", "") + "_" + i} className="assignment__option-wrapper">
           <input
-            className={`assignment__input ${isChecked[i] ? "assignment__input--checked" : ""}`}
-            type={assignment.isMultipleAnswers?"checkbox":"radio"}
+            className={`assignment__input ${
+              checkedAnswers.has(option) ? "assignment__input--checked" : ""
+            }`}
+            type={assignment.isMultipleAnswers ? "checkbox" : "radio"}
             value={option}
             id={`${assignment.id}_${i}`}
             name={`${assignment.id}_${i}`}
-            checked={isChecked[i]}
-            onChange={() => handleOptionChange(i)}
+            checked={checkedAnswers.has(option)}
+            onChange={() => handleOptionChange(option)}
           />
-          <label className="assignment__label" htmlFor={`${assignment.id}_${i}`}>
+          <label
+            className="assignment__label"
+            htmlFor={`${assignment.id}_${i}`}
+          >
             {option}
           </label>
         </span>
@@ -42,6 +71,7 @@ function AssignmentMultipleChoice({ assignment }: Props) {
 
 interface Props {
   assignment: AssignmentMultipleChoiceInterface;
+  setAssignmentAnswer: (arg: object) => void;
 }
 
 export default AssignmentMultipleChoice;

@@ -1,6 +1,6 @@
 package ut.isep.interview.api
 
-import dto.SectionDTO
+import dto.section.SectionReadDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -33,7 +33,7 @@ class SectionController(val client: ManagementApplicationClient) {
             )]
         )
     ])
-    fun getSection(@PathVariable sectionId: Int): ResponseEntity<SectionDTO>? {
+    fun getSection(@PathVariable sectionId: Int): ResponseEntity<SectionReadDTO>? {
         return try {
             ResponseEntity.ok(client.getSection(sectionId))
         } catch (e: feign.FeignException) {

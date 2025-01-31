@@ -1,67 +1,80 @@
 package ut.isep.management
 
+import enumerable.UserRole
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
-import ut.isep.management.model.pgsql.*
-import ut.isep.management.repository.pgsql.AssignmentRepository
-import ut.isep.management.repository.pgsql.SectionRepository
+import org.springframework.transaction.annotation.Transactional
+import ut.isep.management.model.entity.*
+import ut.isep.management.repository.*
+import ut.isep.management.util.logger
 
+@Transactional
 @Component
 class DummyDataLoader(
-    private val sectionRepository: SectionRepository,
-    private val assignmentRepository: AssignmentRepository
+        private val applicantRepository: ApplicantRepository,
+        private val assessmentRepository: AssessmentRepository,
+        private val inviteRepository: InviteRepository,
+//        private val sectionRepository: SectionRepository,
+//        private val assignmentRepository: AssignmentRepository,
+        private val solvedAssignmentRepository: SolvedAssignmentRepository,
+        private val userRepository: UserRepository,
+        private val timingPerSectionRepository: TimingPerSectionRepository,
+        private val testResultRepository: TestResultRepository
 ) : CommandLineRunner {
 
+    private val log = logger()
+
     override fun run(vararg args: String?) {
-        // clear database
-        sectionRepository.deleteAll()
-        assignmentRepository.deleteAll()
-        // dummy Assignments
-        val assignment1 = AssignmentMultipleChoice(
-            description = "What will I get if I will sum 2\n and 2?",
-            options = listOf("42", "Isaac Newton", "Madagascar"),
-            isMultipleAnswers = false,
-        )
+        // clear database in the correct order to avoid foreign key constraint violations
+        solvedAssignmentRepository.deleteAll()
+        inviteRepository.deleteAll()        // This will cascade to delete SolvedAssignments
+        applicantRepository.deleteAll()     // Delete applicants
+//        assessmentRepository.deleteAll()    // Delete assessments
+//        sectionRepository.deleteAll()       // Delete sections
+//        assignmentRepository.deleteAll()    // Delete assignments
+        userRepository.deleteAll()
+        timingPerSectionRepository.deleteAll()
+        testResultRepository.deleteAll()
 
-        val assignment2 = AssignmentMultipleChoice(
-            description = "Which member(s) should receive a red card?",
-            options = listOf("Aleks", "Jarno", "Jesse", "Ruben", "Everard"),
-            isMultipleAnswers = true
-        )
+        val user1 = User(name = "Default admin", oid = "jdkc39e4-3453-345g-8360-dfg24d45dg56", email = "fallbackAdmin@infosupport.nl", role = UserRole.Admin)
+        val user2 = User(name = "J S", oid = "3f0dcb34-5638-4f90-8767-cdf4f0bc8b29", email = "j.e.sweers@student.utwente.nl", role = UserRole.Admin)
+        val user3 = User(name = "SuperUser", oid = "sdf45df4-4574-34r5-3465-xgvrf345fg44", email = "su@sudo.com", role = UserRole.Admin)
+        val user4 = User(name = "Inge Interviewer", oid = "fggsf34f-4535-dg5d-5273-dfg54bg5tg54", email = "inge@infosupport.nl", role = UserRole.Interviewer)
+        val user5 = User(name = "Zacharias poef", oid = "cb5yd545-7534-3f5v-3471-xbf45xcb4c4b", email = "z@hotmail.com", role = UserRole.Recruiter)
+        val user6 = User(name = "Jurre Brandsen", oid = "", email = "jurre@infosupport.nl", role = UserRole.Admin)
 
-        val assignment3 = AssignmentMultipleChoice(
-            description = "You are a 15th century plague doctor, please cure this sick person",
-            options = listOf("Mouse bites", "Leeches", "More mouse bites", "All of the above"),
-            isMultipleAnswers = false
-        )
+        userRepository.apply {
+            save(user1)
+            save(user2)
+            save(user3)
+            save(user4)
+            save(user5)
+            save(user6)
+        }
 
-        val assignment4 = AssignmentMultipleChoice(
-            description = "How Long is a Chinese person",
-            options = listOf("Option A", "169.7 cm (5 ft 7 in)", "Trick question"),
-            isMultipleAnswers = false
-        )
+        val applicants = listOf(
+            Applicant(name = "Aaron", preferredLanguage = "Kotlin", email = "aaron@example.com"),
+            Applicant(name = "Zebediah", preferredLanguage = "F", email = "zebediah1@example.com"),
+            Applicant(name = "Henk", preferredLanguage = "Rust", email = "henk@example.com"),
+            Applicant(name = "Gerrit", preferredLanguage = "JavaScript", email = "gerrit@example.com"),
+            Applicant(name = "Simon", preferredLanguage = "Haskell", email = "simon@example.com"),
+            Applicant(name = "Andre", preferredLanguage = "Java", email = "andre@example.com"),
+            Applicant(name = "Laura", preferredLanguage = "Python", email = "laura@example.com"),
+            Applicant(name = "Sophia", preferredLanguage = "Swift", email = "sophia@example.com"),
+            Applicant(name = "Lucas", preferredLanguage = "Kotlin", email = "lucas@example.com"),
+            Applicant(name = "Isabella", preferredLanguage = "Go", email = "isabella@example.com"),
+            Applicant(name = "Everard", preferredLanguage = "C", email = "everarddevree@gmail.com"),
+            )
 
-        val openAssignment1 = AssignmentOpen(
-            description = "Write a 3000 words essay about Pepin the Short's conquests of the Rousillon."
-        )
 
-        val openAssignment2 = AssignmentOpen(
-            description = "Prove whether or not P = NP in 150 words"
-        )
+        applicants.forEach { applicantRepository.save(it) }
 
-        val section1 = Section(
-            title = "Demo Section 1",
-            assignments = listOf(assignment1, assignment2, openAssignment1)
-        )
+        val assessments = assessmentRepository.findAllByLatestTrue()
+        val invites: List<Invite> = assessments.mapIndexed {index, assessment ->
+            Invite.createInvite(applicants[index], assessment)
+        }
+        inviteRepository.saveAll(invites)
 
-        // Create a Section with these assignments
-        val section2 = Section(
-            title = "Demo Section 2",
-            assignments = listOf(assignment3, assignment4, openAssignment2)
-        )
-
-        sectionRepository.save(section1)
-        sectionRepository.save(section2)
-        println("Dummy data loaded!")
+        log.info("Dummy data loaded!")
     }
 }

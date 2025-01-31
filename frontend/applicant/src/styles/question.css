@@ -1,0 +1,109 @@
+.assignment__header {
+    border-bottom: var(--tertiary-color) solid 2px;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.assignment__block {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 15px 10px 15px;
+    background-color: var(--question-block);
+    border-radius: 5px;
+    margin: 0 15px;
+}
+
+.assignment__label {
+    display: inline;
+    white-space: pre-line;
+}
+
+.assignment__textarea {
+    background-color: var(--question-block);
+    color: var(--text-primary);
+    padding: 5px;
+    min-height: 120px;
+    margin-bottom: 5px;
+}
+
+.assignment__input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    min-width: 1em;
+    min-height: 1em;
+    border-radius: 50%;
+    border: 0.15em solid var(--tertiary-color);
+    outline: none;
+    cursor: pointer;
+    margin: 4px 20px -3px 8px;
+}
+
+.assignment__input[type="checkbox"] {
+    border-radius: 0.15em;
+}
+
+.assignment__input[type="radio"] {
+    border-radius: 50%;
+}
+
+.assignment__input--checked {
+    background-color: var(--tertiary-color);
+    position: relative;
+}
+
+.assignment__input--checked::before {
+    content: "\2714";
+    font-size: 0.8em;
+    color: var(--icons);
+    position: absolute;
+    right: 0;
+    top: -3px;
+}
+
+.assignment__option-wrapper {
+    padding: 5px 0;
+    display: flex;
+    align-items: flex-start;
+}
+
+.assignment__option-wrapper:last-child {
+    padding-bottom: 10px;
+}
+
+.coding__language {
+    text-align: end;
+    text-transform: uppercase;
+}
+
+.coding__tabs {
+    margin-top: -25px;
+    margin-bottom: 20px;
+}
+
+.btn--coding__code {
+    margin: 0 5px 0 0;
+}
+
+.btn--coding__tests {
+    margin: 0 0 0 5px;
+}
+
+.btn--coding__run-test {
+    float: right;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.btn--reset {
+    margin-left: 60px;
+}
+
+.bi-play, .bi-file-earmark-code, .bi-clipboard2-check, .bi-arrow-counterclockwise {
+    margin-right: 10px;
+}
+
+.coding__header-test-results {
+    margin-top: 55px;
+}

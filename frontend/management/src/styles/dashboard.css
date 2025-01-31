@@ -1,0 +1,43 @@
+.dashboard-page {
+    width: 75%;
+    min-width: 600px;
+
+}
+
+.dashboard-page > h1 + p {
+    margin-bottom: 40px;
+}
+
+.dashboard-page__flex {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.dashboard-page__flex__left {
+    width: 66%;
+}
+
+.dashboard-page__flex__right {
+    width: 34%;
+}
+
+.dashboard-page h4 {
+    padding-top: 25px;
+}
+
+.dashboard-page h4 + hr {
+    padding-bottom: 15px;
+}
+
+.dashboard-page a {
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.dashboard-page a:hover {
+    color: var(--tertiary-color);
+    cursor: pointer;
+}

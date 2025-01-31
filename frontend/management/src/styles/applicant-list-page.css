@@ -1,0 +1,23 @@
+.applicant-list-page__inner {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.applicant-list-page {
+    width: 60%;
+    min-width: 900px;
+}
+
+@media (max-width: 992px) {
+    .applicant-list-page__btn__text {
+        display: none;
+    }
+
+    .bi-person-add {
+        margin-right: 0 !important;
+    }
+}
+
+.bi-person-add {
+    margin-right: 10px;
+}

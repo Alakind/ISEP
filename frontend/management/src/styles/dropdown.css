@@ -1,0 +1,37 @@
+.dropdown__select {
+    background-color: var(--transparent);
+    border: none;
+    color: var(--text-primary);
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='grey' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    margin-left: 5px;
+}
+
+.dropdown__select > option {
+    color: var(--text-black);
+    background: var(--white-background-transparent);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dropdown__select--disabled {
+    opacity: 0.5;
+}
+
+.dropdown__select:focus-visible, .dropdown__select:hover {
+    outline: var(--transparent) none 0;
+}
+
+.dropdown__select__default-option {
+    color: var(--text-primary-disabled);
+}
+
+@-moz-document url-prefix() {
+    select {
+        color: rgba(0, 0, 0, 0);
+        text-shadow: 0 0 0 #ffffff;
+    }
+}
