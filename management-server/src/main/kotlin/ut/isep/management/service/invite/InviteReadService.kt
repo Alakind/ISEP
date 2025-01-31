@@ -2,6 +2,7 @@ package ut.isep.management.service.invite
 
 import dto.assessment.AssessmentReadDTO
 import dto.invite.InviteReadDTO
+import dto.invite.PreInfoReadDTO
 import enumerable.InviteStatus
 import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
@@ -17,6 +18,7 @@ import ut.isep.management.repository.TimingPerSectionRepository
 import ut.isep.management.service.ReadService
 import ut.isep.management.service.converter.assessment.AssessmentReadConverter
 import ut.isep.management.service.converter.invite.InviteReadConverter
+import ut.isep.management.service.converter.invite.PreInfoReadConverter
 import ut.isep.management.service.timing.TimingPerSectionUpdateService
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -32,13 +34,20 @@ class InviteReadService(
     private val assessmentReadConverter: AssessmentReadConverter,
     private val timingPerSectionRepository: TimingPerSectionRepository,
     private val timingPerSectionUpdateService: TimingPerSectionUpdateService,
+    private val preInfoReadConverter: PreInfoReadConverter,
 ) : ReadService<Invite, InviteReadDTO, UUID>(repository, converter) {
-
     fun getAssessmentByInviteId(id: UUID): AssessmentReadDTO {
         val invite = repository.findById(id)
-            .orElseThrow { NoSuchElementException("Invite not found") }
+            .orElseThrow { NoSuchElementException("Invite not found for the assessment") }
 
         return assessmentReadConverter.toDTO(invite.assessment!!)
+    }
+
+    fun getPreInfoByInviteId(id: UUID): PreInfoReadDTO {
+        val invite = repository.findById(id)
+            .orElseThrow { NoSuchElementException("Invite not found for the preInfo") }
+
+        return preInfoReadConverter.toDTO(invite)
     }
 
     private fun startAssessment(invite: Invite) {

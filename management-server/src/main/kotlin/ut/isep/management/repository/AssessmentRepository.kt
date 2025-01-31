@@ -2,4 +2,9 @@ package ut.isep.management.repository
 
 import ut.isep.management.model.entity.Assessment
 
-interface AssessmentRepository : BaseRepository<Assessment, Long>
+interface AssessmentRepository : BaseRepository<Assessment, Long> {
+
+    fun findByTagAndLatestTrue(tag: String): Assessment?
+
+    fun findAllByLatestTrue(): List<Assessment>
+}

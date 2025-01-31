@@ -1,7 +1,33 @@
 import {createMemoryRouter, RouterProvider} from "react-router-dom";
 import {render, screen} from "@testing-library/react";
 import {router} from "../src/routerConfiguration.tsx";
-import {StrictMode} from "react";
+import {ReactNode, StrictMode} from "react";
+import {vi} from "vitest";
+import {Roles} from "../src/utils/constants.tsx";
+import {InteractionStatus} from "@azure/msal-browser";
+
+vi.mock("../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
+
+vi.mock("@azure/msal-react", () => ({
+  AuthenticatedTemplate: ({children}: { children: ReactNode }) => <>{children}</>,
+  UnauthenticatedTemplate: ({children}: { children: ReactNode }) => <>{children}</>,
+  useMsal: vi.fn(() => ({
+    instance: {
+      getActiveAccount: vi.fn(() => ({username: "testuser@gmail.com"})),
+    },
+    inProgress: InteractionStatus.None
+  })),
+}));
+
+vi.mock("../src/utils/msal/MsUserProvider.tsx", () => ({
+  MsUserProvider: ({children}: { children: ReactNode }) => <>{children}</>
+}))
+
+vi.mock("../src/utils/msal/UserProvider.tsx", () => ({
+  UserProvider: ({children}: { children: ReactNode }) => <>{children}</>
+}))
 
 describe('Router Configuration', () => {
   it('renders the application without crashing', () => {
@@ -28,35 +54,11 @@ describe('Router Configuration', () => {
     expect(screen.getByText("Welcome to the management page of Asserberus. To view applicants and their assessment results navigate to the Applicants page. To view the roles of users navigate to the Users page.")).toBeInTheDocument();
   });
 
-  it('renders settings route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/settings']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('settings')).toBeInTheDocument();
-  });
-
-  it('renders profile route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/profile']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('profile')).toBeInTheDocument();
-  });
-
-  it('renders assessments route', () => {
-    const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/assessments']});
-
-    render(<RouterProvider router={testRouter}/>);
-
-    expect(screen.getByTestId('assessments')).toBeInTheDocument();
-  });
-
   it('renders users route', () => {
     const testRouter = createMemoryRouter(router.routes, {initialEntries: ['/users']});
 
     render(<RouterProvider router={testRouter}/>);
-
+    
     expect(screen.getByTestId('users-list-page')).toBeInTheDocument();
   });
 

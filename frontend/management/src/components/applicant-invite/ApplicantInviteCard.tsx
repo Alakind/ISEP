@@ -56,7 +56,7 @@ function ApplicantInviteCard({
               type="date"
               id="expirationDate"
               name="expirationDate"
-              onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e)} //TODO implement expiration date
+              onChange={(e: ChangeEvent<HTMLInputElement>): void => handleChangeExpirationDate(e)}
               value={getDateFormatted(inviteData.expiresAt)}
               autoComplete="off"
               required

@@ -13,7 +13,8 @@ describe('AssessmentResultsViewer Component', () => {
       assessmentId: "3",
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
-      expiresAt: "2025-01-06T00:28:25.485108Z"
+      expiresAt: "2025-01-06T00:28:25.485108Z",
+      measuredSecondsPerSection: []
     },
     {
       id: "a543b334-2873-48b1-b5fb-64e9ab9df87b",
@@ -21,7 +22,8 @@ describe('AssessmentResultsViewer Component', () => {
       assessmentId: "4",
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
-      expiresAt: "2025-01-06T00:28:25.485638Z"
+      expiresAt: "2025-01-06T00:28:25.485638Z",
+      measuredSecondsPerSection: []
     }
   ];
 
@@ -48,7 +50,7 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0
+        "Isaac Newton"
       ]
     },
     scoredPoints: null
@@ -74,10 +76,10 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0,
-        1,
-        3,
-        4
+        "Jesse",
+        "Ruben",
+        "Aleks",
+        "Jarno"
       ]
     },
     scoredPoints: null
@@ -118,9 +120,9 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0,
-        1,
-        2
+        "More mouse bites",
+        "Mouse bites",
+        "All of the above"
       ]
     },
     scoredPoints: null
@@ -144,7 +146,7 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        1
+        "Trick question"
       ]
     },
     scoredPoints: null
@@ -184,7 +186,7 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0
+        "Isaac Newton"
       ]
     },
     scoredPoints: null
@@ -210,10 +212,10 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0,
-        1,
-        3,
-        4
+        "Jesse",
+        "Ruben",
+        "Aleks",
+        "Jarno"
       ]
     },
     scoredPoints: null
@@ -254,9 +256,9 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        0,
-        1,
-        2
+        "More mouse bites",
+        "Mouse bites",
+        "All of the above"
       ]
     },
     scoredPoints: null
@@ -280,7 +282,7 @@ describe('AssessmentResultsViewer Component', () => {
     referenceAnswer: {
       type: AssignmentTypes.MULTIPLE_CHOICE,
       answer: [
-        1
+        "Trick question"
       ]
     },
     scoredPoints: null
@@ -489,7 +491,8 @@ describe('AssessmentResultsViewer Component', () => {
         assessmentId: "4",
         status: "app_finished",
         invitedAt: "2024-12-30T00:28:25.485638Z",
-        expiresAt: "2025-01-06T00:28:25.485638Z"
+        expiresAt: "2025-01-06T00:28:25.485638Z",
+        measuredSecondsPerSection: []
       }
     ];
 

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class AssessmentReadDTO(
     val id: Long,
     val tag: String,
+    val commit: String,
     val availableSeconds: Long,
     val sections: List<Long>
 ) : ReadDTO

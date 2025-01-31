@@ -7,7 +7,7 @@ function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
         className="assignment__textarea"
         placeholder="No answer provided"
         name={assignment.id}
-        value={assignment.answer?.answer}
+        value={assignment.answer?.answer ?? ""}
         contentEditable={false}
         readOnly={true}
         data-testid={"open-answer"}
@@ -17,7 +17,7 @@ function SolvedAssignmentOpen({assignment}: Readonly<Props>) {
         className="assignment__textarea"
         placeholder="No reference answer available"
         name={assignment.id + "-reference"}
-        value={assignment.referenceAnswer?.answer}
+        value={assignment.referenceAnswer?.answer ?? ""}
         contentEditable={false}
         readOnly={true}
         data-testid={"open-reference-answer"}

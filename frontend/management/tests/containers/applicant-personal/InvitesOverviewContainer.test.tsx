@@ -5,7 +5,8 @@ import {ApplicantInterface, AssessmentInterface, InviteInterface} from '../../..
 import {deleteInvite, sendMail, updateInvite} from "../../../src/utils/apiFunctions.tsx";
 import {act} from "react";
 import {vi} from "vitest";
-import {EmailTypes} from "../../../src/utils/constants.tsx";
+import {EmailTypes, Roles} from "../../../src/utils/constants.tsx";
+import {useUserData} from "../../../src/utils/msal/UseUserData.tsx";
 
 vi.mock('react-toastify', () => ({
   toast: {
@@ -21,6 +22,10 @@ vi.mock('../../../src/utils/apiFunctions.tsx', () => ({
   deleteInvite: vi.fn(),
   sendMail: vi.fn(),
 }));
+
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 describe('InvitesOverviewContainer', () => {
   const mockInvitesData: InviteInterface[] = [
@@ -71,6 +76,8 @@ describe('InvitesOverviewContainer', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
+
+    vi.mocked(useUserData).mockReturnValue({email: "", id: "", name: "", oid: "", role: Roles.ADMIN})
   });
 
   it('should render invites with formatted expiration dates', () => {
@@ -103,11 +110,11 @@ describe('InvitesOverviewContainer', () => {
     );
 
     const expirationDateInputs = screen.getAllByLabelText(/Available till:/i);
-    fireEvent.change(expirationDateInputs[0], {target: {value: '2025-01-20'}});
-
+    fireEvent.change(expirationDateInputs[0], {target: {value: '2050-01-20'}});
+    
     // Verify the input value is updated
     await waitFor(() => {
-      expect(expirationDateInputs[0]).toHaveValue('2025-01-20');
+      expect(expirationDateInputs[0]).toHaveValue('2050-01-20');
     });
   });
 
@@ -160,6 +167,7 @@ describe('InvitesOverviewContainer', () => {
 
   it('should handle a call to handleCancel', async () => {
     vi.mocked(updateInvite).mockResolvedValueOnce({data: {status: "cancelled"}});
+
     render(
       <InvitesOverviewContainer
         invitesData={mockInvitesData}

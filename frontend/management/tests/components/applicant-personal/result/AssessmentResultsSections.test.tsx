@@ -15,8 +15,8 @@ describe("AssessmentResultsSections Component", () => {
     scoredPoints: 4,
     options: ["A", "B", "C"],
     isMultipleAnswers: false,
-    answer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: [0]},
-    referenceAnswer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: [0]},
+    answer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: ["A"]},
+    referenceAnswer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: ["A"]},
   }
 
   const assignment2: AssignmentOpenSolvedInterface = {
@@ -30,6 +30,7 @@ describe("AssessmentResultsSections Component", () => {
   }
 
   const assignment3: AssignmentCodingSolvedInterface = {
+    testResults: [],
     id: "assignment3",
     type: AssignmentTypes.CODING,
     description: "Write a function",
@@ -37,8 +38,8 @@ describe("AssessmentResultsSections Component", () => {
     scoredPoints: 6,
     codeUri: "afadfadf",
     language: "Kotlin",
-    answer: {type: AssignmentTypes.CODING, answer: "function code"},
-    referenceAnswer: {type: AssignmentTypes.CODING, answer: "Reference code"},
+    answer: {type: AssignmentTypes.CODING, code: "function code", test: ""},
+    referenceAnswer: {type: AssignmentTypes.CODING, code: "Reference code", test: ""},
   }
 
   const mockSections: SectionSolvedInterface[] = [

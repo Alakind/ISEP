@@ -10,4 +10,5 @@ data class ResultAssignmentOpenReadDTO(
     override val solvedAssignment: SolvedAssignmentOpenReadDTO,
     override val referenceAnswer: AnswerCreateReadDTO.Open,
     override val scoredPoints: Int?,
+    override val availablePoints: Int,
 ) : ResultAssignmentReadDTO

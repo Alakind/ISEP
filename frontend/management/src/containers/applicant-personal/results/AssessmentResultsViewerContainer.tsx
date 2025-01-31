@@ -45,7 +45,8 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
       }
 
       setSectionsData(sections);
-      setActiveAssessment(invitesData.findIndex((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED));
+      const newActiveAssessmentIndex = invitesData.findIndex((inviteData: InviteInterface) => mapStatus(inviteData.status) === InviteStatuses.APP_FINISHED);
+      setActiveAssessment(newActiveAssessmentIndex === -1 ? 0 : newActiveAssessmentIndex);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message)
@@ -60,7 +61,7 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
   return (
     <>
       {
-        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0
+        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0 || invitesData.every((invite: InviteInterface) => invite.status !== mapStatus(InviteStatuses.APP_FINISHED))
           ? (
             <></>
           ) : (

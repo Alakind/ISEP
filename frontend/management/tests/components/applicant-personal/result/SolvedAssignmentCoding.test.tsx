@@ -17,8 +17,8 @@ describe('SolvedAssignmentCoding Component', () => {
     availablePoints: 10,
     codeUri: "a1b2c3d4e5f6g7h8i9j0",
     language: "javascript",
-    answer: {type: AssignmentTypes.CODING, answer: 'console.log("Hello, World!");'},
-    referenceAnswer: {type: AssignmentTypes.CODING, answer: 'console.log("Expected Output");'},
+    answer: {type: AssignmentTypes.CODING, code: 'console.log("Hello, World!");', test: ""},
+    referenceAnswer: {type: AssignmentTypes.CODING, code: 'console.log("Expected Output");', test: ""},
     testResults: [{name: "null test", passed: true}],
     startCode: "console.log(\"Hello!\");",
   };
@@ -30,22 +30,30 @@ describe('SolvedAssignmentCoding Component', () => {
     showCodeChanges: false,
     showTestResults: false,
     handleShowTestResults: vi.fn(),
+    showTestCode: false,
+    handleShowTestCode: vi.fn(),
+    showReferenceCode: false,
+    handleShowReferenceCode: vi.fn(),
+    showReferenceTestCode: false,
+    handleShowReferenceTestCode: vi.fn(),
   };
 
   it("should render without crashing", () => {
     render(<SolvedAssignmentCoding {...defaultProps} />);
-    expect(screen.getByText(/Code changes/i)).toBeInTheDocument();
+    expect(screen.getByText("Code changes", {exact: true})).toBeInTheDocument();
   });
 
   it("should display 'No changes are made' if startCode and answer are the same", () => {
     const props = {
       ...defaultProps,
+      showCodeChanges: true,
       assignment: {
         ...defaultProps.assignment,
         startCode: "console.log('Code');",
         answer: {
           type: AssignmentTypes.CODING,
-          answer: "console.log('Code');"
+          code: "console.log('Code');",
+          test: ""
         }
       },
     };
@@ -68,6 +76,7 @@ describe('SolvedAssignmentCoding Component', () => {
   it("should render 'No test results available' when there are no test results", () => {
     const props = {
       ...defaultProps,
+      showTestResults: true,
       assignment: {...mockAssignment, testResults: []},
     };
     render(<SolvedAssignmentCoding {...props} />);
@@ -88,7 +97,7 @@ describe('SolvedAssignmentCoding Component', () => {
       />
     );
 
-    fireEvent.click(screen.getByText(/Code changes/i));
+    fireEvent.click(screen.getByText("Code changes", {exact: true}));
     expect(handleShowCodeChangesMock).toHaveBeenCalledTimes(1);
   });
 

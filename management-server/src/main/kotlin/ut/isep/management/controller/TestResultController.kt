@@ -29,8 +29,12 @@ class TestResultController(
     @ApiResponses(
         value = [
             ApiResponse(
-                responseCode = "200",
+                responseCode = "201",
                 description = "Added the test result",
+            ),
+            ApiResponse(
+                responseCode = "500",
+                description = "Failed to add test result",
             )
         ]
     )
@@ -56,12 +60,17 @@ class TestResultController(
                 description = "Updated the test result",
             ),
             ApiResponse(
+                responseCode = "403",
+                description = "Forbidden to update the test result not belonging to the invite",
+            ),
+            ApiResponse(
                 responseCode = "404",
                 description = "Test result not found",
             )
         ]
     )
-    fun putApplicant(@RequestBody testResultDTO: TestResultUpdateDTO): ResponseEntity<String> {
+    //TODO: find out if this endpoint is necessary
+    fun putTestResult(@RequestBody testResultDTO: TestResultUpdateDTO): ResponseEntity<String> {
         testResultUpdateService.update(testResultDTO)
         return ResponseEntity.ok("Updated a test result")
     }

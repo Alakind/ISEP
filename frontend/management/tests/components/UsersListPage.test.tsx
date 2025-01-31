@@ -15,11 +15,11 @@ describe('UsersListPage Component', () => {
   const mockData: UserInterface[] = [
     {
       id: '1', name: 'User 1', email: 'user1@example.com',
-      role: Roles.ADMIN,
+      role: Roles.ADMIN, oid: ""
     },
     {
       id: '2', name: 'User 2', email: 'user2@example.com',
-      role: Roles.INTERVIEWER
+      role: Roles.INTERVIEWER, oid: ""
     },
   ];
 
@@ -118,7 +118,7 @@ describe('UsersListPage Component', () => {
         />
       </MemoryRouter>
     );
-    
+
     const bulkActionSelect = screen.getByTestId('bulk-action-select');
     expect(bulkActionSelect).toBeInTheDocument();
   });

@@ -1,15 +1,15 @@
 import "../styles/progressbar.css";
 import {ReactNode} from "react";
 
-function Progressbar({id, score}: Readonly<Props>): ReactNode {
+function Progressbar({id, score, max}: Readonly<Props>): ReactNode {
   return (
     <progress
       id={`progressbar${id}`}
-      max="100"
-      value={score || 0}
+      max={max ?? 100}
+      value={score ?? 0}
       data-testid={"progressbar"}
     >
-      ({score || 0}%)
+      ({score ?? 0}%)
     </progress>
   )
 }
@@ -17,6 +17,7 @@ function Progressbar({id, score}: Readonly<Props>): ReactNode {
 interface Props {
   id: string;
   score?: number;
+  max?: number;
 }
 
 export default Progressbar

@@ -92,3 +92,7 @@ export function formatDate(date: Date): string {
     day: "2-digit"
   }).format(date);
 }
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}

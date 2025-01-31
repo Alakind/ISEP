@@ -17,11 +17,9 @@ vi.mock('react-toastify', () => ({
 
 describe('BarChartContainer', () => {
   const mockBarChartData: BarChartInterface = {
-    percentage: '75%',
-    barGroups: [
-      {isSelected: true, value: "50"},
-      {isSelected: false, value: "25"},
-    ],
+    percentage: 75.00,
+    distributionGroups: [50, 25],
+    selectedGroup: 0
   };
 
   beforeEach(() => {
@@ -41,7 +39,7 @@ describe('BarChartContainer', () => {
     await waitFor(() => {
       expect(getBarChartStats).toHaveBeenCalledWith('invite1');
       expect(screen.queryByTestId('loading-page')).not.toBeInTheDocument();
-      expect(screen.getByText('75%')).toBeInTheDocument();
+      expect(screen.getByText('75.00')).toBeInTheDocument();
     });
   });
 
@@ -57,7 +55,7 @@ describe('BarChartContainer', () => {
     });
 
     // Verify no data is displayed
-    expect(screen.queryByText('75%')).not.toBeInTheDocument();
+    expect(screen.queryByText('75.00')).not.toBeInTheDocument();
   });
 
   it('should handle API errors gracefully (unknown error)', async () => {
@@ -72,7 +70,7 @@ describe('BarChartContainer', () => {
     });
 
     // Verify no data is displayed
-    expect(screen.queryByText('75%')).not.toBeInTheDocument();
+    expect(screen.queryByText('75.00')).not.toBeInTheDocument();
   });
 
   it('should not fetch data if inviteId is empty', () => {

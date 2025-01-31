@@ -18,5 +18,6 @@ import io.swagger.v3.oas.annotations.media.Schema
 sealed interface ResultAssignmentReadDTO : ReadDTO {
     val solvedAssignment: SolvedAssignmentReadDTO
     val scoredPoints: Int?
+    val availablePoints: Int
     val referenceAnswer: AnswerCreateReadDTO
 }

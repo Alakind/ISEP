@@ -6,6 +6,7 @@ import {toast} from 'react-toastify';
 import {deleteApplicant, updateApplicant} from '../../../src/utils/apiFunctions';
 import {MemoryRouter, useNavigate} from 'react-router-dom';
 import {ApplicantInterface} from "../../../src/utils/types.tsx";
+import {Roles} from "../../../src/utils/constants.tsx";
 
 vi.mock('react-toastify', () => ({
   toast: {
@@ -28,6 +29,10 @@ vi.mock("react-router-dom", async () => {
     useNavigate: vi.fn(),
   };
 });
+
+vi.mock("../../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
 
 const mockNavigate = vi.fn();
 vi.mocked(useNavigate).mockReturnValue(mockNavigate);

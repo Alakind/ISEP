@@ -26,7 +26,7 @@ describe("DashboardList", () => {
     {
       scoredPoints: 90,
       status: InviteStatuses.APP_FINISHED,
-      assessmentFinishedAt: new Date("2025-01-15T00:00:00Z"),
+      assessmentFinishedAt: "2025-01-15T00:00:00Z",
       expiresAt: "2025-01-20T00:00:00Z",
       id: "",
       applicantId: "",
@@ -41,13 +41,13 @@ describe("DashboardList", () => {
     {
       scoredPoints: 50,
       status: InviteStatuses.EXPIRED,
-      assessmentFinishedAt: new Date("2025-01-10T00:00:00Z"),
+      assessmentFinishedAt: "2025-01-10T00:00:00Z",
       expiresAt: "2025-01-15T00:00:00Z",
       id: "",
       applicantId: "",
       assessmentId: "",
       invitedAt: "",
-      assessmentStartedAt: new Date("2025-01-09T00:00:00Z"),
+      assessmentStartedAt: "2025-01-09T00:00:00Z",
       measuredSecondsPerSection: []
     },
   ];
@@ -56,7 +56,7 @@ describe("DashboardList", () => {
     {
       scoredPoints: 70,
       status: InviteStatuses.APP_REMINDED_TWICE,
-      assessmentFinishedAt: new Date("2025-01-18T00:00:00Z"),
+      assessmentFinishedAt: "2025-01-18T00:00:00Z",
       expiresAt: "2025-01-22T00:00:00Z",
       id: "",
       applicantId: "",

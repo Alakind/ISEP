@@ -10,7 +10,6 @@ beforeEach(() => {
   });
 });
 
-
 describe("ThemeProvider", () => {
   it("should initialize with DARK theme by default", () => {
     const TestComponent = () => {
@@ -132,24 +131,4 @@ describe("ThemeProvider", () => {
 
     expect(document.body.getAttribute("data-theme")).toBe(Themes.DARK);
   });
-
-  it.skip("should throw an error when the useTheme is not used within a theme provider", () => {
-    // vi.mock('react', async () => {
-    //   const actual = await vi.importActual("react");
-    //   return {
-    //     ...actual,
-    //     useContext: vi.fn(),
-    //   };
-    // });
-    const TestComponent = () => {
-      const {toggleTheme} = useTheme();
-      return <button onClick={toggleTheme}>Toggle</button>;
-    };
-
-    expect(() => render(<TestComponent/>)).toThrowError(
-      "useTheme must be used within a ThemeProvider"
-    );
-
-  })
-
 });

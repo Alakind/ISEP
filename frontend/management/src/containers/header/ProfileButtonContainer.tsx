@@ -1,14 +1,22 @@
 import ProfileButton from "../../components/header/ProfileButton.tsx";
 import {ReactNode} from "react";
+import {useMsal} from "@azure/msal-react";
+import {useUserData} from "../../utils/msal/UseUserData.tsx";
 
-function ProfileButtonContainer({urlPrefix}: Readonly<Props>): ReactNode {
+function ProfileButtonContainer(): ReactNode {
+  const {instance} = useMsal();
+  const user = useUserData();
+
+  function handleLogout() {
+    instance.logoutRedirect({postLogoutRedirectUri: "/",}).then()
+  }
+
   return (
-    <ProfileButton urlPrefix={urlPrefix} currentUser={"Jurre"}/>
+    <ProfileButton
+      currentUser={user.name ?? "-"}
+      currentRole={user.role ?? "-"}
+      handleLogout={handleLogout}/>
   )
-}
-
-interface Props {
-  urlPrefix: string;
 }
 
 export default ProfileButtonContainer

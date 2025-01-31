@@ -6,6 +6,8 @@ import {ApplicantInterface, InviteInterface} from '../../src/utils/types';
 import {MemoryRouter, useNavigate} from "react-router-dom";
 import {vi} from "vitest";
 import {act} from "react";
+import {useUserData} from "../../src/utils/msal/UseUserData.tsx";
+import {Roles} from "../../src/utils/constants.tsx";
 
 vi.mock('../../src/utils/apiFunctions.tsx', () => ({
   __esModule: true,
@@ -29,6 +31,10 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+vi.mock("../../src/utils/msal/UseUserData.tsx", () => ({
+  useUserData: vi.fn(() => ({role: Roles.ADMIN})),
+}))
+
 describe('ApplicantsListPageContainer', () => {
   const mockApplicants: ApplicantInterface[] = [
     {
@@ -51,8 +57,8 @@ describe('ApplicantsListPageContainer', () => {
       status: "not_started",
       invitedAt: "2024-12-30T00:28:25.485108Z",
       expiresAt: "2025-01-06T00:28:25.485108Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     },
@@ -63,8 +69,8 @@ describe('ApplicantsListPageContainer', () => {
       status: "app_finished",
       invitedAt: "2024-12-30T00:28:25.485638Z",
       expiresAt: "2025-01-06T00:28:25.485638Z",
-      assessmentFinishedAt: new Date(),
-      assessmentStartedAt: new Date(),
+      assessmentFinishedAt: "",
+      assessmentStartedAt: "",
       measuredSecondsPerSection: [],
       scoredPoints: 0
     }
@@ -159,5 +165,33 @@ describe('ApplicantsListPageContainer', () => {
     })
 
     expect(mockNavigate).toHaveBeenCalledWith("/applicants/add");
+  });
+
+  it('shouldn\'t render no access page a Recruiter role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.RECRUITER});
+
+    render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
+    });
+  });
+
+  it('shouldn\'t render no access page a Interviewer role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.INTERVIEWER});
+
+    render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
+    });
+  });
+
+  it('shouldn\'t render no access page a Admin role', async () => {
+    vi.mocked(useUserData).mockReturnValueOnce({email: "", id: "", name: "", oid: "", role: Roles.ADMIN});
+
+    render(<MemoryRouter><ApplicantsListPageContainer/></MemoryRouter>);
+    await waitFor(() => {
+      expect(screen.queryByRole('heading', {name: "Access denied"})).not.toBeInTheDocument();
+    });
   });
 });

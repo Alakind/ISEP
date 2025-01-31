@@ -1,28 +1,31 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.CodeExecutor.createAndReturnTempFiles
+import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
+import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
 
-object JavaExecutor {
+object JavaExecutor : CodeExecutor {
 
-    fun startContainer(inviteId: String, container: File) {
+    override fun startContainer(inviteId: String, container: File) {
         val id = ContainerAPI.startContainer(container, "$inviteId-java")
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/java"), "/project")
     }
 
-    fun runTest(inviteId: String, code: String, tests: String?): List<TestResult> {
+    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+        //FIXME: Management should initialize the containers when the client logs in
+        try {
+            startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
+        } catch (_: Exception) {}
+
         val name = "$inviteId-java"
-        val files = createAndReturnTempFiles(inviteId, code, tests, "Code.java", "TestCode.java")
+        val files = createAndReturnTempFiles(inviteId, test.code, test.test, test.codeFileName ?: "Code.java", test.testFileName ?: "TestCode.java")
         ContainerAPI.copyToContainerByName(name, files.first, "/project/java/src/main/java/infoSupport")
         ContainerAPI.copyToContainerByName(name, files.second, "/project/java/src/test/java/infoSupport")
         val testOutput = ContainerAPI.runCommandInContainerByName(name, "cd /project/java ; mvn -B test")
-        if (tests == null) {
-            return getTestResult(files.second.readText(), testOutput.output)
-        }
-        return getTestResult(tests, testOutput.output);
+        return getTestResult(test.test ?: files.second.readText(), testOutput.output)
     }
 
     private fun getTestResult(testsString: String, output: String): List<TestResult> {
@@ -55,7 +58,7 @@ object JavaExecutor {
                     "[INFO] -------------------------------------------------------\n"
         )
         if (tests.size == 1) {
-            throw RuntimeException("Something failed before the tests could be executed!")
+            throw RuntimeException("Something failed before the tests could be executed!\n\n$output")
         }
         val result = tests[1].split("[ERROR] Failures:")
         if (result.size == 1) {

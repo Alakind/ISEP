@@ -1,45 +1,51 @@
 import {TestResultsInterface} from "../../../utils/types.tsx";
 import "../../../styles/test-result-block.css"
+import TestResultRow from "./TestResultRow.tsx";
 
 function TestResultBlock({testResults, showTestResults, handleShowTestResults}: Readonly<Props>) {
   return (
-    <div className="test-result-block">
-      <button className="test-result-block__header" onClick={handleShowTestResults}>
+    <div className="solved-assignment-coding">
+      <button className="solved-assignment-coding__header" onClick={handleShowTestResults}>
         Test results{" "}
         <span>
           <i className={`bi ${showTestResults ? "bi-arrows-collapse" : "bi-arrows-expand"}`}></i>
         </span>
       </button>
       {
-        showTestResults
+        testResults && testResults.length > 0
           ? (
             <>
               {
-                testResults.map((testResult, index) => {
-                  return (
-                    <div key={testResult.name + index} className="test-result-block__item">
-                      <span>
+                showTestResults
+                  ? (
+                    <>
                       {
-                        testResult.passed
-                          ? <i className="bi bi-check-circle-fill"></i>
-                          : <i className="bi bi-x-circle-fill"></i>
+                        testResults.map((testResult, index) => {
+                          return (
+                            <TestResultRow key={testResult.name + index} testResult={testResult}/>
+                          )
+                        })
                       }
-                      </span>
-                      <span>{testResult.name}</span>
-                      {
-                        testResult.message
-                          ? <span>: {testResult.message}</span>
-                          : <></>
-                      }
-                    </div>
+                    </>
+                  ) : (
+                    <></>
                   )
-                })
               }
             </>
           ) : (
-            <></>
+            <>
+              {
+                showTestResults
+                  ? (
+                    <p className="test-result-block">No test results available</p>
+                  ) : (
+                    <></>
+                  )
+              }
+            </>
           )
       }
+
 
     </div>
   )

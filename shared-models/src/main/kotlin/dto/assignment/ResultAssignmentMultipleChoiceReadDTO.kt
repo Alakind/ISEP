@@ -10,4 +10,5 @@ data class ResultAssignmentMultipleChoiceReadDTO(
     override val solvedAssignment: SolvedAssignmentMultipleChoiceReadDTO,
     override val referenceAnswer: AnswerCreateReadDTO.MultipleChoice,
     override val scoredPoints: Int?,
+    override val availablePoints: Int,
 ) : ResultAssignmentReadDTO

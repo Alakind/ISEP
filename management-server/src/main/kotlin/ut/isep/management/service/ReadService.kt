@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.ExampleMatcher
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.data.jpa.domain.Specification.where
 import ut.isep.management.model.entity.BaseEntity
 import ut.isep.management.repository.BaseRepository
@@ -16,7 +15,7 @@ import java.time.LocalDate
 
 @Transactional
 abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
-    protected val repository: BaseRepository<E, ID>,
+    protected open val repository: BaseRepository<E, ID>,
     protected val converter: ReadConverter<E, R>
 ) {
     // override this for custom matcher, this should perhaps be split into searchable and non-searchable ReadService
@@ -29,7 +28,8 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
     }
 
     open fun delete(id: ID) {
-        repository.deleteById(id)
+        val entity = repository.findById(id).orElseThrow { NoSuchElementException("Entity not found") }
+        repository.deleteById(entity.id)
     }
 
     open fun getAll(): List<R> {
@@ -40,6 +40,10 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
         val example = exampleEntity?.let { entity ->
             Example.of(entity, matcher)
         }
+        return getPaginated(example, pageable)
+    }
+
+    open fun getPaginated(example: Example<E>? = null, pageable: Pageable): PaginatedDTO<R> {
         val entities = if (example != null) {
             repository.findAll(example, pageable).map { converter.toDTO(it) }.content
         } else {
@@ -87,22 +91,5 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
             total = pagedResult.totalElements,
             data = pagedResult.content.map { converter.toDTO(it) }
         )
-    }
-
-    private fun parseSort(sort: String?): Sort {
-        if (sort.isNullOrEmpty()) {
-            return Sort.unsorted()
-        }
-        val orders = sort.split(",").map { field ->
-            val entry = field.split(":")
-            val attribute = entry[0]
-            val direction = if (entry.size == 2) {
-                Sort.Direction.fromString(entry[1])
-            } else {
-                Sort.Direction.ASC
-            }
-            Sort.Order(direction, attribute)
-        }
-        return Sort.by(orders)
     }
 }
