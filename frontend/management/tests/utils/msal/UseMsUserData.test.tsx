@@ -25,8 +25,15 @@ vi.mock("@azure/msal-react", () => ({
   })),
 }));
 
+vi.mock("react", () => ({
+  ...vi.importActual("react"),
+  useState: vi.fn(),
+  useContext: vi.fn(() => undefined),
+  createContext: vi.fn(),
+}))
+
 describe("useMsUserData", () => {
-  it.skip("throws an error when used outside MsUserProvider", () => { //path can never be taken
+  it("throws an error when used outside MsUserProvider", () => { //path can never be taken
     const TestComponent = () => {
       try {
         useMsUserData();

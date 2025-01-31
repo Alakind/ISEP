@@ -29,6 +29,9 @@ msalInstance.initialize().then(() => {
     }
   })
 
+  // This will update account state if a user signs in from another tab or window
+  msalInstance.enableAccountStorageEvents();
+
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <MsalProvider instance={msalInstance}>

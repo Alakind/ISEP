@@ -45,6 +45,7 @@ class ResultAssignmentReadConverter(
             availablePoints = fetchedQuestion.availablePoints,
             scoredPoints = entity.scoredPoints,
             testResults = entity.testResults.map { testResultConverter.toDTO(it) },
+            secretTestResults = entity.secretTestResults.map { testResultConverter.toDTO(it) },
         )
     }
 

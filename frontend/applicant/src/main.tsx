@@ -24,6 +24,10 @@ const router = createBrowserRouter([
     element: <FinishPageContainer/>,
   },
   {
+    path: "error",
+    element: <PageNotFoundContainer/>,
+  },
+  {
     path: "*",
     element: <PageNotFoundContainer/>,
   },

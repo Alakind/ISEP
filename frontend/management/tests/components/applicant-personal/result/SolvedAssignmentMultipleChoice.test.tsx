@@ -11,8 +11,8 @@ describe('SolvedAssignmentMultipleChoice Component', () => {
     scoredPoints: 2,
     availablePoints: 3,
     options: ['Option 1', 'Option 2', 'Option 3'],
-    answer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: [0, 1]},
-    referenceAnswer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: [1, 2]},
+    answer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: ['Option 1', 'Option 2']},
+    referenceAnswer: {type: AssignmentTypes.MULTIPLE_CHOICE, answer: ['Option 2', 'Option 3']},
     isMultipleAnswers: true,
   };
 

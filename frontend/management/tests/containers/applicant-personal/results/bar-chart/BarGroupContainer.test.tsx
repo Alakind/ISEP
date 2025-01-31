@@ -3,7 +3,7 @@ import BarGroupContainer from "../../../../../src/containers/applicant-personal/
 
 describe('BarGroupContainer', () => {
   it('should render the BarGroup component ', () => {
-    render(<BarGroupContainer barGroupData={{value: "0", isSelected: true}} barWidth={0}/>)
+    render(<BarGroupContainer selectedGroup={0} percentage={20.15} index={0} barWidth={0}/>)
 
     const element = screen.getByTestId("bar-group");
     expect(element).toBeInTheDocument();

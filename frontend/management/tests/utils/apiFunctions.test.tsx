@@ -345,7 +345,7 @@ describe('API Functions (invites)', (): void => {
         body: JSON.stringify({
           applicantId: "1",
           assessmentId: "1",
-          expiresAt: "2025-01-16T15:13:45.432862Z"
+          expiresAt: "2025-01-16T15:13:45.432Z"
         }),
       })
     );
@@ -1001,7 +1001,7 @@ describe('API Functions (results)', (): void => {
     expect(result).toEqual(mockSection);
   });
 
-  it.skip("should throw error when fetching single bar chart statistics fails", async () => {
+  it("should throw error when fetching single bar chart statistics fails", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
       statusText: "Internal Server Error",

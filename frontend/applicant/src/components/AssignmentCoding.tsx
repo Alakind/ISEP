@@ -177,7 +177,6 @@ function AssignmentCoding({assignment, fontSize, defaultValue, setAssignmentAnsw
         onBlur={handleBlur}
       />
       <Button
-        isDisabled={!isCodingOpen}
         btnClasses={`btn-lg btn--coding btn--coding__run-test`}
         handleClick={onRunTests}
         spanTextClass={""}

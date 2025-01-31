@@ -22,6 +22,15 @@ function InvitesOverview({invitesData, assessmentsData, handleChangeExpirationDa
                 <div key={invite.id} className={"invites-overview__body__item"}>
                   <div>
                     <b>{assessmentsData[index]?.tag}:</b>
+                    <Button
+                      handleClick={() => {
+                        navigator.clipboard.writeText(import.meta.env.VITE_DOMAIN_APPLICANT + "/" + invite.id).then()
+                      }}
+                      iconClass={"bi-clipboard"}
+                      text={""}
+                      spanTextClass={""}
+                      btnClasses={"btn--transparent"}
+                    />
                   </div>
                   <div>
                     <span className={"invites-overview__body__item__label"}>Status:</span>

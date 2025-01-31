@@ -61,7 +61,7 @@ function AssessmentResultsViewerContainer({invitesData, assessmentsData}: Readon
   return (
     <>
       {
-        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0
+        loading || assessmentsData == undefined || assessmentsData.length == 0 || sectionsData.length == 0 || invitesData.every((invite: InviteInterface) => invite.status !== mapStatus(InviteStatuses.APP_FINISHED))
           ? (
             <></>
           ) : (
