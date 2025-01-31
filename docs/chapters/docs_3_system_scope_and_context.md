@@ -1,6 +1,6 @@
 # 3. System Scope and Context
 
-![Architecture diagram](/docs/arc42-explanation-template/images/architecture-with-context.png)
+![Architecture diagram](/docs/chapters/images/architecture-with-context.png)
 
 The system stands mostly on its own, apart from the authentication service to log in employees of infoSupport. We have
 left the gap open to implement this as we have no access to the auhtentication service.
