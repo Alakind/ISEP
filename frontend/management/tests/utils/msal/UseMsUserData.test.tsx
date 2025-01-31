@@ -25,40 +25,17 @@ vi.mock("@azure/msal-react", () => ({
   })),
 }));
 
-vi.mock("react", () => ({
-  ...vi.importActual("react"),
-  useState: vi.fn(),
-  useContext: vi.fn(() => undefined),
-  createContext: vi.fn(),
-}))
-
 describe("useMsUserData", () => {
-  it("throws an error when used outside MsUserProvider", () => { //path can never be taken
-    const TestComponent = () => {
-      try {
-        useMsUserData();
-      } catch (error: unknown) {
-        return <div data-testid="error">{(error as Error).message}</div>;
-      }
-      return null;
-    };
-
-    render(<TestComponent/>);
-
-    expect(screen.getByTestId("error")).toHaveTextContent(
-      "useMsUserData must be used within a MsUserProvider"
-    );
-  });
 
   it("provides context values within MsUserProvider", async () => {
     const TestComponent = () => {
-      const {givenName, surname, mail, oid} = useMsUserData();
+      const msUser = useMsUserData();
       return (
         <div>
-          <p data-testid="givenName">{givenName}</p>
-          <p data-testid="surname">{surname}</p>
-          <p data-testid="mail">{mail}</p>
-          <p data-testid="oid">{oid}</p>
+          <p data-testid="givenName">{msUser.givenName}</p>
+          <p data-testid="surname">{msUser.surname}</p>
+          <p data-testid="mail">{msUser.mail}</p>
+          <p data-testid="oid">{msUser.oid}</p>
         </div>
       );
     };

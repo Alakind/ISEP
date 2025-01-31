@@ -3,11 +3,11 @@ package ut.isep.interview
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.cloud.openfeign.EnableFeignClients
+import org.springframework.scheduling.annotation.EnableScheduling
 
 @OpenAPIDefinition
 @SpringBootApplication
-@EnableFeignClients
+@EnableScheduling
 class ApplicantApplication
 
 fun main(args: Array<String>) {

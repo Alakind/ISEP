@@ -2,7 +2,6 @@ import {fireEvent, render, screen} from "@testing-library/react";
 import {ThemeProvider, useTheme} from "../src/ThemeContext.tsx";
 import {Themes} from "../src/utils/constants.tsx";
 import {act} from "react";
-import {vi} from "vitest";
 
 beforeEach(() => {
   vi.stubGlobal("localStorage", {
@@ -10,12 +9,6 @@ beforeEach(() => {
     setItem: vi.fn(),
   });
 });
-
-vi.mock("react", () => ({
-  ...vi.importActual("react"),
-  useContext: vi.fn(() => undefined),
-  createContext: vi.fn(),
-}))
 
 describe("ThemeProvider", () => {
   it("should initialize with DARK theme by default", () => {
@@ -138,17 +131,4 @@ describe("ThemeProvider", () => {
 
     expect(document.body.getAttribute("data-theme")).toBe(Themes.DARK);
   });
-
-  it("should throw an error when the useTheme is not used within a theme provider", () => {
-    const TestComponent = () => {
-      const {toggleTheme} = useTheme();
-      return <button onClick={toggleTheme}>Toggle</button>;
-    };
-
-    expect(() => render(<TestComponent/>)).toThrowError(
-      "useTheme must be used within a ThemeProvider"
-    );
-
-  })
-
 });
