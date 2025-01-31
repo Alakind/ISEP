@@ -6,7 +6,10 @@ import org.junit.jupiter.api.assertThrows
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils
 import ut.isep.interview.code_execution.dto.Test as codeStrings
 import java.io.File
+import java.time.Duration
+import java.time.Instant
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class TestJavaExecutor {
 
@@ -55,5 +58,22 @@ class TestJavaExecutor {
                 ut.isep.interview.code_execution.dto.Test("Wait, I can't compile this", null, test.readText(), null)
             )
         }
+    }
+
+    @Test
+    fun testJavaTestWithin2seconds() {
+        val container = File("src/test/resources/codeExecutor/JavaDockerfile")
+        val code = File("src/test/resources/codeExecutor/javaBad/Code.java")
+        val test = File("src/test/resources/codeExecutor/javaBad/TestCode.java")
+
+        JavaExecutor.startContainer(ID, container)
+
+        //First run takes a little longer because of maven setup
+        JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+
+        val start = Instant.now()
+        JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+        val end = Instant.now()
+        assertTrue(Duration.between(start, end) < Duration.ofSeconds(2))
     }
 }

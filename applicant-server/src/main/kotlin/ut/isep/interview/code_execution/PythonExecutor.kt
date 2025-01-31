@@ -15,7 +15,7 @@ object PythonExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: Test): List<TestResult> {
-        //FIXME: NO, PLEASE GOD NOOOOO
+        //FIXME: Management server should initialize the container when the applicant logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
         } catch (_: Exception) {}
