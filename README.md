@@ -48,7 +48,8 @@ The code and tests are executed on a separate server (execution/applicant server
         cd ../../frontend/applicant
         npm install
        ```
-4. Install backend dependencies
+4. Optional: Install backend dependencies
+    - [Docker](https://docs.docker.com/engine/install/) needs to be installed for local PostGreSQL database development
 
 ## Development
 
@@ -67,6 +68,18 @@ configuration of the springboot application of the management. The following inf
 
 ```txt
 GITHUB_TOKEN=xxx;DB_USERNAME=xxx;DB_PASSWORD=xxx
+```
+
+For running the springboot servers the container with the PostGreSQL database needs to be started up first.
+
+```bash
+docker compose up
+```
+
+In case the database structure has been changed, the docker container needs to be restarted with the following and then started up again with the command above.
+
+```bash 
+docker compose down
 ```
 
 To run the management server application locally with a local PostGreSQL database, use:
