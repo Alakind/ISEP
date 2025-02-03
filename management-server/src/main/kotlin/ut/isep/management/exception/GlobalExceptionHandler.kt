@@ -27,6 +27,11 @@ class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
     }
 
+    @ExceptionHandler(EndDateBeforeStartDateException::class)
+    fun handleEndDateBeforeStartDateException(ex: EndDateBeforeStartDateException): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
     @ExceptionHandler(TooManyRegisteredTimedObjectsException::class)
     fun handleTooManyRegisteredTimedObjectsException(ex: TooManyRegisteredTimedObjectsException): ResponseEntity<String> {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.message)

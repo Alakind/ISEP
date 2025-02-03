@@ -120,7 +120,7 @@ class TimingController(
 
     @GetMapping("/timing/{inviteId}")
     @Operation(
-        summary = "Get total timing for section",
+        summary = "Get total timing for invite",
         description = "Method for getting the total measured time for an invite",
     )
     @ApiResponses(

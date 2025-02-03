@@ -41,6 +41,7 @@ dependencies {
         exclude("org.mockito:mockito-core")
     }
     testImplementation(kotlin("test"))
+    testImplementation("com.h2database:h2:2.1.214")
 }
 
 kotlin {
