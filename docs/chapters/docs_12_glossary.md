@@ -1,6 +1,6 @@
 # 12. Glossary
 
-| Term        | Definition        |
-|-------------|-------------------|
-| *\<Term-1>* | *\<definition-1>* |
-| *\<Term-2>* | *\<definition-2>* |
+| Term        | Definition             |
+|-------------|------------------------|
+| *DTO*       | *Data Transfer Object* |
+| *\<Term-2>* | *\<definition-2>*      |
