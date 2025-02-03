@@ -6,13 +6,12 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.web.client.RestTemplate
-import parser.Frontmatter
-import parser.FrontmatterParser
-import parser.OpenFrontmatter
-import parser.QuestionParser
+import parser.*
+import parser.question.CodingQuestion
 import parser.question.MultipleChoiceQuestion
 import parser.question.OpenQuestion
 import ut.isep.management.model.entity.Assignment
@@ -38,39 +37,40 @@ class AssignmentFetchServiceUnitTest {
         assignmentFetchService.frontmatterParser = frontmatterParser
     }
 
-//    @Test //FIXME: io.mockk.MockKException: no answer provided for CodingFrontmatter(#4).getCodeFilename())
-//    fun `should fetch assignment for CODING type`() {
-//        // variables
-//        val assignment = Assignment(id = 1, baseFilePath = "path/to/codingfile.md", assignmentType = AssignmentType.CODING)
-//        val commitHash = "commit123"
-//
-//        val fileContent = "dummy file content"
-//        val frontmatter = mockk<CodingFrontmatter>()
-//        val body = "dummy body"
-//
-//        // given
-//        every { restTemplate.getForObject(any<String>(), String::class.java) } returns fileContent
-//        every { frontmatter.codeFilename } returns "dummyCodeFile.java"
-//        every { frontmatter.testFilename } returns "dummyTestFile.java"
-//        every { frontmatter.secretTestFilename } returns "dummySecretTestFile.java"
-//        every { frontmatter.referenceCodeFilename } returns "dummyReferenceCodeFile.java"
-//        every { frontmatter.referenceTestFilename } returns "dummyReferenceTestFile.java"
-//        every { frontmatterParser.parse(fileContent, "path/to/codingfile_qid1.md") } returns Pair(frontmatter, body)
-//
-//        val codingQuestion = mockk<CodingQuestion>()
-//
-//        //
-//        every { frontmatter.codeFilename }
-//        every { questionParser.parseCodingQuestion(any(), any(), any()) } returns codingQuestion
-//
-//        // when
-//        val result = assignmentFetchService.fetchAssignment(assignment, commitHash)
-//
-//        // then
-//        assertNotNull(result)
-//        assertEquals(codingQuestion, result)
-//        verify { restTemplate.getForObject(any<String>(), String::class.java) }
-//    }
+    @Test
+    @Disabled("FIXME: io.mockk.MockKException: no answer provided for CodingFrontmatter(#4).getCodeFilename())")
+    fun `should fetch assignment for CODING type`() {
+        // variables
+        val assignment = Assignment(id = 1, baseFilePath = "path/to/codingfile.md", assignmentType = AssignmentType.CODING)
+        val commitHash = "commit123"
+
+        val fileContent = "dummy file content"
+        val frontmatter = mockk<CodingFrontmatter>()
+        val body = "dummy body"
+
+        // given
+        every { restTemplate.getForObject(any<String>(), String::class.java) } returns fileContent
+        every { frontmatter.codeFilename } returns "dummyCodeFile.java"
+        every { frontmatter.testFilename } returns "dummyTestFile.java"
+        every { frontmatter.secretTestFilename } returns "dummySecretTestFile.java"
+        every { frontmatter.referenceCodeFilename } returns "dummyReferenceCodeFile.java"
+        every { frontmatter.referenceTestFilename } returns "dummyReferenceTestFile.java"
+        every { frontmatterParser.parse(fileContent, "path/to/codingfile_qid1.md") } returns Pair(frontmatter, body)
+
+        val codingQuestion = mockk<CodingQuestion>()
+
+        //
+        every { frontmatter.codeFilename }
+        every { questionParser.parseCodingQuestion(any(), any(), any()) } returns codingQuestion
+
+        // when
+        val result = assignmentFetchService.fetchAssignment(assignment, commitHash)
+
+        // then
+        assertNotNull(result)
+        assertEquals(codingQuestion, result)
+        verify { restTemplate.getForObject(any<String>(), String::class.java) }
+    }
 
     @Test
     fun `should fetch assignment for MULTIPLE_CHOICE type`() {

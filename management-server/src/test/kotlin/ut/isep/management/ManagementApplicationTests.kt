@@ -1,14 +1,14 @@
-//TODO: this is not working anymore with the new test environment
+package ut.isep.management
 
-//package ut.isep.management
-//
-//import org.junit.jupiter.api.Test
-//import org.springframework.boot.test.context.SpringBootTest
-//
-//@SpringBootTest
-//class ManagementApplicationTests {
-//
-//    @Test
-//    fun contextLoads() {
-//    }
-//}
+import org.junit.jupiter.api.Test
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
+
+@SpringBootTest
+@ActiveProfiles("test")
+class ManagementApplicationTests {
+
+    @Test
+    fun contextLoads() {
+    }
+}
