@@ -1,5 +1,6 @@
 package ut.isep.interview.code_execution
 
+import dto.execution.TestRunDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -31,7 +32,7 @@ class TestPythonExecutor {
         PythonExecutor.startContainer(ID, container)
         val result = PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
 
         assertEquals(1, result.count { it.passed })
@@ -47,7 +48,7 @@ class TestPythonExecutor {
         PythonExecutor.startContainer(ID, container)
         val result = PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
         assertEquals(1, result.count { !it.passed })
         assertEquals(1, result.count { it.passed })
@@ -64,21 +65,21 @@ class TestPythonExecutor {
         PythonExecutor.startContainer(ID, container)
         val result1 = PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code1.readText(), null, test1.readText(), null)
+            TestRunDTO(code1.readText(), null, test1.readText(), null)
         )
         assertEquals(0, result1.count { !it.passed })
         assertEquals(1, result1.count { it.passed })
 
         val result2 = PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code2.readText(), null, test2.readText(), null)
+           TestRunDTO(code2.readText(), null, test2.readText(), null)
         )
         assertEquals(1, result2.count { !it.passed })
         assertEquals(1, result2.count { it.passed })
 
         val result3 = PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code1.readText(), null, test1.readText(), null)
+            TestRunDTO(code1.readText(), null, test1.readText(), null)
         )
         assertEquals(0, result3.count { !it.passed })
         assertEquals(1, result3.count { it.passed })
@@ -93,7 +94,7 @@ class TestPythonExecutor {
         assertThrows<RuntimeException> {
             PythonExecutor.runTest(
                 ID,
-                ut.isep.interview.code_execution.dto.Test("Wait, I can't compile this", null, test.readText(), null)
+                TestRunDTO("Wait, I can't compile this", null, test.readText(), null)
             )
         }
     }
@@ -109,7 +110,7 @@ class TestPythonExecutor {
         val start = Instant.now()
         PythonExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
         val end = Instant.now()
 

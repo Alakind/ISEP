@@ -1,6 +1,6 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.dto.Test
+import dto.execution.TestRunDTO
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
@@ -15,7 +15,7 @@ object SQLExecutor : CodeExecutor {
         ContainerAPI.runCommandInContainerById(id, "export MYSQL_ALLOW_EMPTY_PASSWORD=True && touch /log.txt && /usr/local/bin/docker-entrypoint.sh mysqld > /log.txt &")
     }
 
-    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: TestRunDTO): List<TestResult> {
         //FIXME: NO, PLEASE GOD NOOOOO
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/SQLDockerfile"))

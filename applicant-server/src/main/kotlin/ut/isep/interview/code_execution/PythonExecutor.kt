@@ -1,6 +1,6 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.dto.Test
+import dto.execution.TestRunDTO
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
@@ -13,7 +13,7 @@ object PythonExecutor : CodeExecutor {
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
     }
 
-    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: TestRunDTO): List<TestResult> {
         //FIXME: Management server should initialize the container when the applicant logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))

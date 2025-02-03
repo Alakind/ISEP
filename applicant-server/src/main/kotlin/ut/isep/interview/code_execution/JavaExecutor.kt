@@ -1,7 +1,7 @@
 package ut.isep.interview.code_execution
 
+import dto.execution.TestRunDTO
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
-import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
 import ut.isep.interview.code_execution.utils.TestResult
 import java.io.File
@@ -14,7 +14,7 @@ object JavaExecutor : CodeExecutor {
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/java"), "/project")
     }
 
-    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: TestRunDTO): List<TestResult> {
         //FIXME: Management should initialize the containers when the client logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))

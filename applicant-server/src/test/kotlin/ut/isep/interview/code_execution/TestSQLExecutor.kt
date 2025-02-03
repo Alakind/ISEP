@@ -1,5 +1,6 @@
 package ut.isep.interview.code_execution
 
+import dto.execution.TestRunDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -34,7 +35,7 @@ class TestSQLExecutor {
 
         val result = SQLExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
 
         assertEquals(4, result.count { it.passed })
@@ -48,7 +49,7 @@ class TestSQLExecutor {
 
         val result = SQLExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
 
         assertEquals(1, result.count { !it.passed })
@@ -63,7 +64,7 @@ class TestSQLExecutor {
         val start = Instant.now()
         SQLExecutor.runTest(
             ID,
-            ut.isep.interview.code_execution.dto.Test(code.readText(), null, test.readText(), null)
+            TestRunDTO(code.readText(), null, test.readText(), null)
         )
         val end = Instant.now()
 
