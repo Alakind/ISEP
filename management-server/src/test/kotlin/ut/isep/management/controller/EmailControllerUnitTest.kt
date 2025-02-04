@@ -55,7 +55,7 @@ class EmailControllerUnitTest {
 //        every { applicantRepository.findById(emailCreateDTO.applicantId) } returns Optional.of(applicant1)
 //        every { inviteRepository.findById(emailCreateDTO.inviteId) } returns Optional.of(invite1)
         every { emailService.checkData(emailCreateDTO) } returns Pair(applicant1, invite1)
-        every { emailService.sendMail(emailCreateDTO, applicant1, invite1) } returns Unit
+        every { emailService.processMail(emailCreateDTO, applicant1, invite1) } returns Unit
 
         // verify and assert
         mockMvc.perform(
