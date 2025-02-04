@@ -1,8 +1,10 @@
 package ut.isep.management.service.invite
 
+import dto.testresult.TestResultCreateReadDTO
 import dto.execution.TestResultDTO
 import dto.execution.TestRunDTO
 import dto.invite.InviteUpdateDTO
+import dto.testresult.TestResultCreateDTO
 import enumerable.InviteStatus
 import org.apache.hc.core5.http.NoHttpResponseException
 import org.springframework.beans.factory.annotation.Qualifier
@@ -18,8 +20,9 @@ import ut.isep.management.exception.NotAllowedUpdateException
 import ut.isep.management.model.entity.*
 import ut.isep.management.service.UpdateService
 import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.UpdateConverter
-import ut.isep.management.service.converter.execution.TestResultCreateConverter
+import ut.isep.management.service.converter.testresult.TestResultCreateReadConverter
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -29,7 +32,7 @@ class InviteUpdateService(
     converter: UpdateConverter<Invite, InviteUpdateDTO>,
     @Qualifier("executorRestTemplate")
     val restTemplate: RestTemplate,
-    val testResultConverter: TestResultCreateConverter,
+    val testResultConverter: TestResultCreateReadConverter,
     val fetchService: AssignmentFetchService,
     val inviteReadService: InviteReadService,
 ) : UpdateService<Invite, InviteUpdateDTO, UUID>(repository, converter) {
@@ -102,9 +105,9 @@ class InviteUpdateService(
             test = question.files.test.content,
             testFileName = question.files.test.filename
         )
-        val responseType = object : ParameterizedTypeReference<List<TestResultDTO>>() {}
+        val responseType = object : ParameterizedTypeReference<List<TestResultCreateReadDTO>>() {}
 
-        val normalTestResults: List<TestResultDTO> = restTemplate.exchange(
+        val normalTestResults: List<TestResultCreateReadDTO> = restTemplate.exchange(
             "https://localhost:8080/",
             HttpMethod.POST,
             HttpEntity(normalTest),
@@ -123,7 +126,7 @@ class InviteUpdateService(
             test = question.files.secretTest.content,
             testFileName = question.files.secretTest.filename
         )
-        val secretTestResults: List<TestResultDTO> = restTemplate.exchange(
+        val secretTestResults: List<TestResultCreateReadDTO> = restTemplate.exchange(
             "https://localhost:8080/",
             HttpMethod.POST,
             HttpEntity(secretTest),
