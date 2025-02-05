@@ -3,143 +3,188 @@ package ut.isep.management.service.assignment
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.springframework.web.client.RestTemplate
-import parser.Frontmatter
-import parser.FrontmatterParser
-import parser.OpenFrontmatter
-import parser.QuestionParser
+import org.springframework.web.reactive.function.client.WebClient
+import parser.*
+import parser.question.CodingQuestion
 import parser.question.MultipleChoiceQuestion
 import parser.question.OpenQuestion
+import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import ut.isep.management.model.entity.Assignment
 import ut.isep.management.model.entity.AssignmentType
 
 class AssignmentFetchServiceUnitTest {
 
-    private lateinit var assignmentFetchService: AssignmentFetchService
-    private lateinit var restTemplate: RestTemplate
+    private lateinit var webClient: WebClient
+
     private lateinit var questionParser: QuestionParser
     private lateinit var frontmatterParser: FrontmatterParser
 
+    private lateinit var service: AsyncAssignmentFetchService
+
     @BeforeEach
-    fun setup() {
-        // Mock dependencies
-        restTemplate = mockk()
+    fun setUp() {
+        webClient = mockk()
+
         questionParser = mockk()
         frontmatterParser = mockk()
 
-        // Initialize the service with mocked dependencies
-        assignmentFetchService = AssignmentFetchService(restTemplate)
-        assignmentFetchService.parser = questionParser
-        assignmentFetchService.frontmatterParser = frontmatterParser
+        service = AsyncAssignmentFetchService(webClient)
+        service.parser = questionParser
+        service.frontmatterParser = frontmatterParser
     }
 
-//    @Test //FIXME: io.mockk.MockKException: no answer provided for CodingFrontmatter(#4).getCodeFilename())
-//    fun `should fetch assignment for CODING type`() {
-//        // variables
-//        val assignment = Assignment(id = 1, baseFilePath = "path/to/codingfile.md", assignmentType = AssignmentType.CODING)
-//        val commitHash = "commit123"
-//
-//        val fileContent = "dummy file content"
-//        val frontmatter = mockk<CodingFrontmatter>()
-//        val body = "dummy body"
-//
-//        // given
-//        every { restTemplate.getForObject(any<String>(), String::class.java) } returns fileContent
-//        every { frontmatter.codeFilename } returns "dummyCodeFile.java"
-//        every { frontmatter.testFilename } returns "dummyTestFile.java"
-//        every { frontmatter.secretTestFilename } returns "dummySecretTestFile.java"
-//        every { frontmatter.referenceCodeFilename } returns "dummyReferenceCodeFile.java"
-//        every { frontmatter.referenceTestFilename } returns "dummyReferenceTestFile.java"
-//        every { frontmatterParser.parse(fileContent, "path/to/codingfile_qid1.md") } returns Pair(frontmatter, body)
-//
-//        val codingQuestion = mockk<CodingQuestion>()
-//
-//        //
-//        every { frontmatter.codeFilename }
-//        every { questionParser.parseCodingQuestion(any(), any(), any()) } returns codingQuestion
-//
-//        // when
-//        val result = assignmentFetchService.fetchAssignment(assignment, commitHash)
-//
-//        // then
-//        assertNotNull(result)
-//        assertEquals(codingQuestion, result)
-//        verify { restTemplate.getForObject(any<String>(), String::class.java) }
-//    }
-
     @Test
-    fun `should fetch assignment for MULTIPLE_CHOICE type`() {
-        // variables
-        val assignment = Assignment(id = 2, baseFilePath = "path/to/mcfile.md", assignmentType = AssignmentType.MULTIPLE_CHOICE)
-        val commitHash = "commit123"
-
-        val fileContent = "dummy file content"
+    fun `fetchAssignment should return MultipleChoiceQuestion for MULTIPLE_CHOICE assignment`() {
+        // Arrange
+        val assignment = Assignment(
+            id = 1,
+            assignmentType = AssignmentType.MULTIPLE_CHOICE,
+            baseFilePath = "path/to/assignment.md"
+        )
+        val commitHash = "abc123"
+        val url = "/$commitHash/${assignment.filePathWithId}"
+        val fileContent = "file content"
         val frontmatter = mockk<Frontmatter>()
-        val body = "dummy body"
-
-        // given
-        every { restTemplate.getForObject(any<String>(), String::class.java) } returns fileContent
-
-        // Mock the frontmatterParser to return frontmatter and body
-        every { frontmatterParser.parse(fileContent, "path/to/mcfile_qid2.md") } returns Pair(frontmatter, body)
-
         val multipleChoiceQuestion = mockk<MultipleChoiceQuestion>()
 
-        // Mock the parser for MULTIPLE_CHOICE type question
-        every { questionParser.parseMultipleChoiceQuestion(body, frontmatter) } returns multipleChoiceQuestion
+        every { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) } returns Mono.just(fileContent)
 
-        // when
-        val result = assignmentFetchService.fetchAssignment(assignment, commitHash)
+        every { frontmatterParser.parse(fileContent, assignment.filePathWithId) } returns Pair(frontmatter, "body")
+        every { questionParser.parseMultipleChoiceQuestion("body", frontmatter) } returns multipleChoiceQuestion
 
-        // then
-        assertNotNull(result)
-        assertEquals(multipleChoiceQuestion, result)
-        verify { restTemplate.getForObject(any<String>(), String::class.java) }
+        // Act
+        val result = service.fetchAssignment(assignment, commitHash)
+
+        // Assert
+        StepVerifier.create(result)
+            .expectNext(multipleChoiceQuestion)
+            .verifyComplete()
+
+        verify { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) }
+        verify { frontmatterParser.parse(fileContent, assignment.filePathWithId) }
+        verify { questionParser.parseMultipleChoiceQuestion("body", frontmatter) }
     }
 
     @Test
-    fun `should fetch assignment for OPEN type`() {
+    fun `fetchAssignment should return OpenQuestion for OPEN assignment`() {
         // Arrange
-        val assignment = Assignment(id = 3, baseFilePath = "path/to/openfile.md", assignmentType = AssignmentType.OPEN)
-        val commitHash = "commit123"
-
-        val fileContent = "dummy file content"
+        val assignment = Assignment(
+            id = 2,
+            assignmentType = AssignmentType.OPEN,
+            baseFilePath = "path/to/assignment.md"
+        )
+        val commitHash = "abc123"
+        val url = "/$commitHash/${assignment.filePathWithId}"
+        val fileContent = "file content"
         val frontmatter = mockk<OpenFrontmatter>()
-        val body = "dummy body"
-
-        // given
-        every { restTemplate.getForObject(any<String>(), String::class.java) } returns fileContent
-        every { frontmatterParser.parse(fileContent, "path/to/openfile_qid3.md") } returns Pair(frontmatter, body)
-
         val openQuestion = mockk<OpenQuestion>()
 
-        // Mock the parser for OPEN type question
-        every { questionParser.parseOpenQuestion(body, frontmatter) } returns openQuestion
+        every { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) } returns Mono.just(fileContent)
 
-        // when
-        val result = assignmentFetchService.fetchAssignment(assignment, commitHash)
+        every { frontmatterParser.parse(fileContent, assignment.filePathWithId) } returns Pair(frontmatter, "body")
+        every { questionParser.parseOpenQuestion("body", frontmatter) } returns openQuestion
 
-        // then
-        assertNotNull(result)
-        assertEquals(openQuestion, result)
-        verify { restTemplate.getForObject(any<String>(), String::class.java) }
+        // Act
+        val result = service.fetchAssignment(assignment, commitHash)
+
+        // Assert
+        StepVerifier.create(result)
+            .expectNext(openQuestion)
+            .verifyComplete()
+
+        verify { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) }
+        verify { frontmatterParser.parse(fileContent, assignment.filePathWithId) }
+        verify { questionParser.parseOpenQuestion("body", frontmatter) }
     }
 
     @Test
-    fun `should throw exception when URL fetch fails`() {
-        // variables
-        val assignment = Assignment(id = 4, baseFilePath = "invalid/path", assignmentType = AssignmentType.CODING)
-        val commitHash = "commit123"
+    fun `fetchAssignment should return CodingQuestion for CODING assignment`() {
+        // Arrange
+        val assignment = Assignment(
+            id = 3,
+            assignmentType = AssignmentType.CODING,
+            baseFilePath = "path/to/assignment.md"
+        )
+        val commitHash = "abc123"
+        val url = "/$commitHash/${assignment.filePathWithId}"
+        val fileContent = "file content"
+        val frontmatter = mockk<CodingFrontmatter>(relaxed = true)
+        val codingQuestion = mockk<CodingQuestion>()
 
-        // given
-        every { restTemplate.getForObject(any<String>(), String::class.java) } throws Exception("Couldn't access the URL")
+        // Fix: Mock the originalFilePath property explicitly
+        every { frontmatter.originalFilePath } returns assignment.filePathWithId
+        every { frontmatter.codeFilename } returns "Main.java"
+        every { frontmatter.testFilename } returns "MainTest.java"
+        every { frontmatter.secretTestFilename } returns "SecretTest.java"
+        every { frontmatter.referenceCodeFilename } returns null
+        every { frontmatter.referenceTestFilename } returns null
 
-        // when and then
-        assertThrows<Exception> { assignmentFetchService.fetchAssignment(assignment, commitHash) }
+        every { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) } returns Mono.just(fileContent)
+
+        every { frontmatterParser.parse(fileContent, assignment.filePathWithId) } returns Pair(frontmatter, "body")
+
+        val parentDirPath = "path/to"
+        val parentURL = "/$commitHash/$parentDirPath/"
+        val codeFileContent = "code file content"
+        val testFileContent = "test file content"
+        val secretTestFileContent = "secret test file content"
+        val codeUrl = "$parentURL${frontmatter.codeFilename}"
+        val testUrl = "$parentURL${frontmatter.testFilename}"
+        val secretTestUrl = "$parentURL${frontmatter.secretTestFilename}"
+
+        every { webClient.get().uri(codeUrl).retrieve().bodyToMono(String::class.java) } returns Mono.just(
+            codeFileContent
+        )
+        every { webClient.get().uri(testUrl).retrieve().bodyToMono(String::class.java) } returns Mono.just(
+            testFileContent
+        )
+        every { webClient.get().uri(secretTestUrl).retrieve().bodyToMono(String::class.java) } returns Mono.just(
+            secretTestFileContent
+        )
+
+        every { questionParser.parseCodingQuestion(any(), "body", frontmatter) } returns codingQuestion
+
+        // Act
+        val result = service.fetchAssignment(assignment, commitHash)
+
+        // Assert
+        StepVerifier.create(result)
+            .expectNext(codingQuestion)
+            .verifyComplete()
+
+        verify { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) }
+        verify { frontmatterParser.parse(fileContent, assignment.filePathWithId) }
+        verify { questionParser.parseCodingQuestion(any(), "body", frontmatter) }
+    }
+
+    @Test
+    fun `fetchAssignment should propagate errors when fetching files`() {
+        // Arrange
+        val assignment = Assignment(
+            id = 4,
+            assignmentType = AssignmentType.CODING,
+            baseFilePath = "path/to/assignment.md"
+        )
+        val commitHash = "abc123"
+        val url = "/$commitHash/${assignment.filePathWithId}"
+
+        println("Expected URL: $url")  // Debugging
+
+        every {
+            webClient.get().uri(url).retrieve().bodyToMono(String::class.java)
+        } returns Mono.error(RuntimeException("Failed to fetch file"))
+
+        // Act
+        val result = service.fetchAssignment(assignment, commitHash)
+
+        // Assert
+        StepVerifier.create(result)
+            .expectError(RuntimeException::class.java)
+            .verify()
+
+        verify { webClient.get().uri(url).retrieve().bodyToMono(String::class.java) }
     }
 }
