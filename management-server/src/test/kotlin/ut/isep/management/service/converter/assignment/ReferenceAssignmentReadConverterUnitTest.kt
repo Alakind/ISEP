@@ -4,14 +4,12 @@ import dto.assignment.ReferenceAssignmentCodingReadDTO
 import dto.assignment.ReferenceAssignmentMultipleChoiceReadDTO
 import dto.assignment.ReferenceAssignmentOpenReadDTO
 import dto.solution.AnswerCreateReadDTO
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import parser.question.*
 
 class ReferenceAssignmentReadConverterUnitTest {
-    private val referenceAssignmentConverter: ReferenceAssignmentReadConverter = mockk()
+    private val referenceAssignmentConverter: ReferenceAssignmentReadConverter = ReferenceAssignmentReadConverter()
 
     private val codingQuestion = CodingQuestion(
         id = 1,
@@ -86,7 +84,6 @@ class ReferenceAssignmentReadConverterUnitTest {
     @Test
     fun `should convert CodingQuestion to ReferenceAssignmentCodingReadDTO`() {
         // given
-        every { referenceAssignmentConverter.toDTO(codingQuestion) } returns referenceAssignmentCodingReadDTO
 
         // when
         val result = referenceAssignmentConverter.toDTO(codingQuestion) as ReferenceAssignmentCodingReadDTO
@@ -107,8 +104,6 @@ class ReferenceAssignmentReadConverterUnitTest {
     @Test
     fun `should convert MultipleChoiceQuestion to ReferenceAssignmentMultipleChoiceReadDTO`() {
         // given
-        every { referenceAssignmentConverter.toDTO(multipleChoiceQuestion) } returns referenceMultipleChoiceReadDTO
-
         // Act
         val result = referenceAssignmentConverter.toDTO(multipleChoiceQuestion) as ReferenceAssignmentMultipleChoiceReadDTO
 
@@ -117,13 +112,12 @@ class ReferenceAssignmentReadConverterUnitTest {
         assertEquals(multipleChoiceQuestion.description, result.description)
         assertEquals(multipleChoiceQuestion.availablePoints, result.availablePoints)
         assertEquals(multipleChoiceQuestion.availableSeconds, result.availableSeconds)
-        assertEquals(listOf("Option1", "Option3"), result.referenceAnswer.answer)
+        assertEquals(listOf("Option 1", "Option 3"), result.referenceAnswer.answer)
     }
 
     @Test
     fun `should convert OpenQuestion to ReferenceAssignmentOpenReadDTO`() {
         // given
-        every { referenceAssignmentConverter.toDTO(openQuestion) } returns referenceOpenReadDTO
 
         // when
         val result = referenceAssignmentConverter.toDTO(openQuestion) as ReferenceAssignmentOpenReadDTO
