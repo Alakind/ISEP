@@ -18,18 +18,17 @@ class AsyncAssignmentFetchService(@Qualifier("githubWebClient") val webClient: W
     val logger = logger()
 
     private fun fetchFile(url: String): Mono<String> {
-        logger.info("Sending HTTP request to url: $url")
         return webClient.get()
             .uri(url)
             .retrieve()
             .bodyToMono(String::class.java)
             .onErrorResume { throwable ->
-                Mono.error(Exception("Couldn't access the URL $url", throwable))
+                logger.error("Error of ${throwable::class.java} while accessing URL $url: ${throwable.message}")
+                Mono.error(throwable)
             }
     }
 
     fun fetchAssignment(entity: Assignment, commitHash: String): Mono<Question> {
-        logger.info("accessing assignment ${entity.id}")
         val url = "/$commitHash/${entity.filePathWithId}"
 
         return fetchFile(url).flatMap { fetchedFileContent ->
@@ -63,8 +62,8 @@ class AsyncAssignmentFetchService(@Qualifier("githubWebClient") val webClient: W
             fetchFile("$parentURL${frontmatter.codeFilename}"),
             fetchFile("$parentURL${frontmatter.testFilename}"),
             fetchFile("$parentURL${frontmatter.secretTestFilename}"),
-            frontmatter.referenceCodeFilename?.let { fetchFile("$parentURL$it") } ?: Mono.empty(),
-            frontmatter.referenceTestFilename?.let { fetchFile("$parentURL$it") } ?: Mono.empty()
+            frontmatter.referenceCodeFilename?.let { fetchFile("$parentURL$it") } ?: Mono.just(""),
+            frontmatter.referenceTestFilename?.let { fetchFile("$parentURL$it") } ?: Mono.just("")
         ).map { tuple ->
             val codeFile = CodingFile(frontmatter.codeFilename, tuple.t1)
             val testFile = CodingFile(frontmatter.testFilename, tuple.t2)
