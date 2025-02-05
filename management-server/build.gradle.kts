@@ -42,6 +42,7 @@ dependencies {
         exclude("org.junit.vintage:junit-vintage-engine")
         exclude("org.mockito:mockito-core")
     }
+    testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.testcontainers:testcontainers:1.20.4")
     testImplementation("org.testcontainers:postgresql:1.20.4")
     testImplementation(kotlin("test"))
