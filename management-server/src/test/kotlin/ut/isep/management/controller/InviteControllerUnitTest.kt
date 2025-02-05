@@ -20,10 +20,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import ut.isep.management.model.entity.Applicant
-import ut.isep.management.model.entity.Assessment
-import ut.isep.management.model.entity.Invite
-import ut.isep.management.model.entity.SolvedAssignmentOpen
+import ut.isep.management.model.entity.*
 import ut.isep.management.service.invite.InviteCreateService
 import ut.isep.management.service.invite.InviteReadService
 import ut.isep.management.service.invite.InviteUpdateService
@@ -59,7 +56,7 @@ class InviteControllerUnitTest {
         id = inviteId1,
         applicant = Applicant(1L),
         assessment = Assessment(1L),
-        solutions = mutableListOf(SolvedAssignmentOpen()),
+        solutions = mutableListOf(SolvedAssignmentOpen(), SolvedAssignmentCoding(), SolvedAssignmentMultipleChoice()),
         invitedAt = OffsetDateTime.now(),
         expiresAt = OffsetDateTime.now().plusWeeks(1).withHour(23).withMinute(59).withSecond(59).withNano(0),
         assessmentStartedAt = null,
