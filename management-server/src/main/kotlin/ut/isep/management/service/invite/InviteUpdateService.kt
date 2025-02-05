@@ -99,7 +99,7 @@ class InviteUpdateService(
             .block() // Block to wait for all scoring to complete
     }
 
-    fun scoreMultipleChoiceQuestion(question: MultipleChoiceQuestion, solution: SolvedAssignmentMultipleChoice) {
+    private fun scoreMultipleChoiceQuestion(question: MultipleChoiceQuestion, solution: SolvedAssignmentMultipleChoice) {
         val userAnswers = solution.userOptionsMarkedCorrect.toSet()
         val correctAnswers = question.options.filter { it.isCorrect }.map { it.text }
         solution.scoredPoints =
@@ -110,7 +110,7 @@ class InviteUpdateService(
             }
     }
 
-    fun scoreCodingQuestion(question: CodingQuestion, solution: SolvedAssignmentCoding): Mono<Unit> {
+    private fun scoreCodingQuestion(question: CodingQuestion, solution: SolvedAssignmentCoding): Mono<Unit> {
         val normalTest = TestRunDTO(
             code = solution.userCode ?: "",
             codeFileName = question.files.code.filename,
