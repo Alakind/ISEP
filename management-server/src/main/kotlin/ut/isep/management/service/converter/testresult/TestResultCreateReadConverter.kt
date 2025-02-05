@@ -1,6 +1,5 @@
 package ut.isep.management.service.converter.testresult
 
-import dto.testresult.TestResultCreateDTO
 import dto.testresult.TestResultCreateReadDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.TestResult

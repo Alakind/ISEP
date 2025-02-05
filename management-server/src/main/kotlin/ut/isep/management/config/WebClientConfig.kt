@@ -50,7 +50,7 @@ class WebClientConfig {
             .maxConnections(maxConnections)
             .pendingAcquireMaxCount(pendingAcquireMaxCount)
             .build()
-        val httpClient = HttpClient.create(connectionProvider);
+        val httpClient = HttpClient.create(connectionProvider)
         val webClientBuilder =  WebClient.builder()
             .baseUrl("https://raw.githubusercontent.com/eefscheef/ISEP-questions-demo")
             .defaultHeader("Authorization", "Bearer $githubToken")

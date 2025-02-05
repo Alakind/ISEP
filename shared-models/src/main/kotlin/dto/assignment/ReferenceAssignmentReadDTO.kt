@@ -1,7 +1,5 @@
 package dto.assignment
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped
-import dto.ReadDTO
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping
 import io.swagger.v3.oas.annotations.media.Schema
 

@@ -118,7 +118,7 @@ class ResultReadService(
         val selectedInvite =
             inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
         val invitePercentage = selectedInvite.solutions.mapNotNull { it.scoredPoints }.sum()
-            .toFloat() / selectedInvite.assessment!!.availablePoints * 100;
+            .toFloat() / selectedInvite.assessment!!.availablePoints * 100
 
         // Retrieve the valid percentages of all invites
         val allInvites: List<Invite> = inviteRepository.findAll().toList()
