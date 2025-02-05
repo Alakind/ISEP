@@ -1,25 +1,20 @@
 package ut.isep.management.service.invite
 
-import dto.testresult.TestResultCreateReadDTO
-import dto.execution.TestResultDTO
 import dto.execution.TestRunDTO
 import dto.invite.InviteUpdateDTO
-import dto.testresult.TestResultCreateDTO
+import dto.testresult.TestResultCreateReadDTO
 import enumerable.InviteStatus
-import org.apache.hc.core5.http.NoHttpResponseException
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.client.WebClient
 import parser.question.CodingQuestion
 import parser.question.MultipleChoiceQuestion
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
 import ut.isep.management.model.entity.*
 import ut.isep.management.service.UpdateService
-import ut.isep.management.service.assignment.AssignmentFetchService
 import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.UpdateConverter
 import ut.isep.management.service.converter.testresult.TestResultCreateReadConverter
@@ -30,11 +25,11 @@ import java.util.*
 class InviteUpdateService(
     repository: JpaRepository<Invite, UUID>,
     converter: UpdateConverter<Invite, InviteUpdateDTO>,
-    @Qualifier("executorRestTemplate")
-    val restTemplate: RestTemplate,
     val testResultConverter: TestResultCreateReadConverter,
-    val fetchService: AssignmentFetchService,
+    val fetchService: AsyncAssignmentFetchService,
     val inviteReadService: InviteReadService,
+    @Qualifier("executorWebClient")
+    val webClient: WebClient,
 ) : UpdateService<Invite, InviteUpdateDTO, UUID>(repository, converter) {
 
     fun checkStatusChange(inviteUpdateDTO: InviteUpdateDTO) {
@@ -52,11 +47,13 @@ class InviteUpdateService(
                     throw NotAllowedUpdateException("Assessment has already been finished")
                 }
             }
+
             InviteStatus.cancelled -> {
                 if (invite.status == InviteStatus.app_finished) {
                     throw NotAllowedUpdateException("Finished assessments can't be cancelled")
                 }
             }
+
             InviteStatus.app_reminded_once, InviteStatus.app_reminded_twice -> {}
         }
     }
@@ -64,60 +61,61 @@ class InviteUpdateService(
     fun startAutoScoring(inviteUpdateDTO: InviteUpdateDTO) {
         val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite not found") }
 
-        // Multiple choice auto scorable other assignments aren't
-        val scorableAssignments = invite.solutions.filter {
-            it.assignment!!.assignmentType!! == AssignmentType.CODING ||
-                    it.assignment!!.assignmentType!! == AssignmentType.MULTIPLE_CHOICE
-        }
+        // Fetch the commit hash for the assessment
+        val commitHash = inviteReadService.getAssessmentByInviteId(inviteUpdateDTO.id).commit
 
-        scorableAssignments.forEach { solution ->
-            val commitHash = inviteReadService.getAssessmentByInviteId(inviteUpdateDTO.id).commit
-            when (val fetchedQuestion = fetchService.fetchAssignment(solution.assignment!!, commitHash)) {
-                is MultipleChoiceQuestion -> {
-                    scoreMultipleChoiceQuestion(fetchedQuestion, solution as SolvedAssignmentMultipleChoice)
-                }
-                is CodingQuestion -> {
-                    scoreCodingQuestion(fetchedQuestion, solution as SolvedAssignmentCoding)
-                }
-                else -> {
-                    throw IllegalStateException(
-                        "Retrieved assignment ${fetchedQuestion.id} with type ${fetchedQuestion.type} from GitHub " +
-                                "REST API but type of stored solution is ${solution.assignment!!.assignmentType!!}")
-                }
+        // Fetch and score assignments in parallel
+        Flux.fromIterable(invite.solutions)
+            .filter { solution ->
+                solution.assignment!!.assignmentType!! == AssignmentType.CODING ||
+                        solution.assignment!!.assignmentType!! == AssignmentType.MULTIPLE_CHOICE
             }
-        }
+            .flatMap { solution ->
+                fetchService.fetchAssignment(solution.assignment!!, commitHash)
+                    .flatMap { question ->
+                        when (question) {
+                            is MultipleChoiceQuestion -> {
+                                scoreMultipleChoiceQuestion(question, solution as SolvedAssignmentMultipleChoice)
+                                Mono.just(solution)
+                            }
+
+                            is CodingQuestion -> {
+                                scoreCodingQuestion(question, solution as SolvedAssignmentCoding)
+                                    .thenReturn(solution)
+                            }
+
+                            else -> {
+                                Mono.error(
+                                    IllegalStateException(
+                                        "Retrieved assignment ${question.id} with type ${question.type} from GitHub " +
+                                                "REST API but type of stored solution is ${solution.assignment!!.assignmentType!!}"
+                                    )
+                                )
+                            }
+                        }
+                    }
+            }
+            .collectList()
+            .block() // Block to wait for all scoring to complete
     }
 
     fun scoreMultipleChoiceQuestion(question: MultipleChoiceQuestion, solution: SolvedAssignmentMultipleChoice) {
         val userAnswers = solution.userOptionsMarkedCorrect.toSet()
         val correctAnswers = question.options.filter { it.isCorrect }.map { it.text }
-        solution.scoredPoints = if (userAnswers.size == correctAnswers.size && correctAnswers.toSet() == userAnswers.toSet()) {
-            question.availablePoints
-        } else {
-            0
-        }
+        solution.scoredPoints =
+            if (userAnswers.size == correctAnswers.size && correctAnswers.toSet() == userAnswers.toSet()) {
+                question.availablePoints
+            } else {
+                0
+            }
     }
 
-    fun scoreCodingQuestion(question: CodingQuestion, solution: SolvedAssignmentCoding) {
+    fun scoreCodingQuestion(question: CodingQuestion, solution: SolvedAssignmentCoding): Mono<Unit> {
         val normalTest = TestRunDTO(
             code = solution.userCode ?: "",
             codeFileName = question.files.code.filename,
             test = question.files.test.content,
             testFileName = question.files.test.filename
-        )
-        val responseType = object : ParameterizedTypeReference<List<TestResultCreateReadDTO>>() {}
-
-        val normalTestResults: List<TestResultCreateReadDTO> = restTemplate.exchange(
-            "https://localhost:8080/",
-            HttpMethod.POST,
-            HttpEntity(normalTest),
-            responseType
-        ).body ?: throw NoHttpResponseException("No response when submitting final test")
-
-        solution.testResults.addAll(
-            normalTestResults.map {
-                testResultConverter.fromDTO(it)
-            }
         )
 
         val secretTest = TestRunDTO(
@@ -126,17 +124,37 @@ class InviteUpdateService(
             test = question.files.secretTest.content,
             testFileName = question.files.secretTest.filename
         )
-        val secretTestResults: List<TestResultCreateReadDTO> = restTemplate.exchange(
-            "https://localhost:8080/",
-            HttpMethod.POST,
-            HttpEntity(secretTest),
-            responseType
-        ).body ?: throw NoHttpResponseException("No response when submitting final test")
 
-        solution.testResults.addAll(
-            secretTestResults.map {
-                testResultConverter.fromDTO(it)
+        // Submit normal test and secret test in parallel
+        return Mono.zip(
+            submitTestRun(normalTest, solution.invite!!.id, question.language),
+            submitTestRun(secretTest, solution.invite!!.id, question.language)
+        ).doOnSuccess { zippedTestResults ->
+            val normalTestResults= zippedTestResults.t1
+            val secretTestResults = zippedTestResults.t2
+            // Add test results to the solution
+            solution.testResults.addAll(
+                normalTestResults.map { testResultConverter.fromDTO(it) }
+            )
+            solution.testResults.addAll(
+                secretTestResults.map { testResultConverter.fromDTO(it) }
+            )
+        }.thenReturn(Unit) // Return Mono<Unit> after side effects are applied
+    }
+
+    private fun submitTestRun(
+        testRun: TestRunDTO,
+        inviteId: UUID,
+        language: String
+    ): Mono<List<TestResultCreateReadDTO>> {
+        return webClient.post()
+            .uri("/$inviteId/$language/test") // Replace with your test runner endpoint
+            .bodyValue(testRun)
+            .retrieve()
+            .bodyToFlux(TestResultCreateReadDTO::class.java)
+            .collectList()
+            .onErrorResume { error ->
+                Mono.error(IllegalStateException("Couldn't retrieve test results for invite $inviteId, code ${testRun.codeFileName}, test ${testRun.testFileName}", error))
             }
-        )
     }
 }
