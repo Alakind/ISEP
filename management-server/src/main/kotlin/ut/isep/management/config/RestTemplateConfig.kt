@@ -32,7 +32,7 @@ class RestTemplateConfig {
     @Bean(name = ["executorRestTemplate"])
     fun executorRestTemplate(): RestTemplate {
         // Path to the self-signed certificate
-        val trustStorePath = "certificates/trust-executor.jks" // Update this path
+        val trustStorePath = "certificates/trust-executor.jks"
         val classLoader = Thread.currentThread().contextClassLoader
         val trustStorePassword = "changeit"
         val trustStoreInputStream = classLoader.getResourceAsStream(trustStorePath)
