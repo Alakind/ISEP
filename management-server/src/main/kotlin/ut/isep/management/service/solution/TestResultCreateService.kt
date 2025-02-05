@@ -1,6 +1,6 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.TestResultCreateDTO
+import dto.testresult.TestResultCreateDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ut.isep.management.model.entity.SolvedAssignmentCoding

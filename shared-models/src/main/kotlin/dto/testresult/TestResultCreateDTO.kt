@@ -1,4 +1,4 @@
-package dto.assignment
+package dto.testresult
 
 import dto.CreateDTO
 import io.swagger.v3.oas.annotations.media.Schema
