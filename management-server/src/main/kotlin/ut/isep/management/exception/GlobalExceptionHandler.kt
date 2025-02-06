@@ -73,7 +73,7 @@ class GlobalExceptionHandler {
     }
 
     /**
-     * This exception can be caused when a invalid enum type is provided for the
+     * This exception can be caused when an invalid enum type is provided for the
      * [ut.isep.management.controller.InviteController.getInvites] endpoint
      * for the invite status or any other enum.
      * */
