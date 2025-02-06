@@ -4,6 +4,7 @@ import dto.scorecomparison.ScoreComparisonReadDTO
 import dto.section.ResultSectionReadDTO
 import dto.section.ResultSectionSimpleReadDTO
 import dto.section.SectionInfo
+import enumerable.InviteStatus
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -29,7 +30,7 @@ class ResultReadService(
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
     val assessmentRepository: AssessmentRepository,
-)  {
+) {
 
     fun getResultSection(inviteId: UUID, sectionId: Long): ResultSectionReadDTO {
         val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
@@ -95,18 +96,15 @@ class ResultReadService(
         // Determine the invite percentage of the selected invite
         val selectedInvite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
         val invitePercentage = selectedInvite.solutions.mapNotNull { it.scoredPoints }.sum().toFloat() / selectedInvite.assessment!!.availablePoints * 100;
+        require(!invitePercentage.isNaN()) { "Invite percentage must be a percentage" }
+        require(invitePercentage in 0.00..100.00) { "Invite percentage must between 0 and 100 (value: $invitePercentage)" }
 
         // Retrieve the valid percentages of all invites
         val allInvites: List<Invite> = inviteRepository.findAll().toList()
         val validPercentages = getValidPercentages(allInvites)
 
         // Calculate the percentage of invites the current invite percentage is better than
-        val betterScores = validPercentages.count { it < invitePercentage }
-        val betterThanPercentage = if (validPercentages.isNotEmpty()) {
-            (betterScores.toFloat() / validPercentages.size) * 100
-        } else {
-            0f
-        }
+        val betterThanPercentage = getBetterThanPercentage(validPercentages, invitePercentage)
 
         // Create the distribution groups with data
         val distributionGroups = getDistributionGroups(validPercentages)
@@ -124,6 +122,16 @@ class ResultReadService(
         )
     }
 
+    private fun getBetterThanPercentage(validPercentages: List<Float>, invitePercentage: Float): Float {
+        val betterScores = validPercentages.count { it < invitePercentage }
+        val betterThanPercentage = if (validPercentages.isNotEmpty()) {
+            (betterScores.toFloat() / validPercentages.size) * 100
+        } else {
+            0f
+        }
+        return betterThanPercentage
+    }
+
     private fun getDistributionGroups(validPercentages: List<Float>): MutableList<Int> {
         val distributionGroups = MutableList(10) { 0 }
 
@@ -136,18 +144,22 @@ class ResultReadService(
 
     private fun getSelectedDistributionGroup(percentage: Float): Int {
         return when (percentage) {
-            in 0.00..100.00 -> (percentage / 10).toInt()
+            in 0.00..100.00 -> (percentage / 10 - 1).toInt()
             else -> -1
         }
     }
 
-    //.filter { it.status == InviteStatus.app_finished }
-    private fun getValidPercentages(allInvites: List<Invite>) = allInvites.mapNotNull { invite ->
+    private fun getValidPercentages(allInvites: List<Invite>) = allInvites.filter { it.status == InviteStatus.app_finished }.mapNotNull { invite ->
         val availablePoints = invite.assessment!!.availablePoints
-        val totalScoredPoints = invite.solutions.mapNotNull { it.scoredPoints }.sum()
+        val totalScoredPoints = invite.solutions.mapNotNull { it.scoredPoints }
+        if (totalScoredPoints.isNotEmpty()) {
+            val summedScoredPoints = totalScoredPoints.sum()
 
-        if (availablePoints > 0) {
-            (totalScoredPoints.toFloat() / availablePoints) * 100
+            if (availablePoints > 0) {
+                (summedScoredPoints.toFloat() / availablePoints) * 100
+            } else {
+                null
+            }
         } else {
             null
         }
