@@ -22,7 +22,7 @@ class TestResultCreateService(
             .let { it as? SolvedAssignmentCoding ?: throw ClassCastException("Expected SolvedAssignmentCoding but found ${it::class.simpleName}") }
 
         // Create the test result
-        val testResult = TestResult.createTestResult(name = createDto.name, message = createDto.message, passed = createDto.passed, solvedAssignmentCoding = solvedAssignment)
+        val testResult = TestResult(name = createDto.name, message = createDto.message, passed = createDto.passed, solvedAssignmentCoding = solvedAssignment)
         val savedTestResult = repository.save(testResult)
 
         // Update the solvedAssignment with the new test result
