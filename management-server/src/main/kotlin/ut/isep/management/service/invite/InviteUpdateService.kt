@@ -18,6 +18,7 @@ import ut.isep.management.service.UpdateService
 import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.UpdateConverter
 import ut.isep.management.service.converter.testresult.TestResultCreateReadConverter
+import ut.isep.management.util.logger
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -31,6 +32,8 @@ class InviteUpdateService(
     @Qualifier("executorWebClient")
     val webClient: WebClient,
 ) : UpdateService<Invite, InviteUpdateDTO, UUID>(repository, converter) {
+
+    val log = logger()
 
     fun checkStatusChange(inviteUpdateDTO: InviteUpdateDTO) {
         val status = inviteUpdateDTO.status!!
@@ -59,7 +62,8 @@ class InviteUpdateService(
     }
 
     fun startAutoScoring(inviteUpdateDTO: InviteUpdateDTO) {
-        val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite not found") }
+        log.info("Autoscoring invite ${inviteUpdateDTO.id}")
+        val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite ${inviteUpdateDTO.id} not found") }
 
         // Fetch the commit hash for the assessment
         val commitHash = inviteReadService.getAssessmentByInviteId(inviteUpdateDTO.id).commit
@@ -73,6 +77,7 @@ class InviteUpdateService(
             .flatMap { solution ->
                 fetchService.fetchAssignment(solution.assignment!!, commitHash)
                     .flatMap { question ->
+                        log.info("Autoscoring ${question.type} question ${question.id} for ${question.availablePoints} points")
                         when (question) {
                             is MultipleChoiceQuestion -> {
                                 scoreMultipleChoiceQuestion(question, solution as SolvedAssignmentMultipleChoice)
@@ -80,7 +85,7 @@ class InviteUpdateService(
                             }
 
                             is CodingQuestion -> {
-                                scoreCodingQuestion(question, solution as SolvedAssignmentCoding)
+                                scoreCodingQuestionSequentially(question, solution as SolvedAssignmentCoding)
                                     .thenReturn(solution)
                             }
 
@@ -99,18 +104,7 @@ class InviteUpdateService(
             .block() // Block to wait for all scoring to complete
     }
 
-    private fun scoreMultipleChoiceQuestion(question: MultipleChoiceQuestion, solution: SolvedAssignmentMultipleChoice) {
-        val userAnswers = solution.userOptionsMarkedCorrect.toSet()
-        val correctAnswers = question.options.filter { it.isCorrect }.map { it.text }
-        solution.scoredPoints =
-            if (userAnswers.size == correctAnswers.size && correctAnswers.toSet() == userAnswers.toSet()) {
-                question.availablePoints
-            } else {
-                0
-            }
-    }
-
-    private fun scoreCodingQuestion(question: CodingQuestion, solution: SolvedAssignmentCoding): Mono<Unit> {
+    private fun scoreCodingQuestionSequentially(question: CodingQuestion, solution: SolvedAssignmentCoding): Mono<Unit> {
         val normalTest = TestRunDTO(
             code = solution.userCode ?: "",
             codeFileName = question.files.code.filename,
@@ -125,21 +119,31 @@ class InviteUpdateService(
             testFileName = question.files.secretTest.filename
         )
 
-        // Submit normal test and secret test in parallel
-        return Mono.zip(
-            submitTestRun(normalTest, solution.invite!!.id, question.language),
-            submitTestRun(secretTest, solution.invite!!.id, question.language)
-        ).doOnSuccess { zippedTestResults ->
-            val normalTestResults= zippedTestResults.t1
-            val secretTestResults = zippedTestResults.t2
-            // Add test results to the solution
-            solution.testResults.addAll(
-                normalTestResults.map { testResultConverter.fromDTO(it) }
-            )
-            solution.testResults.addAll(
-                secretTestResults.map { testResultConverter.fromDTO(it) }
-            )
-        }.thenReturn(Unit) // Return Mono<Unit> after side effects are applied
+        // Submit normal test and secret test sequentially
+        return submitTestRun(normalTest, solution.invite!!.id, question.language)
+            .flatMap { normalTestResults ->
+                val resultEntities = normalTestResults.map {testResultConverter.fromDTO(it) }
+                solution.addTestResults(resultEntities)
+                submitTestRun(secretTest, solution.invite!!.id, question.language)
+            }
+            .doOnSuccess { secretTestResults ->
+                val resultEntities = secretTestResults.map { secretResultDTO ->
+                    testResultConverter.fromDTO(secretResultDTO)
+                }
+                solution.addSecretTestResults(resultEntities)
+            }
+            .thenReturn(Unit) // Return Mono<Unit> after side effects are applied
+    }
+
+    private fun scoreMultipleChoiceQuestion(question: MultipleChoiceQuestion, solution: SolvedAssignmentMultipleChoice) {
+        val userAnswers = solution.userOptionsMarkedCorrect.toSet()
+        val correctAnswers = question.options.filter { it.isCorrect }.map { it.text }
+        solution.scoredPoints =
+            if (userAnswers.size == correctAnswers.size && correctAnswers.toSet() == userAnswers.toSet()) {
+                question.availablePoints
+            } else {
+                0
+            }
     }
 
     private fun submitTestRun(
@@ -147,8 +151,10 @@ class InviteUpdateService(
         inviteId: UUID,
         language: String
     ): Mono<List<TestResultCreateReadDTO>> {
+        val url = "/$inviteId/${language.lowercase()}/test"
+        log.info("Sending test run for ${language.lowercase()} question to $url in invite $inviteId")
         return webClient.post()
-            .uri("/$inviteId/$language/test") // Replace with your test runner endpoint
+            .uri(url) // Replace with your test runner endpoint
             .bodyValue(testRun)
             .retrieve()
             .bodyToFlux(TestResultCreateReadDTO::class.java)
