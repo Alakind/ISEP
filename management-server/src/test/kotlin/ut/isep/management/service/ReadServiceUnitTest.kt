@@ -253,4 +253,58 @@ class ReadServiceUnitTest {
             spec.toPredicate(root, query, cb)
         }
     }
+
+    @Test
+    fun `test getSpecification() with attributeNames and attributeValues`() {
+        val root: Root<TestEntity> = mockk()
+        val query: CriteriaQuery<*> = mockk()
+        val cb: CriteriaBuilder = mockk()
+        val attributeName = "status"
+        val attributeValue = "ACTIVE"
+
+        val predicate: Predicate = mockk()
+        every { cb.equal(root.get<String>(attributeName), attributeValue) } returns predicate
+        every { cb.and(any()) } returns mockk()
+
+        val spec = invokeGetSpecification(listOf(attributeName), listOf(attributeValue), null, null, null)
+        spec.toPredicate(root, query, cb)
+
+        verify(exactly = 1) { cb.equal(root.get<String>(attributeName), attributeValue) }
+        verify(exactly = 0) { cb.greaterThanOrEqualTo(any(), any<LocalDate>()) }
+        verify(exactly = 0) { cb.lessThanOrEqualTo(any(), any<LocalDate>()) }
+    }
+
+    @Test
+    fun `test getSpecification() with attributeNames and attributeValues (is null)`() {
+        val root: Root<TestEntity> = mockk()
+        val query: CriteriaQuery<*> = mockk()
+        val cb: CriteriaBuilder = mockk()
+        val attributeName = "status"
+        val attributeValue = "ACTIVE"
+        every { cb.and(*emptyArray()) } returns mockk()
+
+        val spec = invokeGetSpecification(listOf(attributeName), null, null, null, null)
+        spec.toPredicate(root, query, cb)
+
+        verify(exactly = 0) { cb.equal(root.get<String>(attributeName), attributeValue) }
+        verify(exactly = 0) { cb.greaterThanOrEqualTo(any(), any<LocalDate>()) }
+        verify(exactly = 0) { cb.lessThanOrEqualTo(any(), any<LocalDate>()) }
+    }
+
+    @Test
+    fun `test getSpecification() with attributeNames (is null) and attributeValues`() {
+        val root: Root<TestEntity> = mockk()
+        val query: CriteriaQuery<*> = mockk()
+        val cb: CriteriaBuilder = mockk()
+        val attributeName = "status"
+        val attributeValue = "ACTIVE"
+        every { cb.and(*emptyArray()) } returns mockk()
+
+        val spec = invokeGetSpecification(null, listOf(attributeValue), null, null, null)
+        spec.toPredicate(root, query, cb)
+
+        verify(exactly = 0) { cb.equal(root.get<String>(attributeName), attributeValue) }
+        verify(exactly = 0) { cb.greaterThanOrEqualTo(any(), any<LocalDate>()) }
+        verify(exactly = 0) { cb.lessThanOrEqualTo(any(), any<LocalDate>()) }
+    }
 }
