@@ -1,12 +1,10 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.SolvedAssignmentCodingReadDTO
 import dto.section.SectionInfo
 import dto.section.SolvedSectionReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import ut.isep.management.model.entity.Section
@@ -56,10 +54,5 @@ class SolutionReadService(
             ),
             assignments = assignmentDTOs
         )
-    }
-
-    fun initializeContainer(uuid: UUID, language: String): ResponseEntity<String?>? {
-        val url = "https://localhost:8080/code-executor/$uuid/$language/initialize"
-        return restTemplate.postForEntity(url, null, String::class.java)
     }
 }
