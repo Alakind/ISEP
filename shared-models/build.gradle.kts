@@ -10,8 +10,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.assertj:assertj-core:3.24.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation(kotlin("test"))
 }
 
 
