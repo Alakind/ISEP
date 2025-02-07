@@ -82,8 +82,8 @@ class ApplicantControllerUnitTest {
     @Test
     fun `test paginated applicants list is returned with null example`() {
         // given
-        every { applicantReadService.getPaginated(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(applicant1ReadDTO, applicant2ReadDTO))
-        every { applicantReadService.getPaginated(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(applicant1ReadDTO, applicant2ReadDTO))
+        every { applicantReadService.getPaginatedEntity(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(applicant1ReadDTO, applicant2ReadDTO))
+        every { applicantReadService.getPaginatedExample(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(applicant1ReadDTO, applicant2ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -101,8 +101,8 @@ class ApplicantControllerUnitTest {
     @Test
     fun `test paginated applicants list is returned with name example`() {
         // given
-        every { applicantReadService.getPaginated(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
-        every { applicantReadService.getPaginated(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedEntity(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedExample(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -120,8 +120,8 @@ class ApplicantControllerUnitTest {
     @Test
     fun `test paginated applicants list is returned with email example`() {
         // given
-        every { applicantReadService.getPaginated(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
-        every { applicantReadService.getPaginated(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedEntity(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedExample(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -139,8 +139,8 @@ class ApplicantControllerUnitTest {
     @Test
     fun `test paginated applicants list is returned with name and email example`() {
         // given
-        every { applicantReadService.getPaginated(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
-        every { applicantReadService.getPaginated(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedEntity(any<Applicant>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
+        every { applicantReadService.getPaginatedExample(any<Example<Applicant>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(applicant1ReadDTO))
 
         // verify and assert
         mockMvc.perform(

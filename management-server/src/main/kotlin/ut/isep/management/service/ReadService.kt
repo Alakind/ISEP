@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.ExampleMatcher
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.jpa.domain.Specification.where
 import ut.isep.management.model.entity.BaseEntity
 import ut.isep.management.repository.BaseRepository
@@ -36,14 +37,14 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
         return repository.findAll().map { converter.toDTO(it) }
     }
 
-    open fun getPaginated(exampleEntity: E? = null, pageable: Pageable): PaginatedDTO<R> {
+    open fun getPaginatedEntity(exampleEntity: E? = null, pageable: Pageable): PaginatedDTO<R> {
         val example = exampleEntity?.let { entity ->
             Example.of(entity, matcher)
         }
-        return getPaginated(example, pageable)
+        return getPaginatedExample(example, pageable)
     }
 
-    open fun getPaginated(example: Example<E>? = null, pageable: Pageable): PaginatedDTO<R> {
+    open fun getPaginatedExample(example: Example<E>? = null, pageable: Pageable): PaginatedDTO<R> {
         val entities = if (example != null) {
             repository.findAll(example, pageable).map { converter.toDTO(it) }.content
         } else {

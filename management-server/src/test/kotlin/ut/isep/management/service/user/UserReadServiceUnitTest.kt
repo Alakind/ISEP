@@ -121,7 +121,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count(any<Example<User>>()) } returns 1
 
         // when
-        val result = userReadService.getPaginated(example, pageable)
+        val result = userReadService.getPaginatedExample(example, pageable)
 
         // then
         assertNotNull(result)
@@ -147,7 +147,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count(any<Example<User>>()) } returns 1
 
         // when
-        val result = userReadService.getPaginated(example, pageable)
+        val result = userReadService.getPaginatedExample(example, pageable)
 
         // then
         assertNotNull(result)
@@ -173,7 +173,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count(any<Example<User>>()) } returns 1
 
         // when
-        val result = userReadService.getPaginated(example, pageable)
+        val result = userReadService.getPaginatedExample(example, pageable)
 
         // then
         assertNotNull(result)
@@ -199,7 +199,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count() } returns 1
 
         // when
-        val result = userReadService.getPaginated(example, pageable)
+        val result = userReadService.getPaginatedExample(example, pageable)
 
         // then
         assertNotNull(result)
@@ -224,7 +224,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count(any<Example<User>>()) } returns 1
 
         // when
-        val result = userReadService.getPaginated(exampleEntity, pageable)
+        val result = userReadService.getPaginatedEntity(exampleEntity, pageable)
 
         // then
         assertNotNull(result)
@@ -249,7 +249,7 @@ class UserReadServiceUnitTest {
         every { userRepository.count() } returns 1
 
         // when
-        val result = userReadService.getPaginated(exampleEntity, pageable)
+        val result = userReadService.getPaginatedEntity(exampleEntity, pageable)
 
         // then
         assertNotNull(result)

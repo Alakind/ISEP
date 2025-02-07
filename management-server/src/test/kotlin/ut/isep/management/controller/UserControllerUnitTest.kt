@@ -65,8 +65,8 @@ class UserControllerUnitTest {
     @Test
     fun `test paginated users list is returned with null example`() {
         // given
-        every { userReadService.getPaginated(any<User>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(user1ReadDTO, user2ReadDTO))
-        every { userReadService.getPaginated(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(user1ReadDTO, user2ReadDTO))
+        every { userReadService.getPaginatedEntity(any<User>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(user1ReadDTO, user2ReadDTO))
+        every { userReadService.getPaginatedExample(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(2, listOf(user1ReadDTO, user2ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -84,8 +84,8 @@ class UserControllerUnitTest {
     @Test
     fun `test paginated users list is returned with name example`() {
         // given
-        every { userReadService.getPaginated(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
-        every { userReadService.getPaginated(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedEntity(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedExample(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -103,8 +103,8 @@ class UserControllerUnitTest {
     @Test
     fun `test paginated users list is returned with email example`() {
         // given
-        every { userReadService.getPaginated(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
-        every { userReadService.getPaginated(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedEntity(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedExample(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
 
         // verify and assert
         mockMvc.perform(
@@ -122,8 +122,8 @@ class UserControllerUnitTest {
     @Test
     fun `test paginated users list is returned with name and email example`() {
         // given
-        every { userReadService.getPaginated(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
-        every { userReadService.getPaginated(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedEntity(any<User>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
+        every { userReadService.getPaginatedExample(any<Example<User>>(), any<Pageable>()) } returns PaginatedDTO(1, listOf(user1ReadDTO))
 
         // verify and assert
         mockMvc.perform(
