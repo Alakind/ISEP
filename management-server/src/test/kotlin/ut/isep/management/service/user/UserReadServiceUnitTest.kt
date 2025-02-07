@@ -10,8 +10,10 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.*
 import org.springframework.data.jpa.domain.Specification
+import ut.isep.management.exception.OidNotUniqueException
 import ut.isep.management.model.entity.User
 import ut.isep.management.repository.UserRepository
 import ut.isep.management.service.converter.user.UserReadConverter
@@ -64,6 +66,57 @@ class UserReadServiceUnitTest {
 
         // then
         verify(exactly = 1) { userRepository.findById(user.id) }
+    }
+
+    @Test
+    fun whenGetByOid_thenReturnUser() {
+        // given
+        every { userReadConverter.toDTO(user) } returns userReadDTO
+        every { userRepository.findAll(any<Example<User>>()) } returns listOf(user)
+
+        // when
+        val result = userReadService.getByOid(user.oid!!, User(oid = user.oid))
+
+        // then
+        verify(exactly = 1) { userReadConverter.toDTO(user) }
+        assertThat(result).isEqualTo(userReadDTO)
+    }
+
+    @Test
+    fun whenGetByOid_thenReturnUser_moreThanOneUsersWithOid() {
+        //variables
+        val user2 = User(id = 2L, name = "Jane Doe", email = "jane@example.com", oid = "dsfsfe9f0isi", role = UserRole.Admin, createdAt = OffsetDateTime.now())
+        val user2ReadDTO = UserReadDTO(
+            id = 1L, name = "Jane Doe", email = "jane@example.com", oid = "dsfsfe9f0isi", role = UserRole.Admin, createdAt =
+                user2.createdAt
+        )
+
+        // given
+        every { userReadConverter.toDTO(user) } returns userReadDTO
+        every { userReadConverter.toDTO(user2) } returns user2ReadDTO
+        every { userRepository.findAll(any<Example<User>>()) } returns listOf(user, user2)
+
+        // when
+        val exception = assertThrows<OidNotUniqueException> {
+            userReadService.getByOid(user.oid!!, User(oid = user.oid))
+        }
+
+        // then
+        assertThat(exception.message).isEqualTo("Provided oid (${user.oid}) is not unique")
+    }
+
+    @Test
+    fun whenGetByOid_thenReturnUser_emptyUsersList() {
+        // given
+        every { userRepository.findAll(any<Example<User>>()) } returns emptyList()
+
+        // when
+        val exception = assertThrows<NoSuchElementException> {
+            userReadService.getByOid(user.oid!!, User(oid = user.oid))
+        }
+
+        // then
+        assertThat(exception.message).isEqualTo("No user found with oid ${user.oid}")
     }
 
     @Test
