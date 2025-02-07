@@ -66,6 +66,23 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
         attributeNames: List<String>? = null,
         attributeValues: List<Any>? = null
     ): PaginatedDTO<R> {
+        val querySpec = getSpecification(attributeNames, attributeValues, startDate, betweenDateAttribute, endDate)
+
+        val pagedResult = repository.findAll(querySpec, pageable ?: Pageable.unpaged())
+
+        return PaginatedDTO(
+            total = pagedResult.totalElements,
+            data = pagedResult.content.map { converter.toDTO(it) }
+        )
+    }
+
+    private fun getSpecification(
+        attributeNames: List<String>?,
+        attributeValues: List<Any>?,
+        startDate: LocalDate?,
+        betweenDateAttribute: String?,
+        endDate: LocalDate?
+    ): Specification<E> {
         val querySpec = where<E> { root, _, cb ->
             val predicates = mutableListOf<Predicate>()
 
@@ -85,12 +102,6 @@ abstract class ReadService<E : BaseEntity<ID>, R : ReadDTO, ID : Any>(
 
             cb.and(*predicates.toTypedArray())
         }
-
-        val pagedResult = repository.findAll(querySpec, pageable ?: Pageable.unpaged())
-
-        return PaginatedDTO(
-            total = pagedResult.totalElements,
-            data = pagedResult.content.map { converter.toDTO(it) }
-        )
+        return querySpec
     }
 }
