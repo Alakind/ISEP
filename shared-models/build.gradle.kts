@@ -27,6 +27,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    jvmArgs = listOf("-XX:+EnableDynamicAgentLoading")
 }
 kotlin {
     jvmToolchain(21)
