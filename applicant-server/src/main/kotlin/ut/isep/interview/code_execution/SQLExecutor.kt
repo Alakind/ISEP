@@ -16,7 +16,6 @@ object SQLExecutor : CodeExecutor {
     }
 
     override fun runTest(inviteId: String, test: TestRunDTO): List<TestResultDTO> {
-        //FIXME: NO, PLEASE GOD NOOOOO
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/SQLDockerfile"))
         } catch (_: Exception) {
