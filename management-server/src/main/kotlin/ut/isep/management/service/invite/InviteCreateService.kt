@@ -18,9 +18,9 @@ class InviteCreateService(
     @Transactional
     fun create(createDto: InviteCreateDTO): Invite {
         val applicant = applicantRepository.findById(createDto.applicantId)
-            .orElseThrow { NoSuchElementException("Applicant ${createDto.applicantId} not found") }
+            .orElseThrow { NoSuchElementException("Applicant not found") }
         val assessment = assessmentRepository.findById(createDto.assessmentId)
-            .orElseThrow { NoSuchElementException("Assessment ${createDto.assessmentId} not found") }
+            .orElseThrow { NoSuchElementException("Assessment not found") }
 
 
         // Create the Invite
