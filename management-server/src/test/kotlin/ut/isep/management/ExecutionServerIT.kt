@@ -1,10 +1,8 @@
 package ut.isep.management
 
-import dto.testresult.TestResultCreateReadDTO
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
@@ -21,12 +19,10 @@ class ExecutionServerIT(
     private val webClient: WebClient
 ) : ManagementApplicationIT() {
 
-    @Value("\${execution.base-url}")
-    lateinit var executionURL: String
 
     @Test
     fun `management-server should communicate with applicant-server using RestTemplate`() {
-        val executorURL = "$executionURL/code-executor/${UUID.nameUUIDFromBytes(byteArrayOf(0))}/cleanup"
+        val executorURL = "/${UUID.nameUUIDFromBytes(byteArrayOf(0))}/cleanup"
 
         // Sending a POST request without a body
         val response: ResponseEntity<String> = restTemplate.postForEntity(executorURL, null, String::class.java)

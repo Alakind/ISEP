@@ -4,16 +4,20 @@ import org.apache.hc.client5.http.impl.classic.HttpClients
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
 import org.apache.hc.client5.http.ssl.*
 import org.apache.hc.core5.ssl.SSLContexts
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.util.DefaultUriBuilderFactory
 import java.security.KeyStore
-import java.security.cert.CertificateFactory
 
 @Configuration
 class RestTemplateConfig {
+    @Value("\${execution.base-url}/code-executor")
+    lateinit var executionURL: String
+
 
     @Bean(name = ["githubRestTemplate"])
     fun githubRestTemplate(): RestTemplate {
@@ -55,7 +59,9 @@ class RestTemplateConfig {
             .setConnectionManager(cm)
             .build()
 
-        return RestTemplate(HttpComponentsClientHttpRequestFactory(httpClient))
+        return RestTemplate(HttpComponentsClientHttpRequestFactory(httpClient)).apply {
+            uriTemplateHandler = DefaultUriBuilderFactory(executionURL)
+        }
     }
 
 }
