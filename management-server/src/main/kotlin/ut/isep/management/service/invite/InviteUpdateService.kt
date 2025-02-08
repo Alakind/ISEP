@@ -157,7 +157,7 @@ class InviteUpdateService(
         val url = "/$inviteId/${language.lowercase()}/test"
         log.info("Sending test run for ${language.lowercase()} question to $url in invite $inviteId")
         return webClient.post()
-            .uri(url) // Replace with your test runner endpoint
+            .uri(url)
             .bodyValue(testRun)
             .retrieve()
             .bodyToFlux(TestResultCreateReadDTO::class.java)
