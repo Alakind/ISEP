@@ -10,16 +10,18 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import parser.question.MultipleChoiceQuestion
+import parser.question.Question
+import reactor.core.publisher.Mono
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 class SolutionUpdateServiceUnitTest {
 
     private val solvedAssignmentRepository: SolvedAssignmentRepository = mockk()
-    private val assignmentFetchService: AssignmentFetchService = mockk()
+    private val assignmentFetchService: AsyncAssignmentFetchService = mockk()
     private val solutionUpdateService: SolutionUpdateService = SolutionUpdateService(solvedAssignmentRepository, assignmentFetchService)
 
     private val inviteId = UUID.randomUUID()
@@ -264,7 +266,7 @@ class SolutionUpdateServiceUnitTest {
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
 
         val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))
 
@@ -299,7 +301,7 @@ class SolutionUpdateServiceUnitTest {
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
 
         val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))
 
@@ -334,7 +336,7 @@ class SolutionUpdateServiceUnitTest {
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
         every { solvedAssignmentRepository.save(solution) } returns solution
 
         val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))

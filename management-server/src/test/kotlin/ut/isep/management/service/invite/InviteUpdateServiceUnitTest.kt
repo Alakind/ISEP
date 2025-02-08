@@ -11,22 +11,35 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.reactive.function.client.WebClient
 import parser.question.MultipleChoiceQuestion
+import parser.question.Question
+import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
 import ut.isep.management.model.entity.Assignment
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
 import ut.isep.management.repository.InviteRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.invite.InviteUpdateConverter
+import ut.isep.management.service.converter.testresult.TestResultCreateReadConverter
 import java.util.*
 
 class InviteUpdateServiceUnitTest {
     private val inviteRepository: InviteRepository = mockk()
     private val inviteUpdateConverter: InviteUpdateConverter = mockk()
-    private val assignmentFetchService: AssignmentFetchService = mockk()
+    private val testResultCreateReadConverter: TestResultCreateReadConverter = mockk()
+    private val assignmentFetchService: AsyncAssignmentFetchService = mockk()
     private val inviteReadService: InviteReadService = mockk()
-    private val inviteUpdateService = InviteUpdateService(inviteRepository, inviteUpdateConverter, assignmentFetchService, inviteReadService)
+
+    @Qualifier("executorWebClient")
+    private val webClient: WebClient = mockk()
+
+    @Qualifier("executorRestTemplate")
+    private val restTemplate: RestTemplate = mockk()
+    private val inviteUpdateService = InviteUpdateService(inviteRepository, inviteUpdateConverter, testResultCreateReadConverter, assignmentFetchService, inviteReadService, webClient, restTemplate)
 
     private val inviteId = UUID.randomUUID()
     private val invite: Invite = Invite(inviteId)
@@ -142,7 +155,7 @@ class InviteUpdateServiceUnitTest {
         every { inviteRepository.findById(inviteId) } returns Optional.empty()
 
         val exception = assertThrows<NoSuchElementException> {
-            inviteUpdateService.startAutoScoring(inviteUpdateDTO)
+            inviteUpdateService.startAutoScoring(inviteUpdateDTO.id)
         }
         assertThat(exception.message).isEqualTo("Invite not found")
     }
@@ -184,9 +197,9 @@ class InviteUpdateServiceUnitTest {
             availableSeconds = 6000,
             sections = listOf(1L, 2L, 3L),
         )
-        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question
+        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question as Mono<Question>
 
-        inviteUpdateService.startAutoScoring(inviteUpdateDTO)
+        inviteUpdateService.startAutoScoring(inviteUpdateDTO.id)
 
         assertThat(solution.scoredPoints).isEqualTo(10)
     }
@@ -222,9 +235,9 @@ class InviteUpdateServiceUnitTest {
             availableSeconds = 6000,
             sections = listOf(1L, 2L, 3L),
         )
-        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question
+        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question as Mono<Question>
 
-        inviteUpdateService.startAutoScoring(inviteUpdateDTO)
+        inviteUpdateService.startAutoScoring(inviteUpdateDTO.id)
 
         assertThat(solution.scoredPoints).isEqualTo(0)
     }

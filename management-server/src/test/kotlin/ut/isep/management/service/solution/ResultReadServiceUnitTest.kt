@@ -20,19 +20,21 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.data.repository.findByIdOrNull
 import parser.question.MultipleChoiceQuestion
 import parser.question.OpenQuestion
+import parser.question.Question
+import reactor.core.publisher.Mono
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.AssessmentRepository
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.solution.ResultAssignmentReadConverter
 import java.util.*
 
 class ResultReadServiceUnitTest {
     private val solvedAssignmentRepository: SolvedAssignmentRepository = mockk()
     private val resultAssignmentReadConverter: ResultAssignmentReadConverter = mockk()
-    private val assignmentFetchService: AssignmentFetchService = mockk()
+    private val assignmentFetchService: AsyncAssignmentFetchService = mockk()
     private val inviteRepository: InviteRepository = mockk()
     private val sectionRepository: SectionRepository = mockk()
     private val assessmentRepository: AssessmentRepository = mockk()
@@ -181,8 +183,8 @@ class ResultReadServiceUnitTest {
                 "for the first every {}"
     )
     fun `test createResultDTO returns expected ResultSectionReadDTO`() {
-        every { assignmentFetchService.fetchAssignment(assignment1, any<String>()) } returns question1
-        every { assignmentFetchService.fetchAssignment(assignment2, any<String>()) } returns question2
+        every { assignmentFetchService.fetchAssignment(assignment1, any<String>()) } returns question1 as Mono<Question>
+        every { assignmentFetchService.fetchAssignment(assignment2, any<String>()) } returns question2 as Mono<Question>
         every { resultAssignmentReadConverter.toDTO(solvedAssignment1, question1) } returns assignmentDTO1
         every { resultAssignmentReadConverter.toDTO(solvedAssignment2, question2) } returns assignmentDTO2
 

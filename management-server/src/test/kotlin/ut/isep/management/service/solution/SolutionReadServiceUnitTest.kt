@@ -7,28 +7,23 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.web.client.RestTemplate
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.solution.SolvedAssignmentReadConverter
 import java.util.*
 
 class SolutionReadServiceUnitTest {
     private val solvedAssignmentRepository: SolvedAssignmentRepository = mockk()
     private val solvedAssignmentReadConverter: SolvedAssignmentReadConverter = mockk()
-
-    @Qualifier("executorRestTemplate")
-    private val restTemplate: RestTemplate = mockk()
-    private val assignmentFetchService: AssignmentFetchService = mockk()
+    private val assignmentFetchService: AsyncAssignmentFetchService = mockk()
     private val inviteRepository: InviteRepository = mockk()
     private val sectionRepository: SectionRepository = mockk()
     private val solutionReadService: SolutionReadService = SolutionReadService(
-        solvedAssignmentRepository, solvedAssignmentReadConverter, restTemplate, assignmentFetchService, inviteRepository,
+        solvedAssignmentRepository, solvedAssignmentReadConverter, assignmentFetchService, inviteRepository,
         sectionRepository
     )
 
