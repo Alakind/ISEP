@@ -40,7 +40,7 @@ class SectionControllerUnitTest {
     @Test
     fun `test section ids list is returned`() {
         // given
-        every { sectionReadService.getAll() } returns listOf(section1ReadDTO, section2ReadDTO)
+        every { sectionReadService.getAllIds() } returns listOf(section1ReadDTO.sectionInfo.id, section2ReadDTO.sectionInfo.id)
 
         // verify and assert
         mockMvc.perform(
