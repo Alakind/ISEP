@@ -5,8 +5,8 @@ import dto.invite.InviteUpdateDTO
 import dto.testresult.TestResultCreateReadDTO
 import enumerable.InviteStatus
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.reactive.function.client.WebClient
 import parser.question.CodingQuestion
 import parser.question.MultipleChoiceQuestion
@@ -14,9 +14,10 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
 import ut.isep.management.model.entity.*
+import ut.isep.management.repository.InviteRepository
 import ut.isep.management.service.UpdateService
 import ut.isep.management.service.assignment.AsyncAssignmentFetchService
-import ut.isep.management.service.converter.UpdateConverter
+import ut.isep.management.service.converter.invite.InviteUpdateConverter
 import ut.isep.management.service.converter.testresult.TestResultCreateReadConverter
 import ut.isep.management.util.logger
 import java.time.OffsetDateTime
@@ -24,13 +25,15 @@ import java.util.*
 
 @Service
 class InviteUpdateService(
-    repository: JpaRepository<Invite, UUID>,
-    converter: UpdateConverter<Invite, InviteUpdateDTO>,
+    repository: InviteRepository,
+    converter: InviteUpdateConverter,
     val testResultConverter: TestResultCreateReadConverter,
     val fetchService: AsyncAssignmentFetchService,
     val inviteReadService: InviteReadService,
     @Qualifier("executorWebClient")
     val webClient: WebClient,
+    @Qualifier("executorRestTemplate")
+    val restTemplate: RestTemplate,
 ) : UpdateService<Invite, InviteUpdateDTO, UUID>(repository, converter) {
 
     val log = logger()
@@ -61,12 +64,12 @@ class InviteUpdateService(
         }
     }
 
-    fun startAutoScoring(inviteUpdateDTO: InviteUpdateDTO) {
-        log.info("Autoscoring invite ${inviteUpdateDTO.id}")
-        val invite = repository.findById(inviteUpdateDTO.id).orElseThrow { NoSuchElementException("Invite ${inviteUpdateDTO.id} not found") }
+    fun startAutoScoring(inviteId: UUID) {
+        log.info("Autoscoring invite $inviteId")
+        val invite = repository.findById(inviteId).orElseThrow { NoSuchElementException("Invite $inviteId not found") }
 
         // Fetch the commit hash for the assessment
-        val commitHash = inviteReadService.getAssessmentByInviteId(inviteUpdateDTO.id).commit
+        val commitHash = inviteReadService.getAssessmentByInviteId(inviteId).commit
 
         // Fetch and score assignments in parallel
         Flux.fromIterable(invite.solutions)
@@ -162,5 +165,15 @@ class InviteUpdateService(
             .onErrorResume { error ->
                 Mono.error(IllegalStateException("Couldn't retrieve test results for invite $inviteId, code ${testRun.codeFileName}, test ${testRun.testFileName}", error))
             }
+    }
+
+    fun requestContainerCleanup(inviteId: UUID) {
+        val url = "/$inviteId/cleanup"
+        log.info("Sending POST request to $url to clean up all containers for invite $inviteId")
+
+        val response = restTemplate.postForEntity(url, null, String::class.java)
+        if (!response.statusCode.is2xxSuccessful) {
+            throw IllegalStateException("Cleanup failed with status: ${response.statusCode}")
+        }
     }
 }
