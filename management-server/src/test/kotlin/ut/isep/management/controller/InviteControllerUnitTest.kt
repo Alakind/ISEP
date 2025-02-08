@@ -292,7 +292,8 @@ class InviteControllerUnitTest {
         // given
         every { inviteUpdateService.checkStatusChange(invite1UpdateDTO) } returns Unit
         every { inviteUpdateService.update(invite1UpdateDTO) } returns invite1Updated
-        every { inviteUpdateService.startAutoScoring(invite1UpdateDTO) } returns Unit
+        every { inviteUpdateService.startAutoScoring(invite1UpdateDTO.id) } returns Unit
+        every { inviteUpdateService.requestContainerCleanup(invite1UpdateDTO.id) } returns Unit
 
         // verify and assert
         mockMvc.perform(
