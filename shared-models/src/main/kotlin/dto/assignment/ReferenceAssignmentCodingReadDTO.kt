@@ -14,6 +14,6 @@ data class ReferenceAssignmentCodingReadDTO(
     val test: String,
     val secretTest: String,
     override val referenceAnswer: AnswerCreateReadDTO.Coding,
-    ) : BaseAssignment(), ReferenceAssignmentReadDTO {
+    ) : ReferenceAssignmentReadDTO() {
     override val type: AssignmentType = AssignmentType.Coding
 }

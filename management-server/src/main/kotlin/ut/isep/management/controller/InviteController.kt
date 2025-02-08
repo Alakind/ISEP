@@ -170,11 +170,8 @@ class InviteController(
         inviteUpdateService.update(inviteDTO)
 
         if (inviteDTO.status == InviteStatus.app_finished) {
-            inviteUpdateService.startAutoScoring(inviteDTO)
-
-            //TODO: also include this in the close assessment scheduler
-            //TODO: call /code-executor/{inviteId}/{language}/test for secret tests
-            //TODO: call /code-executor/{inviteId}/cleanup for cleanup of all running containers
+            inviteUpdateService.startAutoScoring(inviteDTO.id)
+            inviteUpdateService.requestContainerCleanup(inviteDTO.id)
         }
 
         return ResponseEntity.ok("Updated an invite")

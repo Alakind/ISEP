@@ -1,5 +1,6 @@
 package ut.isep.interview.code_execution
 
+import dto.execution.TestRunDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -9,7 +10,6 @@ import java.time.Duration
 import java.time.Instant
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import ut.isep.interview.code_execution.dto.Test as codeStrings
 
 class TestJavaExecutor {
 
@@ -27,7 +27,7 @@ class TestJavaExecutor {
         val test = File("src/test/resources/codeExecutor/javaGood/TestCode.java")
 
         JavaExecutor.startContainer(ID, container)
-        val result = JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+        val result = JavaExecutor.runTest(ID, TestRunDTO(code.readText(), null, test.readText(), null))
 
         assertEquals(1, result.count { it.passed })
         assertEquals(1, result.size)
@@ -40,7 +40,7 @@ class TestJavaExecutor {
         val test = File("src/test/resources/codeExecutor/javaBad/TestCode.java")
 
         JavaExecutor.startContainer(ID, container)
-        val result = JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+        val result = JavaExecutor.runTest(ID, TestRunDTO(code.readText(), null, test.readText(), null))
 
         assertEquals(1, result.count { !it.passed })
         assertEquals(1, result.count { it.passed })
@@ -56,7 +56,7 @@ class TestJavaExecutor {
         assertThrows<RuntimeException> {
             JavaExecutor.runTest(
                 ID,
-                ut.isep.interview.code_execution.dto.Test("Wait, I can't compile this", null, test.readText(), null)
+                TestRunDTO("Wait, I can't compile this", null, test.readText(), null)
             )
         }
     }
@@ -70,10 +70,10 @@ class TestJavaExecutor {
         JavaExecutor.startContainer(ID, container)
 
         //First run takes a little longer because of maven setup
-        JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+        JavaExecutor.runTest(ID, TestRunDTO(code.readText(), null, test.readText(), null))
 
         val start = Instant.now()
-        JavaExecutor.runTest(ID, codeStrings(code.readText(), null, test.readText(), null))
+        JavaExecutor.runTest(ID, TestRunDTO(code.readText(), null, test.readText(), null))
         val end = Instant.now()
 
         assertTrue(

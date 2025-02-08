@@ -1,6 +1,6 @@
 package ut.isep.management.service.converter.testresult
 
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultUpdateDTO
 import org.springframework.stereotype.Component
 import ut.isep.management.model.entity.TestResult
 import ut.isep.management.service.converter.UpdateConverter

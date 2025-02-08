@@ -18,7 +18,6 @@ class PostgreSQLConfig {
     }
 
     @Bean
-    @Primary
     @ConfigurationProperties("spring.datasource.interviews.hikari")
     fun interviewsDataSource(): DataSource {
         return interviewsDataSourceProperties()

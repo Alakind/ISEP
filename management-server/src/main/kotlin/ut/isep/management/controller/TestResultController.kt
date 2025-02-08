@@ -1,7 +1,7 @@
 package ut.isep.management.controller
 
-import dto.assignment.TestResultCreateDTO
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultCreateDTO
+import dto.testresult.TestResultUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses

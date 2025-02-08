@@ -11,6 +11,6 @@ data class ReferenceAssignmentMultipleChoiceReadDTO(
     override val availableSeconds: Long,
     override val referenceAnswer: AnswerCreateReadDTO.MultipleChoice,
     val options: List<String>,
-) : BaseAssignment(), ReferenceAssignmentReadDTO {
+) : ReferenceAssignmentReadDTO() {
     override val type: AssignmentType = AssignmentType.MultipleChoice
 }

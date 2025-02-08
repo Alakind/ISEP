@@ -13,7 +13,7 @@ class Command(
 ) {
     class CommandBuilder(
         private val command: String,
-        private val timeoutAmount: Long = 30,
+        private val timeoutAmount: Long = 90,
         private val timeoutUnit: TimeUnit = TimeUnit.SECONDS,
         private val workingDir: File = File(".").absoluteFile
     ) {
