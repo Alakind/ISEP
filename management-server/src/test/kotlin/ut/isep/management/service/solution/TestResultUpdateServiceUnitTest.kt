@@ -1,6 +1,6 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultUpdateDTO
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat

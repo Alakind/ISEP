@@ -2,8 +2,8 @@ package ut.isep.management.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import dto.assignment.TestResultCreateDTO
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultCreateDTO
+import dto.testresult.TestResultUpdateDTO
 import io.mockk.every
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

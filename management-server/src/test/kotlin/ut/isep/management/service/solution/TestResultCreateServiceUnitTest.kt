@@ -1,6 +1,6 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.TestResultCreateDTO
+import dto.testresult.TestResultCreateDTO
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
