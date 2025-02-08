@@ -1,27 +1,20 @@
 package ut.isep.management.api
 
-import disableSslVerification
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.annotation.PropertySource
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.web.client.RestTemplate
+import ut.isep.management.ManagementApplicationIT
 
-@ExtendWith(SpringExtension::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-class OpenApiConfigIntegrationTest {
-
-    @Autowired
-    lateinit var restTemplate: TestRestTemplate
-
-    @BeforeEach
-    fun setUp() {
-        disableSslVerification()
-    }
+//@ExtendWith(SpringExtension::class)
+@ActiveProfiles("integration-test")
+@PropertySource("classpath:application-integration-test.properties")
+class OpenApiConfigIntegrationTest(
+    @Qualifier("executorTestRestTemplate")
+    private val restTemplate: RestTemplate,
+) : ManagementApplicationIT() {
+    //NOTE: make sure the localhost servers are running
 
     @Test
     fun testOpenApiDocumentation() {
