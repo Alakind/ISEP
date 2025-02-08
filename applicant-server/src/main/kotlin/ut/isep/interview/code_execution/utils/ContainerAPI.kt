@@ -160,10 +160,19 @@ object ContainerAPI {
     }
 
     private fun getDetailedContainerInfo(): JsonArray {
-        val command = "docker container inspect $(docker container ls --format='{{.Names}}')"
+        val command = """containers=$(docker container ls --format='{{.Names}}')
+            if [ -n "${'$'}containers" ]; then
+              docker container inspect ${'$'}containers
+            else 
+              exit 3
+            fi  
+        """.trimIndent()
         val result = Command.CommandBuilder(command).execute()
-        if (result.returnCode == 123) return Json.parseToJsonElement("").jsonArray
-        if (result.returnCode != 0) throw RuntimeException("Could not inspect the docker containers.")
-        return Json.parseToJsonElement(result.output).jsonArray
+        return when (result.returnCode) {
+            123 -> JsonArray(emptyList())
+            3 -> JsonArray(emptyList()) // no containers found
+            0 -> Json.parseToJsonElement(result.output).jsonArray
+            else -> throw RuntimeException("Could not inspect the docker containers.")
+        }
     }
 }

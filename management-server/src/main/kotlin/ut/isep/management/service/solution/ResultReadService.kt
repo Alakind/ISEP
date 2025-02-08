@@ -8,7 +8,7 @@ import enumerable.InviteStatus
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import parser.question.Question
+import reactor.core.publisher.Flux
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.model.entity.Section
 import ut.isep.management.model.entity.SolvedAssignment
@@ -17,7 +17,7 @@ import ut.isep.management.repository.AssessmentRepository
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.solution.ResultAssignmentReadConverter
 import java.util.*
 
@@ -26,14 +26,15 @@ import java.util.*
 class ResultReadService(
     val repository: SolvedAssignmentRepository,
     val converter: ResultAssignmentReadConverter,
-    val fetchService: AssignmentFetchService,
+    val fetchService: AsyncAssignmentFetchService,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
     val assessmentRepository: AssessmentRepository,
 ) {
 
     fun getResultSection(inviteId: UUID, sectionId: Long): ResultSectionReadDTO {
-        val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
+        val invite =
+            inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
 
         val section = sectionRepository.findById(sectionId)
             .orElseThrow { NoSuchElementException("No section with ID: $sectionId") }
@@ -48,12 +49,27 @@ class ResultReadService(
         }
     }
 
-    private fun createResultDTO(assignments: List<SolvedAssignment>, section: Section, invite: Invite): ResultSectionReadDTO {
+    private fun createResultDTO(
+        assignments: List<SolvedAssignment>,
+        section: Section,
+        invite: Invite
+    ): ResultSectionReadDTO {
         // Look for solved versions of all assignments of the section
-        val solvedAssignmentToFetchedQuestion: Map<SolvedAssignment, Question> = assignments.associateWith { solvedAssignment ->
-            fetchService.fetchAssignment(solvedAssignment.assignment!!, invite.assessment!!.gitCommitHash!!)
+        val solvedAssignmentToFetchedQuestion = Flux.fromIterable(assignments)
+            .flatMap { solvedAssignment ->
+                fetchService.fetchAssignment(solvedAssignment.assignment!!, invite.assessment!!.gitCommitHash!!)
+                    .map { fetchedQuestion -> solvedAssignment to fetchedQuestion } // Create a Pair
+            }
+            .collectMap({it.first}, {it.second})
+            .block()
+            ?: throw IllegalStateException("Couldn't fetch all questions for solved section ${section.id} at invite ${invite.id}")
+
+        val assignmentDTOs = solvedAssignmentToFetchedQuestion.map { (solvedAssignment, fetchedQuestion) ->
+            converter.toDTO(
+                solvedAssignment,
+                fetchedQuestion
+            )
         }
-        val assignmentDTOs = solvedAssignmentToFetchedQuestion.map { (solvedAssignment, fetchedQuestion) -> converter.toDTO(solvedAssignment, fetchedQuestion) }
         return ResultSectionReadDTO(
             SectionInfo(
                 id = section.id,
@@ -67,7 +83,11 @@ class ResultReadService(
         )
     }
 
-    private fun createSimpleResultDTO(assignments: List<SolvedAssignment>, section: Section, invite: Invite): ResultSectionSimpleReadDTO {
+    private fun createSimpleResultDTO(
+        assignments: List<SolvedAssignment>,
+        section: Section,
+        invite: Invite
+    ): ResultSectionSimpleReadDTO {
         // Look for solved versions of all assignments of the section
         return ResultSectionSimpleReadDTO(
             title = section.title!!,
@@ -79,9 +99,11 @@ class ResultReadService(
     }
 
     fun getResultByAssessment(inviteId: UUID, assessmentId: Long): List<ResultSectionSimpleReadDTO> {
-        val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
+        val invite =
+            inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
 
-        val assessment = assessmentRepository.findById(assessmentId).orElseThrow { NoSuchElementException("No assessment with ID: $assessmentId") }
+        val assessment = assessmentRepository.findById(assessmentId)
+            .orElseThrow { NoSuchElementException("No assessment with ID: $assessmentId") }
         return assessment.sections.map { section ->
             val solvedAssignments = getSolvedAssignments(inviteId, section)
             createSimpleResultDTO(solvedAssignments, section, invite)
@@ -94,8 +116,10 @@ class ResultReadService(
         // this will be become too much to be computed in the way down below
 
         // Determine the invite percentage of the selected invite
-        val selectedInvite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
-        val invitePercentage = selectedInvite.solutions.mapNotNull { it.scoredPoints }.sum().toFloat() / selectedInvite.assessment!!.availablePoints * 100;
+        val selectedInvite =
+            inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite with ID: $inviteId") }
+        val invitePercentage = selectedInvite.solutions.mapNotNull { it.scoredPoints }.sum()
+            .toFloat() / selectedInvite.assessment!!.availablePoints * 100
         require(!invitePercentage.isNaN()) { "Invite percentage must be a percentage" }
         require(invitePercentage in 0.00..100.00) { "Invite percentage must between 0 and 100 (value: $invitePercentage)" }
 

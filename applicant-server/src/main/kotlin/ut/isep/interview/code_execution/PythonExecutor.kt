@@ -1,9 +1,9 @@
 package ut.isep.interview.code_execution
 
-import ut.isep.interview.code_execution.dto.Test
+import dto.execution.TestRunDTO
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
 import ut.isep.interview.code_execution.utils.ContainerAPI
-import ut.isep.interview.code_execution.utils.TestResult
+import dto.execution.TestResultDTO
 import java.io.File
 
 object PythonExecutor : CodeExecutor {
@@ -13,7 +13,7 @@ object PythonExecutor : CodeExecutor {
         ContainerAPI.runCommandInContainerById(id, "mkdir /project")
     }
 
-    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: TestRunDTO): List<TestResultDTO> {
         //FIXME: Management server should initialize the container when the applicant logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/PythonDockerfile"))
@@ -28,13 +28,13 @@ object PythonExecutor : CodeExecutor {
         return getTestResult(test.test ?: files.second.readText(), testOutput.error)
     }
 
-    fun getTestResult(testsString: String, output: String): List<TestResult> {
+    fun getTestResult(testsString: String, output: String): List<TestResultDTO> {
         val result = parseTestOutput(output).toMutableList()
         val failedTests = result.map { it.name }
         result.addAll(
             parseTests(testsString)
                 .filter { it !in failedTests }
-                .map { TestResult(it, "", true) })
+                .map { TestResultDTO(it, "", true) })
         return result
     }
 
@@ -53,8 +53,8 @@ object PythonExecutor : CodeExecutor {
         return testNames
     }
 
-    private fun parseTestOutput(output: String): List<TestResult> {
-        val result: MutableList<TestResult> = mutableListOf()
+    private fun parseTestOutput(output: String): List<TestResultDTO> {
+        val result: MutableList<TestResultDTO> = mutableListOf()
         var tests = output.split("={10,}".toRegex())
         if (output.equals("") || (tests.size == 1 && !tests[0].contains("OK"))) {
             throw RuntimeException("Something failed before the tests could be executed:\n\n$output")
@@ -65,7 +65,7 @@ object PythonExecutor : CodeExecutor {
         }
         for (test in tests) {
             result.add(
-                TestResult(
+                TestResultDTO(
                     "FAIL: (\\w+)".toRegex().find(test)!!.groupValues[1],
                     test.split("-{10,}".toRegex())[1],
                     false

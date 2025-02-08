@@ -1,6 +1,6 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultUpdateDTO
 import org.springframework.stereotype.Service
 import ut.isep.management.repository.TestResultRepository
 

@@ -10,6 +10,6 @@ data class ReferenceAssignmentOpenReadDTO(
     override val availablePoints: Int,
     override val availableSeconds: Long,
     override val referenceAnswer: AnswerCreateReadDTO.Open,
-) : BaseAssignment(), ReferenceAssignmentReadDTO {
+) : ReferenceAssignmentReadDTO() {
     override val type: AssignmentType = AssignmentType.Open
 }

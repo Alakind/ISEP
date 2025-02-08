@@ -117,6 +117,8 @@ class ScheduledTasks(
         invites.forEach {
             timingPerSectionRepository.save(timingPerSectionUpdateService.setMeasuredSecondsPreviousSection(it.id, now))
             inviteUpdateInternalService.update(InviteUpdateInternalDTO(id = it.id, status = InviteStatus.app_finished, assessmentFinishedAt = now))
+            inviteUpdateService.startAutoScoring(it.id)
+            inviteUpdateService.requestContainerCleanup(it.id)
             log.info("Closed the assessment with inviteId ${it.id} at $now")
         }
     }

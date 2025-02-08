@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service
 import parser.question.MultipleChoiceQuestion
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import java.util.*
 
 @Service
 class SolutionUpdateService(
     private val repository: SolvedAssignmentRepository,
-    private val fetchService: AssignmentFetchService,
+    private val fetchService: AsyncAssignmentFetchService,
 ) {
 
     fun updateSolutions(inviteId: UUID, createDTO: SolutionsUpdateDTO) {
@@ -39,7 +39,7 @@ class SolutionUpdateService(
     }
 
     private fun updateMCSolution(solution: SolvedAssignmentMultipleChoice, answerDto: AnswerCreateReadDTO.MultipleChoice) {
-        val fetchedQuestion = fetchService.fetchAssignment(solution.assignment!!, solution.invite!!.assessment!!.gitCommitHash!!) as MultipleChoiceQuestion
+        val fetchedQuestion = fetchService.fetchAssignment(solution.assignment!!, solution.invite!!.assessment!!.gitCommitHash!!).block() as MultipleChoiceQuestion
         require(!(fetchedQuestion.options.count { it.isCorrect } == 1 && answerDto.answer.size > 1)) {
             throw IllegalArgumentException("Cannot store multiple answers for single-answer multiple-choice question ${solution.assignment!!.id}")
         }
