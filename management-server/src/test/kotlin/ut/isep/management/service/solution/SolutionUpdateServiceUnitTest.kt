@@ -4,13 +4,13 @@ import dto.solution.AnswerCreateReadDTO
 import dto.solution.SolutionsUpdateDTO
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import parser.question.MultipleChoiceQuestion
-import parser.question.Question
 import reactor.core.publisher.Mono
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.SolvedAssignmentRepository
@@ -322,33 +322,36 @@ class SolutionUpdateServiceUnitTest {
     }
 
     @Test
-    @Disabled
     fun `test updateMCSolution() that solution is saved`() {
-        //TODO: this needs to be fixed first : fetchService.fetchAssignment() throws exceptions: parser.question.Question, java.lang.InstantiationError: parser.question.Question
         val solution = mockk<SolvedAssignmentMultipleChoice>(relaxed = true) {
             every { assignment?.id } returns assignmentId
             every { invite?.assessment?.gitCommitHash } returns "hash123"
         }
-
         val question = mockk<MultipleChoiceQuestion> {
             every { options } returns listOf(
                 mockk { every { text } returns "A"; every { isCorrect } returns true }
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
-        every { solvedAssignmentRepository.save(solution) } returns solution
+        val answerCapture = slot<List<String>>()
+
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns Mono.just(question)
+        every { solution.userOptionsMarkedCorrect = capture(answerCapture) } answers { }
+        every { solvedAssignmentRepository.save(any()) } returns solution
 
         val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))
 
         val updateMCSolution = solutionUpdateService.javaClass.getDeclaredMethod(
-            "updateMCSolution", SolvedAssignmentMultipleChoice::class.java, AnswerCreateReadDTO.MultipleChoice::class.java
+            "updateMCSolution",
+            SolvedAssignmentMultipleChoice::class.java,
+            AnswerCreateReadDTO.MultipleChoice::class.java
         )
         updateMCSolution.isAccessible = true
+
         updateMCSolution.invoke(solutionUpdateService, solution, answerDTO)
 
         verify { solvedAssignmentRepository.save(solution) }
-        assertThat(solution.userOptionsMarkedCorrect).isEqualTo(answerDTO.answer)
+        assertThat(answerCapture.captured).isEqualTo(answerDTO.answer)
     }
 
 
