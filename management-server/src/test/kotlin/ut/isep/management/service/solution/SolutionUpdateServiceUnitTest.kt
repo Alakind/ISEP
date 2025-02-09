@@ -252,9 +252,7 @@ class SolutionUpdateServiceUnitTest {
 
 
     @Test
-    @Disabled
     fun `test updateMCSolution() that IllegalArgumentException is thrown when the fetched question has multiple answers for a single-answer MC question`() {
-        //TODO: this needs to be fixed first : fetchService.fetchAssignment() throws exceptions: parser.question.Question, java.lang.InstantiationError: parser.question.Question
         val solution = mockk<SolvedAssignmentMultipleChoice>(relaxed = true) {
             every { assignment?.id } returns assignmentId
             every { invite?.assessment?.gitCommitHash } returns "hash123"
@@ -262,20 +260,27 @@ class SolutionUpdateServiceUnitTest {
 
         val question = mockk<MultipleChoiceQuestion> {
             every { options } returns listOf(
-                mockk { every { text } returns "A"; every { isCorrect } returns true }
+                mockk {
+                    every { text } returns "A"
+                    every { isCorrect } returns true
+                }
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
+        val answerCapture = slot<List<String>>()
 
-        val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns Mono.just(question)
+        every { solution.userOptionsMarkedCorrect = capture(answerCapture) } answers { }
+        every { solvedAssignmentRepository.save(any()) } returns solution
+
+        val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A", "B"))
 
         val updateMCSolution = solutionUpdateService.javaClass.getDeclaredMethod(
             "updateMCSolution", SolvedAssignmentMultipleChoice::class.java, AnswerCreateReadDTO.MultipleChoice::class.java
         )
         updateMCSolution.isAccessible = true
 
-        val exception = assertThrows<UnsupportedOperationException> {
+        val exception = assertThrows<IllegalArgumentException> {
             try {
                 updateMCSolution.invoke(solutionUpdateService, solution, answerDTO)
             } catch (e: InvocationTargetException) {
