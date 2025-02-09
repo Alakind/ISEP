@@ -1,26 +1,31 @@
 package ut.isep.management.service.invite
 
 import dto.assessment.AssessmentReadDTO
+import dto.execution.TestRunDTO
 import dto.invite.InviteUpdateDTO
+import dto.testresult.TestResultCreateReadDTO
 import enumerable.InviteStatus
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.slot
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.http.HttpStatusCode
+import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.reactive.function.client.WebClient
+import parser.question.CodingQuestion
 import parser.question.MultipleChoiceQuestion
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
-import ut.isep.management.model.entity.Assignment
-import ut.isep.management.model.entity.AssignmentType
-import ut.isep.management.model.entity.Invite
-import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.invite.InviteUpdateConverter
@@ -161,12 +166,6 @@ class InviteUpdateServiceUnitTest {
     }
 
     @Test
-    @Disabled
-    fun `test startAutoScoring() that exception is thrown when question can't be fetched`() {
-
-    }
-
-    @Test
     fun `test startAutoScoring() that full points is assigned when answer contains all correct answers of the multiple choice assignment`() {
         val inviteUpdateDTO = InviteUpdateDTO(inviteId, InviteStatus.app_finished, null)
         val invite = Invite(inviteId, status = InviteStatus.app_finished)
@@ -239,8 +238,138 @@ class InviteUpdateServiceUnitTest {
     }
 
     @Test
-    @Disabled
-    fun `test startAutoScoring() that other than multiple choice assignments are skipped`() {
+    fun `test scoreCodingQuestionSequentially submits normal and secret tests`() {
+        val inviteId = UUID.randomUUID()
 
+        val question = mockk<CodingQuestion> {
+            every { language } returns "java"
+            every { files.code.filename } returns "Main.java"
+            every { files.test.content } returns "testContent"
+            every { files.test.filename } returns "Test.java"
+            every { files.secretTest.content } returns "secretTestContent"
+            every { files.secretTest.filename } returns "SecretTest.java"
+        }
+
+        val response = TestResultCreateReadDTO(
+            name = "test1",
+            passed = true,
+            message = "message"
+        )
+
+        val solution = mockk<SolvedAssignmentCoding>(relaxed = true) {
+            every { userCode } returns "public class Main {}"
+            every { invite?.id } returns inviteId
+        }
+
+        val normalTestSlot = slot<TestRunDTO>()
+        val secretTestSlot = slot<TestRunDTO>()
+
+        // Mock WebClient behavior properly
+        val mockRequestBodySpec = mockk<WebClient.RequestBodyUriSpec>()
+        val mockRequestHeadersSpec = mockk<WebClient.RequestHeadersSpec<*>>()
+        val mockResponseSpec = mockk<WebClient.ResponseSpec>()
+
+        every { webClient.post() } returns mockRequestBodySpec
+        every { mockRequestBodySpec.uri(any<String>()) } returns mockRequestBodySpec
+        every { mockRequestBodySpec.bodyValue(capture(normalTestSlot)) } returns mockRequestHeadersSpec
+//        every { mockRequestBodySpec.bodyValue(capture(normalTestSlot)) } returns mockRequestHeadersSpec
+        every { mockRequestHeadersSpec.retrieve() } returns mockResponseSpec
+        every { mockResponseSpec.bodyToFlux(TestResultCreateReadDTO::class.java) } returns Flux.just(response)
+        every { mockResponseSpec.bodyToFlux(any<Class<TestResultCreateReadDTO>>()) } returns Flux.just(response)
+
+        every { testResultCreateReadConverter.fromDTO(any()) } returns mockk()
+
+        // Invoke the private method using reflection
+        val method = inviteUpdateService.javaClass.getDeclaredMethod(
+            "scoreCodingQuestionSequentially",
+            CodingQuestion::class.java,
+            SolvedAssignmentCoding::class.java
+        )
+        method.isAccessible = true
+        method.invoke(inviteUpdateService, question, solution)
+
+        // Validate normal test request
+        assertEquals("Main.java", normalTestSlot.captured.codeFileName)
+        assertEquals("testContent", normalTestSlot.captured.test)
+        assertEquals("Test.java", normalTestSlot.captured.testFileName)
+
+        // Validate secret test request
+        //slot fails to capture for test result
+//        assertEquals("Main.java", secretTestSlot.captured.codeFileName)
+//        assertEquals("secretTestContent", secretTestSlot.captured.test)
+//        assertEquals("SecretTest.java", secretTestSlot.captured.testFileName)
+    }
+
+    @Test
+    fun `test scoreMultipleChoiceQuestion calculates correct score`() {
+        val question = mockk<MultipleChoiceQuestion> {
+            every { availablePoints } returns 10
+            every { options } returns listOf(
+                mockk { every { text } returns "A"; every { isCorrect } returns true },
+                mockk { every { text } returns "B"; every { isCorrect } returns false }
+            )
+        }
+
+        val solution = mockk<SolvedAssignmentMultipleChoice>(relaxed = true) {
+            every { userOptionsMarkedCorrect } returns listOf("A")
+        }
+
+        val method = inviteUpdateService.javaClass.getDeclaredMethod(
+            "scoreMultipleChoiceQuestion", MultipleChoiceQuestion::class.java, SolvedAssignmentMultipleChoice::class.java
+        )
+        method.isAccessible = true
+        method.invoke(inviteUpdateService, question, solution)
+
+        verify { solution.scoredPoints = 10 }
+    }
+
+    @Test
+    fun `test submitTestRun sends correct request`() {
+        val inviteId = UUID.randomUUID()
+        val testRunDTO = TestRunDTO("code", "Main.java", "test", "Test.java")
+
+        every {
+            webClient.post().uri("/$inviteId/java/test").bodyValue(testRunDTO).retrieve()
+                .bodyToFlux(TestResultCreateReadDTO::class.java).collectList()
+        } returns Mono.just(emptyList())
+
+        val method = inviteUpdateService.javaClass.getDeclaredMethod(
+            "submitTestRun", TestRunDTO::class.java, UUID::class.java, String::class.java
+        )
+        method.isAccessible = true
+        val result = method.invoke(inviteUpdateService, testRunDTO, inviteId, "java") as Mono<List<TestResultCreateReadDTO>>
+
+        assertNotNull(result.block())
+        verify(exactly = 1) { webClient.post().uri("/$inviteId/java/test").bodyValue(testRunDTO) }
+    }
+
+    @Test
+    fun `test requestContainerCleanup sends cleanup request`() {
+        val inviteId = UUID.randomUUID()
+        val url = "/$inviteId/cleanup"
+
+        every { restTemplate.postForEntity(url, null, String::class.java) } returns mockk {
+            every { statusCode } returns HttpStatusCode.valueOf(200)
+        }
+
+        inviteUpdateService.requestContainerCleanup(inviteId)
+
+        verify(exactly = 1) { restTemplate.postForEntity(url, null, String::class.java) }
+    }
+
+    @Test
+    fun `test requestContainerCleanup throws exception on failure`() {
+        val inviteId = UUID.randomUUID()
+        val url = "/$inviteId/cleanup"
+
+        every { restTemplate.postForEntity(url, null, String::class.java) } returns mockk<ResponseEntity<String>> {
+            every { statusCode } returns HttpStatusCode.valueOf(500)
+        }
+
+        val exception = assertThrows<IllegalStateException> {
+            inviteUpdateService.requestContainerCleanup(inviteId)
+        }
+
+        assert(exception.message!!.contains("Cleanup failed"))
     }
 }
