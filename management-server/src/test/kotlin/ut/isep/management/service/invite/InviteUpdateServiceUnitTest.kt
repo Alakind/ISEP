@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.reactive.function.client.WebClient
 import parser.question.MultipleChoiceQuestion
-import parser.question.Question
 import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
 import ut.isep.management.model.entity.Assignment
+import ut.isep.management.model.entity.AssignmentType
 import ut.isep.management.model.entity.Invite
 import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
 import ut.isep.management.repository.InviteRepository
@@ -167,14 +167,10 @@ class InviteUpdateServiceUnitTest {
     }
 
     @Test
-    @Disabled(
-        "parser.question.Question\n" +
-                "java.lang.InstantiationError: parser.question.Question"
-    )
     fun `test startAutoScoring() that full points is assigned when answer contains all correct answers of the multiple choice assignment`() {
         val inviteUpdateDTO = InviteUpdateDTO(inviteId, InviteStatus.app_finished, null)
         val invite = Invite(inviteId, status = InviteStatus.app_finished)
-        val assignment = Assignment(id = 1L, availablePoints = 10)
+        val assignment = Assignment(id = 1L, availablePoints = 10, assignmentType = AssignmentType.MULTIPLE_CHOICE)
         val correctAnswers = listOf("A", "B", "C")
         val question = MultipleChoiceQuestion(
             options = correctAnswers.map { MultipleChoiceQuestion.Option(it, true) },
@@ -185,7 +181,11 @@ class InviteUpdateServiceUnitTest {
             availablePoints = 20,
             availableSeconds = 500
         )
-        val solution = SolvedAssignmentMultipleChoice(assignment = assignment, invite = invite, userOptionsMarkedCorrect = correctAnswers.toMutableList())
+        val solution = SolvedAssignmentMultipleChoice(
+            assignment = assignment,
+            invite = invite,
+            userOptionsMarkedCorrect = correctAnswers.toMutableList()
+        )
 
         invite.solutions.add(solution)
 
@@ -197,22 +197,18 @@ class InviteUpdateServiceUnitTest {
             availableSeconds = 6000,
             sections = listOf(1L, 2L, 3L),
         )
-        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question as Mono<Question>
+        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns Mono.just(question)
 
         inviteUpdateService.startAutoScoring(inviteUpdateDTO.id)
 
-        assertThat(solution.scoredPoints).isEqualTo(10)
+        assertThat(solution.scoredPoints).isEqualTo(20)
     }
 
     @Test
-    @Disabled(
-        "parser.question.Question\n" +
-                "java.lang.InstantiationError: parser.question.Question"
-    )
     fun `test startAutoScoring() that zero points is assigned when answer contains not all correct answers of the multiple choice assignment`() {
         val inviteUpdateDTO = InviteUpdateDTO(inviteId, InviteStatus.app_finished, null)
         val invite = Invite(inviteId, status = InviteStatus.app_finished)
-        val assignment = Assignment(id = 1L, availablePoints = 10)
+        val assignment = Assignment(id = 1L, availablePoints = 10, assignmentType = AssignmentType.MULTIPLE_CHOICE)
         val correctAnswers = listOf("A", "B", "C")
         val question = MultipleChoiceQuestion(
             options = correctAnswers.map { MultipleChoiceQuestion.Option(it, true) },
@@ -235,7 +231,7 @@ class InviteUpdateServiceUnitTest {
             availableSeconds = 6000,
             sections = listOf(1L, 2L, 3L),
         )
-        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns question as Mono<Question>
+        every { assignmentFetchService.fetchAssignment(assignment, commitHash) } returns Mono.just(question)
 
         inviteUpdateService.startAutoScoring(inviteUpdateDTO.id)
 
