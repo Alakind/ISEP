@@ -95,15 +95,13 @@ class SolutionUpdateServiceUnitTest {
 
     @Test
     fun `test updateSolutions() that each provided solution is processed`() {
-        //FIXME: fetchService.fetchAssignment() throws exceptions: parser.question.Question, java.lang.InstantiationError: parser.question.Question
-
         val createDTO = SolutionsUpdateDTO()
         createDTO["1"] = AnswerCreateReadDTO.Open("answer")
-//        createDTO["2"] = AnswerCreateReadDTO.MultipleChoice(listOf("one", "two"))
+        createDTO["2"] = AnswerCreateReadDTO.MultipleChoice(listOf("one", "two"))
         createDTO["3"] = AnswerCreateReadDTO.Coding("code", "test")
 
         val key1 = SolvedAssignmentId(inviteId, 1L)
-//        val key2 = SolvedAssignmentId(inviteId, 2L)
+        val key2 = SolvedAssignmentId(inviteId, 2L)
         val key3 = SolvedAssignmentId(inviteId, 3L)
 
         val existingSolution1 = mockk<SolvedAssignmentOpen>(relaxed = true) {
@@ -112,14 +110,14 @@ class SolutionUpdateServiceUnitTest {
             every { userSolution } answers { solution }
             every { userSolution = any() } answers { solution = it.invocation.args[0] as String }
         }
-//        val existingSolution2 = mockk<SolvedAssignmentMultipleChoice> {
-//            var solution: List<String> = emptyList()
-//            every { invite?.id } returns inviteId
-//            every { userOptionsMarkedCorrect } answers { solution }
-//            every { userOptionsMarkedCorrect = any() } answers { solution = it.invocation.args[0] as List<String> }
-//            every { assignment } answers { Assignment() }
-//            every { invite } answers { Invite(id = inviteId, assessment = Assessment(gitCommitHash = "slfjsoljfmolsjfoisj")) }
-//        }
+        val existingSolution2 = mockk<SolvedAssignmentMultipleChoice> {
+            var solution: List<String> = emptyList()
+            every { invite?.id } returns inviteId
+            every { userOptionsMarkedCorrect } answers { solution }
+            every { userOptionsMarkedCorrect = any() } answers { solution = it.invocation.args[0] as List<String> }
+            every { assignment } answers { Assignment() }
+            every { invite?.assessment?.gitCommitHash } returns "hash123"
+        }
         val existingSolution3 = mockk<SolvedAssignmentCoding> {
             var solutionCode = ""
             var solutionTest = ""
@@ -130,11 +128,18 @@ class SolutionUpdateServiceUnitTest {
             every { testCode = any() } answers { solutionTest = it.invocation.args[0] as String }
         }
 
+        val question = mockk<MultipleChoiceQuestion> {
+            every { options } returns listOf(
+                mockk { every { text } returns "one"; every { isCorrect } returns true },
+                mockk { every { text } returns "two"; every { isCorrect } returns true }
+            )
+        }
+
         every { solvedAssignmentRepository.findById(key1) } returns Optional.of(existingSolution1)
         every { solvedAssignmentRepository.save(existingSolution1 as SolvedAssignment) } returns existingSolution1
-//        every { solvedAssignmentRepository.findById(key2) } returns Optional.of(existingSolution2)
-//        every { solvedAssignmentRepository.save(existingSolution2 as SolvedAssignment) } returns existingSolution2
-//        every { assignmentFetchService.fetchAssignment(existingSolution2.assignment!!, existingSolution2.invite!!.assessment!!.gitCommitHash!!) }
+        every { solvedAssignmentRepository.findById(key2) } returns Optional.of(existingSolution2)
+        every { solvedAssignmentRepository.save(existingSolution2 as SolvedAssignment) } returns existingSolution2
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns Mono.just(question)
         every { solvedAssignmentRepository.findById(key3) } returns Optional.of(existingSolution3)
         every { solvedAssignmentRepository.save(existingSolution3 as SolvedAssignment) } returns existingSolution3
 
@@ -142,8 +147,8 @@ class SolutionUpdateServiceUnitTest {
 
         verify(exactly = 1) { solvedAssignmentRepository.findById(key1) }
         verify(exactly = 1) { solvedAssignmentRepository.save(existingSolution1) }
-//        verify(exactly = 1) { solvedAssignmentRepository.findById(key2) }
-//        verify(exactly = 1) { solvedAssignmentRepository.save(existingSolution2) }
+        verify(exactly = 1) { solvedAssignmentRepository.findById(key2) }
+        verify(exactly = 1) { solvedAssignmentRepository.save(existingSolution2) }
         verify(exactly = 1) { solvedAssignmentRepository.findById(key3) }
         verify(exactly = 1) { solvedAssignmentRepository.save(existingSolution3) }
     }
