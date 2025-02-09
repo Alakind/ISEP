@@ -1,10 +1,10 @@
 package ut.isep.management.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.ninjasquad.springmockk.MockkBean
 import dto.email.EmailCreateDTO
 import enumerable.EmailType
 import io.mockk.every
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -28,18 +28,10 @@ class EmailControllerUnitTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
+    @Autowired
     private val objectMapper = ObjectMapper()
 
-//    @MockkBean
-//    private lateinit var applicantRepository: ApplicantRepository
-//
-//    @MockkBean
-//    private lateinit var inviteRepository: InviteRepository
-//
-//    @MockkBean
-//    private lateinit var mailSender: JavaMailSender
-
-    @Autowired
+    @MockkBean
     private lateinit var emailService: MailSenderService
 
     private val inviteId1: UUID = UUID.randomUUID()
@@ -49,13 +41,10 @@ class EmailControllerUnitTest {
     private val applicant1 = Applicant(id = 1L, name = "John Doe", email = "john@example.com", preferredLanguage = null, invites = mutableListOf(invite1), createdAt = OffsetDateTime.now())
 
     @Test
-    @Disabled("FIXME: Test can't find bean of check data or the deleteAll()")
     fun `test mail send`() {
         // given
-//        every { applicantRepository.findById(emailCreateDTO.applicantId) } returns Optional.of(applicant1)
-//        every { inviteRepository.findById(emailCreateDTO.inviteId) } returns Optional.of(invite1)
-        every { emailService.checkData(emailCreateDTO) } returns Pair(applicant1, invite1)
-        every { emailService.processMail(emailCreateDTO, applicant1, invite1) } returns Unit
+        every { emailService.checkData(any()) } returns Pair(applicant1, invite1)
+        every { emailService.processMail(any(), applicant1, invite1) } returns Unit
 
         // verify and assert
         mockMvc.perform(
