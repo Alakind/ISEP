@@ -14,13 +14,11 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.repository.findByIdOrNull
 import parser.question.MultipleChoiceQuestion
 import parser.question.OpenQuestion
-import parser.question.Question
 import reactor.core.publisher.Mono
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.AssessmentRepository
@@ -238,21 +236,13 @@ class ResultReadServiceUnitTest {
     }
 
     @Test
-    @Disabled(
-        "Missing mocked calls inside every { ... } block: make sure the object inside the block is a mock for the createSimpleResultDTO.invoke() call" +
-                "This can't be tested, because private method are not mockable"
-    )
     fun `test getResultByAssessment() that converted DTO list is returned`() {
+        val assessment1 = Assessment(id = 1L, gitCommitHash = "sdfjosdosijvoisnvonm", sections = mutableListOf(section1))
         every { inviteRepository.findById(inviteId1) } returns Optional.of(invite1)
         every { assessmentRepository.findById(assessment1.id) } returns Optional.of(assessment1)
 
         every { solvedAssignmentRepository.findByIdOrNull(SolvedAssignmentId(inviteId1, assignment1.id)) } returns solvedAssignment1
         every { solvedAssignmentRepository.findByIdOrNull(SolvedAssignmentId(inviteId1, assignment2.id)) } returns solvedAssignment2
-
-        val createSimpleResultDTO = resultReadService.javaClass.getDeclaredMethod("createSimpleResultDTO", List::class.java, Section::class.java, Invite::class.java)
-        createSimpleResultDTO.isAccessible = true
-
-        every { createSimpleResultDTO.invoke(resultReadService, listOf(solvedAssignment1, solvedAssignment2), section1, invite1) } returns resultSection1SimpleReadDTO
 
         val result = resultReadService.getResultByAssessment(inviteId1, assessment1.id)
 
