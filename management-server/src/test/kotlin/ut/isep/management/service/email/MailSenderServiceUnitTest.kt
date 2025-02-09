@@ -7,6 +7,7 @@ import enumerable.InviteStatus
 import io.mockk.*
 import jakarta.mail.internet.MimeMessage
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.core.io.ClassPathResource
-import org.springframework.mail.MailException
 import org.springframework.mail.MailSendException
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -113,11 +113,10 @@ class MailSenderServiceUnitTest {
         }
 
         every { inviteRepository.save(invite) } returns Invite()
-        mockkConstructor(ClassPathResource::class)
-        every { anyConstructed<ClassPathResource>().exists() } returns true
 
         mailSenderService.processMail(emailDTO, applicant, invite)
 
+        verify { emailSender.send(any<MimeMessage>()) }
         verify { inviteRepository.save(invite) }
     }
 
@@ -134,12 +133,11 @@ class MailSenderServiceUnitTest {
             every { status } returns InviteStatus.app_reminded_once
         }
 
-        every { inviteRepository.save(invite) } returns Invite()
-        mockkConstructor(ClassPathResource::class)
-        every { anyConstructed<ClassPathResource>().exists() } returns true
+        every { inviteRepository.save(invite) } returns invite
 
         mailSenderService.processMail(emailDTO, applicant, invite)
 
+        verify { emailSender.send(any<MimeMessage>()) }
         verify { inviteRepository.save(invite) }
     }
 
@@ -308,7 +306,6 @@ class MailSenderServiceUnitTest {
     }
 
     @Test
-    @Disabled("Not possible to invoke the MailException")
     fun `test sendMail() that a MailException is caught when a mail couldn't be sent`() {
         val applicant = mockk<Applicant> {
             every { email } returns "test@example.com"
@@ -322,20 +319,21 @@ class MailSenderServiceUnitTest {
             every { subject } returns "test"
         }
 
-        val exception = assertThrows<MailException> {
-            emailSender.send(msg)
-        }
+        every { emailSender.send(msg) } throws MailSendException("Mail server error")
 
         val sendMail = mailSenderService.javaClass.getDeclaredMethod(
             "sendMail", MimeMessage::class.java, Applicant::class.java, Invite::class.java
         )
         sendMail.isAccessible = true
 
-        val exception2 = assertThrows<MailException> {
-            sendMail.invoke(mailSenderService, msg, applicant, invite)
+        assertDoesNotThrow {
+            try {
+                sendMail.invoke(mailSenderService, msg, applicant, invite)
+            } catch (e: InvocationTargetException) {
+                throw e.cause ?: e
+            }
         }
 
-        assertThat(exception2.message).isEqualTo("Failed to send email")
         verify { emailSender.send(any<MimeMessage>()) }
     }
 
@@ -610,5 +608,7 @@ class MailSenderServiceUnitTest {
         }
 
         assertThat(exception.message).isEqualTo("Resource not found: /img/infoSupportLogo.png")
+
+        unmockkConstructor(ClassPathResource::class)
     }
 }
