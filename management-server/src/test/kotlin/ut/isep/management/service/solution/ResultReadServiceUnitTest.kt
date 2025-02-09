@@ -177,14 +177,9 @@ class ResultReadServiceUnitTest {
 
 
     @Test
-    @Disabled(
-        "parser.question.Question\n" +
-                "java.lang.InstantiationError: parser.question.Question" +
-                "for the first every {}"
-    )
     fun `test createResultDTO returns expected ResultSectionReadDTO`() {
-        every { assignmentFetchService.fetchAssignment(assignment1, any<String>()) } returns question1 as Mono<Question>
-        every { assignmentFetchService.fetchAssignment(assignment2, any<String>()) } returns question2 as Mono<Question>
+        every { assignmentFetchService.fetchAssignment(assignment1, any<String>()) } returns Mono.just(question1)
+        every { assignmentFetchService.fetchAssignment(assignment2, any<String>()) } returns Mono.just(question2)
         every { resultAssignmentReadConverter.toDTO(solvedAssignment1, question1) } returns assignmentDTO1
         every { resultAssignmentReadConverter.toDTO(solvedAssignment2, question2) } returns assignmentDTO2
 
