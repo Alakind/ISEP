@@ -292,9 +292,7 @@ class SolutionUpdateServiceUnitTest {
     }
 
     @Test
-    @Disabled
     fun `test updateMCSolution() that IllegalArgumentException is thrown when an answer is provided which isn't one of the options`() {
-        //TODO: this needs to be fixed first : fetchService.fetchAssignment() throws exceptions: parser.question.Question, java.lang.InstantiationError: parser.question.Question
         val solution = mockk<SolvedAssignmentMultipleChoice>(relaxed = true) {
             every { assignment?.id } returns assignmentId
             every { invite?.assessment?.gitCommitHash } returns "hash123"
@@ -306,16 +304,20 @@ class SolutionUpdateServiceUnitTest {
             )
         }
 
-        every { assignmentFetchService.fetchAssignment(any(), any()) } returns question as Mono<Question>
+        val answerCapture = slot<List<String>>()
 
-        val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("A"))
+        every { assignmentFetchService.fetchAssignment(any(), any()) } returns Mono.just(question)
+        every { solution.userOptionsMarkedCorrect = capture(answerCapture) } answers { }
+        every { solvedAssignmentRepository.save(any()) } returns solution
+
+        val answerDTO = AnswerCreateReadDTO.MultipleChoice(answer = listOf("B"))
 
         val updateMCSolution = solutionUpdateService.javaClass.getDeclaredMethod(
             "updateMCSolution", SolvedAssignmentMultipleChoice::class.java, AnswerCreateReadDTO.MultipleChoice::class.java
         )
         updateMCSolution.isAccessible = true
 
-        val exception = assertThrows<UnsupportedOperationException> {
+        val exception = assertThrows<IllegalArgumentException> {
             try {
                 updateMCSolution.invoke(solutionUpdateService, solution, answerDTO)
             } catch (e: InvocationTargetException) {
