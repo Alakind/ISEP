@@ -18,7 +18,7 @@ class CodeExecution {
     // Python, C#, SQL, Java, and JavaScript
 
     @PostMapping(path = ["/{uuid}/sql/initialize", "/{uuid}/python/initialize", "/{uuid}/java/initialize"],
-        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.ALL_VALUE])
     fun initializeContainer(@PathVariable uuid: String,
                                @RequestPart("file", required = false) file: MultipartFile?,
                                request: HttpServletRequest): ResponseEntity<Any> {
