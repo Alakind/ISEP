@@ -47,6 +47,7 @@ class SolutionUpdateService(
             throw IllegalArgumentException("Provided an answer which is not possible")
         }
         solution.userOptionsMarkedCorrect = answerDto.answer
+        solution.userOptionsMarkedCorrect = answerDto.answer
         repository.save(solution)
     }
 

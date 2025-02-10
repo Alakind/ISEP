@@ -160,25 +160,13 @@ object ContainerAPI {
     }
 
     private fun getDetailedContainerInfo(): JsonArray {
-        val os = System.getProperty("os.name").lowercase(Locale.getDefault())
-        val command: String = if (os.contains("win")) {
-            """${'$'}containers = docker container ls --format '{{.Names}}'
-
-            if (${'$'}containers) {
-                docker container inspect ${'$'}containers
-            } else {
-                exit 3
-            }  
-        """.trimIndent()
-        } else {
-            """containers=$(docker container ls --format='{{.Names}}')
+        val command = """containers=$(docker container ls --format='{{.Names}}')
             if [ -n "${'$'}containers" ]; then
               docker container inspect ${'$'}containers
             else 
               exit 3
             fi  
         """.trimIndent()
-        }
         val result = Command.CommandBuilder(command).execute()
         return when (result.returnCode) {
             123 -> JsonArray(emptyList())

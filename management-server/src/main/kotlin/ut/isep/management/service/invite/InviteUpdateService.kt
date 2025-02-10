@@ -13,10 +13,7 @@ import parser.question.MultipleChoiceQuestion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ut.isep.management.exception.NotAllowedUpdateException
-import ut.isep.management.model.entity.AssignmentType
-import ut.isep.management.model.entity.Invite
-import ut.isep.management.model.entity.SolvedAssignmentCoding
-import ut.isep.management.model.entity.SolvedAssignmentMultipleChoice
+import ut.isep.management.model.entity.*
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.service.UpdateService
 import ut.isep.management.service.assignment.AsyncAssignmentFetchService
@@ -69,7 +66,7 @@ class InviteUpdateService(
 
     fun startAutoScoring(inviteId: UUID) {
         log.info("Autoscoring invite $inviteId")
-        val invite = repository.findById(inviteId).orElseThrow { NoSuchElementException("Invite not found") }
+        val invite = repository.findById(inviteId).orElseThrow { NoSuchElementException("Invite $inviteId not found") }
 
         // Fetch the commit hash for the assessment
         val commitHash = inviteReadService.getAssessmentByInviteId(inviteId).commit
@@ -128,7 +125,7 @@ class InviteUpdateService(
         // Submit normal test and secret test sequentially
         return submitTestRun(normalTest, solution.invite!!.id, question.language)
             .flatMap { normalTestResults ->
-                val resultEntities = normalTestResults.map { testResultConverter.fromDTO(it) }
+                val resultEntities = normalTestResults.map {testResultConverter.fromDTO(it) }
                 solution.addTestResults(resultEntities)
                 submitTestRun(secretTest, solution.invite!!.id, question.language)
             }

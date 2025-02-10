@@ -137,7 +137,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count(any<Example<Applicant>>()) } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedExample(example, pageable)
+        val result = applicantReadService.getPaginated(example, pageable)
 
         // then
         assertNotNull(result)
@@ -163,7 +163,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count(any<Example<Applicant>>()) } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedExample(example, pageable)
+        val result = applicantReadService.getPaginated(example, pageable)
 
         // then
         assertNotNull(result)
@@ -189,7 +189,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count(any<Example<Applicant>>()) } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedExample(example, pageable)
+        val result = applicantReadService.getPaginated(example, pageable)
 
         // then
         assertNotNull(result)
@@ -215,7 +215,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count() } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedExample(example, pageable)
+        val result = applicantReadService.getPaginated(example, pageable)
 
         // then
         assertNotNull(result)
@@ -240,7 +240,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count(any<Example<Applicant>>()) } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedEntity(exampleEntity, pageable)
+        val result = applicantReadService.getPaginated(exampleEntity, pageable)
 
         // then
         assertNotNull(result)
@@ -265,7 +265,7 @@ class ApplicantReadServiceUnitTest {
         every { applicantRepository.count() } returns 1
 
         // when
-        val result = applicantReadService.getPaginatedEntity(exampleEntity, pageable)
+        val result = applicantReadService.getPaginated(exampleEntity, pageable)
 
         // then
         assertNotNull(result)

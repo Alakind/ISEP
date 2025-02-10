@@ -18,7 +18,7 @@ class ExecutionServerIT(
     @Qualifier("executorWebClient")
     private val webClient: WebClient
 ) : ManagementApplicationIT() {
-    //NOTE: make sure the localhost servers are running
+
 
     @Test
     fun `management-server should communicate with applicant-server using RestTemplate`() {

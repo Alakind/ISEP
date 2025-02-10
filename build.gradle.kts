@@ -17,9 +17,3 @@ plugins {
 repositories {
     mavenCentral()
 }
-
-tasks.register("runAllTests") {
-    description = "Run all tests"
-    group = "ut.isep"
-    dependsOn(":management-server:test", ":shared-models:test", ":shared-entities:test", ":applicant-server:test")
-}

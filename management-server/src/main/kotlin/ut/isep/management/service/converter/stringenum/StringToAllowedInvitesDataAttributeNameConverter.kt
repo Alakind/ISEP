@@ -4,9 +4,7 @@ import enumerable.AllowedInvitesDateAttributeNames
 import org.springframework.core.convert.ConversionFailedException
 import org.springframework.core.convert.TypeDescriptor
 import org.springframework.core.convert.converter.Converter
-import org.springframework.stereotype.Component
 
-@Component
 class StringToAllowedInvitesDateAttributeNamesConverter : Converter<String, AllowedInvitesDateAttributeNames> {
     override fun convert(source: String): AllowedInvitesDateAttributeNames {
         return try {

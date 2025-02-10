@@ -4,9 +4,7 @@ import enumerable.InviteStatus
 import org.springframework.core.convert.ConversionFailedException
 import org.springframework.core.convert.TypeDescriptor
 import org.springframework.core.convert.converter.Converter
-import org.springframework.stereotype.Component
 
-@Component
 class StringToInviteStatusConverter : Converter<String, InviteStatus> {
     override fun convert(source: String): InviteStatus {
         return try {

@@ -67,7 +67,7 @@ class UserController(
         } else {
             null
         }
-        return userReadService.getPaginatedEntity(exampleUser, pageable)
+        return userReadService.getPaginated(exampleUser, pageable)
     }
 
 

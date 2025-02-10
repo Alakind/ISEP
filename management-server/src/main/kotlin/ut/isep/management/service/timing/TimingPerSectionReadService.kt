@@ -38,14 +38,12 @@ class TimingPerSectionReadService(
     fun getTimeLeft(inviteId: UUID): TimingPerSectionReadDTO {
         val invite = inviteRepository.findById(inviteId).orElseThrow { NoSuchElementException("No invite found by provided ID") }
 
-        val assessment = requireNotNull(invite.assessment) {
-            throw NoSuchFieldException("No assessment found by provided ID")
-        }
-        val assessmentStartedAt = requireNotNull(invite.assessmentStartedAt) {
+        if (invite.assessment == null || invite.assessmentStartedAt == null) {
             throw NoSuchFieldException("No started assessment found by provided ID")
         }
         val now = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
-        val availableSeconds = assessment.availableSeconds
+        val assessmentStartedAt = invite.assessmentStartedAt ?: throw IllegalStateException("Assessment has not been started yet")
+        val availableSeconds = invite.assessment!!.availableSeconds
 
         check(availableSeconds > 0) {
             throw IllegalStateException("Invalid assessment duration for invite: $inviteId")
