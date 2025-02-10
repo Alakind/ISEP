@@ -87,7 +87,7 @@ class ScheduledTasks(
             val emailCreateDto = EmailCreateDTO(inviteId = it.id, applicantId = it.applicantId, type = EmailType.reminder)
             val (applicant, invite) = mailSenderService.checkData(emailCreateDto)
 
-            mailSenderService.sendMail(
+            mailSenderService.processMail(
                 emailCreateDto,
                 applicant,
                 invite
@@ -117,6 +117,8 @@ class ScheduledTasks(
         invites.forEach {
             timingPerSectionRepository.save(timingPerSectionUpdateService.setMeasuredSecondsPreviousSection(it.id, now))
             inviteUpdateInternalService.update(InviteUpdateInternalDTO(id = it.id, status = InviteStatus.app_finished, assessmentFinishedAt = now))
+            inviteUpdateService.startAutoScoring(it.id)
+            inviteUpdateService.requestContainerCleanup(it.id)
             log.info("Closed the assessment with inviteId ${it.id} at $now")
         }
     }

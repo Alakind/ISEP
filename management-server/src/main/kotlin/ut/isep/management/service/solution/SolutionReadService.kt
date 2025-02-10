@@ -1,21 +1,20 @@
 package ut.isep.management.service.solution
 
-import dto.assignment.SolvedAssignmentCodingReadDTO
 import dto.section.SectionInfo
 import dto.section.SolvedSectionReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import reactor.core.publisher.Flux
 import ut.isep.management.model.entity.Section
 import ut.isep.management.model.entity.SolvedAssignment
 import ut.isep.management.model.entity.SolvedAssignmentId
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.SectionRepository
 import ut.isep.management.repository.SolvedAssignmentRepository
-import ut.isep.management.service.assignment.AssignmentFetchService
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.solution.SolvedAssignmentReadConverter
 import java.util.*
 
@@ -24,8 +23,7 @@ import java.util.*
 class SolutionReadService(
     val repository: SolvedAssignmentRepository,
     val converter: SolvedAssignmentReadConverter,
-    @Qualifier("executorRestTemplate") val restTemplate: RestTemplate,
-    val fetchService: AssignmentFetchService,
+    val fetchService: AsyncAssignmentFetchService,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
 ) {
@@ -41,12 +39,24 @@ class SolutionReadService(
     }
 
     fun getSolvedSection(inviteId: UUID, sectionId: Long): SolvedSectionReadDTO {
-        val section = sectionRepository.findById(sectionId).orElseThrow { NoSuchElementException("No section with ID: $sectionId") }
+        val section = sectionRepository.findById(sectionId)
+            .orElseThrow { NoSuchElementException("No section with ID: $sectionId") }
         // Look for solved versions of all assignments of the section
-        val assignmentDTOs = getSolvedAssignments(inviteId, section).map {
-            val fetchedQuestion = fetchService.fetchAssignment(it.assignment!!, it.invite!!.assessment!!.gitCommitHash!!)
-            converter.toDTO(it, fetchedQuestion)
-        }
+
+        val assignmentDTOs = Flux.fromIterable(getSolvedAssignments(inviteId, section))
+            .flatMap { solvedAssignment ->
+                fetchService.fetchAssignment(
+                    solvedAssignment.assignment!!,
+                    solvedAssignment.invite!!.assessment!!.gitCommitHash!!
+                )
+                    .map { fetechedQuestion ->
+                        converter.toDTO(solvedAssignment, fetechedQuestion)
+                    }
+            }
+            .collectList()
+            .block()
+            ?: throw IllegalStateException("Failed to fetch assignments for section $sectionId, solution $inviteId")
+
         return SolvedSectionReadDTO(
             SectionInfo(
                 id = sectionId,
@@ -56,10 +66,5 @@ class SolutionReadService(
             ),
             assignments = assignmentDTOs
         )
-    }
-
-    fun initializeContainer(uuid: UUID, language: String): ResponseEntity<String?>? {
-        val url = "https://localhost:8080/code-executor/$uuid/$language/initialize"
-        return restTemplate.postForEntity(url, null, String::class.java)
     }
 }

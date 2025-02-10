@@ -67,7 +67,7 @@ Furthermore, to be able to use the question repository you need to modify the en
 configuration of the springboot application of the management. The following information needs to be added
 
 ```txt
-GITHUB_TOKEN=xxx;DB_USERNAME=xxx;DB_PASSWORD=xxx
+GITHUB_TOKEN=xxx;DB_USERNAME=xxx;DB_PASSWORD=xxx;MAIL_PASSWORD=xxx
 ```
 
 For running the springboot servers the container with the PostGreSQL database needs to be started up first.

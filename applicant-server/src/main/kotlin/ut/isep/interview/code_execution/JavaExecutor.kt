@@ -1,9 +1,9 @@
 package ut.isep.interview.code_execution
 
+import dto.execution.TestRunDTO
 import ut.isep.interview.code_execution.utils.CodeExecutorUtils.createAndReturnTempFiles
-import ut.isep.interview.code_execution.dto.Test
 import ut.isep.interview.code_execution.utils.ContainerAPI
-import ut.isep.interview.code_execution.utils.TestResult
+import dto.execution.TestResultDTO
 import java.io.File
 
 object JavaExecutor : CodeExecutor {
@@ -14,7 +14,7 @@ object JavaExecutor : CodeExecutor {
         ContainerAPI.copyToContainerById(id, File("src/main/resources/projects/java"), "/project")
     }
 
-    override fun runTest(inviteId: String, test: Test): List<TestResult> {
+    override fun runTest(inviteId: String, test: TestRunDTO): List<TestResultDTO> {
         //FIXME: Management should initialize the containers when the client logs in
         try {
             startContainer(inviteId, File("src/main/resources/defaultContainers/JavaDockerfile"))
@@ -28,12 +28,12 @@ object JavaExecutor : CodeExecutor {
         return getTestResult(test.test ?: files.second.readText(), testOutput.output)
     }
 
-    private fun getTestResult(testsString: String, output: String): List<TestResult> {
+    private fun getTestResult(testsString: String, output: String): List<TestResultDTO> {
         val result = parseTestOutput(output).toMutableList()
         val failedTests = result.map { it.name }
         result.addAll(parseTests(testsString)
             .filter { it !in failedTests }
-            .map { TestResult(it, "", true) })
+            .map { TestResultDTO(it, "", true) })
 
         return result
     }
@@ -51,7 +51,7 @@ object JavaExecutor : CodeExecutor {
         return testNames
     }
 
-    private fun parseTestOutput(output: String): List<TestResult> {
+    private fun parseTestOutput(output: String): List<TestResultDTO> {
         val tests = output.split(
             "[INFO] -------------------------------------------------------\n" +
                     "[INFO]  T E S T S\n" +
@@ -64,15 +64,17 @@ object JavaExecutor : CodeExecutor {
         if (result.size == 1) {
             return listOf()
         }
-        val failed: MutableList<TestResult> = mutableListOf()
+        val failed: MutableList<TestResultDTO> = mutableListOf()
         for (line in result[1].split("\n")) {
             val test = line.split("[ERROR]   ")
             if (test.size == 1) {
                 continue
             }
-            failed.add(TestResult(test[1].split(" ")[0].split("[.:]".toRegex())[1],
+            failed.add(
+                TestResultDTO(test[1].split(" ")[0].split("[.:]".toRegex())[1],
                 test[1].split(Regex(" "), 2)[1],
-                false))
+                false)
+            )
         }
         return failed
     }

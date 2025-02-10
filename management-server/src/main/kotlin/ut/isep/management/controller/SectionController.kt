@@ -22,8 +22,8 @@ class SectionController(val sectionReadService: SectionReadService) {
 
     @GetMapping("/id")
     @Operation(
-        summary = "Get all available sections",
-        description = "Get all available sections from the PostGreSQL Management database",
+        summary = "Get all available section ids",
+        description = "Get all available section ids from the PostGreSQL Management database",
     )
     @ApiResponses(
         value = [
@@ -34,7 +34,7 @@ class SectionController(val sectionReadService: SectionReadService) {
         ]
     )
     fun getSectionIDs(): ResponseEntity<List<Long>> {
-        return ResponseEntity.ok(sectionReadService.getAll().map { it.sectionInfo.id })
+        return ResponseEntity.ok(sectionReadService.getAllIds())
     }
 
     @GetMapping

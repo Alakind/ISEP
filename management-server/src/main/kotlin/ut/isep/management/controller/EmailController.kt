@@ -52,7 +52,7 @@ class EmailController(
     )
     fun sendMail(@RequestBody emailCreateDTO: EmailCreateDTO): ResponseEntity<String> {
         val (applicant, invite) = emailService.checkData(emailCreateDTO)
-        emailService.sendMail(emailCreateDTO, applicant, invite)
+        emailService.processMail(emailCreateDTO, applicant, invite)
         return ResponseEntity.ok("Email request has been received")
     }
 }

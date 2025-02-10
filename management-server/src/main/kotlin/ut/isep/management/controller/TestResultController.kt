@@ -1,7 +1,7 @@
 package ut.isep.management.controller
 
-import dto.assignment.TestResultCreateDTO
-import dto.assignment.TestResultUpdateDTO
+import dto.testresult.TestResultCreateDTO
+import dto.testresult.TestResultUpdateDTO
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -40,7 +40,7 @@ class TestResultController(
     )
     fun postTestResult(@RequestBody testResult: TestResultCreateDTO): ResponseEntity<String> {
         val createdTestResult = testResultCreateService.create(testResult)
-        val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
+        val location: URI = ServletUriComponentsBuilder.fromCurrentRequest() // location can't be used to get test result
             .path("/{id}")
             .buildAndExpand(createdTestResult.id)
             .toUri()

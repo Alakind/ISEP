@@ -1,5 +1,6 @@
 package ut.isep.interview.api
 
+import dto.execution.TestRunDTO
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -9,7 +10,6 @@ import ut.isep.interview.code_execution.utils.CodeExecutorUtils
 import ut.isep.interview.code_execution.JavaExecutor
 import ut.isep.interview.code_execution.PythonExecutor
 import ut.isep.interview.code_execution.SQLExecutor
-import ut.isep.interview.code_execution.dto.Test
 import java.io.File
 
 @RestController
@@ -18,7 +18,7 @@ class CodeExecution {
     // Python, C#, SQL, Java, and JavaScript
 
     @PostMapping(path = ["/{uuid}/sql/initialize", "/{uuid}/python/initialize", "/{uuid}/java/initialize"],
-        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.ALL_VALUE])
     fun initializeContainer(@PathVariable uuid: String,
                                @RequestPart("file", required = false) file: MultipartFile?,
                                request: HttpServletRequest): ResponseEntity<Any> {
@@ -51,8 +51,8 @@ class CodeExecution {
 
     @PostMapping(path = ["/{uuid}/sql/test", "/{uuid}/python/test", "/{uuid}/java/test"])
     fun testCode(@PathVariable uuid: String,
-                    @RequestBody() codeStrings: Test,
-                    request: HttpServletRequest): ResponseEntity<Any> {
+                 @RequestBody() codeStrings: TestRunDTO,
+                 request: HttpServletRequest): ResponseEntity<Any> {
         val path = request.requestURI
         try {
             val result = when {
