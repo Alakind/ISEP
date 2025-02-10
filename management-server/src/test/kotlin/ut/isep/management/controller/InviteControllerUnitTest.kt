@@ -352,6 +352,9 @@ class InviteControllerUnitTest {
         )
 
         // given
+        every { inviteReadService.getById(inviteId1) } returns invite1ReadDto
+        every { inviteReadService.startAssessment(inviteId1) } returns Unit
+        every { inviteReadService.checkTimingAssessment(inviteId1) } returns Unit
         every { inviteReadService.checkAccessibilityAssessment(inviteId1) } returns Unit
         every { inviteReadService.getAssessmentByInviteId(inviteId1) } returns assessmentReadDTO
 

@@ -20,8 +20,6 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBodyOrNull
 import org.springframework.web.reactive.function.client.awaitExchange
 import parser.question.CodingQuestion
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import ut.isep.management.exception.AssessmentTimeExceededException
 import ut.isep.management.exception.UnauthorizedException
 import ut.isep.management.model.entity.AssignmentType
@@ -39,7 +37,6 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.*
-import kotlin.NoSuchElementException
 
 
 @Transactional
