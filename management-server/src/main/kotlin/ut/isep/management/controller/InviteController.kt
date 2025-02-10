@@ -244,7 +244,11 @@ class InviteController(
     fun getAssessment(@PathVariable id: UUID): ResponseEntity<AssessmentReadDTO> {
         // Check if the request can be proceeded
         inviteReadService.checkAccessibilityAssessment(id)
-
+        val invite = inviteReadService.getById(id)
+        if (invite.status == InviteStatus.not_started) {
+            inviteReadService.startAssessment(id)
+        }
+        inviteReadService.checkTimingAssessment(id)
         val assessment: AssessmentReadDTO = inviteReadService.getAssessmentByInviteId(id)
         return ResponseEntity.ok(assessment)
     }

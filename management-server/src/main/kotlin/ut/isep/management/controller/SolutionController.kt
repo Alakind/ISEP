@@ -64,7 +64,7 @@ class SolutionController(
     fun updateSolutions(@PathVariable uuid: UUID, @RequestBody solutionsUpdateDTO: SolutionsUpdateDTO): ResponseEntity<String> {
         // Check if the request can be proceeded
         inviteReadService.checkAccessibilityAssessment(uuid)
-
+        inviteReadService.checkTimingAssessment(uuid)
         solutionUpdateService.updateSolutions(uuid, solutionsUpdateDTO)
         return ResponseEntity.ok("Updated ${solutionsUpdateDTO.size} solutions")
     }
