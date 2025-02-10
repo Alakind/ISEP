@@ -55,6 +55,7 @@ class SolutionControllerUnitTest {
         // given
         every { inviteReadService.checkAccessibilityAssessment(inviteId1) } returns Unit
         every { solutionUpdateService.updateSolutions(inviteId1, solutionsUpdateDTO) } returns Unit
+        every { inviteReadService.checkTimingAssessment(inviteId1) } returns Unit
 
         // verify and assert
         mockMvc.perform(
@@ -77,6 +78,7 @@ class SolutionControllerUnitTest {
         // given
         every { inviteReadService.checkAccessibilityAssessment(inviteId1) } returns Unit
         every { solutionUpdateService.updateSolutions(inviteId1, solutionsUpdateDTO) } returns Unit
+        every { inviteReadService.checkTimingAssessment(inviteId1) } returns Unit
 
         // verify and assert
         mockMvc.perform(
@@ -102,6 +104,7 @@ class SolutionControllerUnitTest {
         // given
         every { inviteReadService.checkAccessibilityAssessment(inviteId1) } returns Unit
         every { solutionUpdateService.updateSolutions(inviteId1, solutionsUpdateDTO) } returns Unit
+        every { inviteReadService.checkTimingAssessment(inviteId1) } returns Unit
 
         // verify and assert
         mockMvc.perform(
@@ -134,6 +137,7 @@ class SolutionControllerUnitTest {
         // given
         every { inviteReadService.checkAccessibilityAssessment(inviteId1) } returns Unit
         every { solutionUpdateService.updateSolutions(inviteId1, solutionsUpdateDTO) } returns Unit
+        every { inviteReadService.checkTimingAssessment(inviteId1) } returns Unit
 
         // verify and assert
         mockMvc.perform(

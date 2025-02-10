@@ -15,12 +15,15 @@ import jakarta.persistence.criteria.Root
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.web.reactive.function.client.WebClient
 import ut.isep.management.exception.AssessmentTimeExceededException
 import ut.isep.management.exception.UnauthorizedException
 import ut.isep.management.model.entity.*
 import ut.isep.management.repository.InviteRepository
 import ut.isep.management.repository.TimingPerSectionRepository
+import ut.isep.management.service.assignment.AsyncAssignmentFetchService
 import ut.isep.management.service.converter.assessment.AssessmentReadConverter
 import ut.isep.management.service.converter.invite.InviteReadConverter
 import ut.isep.management.service.converter.invite.PreInfoReadConverter
@@ -33,6 +36,10 @@ class InviteReadServiceUnitTest {
 
     private val inviteRepository: InviteRepository = mockk()
     private val inviteReadConverter: InviteReadConverter = mockk()
+    private val assignmentFetchService: AsyncAssignmentFetchService = mockk()
+
+    @Qualifier("executorWebClient")
+    private val webClient: WebClient = mockk()
     private val assessmentReadConverter: AssessmentReadConverter = mockk()
     private val timingPerSectionRepository: TimingPerSectionRepository = mockk()
     private val timingPerSectionUpdateService: TimingPerSectionUpdateService = mockk()
@@ -40,6 +47,8 @@ class InviteReadServiceUnitTest {
     private val inviteReadService = InviteReadService(
         inviteRepository,
         inviteReadConverter,
+        assignmentFetchService,
+        webClient,
         assessmentReadConverter,
         timingPerSectionRepository,
         timingPerSectionUpdateService,
@@ -117,12 +126,12 @@ class InviteReadServiceUnitTest {
             status = InviteStatus.not_started
         )
 
+        every { inviteRepository.findById(invite.id) } returns Optional.of(invite)
+
         val inviteSlot = slot<Invite>()
         every { inviteRepository.save(capture(inviteSlot)) } answers { inviteSlot.captured }
 
-        inviteReadService.javaClass.getDeclaredMethod("startAssessment", Invite::class.java)
-            .apply { isAccessible = true }
-            .invoke(inviteReadService, invite)
+        inviteReadService.startAssessment(invite.id)
 
         assertThat(invite.assessmentStartedAt).isNotNull
         assertThat(invite.measuredSecondsPerSection.first().visitedAt).isNotNull
@@ -139,9 +148,9 @@ class InviteReadServiceUnitTest {
             every { measuredSecondsPerSection } returns mutableListOf(mockk(relaxed = true))
         }
 
-        inviteReadService.javaClass.getDeclaredMethod("startAssessment", Invite::class.java)
-            .apply { isAccessible = true }
-            .invoke(inviteReadService, invite)
+        every { inviteRepository.findById(invite.id) } returns Optional.of(invite)
+
+        inviteReadService.startAssessment(invite.id)
 
         assertThat(invite.assessmentStartedAt).isEqualTo(existingStartTime)
         verify(exactly = 0) { inviteRepository.save(any()) }
@@ -242,7 +251,19 @@ class InviteReadServiceUnitTest {
     }
 
     @Test
-    fun `test checkAccessibilityAssessment() throws an IllegalStateException when the assessmentStartedAt is null after starting it`() {
+    fun `test checkTimingAssessment() throws an NoSuchElementException when the invite couldn't be found`() {
+        val inviteId = UUID.randomUUID()
+
+        every { inviteRepository.findById(inviteId) } returns Optional.empty()
+
+        val exception = assertThrows<NoSuchElementException> {
+            inviteReadService.checkTimingAssessment(inviteId)
+        }
+        assertThat(exception.message).isEqualTo("No invite with id $inviteId")
+    }
+
+    @Test
+    fun `test checkTimingAssessment() throws an IllegalStateException when the assessmentStartedAt is null after starting it`() {
         val inviteId = UUID.randomUUID()
         val invite = Invite(
             id = inviteId,
@@ -259,33 +280,37 @@ class InviteReadServiceUnitTest {
         }
 
         val exception = assertThrows<IllegalStateException> {
-            inviteReadService.checkAccessibilityAssessment(inviteId)
+            inviteReadService.checkTimingAssessment(inviteId)
         }
         assertThat(exception.message).isEqualTo("Assessment start time is not set")
     }
 
     @Test
-    fun `test checkAccessibilityAssessment() throws an IllegalStateException when the availableSeconds of the assessment is null`() {
+    fun `test checkTimingAssessment() throws an IllegalStateException when the availableSeconds of the assessment is null`() {
         val inviteId = UUID.randomUUID()
         val invite = Invite(
             id = inviteId,
             status = InviteStatus.app_started,
             measuredSecondsPerSection = mutableListOf(TimingPerSection()),
+            assessmentStartedAt = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC)
         )
 
         every { inviteRepository.findById(inviteId) } returns Optional.of(invite)
 
         val inviteSlot = slot<Invite>()
-        every { inviteRepository.save(capture(inviteSlot)) } answers { inviteSlot.captured }
+        every { inviteRepository.save(capture(inviteSlot)) } answers {
+            inviteSlot.captured.assessmentStartedAt = invite.assessmentStartedAt
+            inviteSlot.captured
+        }
 
         val exception = assertThrows<IllegalStateException> {
-            inviteReadService.checkAccessibilityAssessment(inviteId)
+            inviteReadService.checkTimingAssessment(inviteId)
         }
         assertThat(exception.message).isEqualTo("Available time for the assessment is not set")
     }
 
     @Test
-    fun `test checkAccessibilityAssessment() when spent time surpasses the available time the finished process is started`() {
+    fun `test checkTimingAssessment() when spent time surpasses the available time the finished process is started`() {
         val inviteId = UUID.randomUUID()
         val invite = Invite(
             id = inviteId,
@@ -316,7 +341,7 @@ class InviteReadServiceUnitTest {
         }
 
         val exception = assertThrows<AssessmentTimeExceededException> {
-            inviteReadService.checkAccessibilityAssessment(inviteId)
+            inviteReadService.checkTimingAssessment(inviteId)
         }
 
         assertThat(invite.status).isEqualTo(InviteStatus.app_finished)
