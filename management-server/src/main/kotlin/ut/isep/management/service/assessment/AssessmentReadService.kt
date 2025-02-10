@@ -29,6 +29,6 @@ class AssessmentReadService(
             .withIgnorePaths(*Assessment::class.java.declaredFields.map { it.name }.filter { it != "latest" }.toTypedArray())
             .withMatcher("latest", ExampleMatcher.GenericPropertyMatchers.exact())
 
-        return super.getPaginated(Example.of(latestAssessmentExample, matcher), pageable)
+        return super.getPaginatedExample(Example.of(latestAssessmentExample, matcher), pageable)
     }
 }

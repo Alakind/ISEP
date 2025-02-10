@@ -87,7 +87,7 @@ class ScheduledTasks(
             val emailCreateDto = EmailCreateDTO(inviteId = it.id, applicantId = it.applicantId, type = EmailType.reminder)
             val (applicant, invite) = mailSenderService.checkData(emailCreateDto)
 
-            mailSenderService.sendMail(
+            mailSenderService.processMail(
                 emailCreateDto,
                 applicant,
                 invite

@@ -40,7 +40,7 @@ class TestResultController(
     )
     fun postTestResult(@RequestBody testResult: TestResultCreateDTO): ResponseEntity<String> {
         val createdTestResult = testResultCreateService.create(testResult)
-        val location: URI = ServletUriComponentsBuilder.fromCurrentRequest()
+        val location: URI = ServletUriComponentsBuilder.fromCurrentRequest() // location can't be used to get test result
             .path("/{id}")
             .buildAndExpand(createdTestResult.id)
             .toUri()

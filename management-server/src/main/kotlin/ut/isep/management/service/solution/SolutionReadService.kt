@@ -5,7 +5,6 @@ import dto.section.SolvedSectionReadDTO
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import reactor.core.publisher.Flux
@@ -24,7 +23,6 @@ import java.util.*
 class SolutionReadService(
     val repository: SolvedAssignmentRepository,
     val converter: SolvedAssignmentReadConverter,
-    @Qualifier("executorRestTemplate") val restTemplate: RestTemplate,
     val fetchService: AsyncAssignmentFetchService,
     val inviteRepository: InviteRepository,
     val sectionRepository: SectionRepository,
@@ -68,11 +66,5 @@ class SolutionReadService(
             ),
             assignments = assignmentDTOs
         )
-    }
-
-
-    fun initializeContainer(uuid: UUID, language: String): ResponseEntity<String?>? {
-        val url = "https://localhost:8080/code-executor/$uuid/$language/initialize"
-        return restTemplate.postForEntity(url, null, String::class.java)
     }
 }

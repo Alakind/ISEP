@@ -67,7 +67,7 @@ class ApplicantController(
         } else {
             null
         }
-        return applicantReadService.getPaginated(exampleApplicant, pageable)
+        return applicantReadService.getPaginatedEntity(exampleApplicant, pageable)
     }
 
 

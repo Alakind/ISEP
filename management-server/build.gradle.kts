@@ -35,9 +35,10 @@ dependencies {
     implementation(project(":shared-entities"))
     runtimeOnly("org.postgresql:postgresql")
 
+//    testImplementation("io.mockk:mockk")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("com.ninja-squad:springmockk:3.1.1")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude("org.junit.vintage:junit-vintage-engine")
         exclude("org.mockito:mockito-core")
@@ -46,6 +47,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.20.4")
     testImplementation("org.testcontainers:postgresql:1.20.4")
     testImplementation(kotlin("test"))
+    testImplementation("com.h2database:h2:2.1.214")
 }
 
 kotlin {
